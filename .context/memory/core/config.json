@@ -1,0 +1,49 @@
+{
+  "framework": {
+    "name": "Aegis",
+    "version": "1.0.0",
+    "description": "A framework for project management and development tracking"
+  },
+  "project": {
+    "name": "Silla Vida",
+    "description": "E-commerce website for a chair/furniture company",
+    "root_dir": "c:/Users/oscar/Downloads/Github/Silla_Vida"
+  },
+  "directories": {
+    "tasks": {
+      "planned": ".context/tasks/planned",
+      "active": ".context/tasks/active",
+      "hold": ".context/tasks/hold",
+      "completed": ".context/tasks/completed"
+    },
+    "sessions": ".context/sessions",
+    "decisions": ".context/decisions",
+    "plan": ".context/plan",
+    "memory": {
+      "core": ".context/memory/core",
+      "project": ".context/memory/project",
+      "session": ".context/memory/session"
+    },
+    "templates": {
+      "tasks": ".context/templates/tasks",
+      "sessions": ".context/templates/sessions",
+      "decisions": ".context/templates/decisions"
+    }
+  },
+  "templates": {
+    "task": ".context/templates/tasks/TEMPLATE.md",
+    "session": ".context/templates/sessions/TEMPLATE.md",
+    "decision": ".context/templates/decisions/TEMPLATE.md"
+  },
+  "id_formats": {
+    "task": "TASK-{:03d}",
+    "session": "SESSION-{:03d}",
+    "decision": "DECISION-{:03d}"
+  },
+  "timestamp_format": "YYYY-MM-DDTHH:MM:SS",
+  "filename_format": {
+    "session": "YYYY-MM-DD_HH-MM-SS",
+    "decision": "YYYY-MM-DD_HH-MM-SS_title"
+  },
+  "last_updated": "2025-04-11T14:00:03"
+}
