@@ -3,24 +3,42 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
+import CategoryPage from './pages/CategoryPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
+import CheckoutDemoPage from './pages/CheckoutDemoPage';
+import TestPage from './pages/TestPage';
+import ShopifyTestPage from './pages/ShopifyTestPage';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/product/:handle" element={<ProductPage />} />
-          </Routes>
-        </main>
-        <Footer />
-        <WhatsAppButton />
-      </div>
-    </Router>
+    <CartProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/product/:handle" element={<ProductPage />} />
+              <Route path="/category/:handle" element={<CategoryPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/carrito" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+              <Route path="/checkout-demo" element={<CheckoutDemoPage />} />
+              <Route path="/test" element={<TestPage />} />
+              <Route path="/shopify-test" element={<ShopifyTestPage />} />
+            </Routes>
+          </main>
+          <Footer />
+          <WhatsAppButton />
+        </div>
+      </Router>
+    </CartProvider>
   );
 }
 

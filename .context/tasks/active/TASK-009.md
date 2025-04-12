@@ -1,9 +1,9 @@
 ---
 title: Implement Landing Page Integration
 type: task
-status: planned
+status: active
 created: 2025-04-11T14:48:49
-updated: 2025-04-11T14:48:49
+updated: 2025-04-11T22:02:44
 id: TASK-009
 priority: high
 memory_types: [procedural, semantic]
@@ -41,12 +41,19 @@ This task involves integrating Shopify product data into the existing landing pa
 12. Optimize for performance and user experience
 
 ## Progress
-- No progress yet
+- Created a decision document outlining the approach for integrating Shopify product data into the landing page
+- Created a new `ShopifyPromoBanner` component that accepts a Shopify product instead of a Chair
+- Updated the `HomePage` component to:
+  - Fetch product data from Shopify
+  - Use the new `ShopifyPromoBanner` component for featured products
+  - Use the existing `ShopifyProductCard` component for best sellers
+  - Implement fallbacks to static data when Shopify data is unavailable
+  - Add loading states and error handling
 
 ## Dependencies
-- TASK-001: Analyze Shopify Integration for Headless Approach
-- TASK-004: API & Authentication Setup for Headless Shopify
-- TASK-005: Implement Product Catalog Pages
+- TASK-001: Analyze Shopify Integration for Headless Approach (Completed)
+- TASK-004: API & Authentication Setup for Headless Shopify (Completed)
+- TASK-005: Implement Product Catalog Pages (Completed)
 
 ## Test Status
 - Status: Not Started
@@ -65,6 +72,8 @@ This task involves integrating Shopify product data into the existing landing pa
 - Performance is critical for the landing page as it's the main entry point for users
 
 ## Next Steps
-- Review the current landing page design to identify integration points
-- Create a plan for which sections should display dynamic Shopify data
-- Begin implementing the API calls to fetch featured products
+- Test the integration with the Shopify API
+- Optimize performance with caching and lazy loading
+- Implement a more robust way to get featured products and best sellers
+- Add analytics tracking for the landing page
+- Consider integrating more dynamic content from Shopify, such as promotions and collections

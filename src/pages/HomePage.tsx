@@ -1,15 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Truck, CreditCard, Shield, Star, ChevronRight, Tag, Lock, FileCheck, HeadphonesIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { chairs } from '../data/chairs';
 import ProductCard from '../components/ProductCard';
 import PromoBanner from '../components/PromoBanner';
+import ShopifyPromoBanner from '../components/ShopifyPromoBanner';
+import ShopifyProductCard from '../components/ShopifyProductCard';
 import HeroSlider from '../components/HeroSlider';
+import { getProducts, getProductsByCollection } from '../lib/shopify';
+import type { ShopifyProduct } from '../types/shopify';
 
 const HomePage = () => {
-  const bestSellers = chairs.slice(0, 8);
-  const featuredOfficeChair = chairs.find(chair => chair.id === 'ergopro-elite')!;
-  const featuredGamingChair = chairs.find(chair => chair.id === 'xgamer-pro')!;
+  // Static data (fallback)
+  const staticBestSellers = chairs.slice(0, 8);
+  const staticFeaturedOfficeChair = chairs.find(chair => chair.id === 'ergopro-elite')!;
+  const staticFeaturedGamingChair = chairs.find(chair => chair.id === 'xgamer-pro')!;
+  
+  // State for Shopify data
+  const [bestSellers, setBestSellers] = useState<ShopifyProduct[]>([]);
+  const [featuredOfficeChair, setFeaturedOfficeChair] = useState<ShopifyProduct | null>(null);
+  const [featuredGamingChair, setFeaturedGamingChair] = useState<ShopifyProduct | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Fetch data from Shopify
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Fetch best sellers
+        const products = await getProducts(6);
+        setBestSellers(products);
+        
+        // Fetch featured office chair
+        // In a real implementation, we would use collection handles or tags to filter
+        // For now, we'll just use the first product as a demo
+        if (products.length > 0) {
+          setFeaturedOfficeChair(products[0]);
+        }
+        
+        // Fetch featured gaming chair
+        // For demo purposes, we'll use the second product
+        if (products.length > 1) {
+          setFeaturedGamingChair(products[1]);
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data from Shopify:', error);
+        setError('Failed to load products. Using static data instead.');
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
+  
+  // Use Shopify data if available, otherwise fall back to static data
+  const displayedBestSellers = bestSellers.length > 0 ? bestSellers : staticBestSellers;
+  const displayedFeaturedOfficeChair = featuredOfficeChair || staticFeaturedOfficeChair;
+  const displayedFeaturedGamingChair = featuredGamingChair || staticFeaturedGamingChair;
 
   return (
     <div className="flex flex-col">
@@ -52,9 +103,23 @@ const HomePage = () => {
       {/* Featured Products Banners */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
+          {error && (
+            <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
+              <p>{error}</p>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <PromoBanner chair={featuredOfficeChair} />
-            <PromoBanner chair={featuredGamingChair} dark />
+            {featuredOfficeChair ? (
+              <ShopifyPromoBanner product={featuredOfficeChair} />
+            ) : (
+              <PromoBanner chair={staticFeaturedOfficeChair} />
+            )}
+            
+            {featuredGamingChair ? (
+              <ShopifyPromoBanner product={featuredGamingChair} dark />
+            ) : (
+              <PromoBanner chair={staticFeaturedGamingChair} dark />
+            )}
           </div>
         </div>
       </section>
@@ -64,7 +129,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Nuestras Categorías</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Link to="/ejecutivas" className="group relative overflow-hidden rounded-lg">
+            <Link to="/category/ejecutivas" className="group relative overflow-hidden rounded-lg">
               <img 
                 src="/images/ejecutiva.png" 
                 alt="Sillas Ejecutivas" 
@@ -80,7 +145,7 @@ const HomePage = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/ergonomicas" className="group relative overflow-hidden rounded-lg">
+            <Link to="/category/ergonomicas" className="group relative overflow-hidden rounded-lg">
               <img 
                 src="/images/ergonomica.png" 
                 alt="Sillas Ergonómicas" 
@@ -96,7 +161,7 @@ const HomePage = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/gamer" className="group relative overflow-hidden rounded-lg">
+            <Link to="/category/gamer" className="group relative overflow-hidden rounded-lg">
               <img 
                 src="/images/gamer.png" 
                 alt="Sillas Gamer" 
@@ -112,7 +177,7 @@ const HomePage = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/secretariales" className="group relative overflow-hidden rounded-lg">
+            <Link to="/category/secretariales" className="group relative overflow-hidden rounded-lg">
               <img 
                 src="/images/secretariales.png" 
                 alt="Sillas Secretariales" 
@@ -128,7 +193,7 @@ const HomePage = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/visitas" className="group relative overflow-hidden rounded-lg">
+            <Link to="/category/visitas" className="group relative overflow-hidden rounded-lg">
               <img 
                 src="/images/visita.png" 
                 alt="Sillas de Visita" 
@@ -144,7 +209,7 @@ const HomePage = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/accesorios" className="group relative overflow-hidden rounded-lg">
+            <Link to="/category/accesorios" className="group relative overflow-hidden rounded-lg">
               <img 
                 src="/images/accesorio.png" 
                 alt="Accesorios" 
@@ -173,7 +238,7 @@ const HomePage = () => {
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Super Selección de los Más Vendidos</h2>
                 <p className="text-gray-600 mb-6">¡Aprovecha las ofertas y compre!</p>
                 <Link 
-                  to="/mas-vendidos"
+                  to="/category/mas-vendidos"
                   className="inline-flex items-center text-red-600 hover:text-red-700 transition-colors"
                 >
                   Ver Todos <ChevronRight className="ml-1 h-4 w-4" />
@@ -181,9 +246,31 @@ const HomePage = () => {
               </div>
             </div>
             <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {bestSellers.slice(0, 6).map((chair) => (
-                <ProductCard key={chair.id} chair={chair} />
-              ))}
+              {isLoading ? (
+                // Loading skeleton
+                Array(6).fill(0).map((_, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div className="w-full h-48 bg-gray-300"></div>
+                    <div className="p-4">
+                      <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-5/6 mb-4"></div>
+                      <div className="h-8 bg-gray-300 rounded w-1/3 mb-4"></div>
+                      <div className="h-10 bg-gray-300 rounded w-full"></div>
+                    </div>
+                  </div>
+                ))
+              ) : bestSellers.length > 0 ? (
+                // Shopify products
+                bestSellers.slice(0, 6).map((product) => (
+                  <ShopifyProductCard key={product.id} product={product} />
+                ))
+              ) : (
+                // Fallback to static data
+                staticBestSellers.slice(0, 6).map((chair) => (
+                  <ProductCard key={chair.id} chair={chair} />
+                ))
+              )}
             </div>
           </div>
         </div>

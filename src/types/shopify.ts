@@ -34,17 +34,25 @@ export interface ShopifyProduct {
 
 export interface ShopifyCart {
   id: string;
-  lines: Array<{
-    merchandise: {
-      id: string;
-      title: string;
-      price: {
-        amount: string;
-        currencyCode: string;
+  lines: {
+    edges: Array<{
+      node: {
+        id: string;
+        quantity: number;
+        merchandise: {
+          id: string;
+          title: string;
+          product?: {
+            title: string;
+          };
+          price: {
+            amount: string;
+            currencyCode: string;
+          };
+        };
       };
-    };
-    quantity: number;
-  }>;
+    }>;
+  };
   cost: {
     subtotalAmount: {
       amount: string;

@@ -62,6 +62,7 @@ Silla Vida is an e-commerce website for a chair/furniture company, built with Re
      - Create cart functionality
      - Build checkout process
      - Implement order management
+     - Resolve checkout flow issues and implement enhancements
 
 5. **Performance Optimization**
    - Description: Optimizations for website performance
@@ -101,3 +102,4 @@ Silla Vida is an e-commerce website for a chair/furniture company, built with Re
 - Set up project structure and build pipeline
 - Begin implementation of core UI components
 - Explore current state of Shopify integration
+- Resolve checkout flow issues and implement enhancements (TASK-014)

@@ -2,39 +2,40 @@
   "framework": {
     "status": "initialized",
     "last_command": "/aegis start",
-    "last_command_timestamp": "2025-04-11T13:53:10"
+    "last_command_timestamp": "2025-04-11T17:49:31"
   },
   "session": {
     "active": true,
-    "current_id": "SESSION-001",
-    "started": "2025-04-11T13:54:16",
-    "last_updated": "2025-04-11T14:58:45"
+    "current_id": "SESSION-004",
+    "started": "2025-04-11T17:49:31",
+    "last_updated": "2025-04-11T20:02:35"
   },
   "tasks": {
-    "next_id": 11,
+    "next_id": 14,
     "counts": {
       "planned": 10,
-      "active": 0,
+      "active": 1,
       "hold": 0,
-      "completed": 0,
-      "total": 10
+      "completed": 2,
+      "total": 13
     }
   },
   "decisions": {
-    "next_id": 1,
+    "next_id": 4,
     "counts": {
       "proposed": 0,
       "accepted": 0,
       "rejected": 0,
       "superseded": 0,
-      "total": 0
+      "approved": 3,
+      "total": 3
     }
   },
   "sessions": {
-    "next_id": 2,
+    "next_id": 5,
     "counts": {
-      "total": 1
+      "total": 4
     }
   },
-  "last_updated": "2025-04-11T14:58:36"
+  "last_updated": "2025-04-11T20:02:48"
 }
