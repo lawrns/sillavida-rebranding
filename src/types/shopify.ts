@@ -9,6 +9,12 @@ export interface ShopifyProduct {
       currencyCode: string;
     };
   };
+  compareAtPriceRange?: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
   images: {
     edges: Array<{
       node: {
@@ -26,6 +32,10 @@ export interface ShopifyProduct {
           amount: string;
           currencyCode: string;
         };
+        compareAtPrice?: {
+          amount: string;
+          currencyCode: string;
+        };
         availableForSale: boolean;
       };
     }>;
@@ -34,17 +44,25 @@ export interface ShopifyProduct {
 
 export interface ShopifyCart {
   id: string;
-  lines: Array<{
-    merchandise: {
-      id: string;
-      title: string;
-      price: {
-        amount: string;
-        currencyCode: string;
+  lines: {
+    edges: Array<{
+      node: {
+        id: string;
+        quantity: number;
+        merchandise: {
+          id: string;
+          title: string;
+          product?: {
+            title: string;
+          };
+          price: {
+            amount: string;
+            currencyCode: string;
+          };
+        };
       };
-    };
-    quantity: number;
-  }>;
+    }>;
+  };
   cost: {
     subtotalAmount: {
       amount: string;

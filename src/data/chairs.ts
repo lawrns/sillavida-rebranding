@@ -15,7 +15,7 @@ export const chairs: Chair[] = [
     name: 'Silla ErgoPro Elite',
     description: 'Máximo confort y ergonomía para largas jornadas',
     price: 4999.90,
-    image: 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=600&q=80',
+    image: '/images/chairs/ergopro-elite.jpg',
     category: 'office',
     features: ['Malla transpirable', 'Soporte lumbar ajustable', 'Reposabrazos 4D'],
     rating: 5
@@ -25,7 +25,7 @@ export const chairs: Chair[] = [
     name: 'X-Gamer Pro',
     description: 'Diseñada para sesiones intensas de gaming',
     price: 5999.90,
-    image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=600&q=80',
+    image: '/images/chairs/xgamer-pro.jpg',
     category: 'gaming',
     features: ['Reclinable 180°', 'Cojín lumbar', 'Reposabrazos ajustables'],
     rating: 4.8
@@ -35,7 +35,7 @@ export const chairs: Chair[] = [
     name: 'Ergo Mesh Plus',
     description: 'Comodidad y frescura todo el día',
     price: 3499.90,
-    image: 'https://images.unsplash.com/photo-1579487785973-74d2ca7abdd5?auto=format&fit=crop&w=600&q=80',
+    image: '/images/chairs/ergo-mesh.jpg',
     category: 'office',
     features: ['Malla premium', 'Ajuste de altura', 'Base giratoria'],
     rating: 4.9
@@ -45,9 +45,19 @@ export const chairs: Chair[] = [
     name: 'Gamer Elite RGB',
     description: 'La experiencia gaming definitiva',
     price: 6999.90,
-    image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80',
+    image: '/images/chairs/gamer-elite.jpg',
     category: 'gaming',
     features: ['Iluminación RGB', 'Reclinable 165°', 'Memory foam'],
     rating: 4.7
+  },
+  {
+    id: 'oficina-x',
+    name: 'Silla Oficina X',
+    description: 'Silla ergonómica para oficina con diseño moderno',
+    price: 3999.90,
+    image: '/images/chairs/oficina-x.jpg',
+    category: 'office',
+    features: ['Soporte lumbar', 'Reposacabezas ajustable', 'Asiento acolchado'],
+    rating: 4.6
   }
 ];

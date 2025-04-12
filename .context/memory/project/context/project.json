@@ -1,0 +1,30 @@
+{
+  "name": "Silla Vida",
+  "description": "E-commerce website for a chair/furniture company",
+  "created": "2025-04-11T13:54:49",
+  "updated": "2025-04-11T14:02:33",
+  "activeTasks": [],
+  "plannedTasks": ["TASK-001", "TASK-002", "TASK-003"],
+  "completedTasks": [],
+  "holdTasks": [],
+  "decisions": [],
+  "components": [
+    {
+      "name": "Frontend",
+      "description": "React/TypeScript/Vite application with Tailwind CSS",
+      "status": "in_progress"
+    },
+    {
+      "name": "E-commerce",
+      "description": "Shopify integration for product management and checkout",
+      "status": "in_progress"
+    },
+    {
+      "name": "UI Components",
+      "description": "Reusable UI components for the website",
+      "status": "in_progress"
+    }
+  ],
+  "currentSession": "SESSION-001",
+  "lastSessionDate": "2025-04-11T13:54:16"
+}

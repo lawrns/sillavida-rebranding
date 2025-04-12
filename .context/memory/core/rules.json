@@ -1,0 +1,76 @@
+{
+  "task_states": {
+    "allowed_states": ["planned", "active", "hold", "completed"],
+    "allowed_transitions": [
+      {"from": "planned", "to": "active", "command": "start"},
+      {"from": "active", "to": "completed", "command": "complete"},
+      {"from": "active", "to": "hold", "command": "hold"},
+      {"from": "hold", "to": "active", "command": "resume"}
+    ],
+    "validation": {
+      "planned": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id", "priority"],
+        "required_sections": ["Description", "Objectives", "Steps", "Dependencies", "Notes", "Next Steps"]
+      },
+      "active": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id", "priority"],
+        "required_sections": ["Description", "Objectives", "Steps", "Progress", "Dependencies", "Test Status", "Notes", "Next Steps"]
+      },
+      "hold": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id", "priority"],
+        "required_sections": ["Description", "Objectives", "Steps", "Progress", "Dependencies", "Test Status", "Notes", "Next Steps"]
+      },
+      "completed": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id", "priority"],
+        "required_sections": ["Description", "Objectives", "Steps", "Progress", "Dependencies", "Test Status", "Notes"]
+      }
+    }
+  },
+  "decision_states": {
+    "allowed_states": ["proposed", "accepted", "rejected", "superseded"],
+    "allowed_transitions": [
+      {"from": "proposed", "to": "accepted", "command": "accept"},
+      {"from": "proposed", "to": "rejected", "command": "reject"},
+      {"from": "accepted", "to": "superseded", "command": "supersede"},
+      {"from": "rejected", "to": "proposed", "command": "reconsider"}
+    ],
+    "validation": {
+      "proposed": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id"],
+        "required_sections": ["Context", "Options Considered", "Decision", "Consequences", "Notes"]
+      },
+      "accepted": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id"],
+        "required_sections": ["Context", "Options Considered", "Decision", "Consequences", "Notes"]
+      },
+      "rejected": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id"],
+        "required_sections": ["Context", "Options Considered", "Decision", "Consequences", "Notes"]
+      },
+      "superseded": {
+        "required_fields": ["title", "type", "status", "created", "updated", "id", "superseded_by"],
+        "required_sections": ["Context", "Options Considered", "Decision", "Consequences", "Notes"]
+      }
+    }
+  },
+  "session_validation": {
+    "required_fields": ["title", "type", "status", "created", "updated", "id", "memory_types"],
+    "required_sections": ["Focus", "Context", "Progress", "Decisions", "Self-Improvement", "Dependencies", "Next Steps", "Notes"]
+  },
+  "test_status": {
+    "allowed_values": ["Not Started", "Failing", "Passing", "Not Applicable"],
+    "completion_rules": {
+      "Passing": {"allow_completion": true, "require_confirmation": false},
+      "Not Applicable": {"allow_completion": true, "require_confirmation": false},
+      "Failing": {"allow_completion": true, "require_confirmation": true},
+      "Not Started": {"allow_completion": true, "require_confirmation": true}
+    }
+  },
+  "file_naming": {
+    "tasks": "{id}.md",
+    "sessions": "YYYY-MM-DD_HH-MM-SS.md",
+    "decisions": "YYYY-MM-DD_HH-MM-SS_title.md"
+  },
+  "timestamp_format": "YYYY-MM-DDTHH:MM:SS",
+  "last_updated": "2025-04-11T14:00:27"
+}

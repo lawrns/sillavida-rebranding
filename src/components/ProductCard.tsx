@@ -1,39 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Chair } from '../data/chairs';
+import { useCart } from '../context/CartContext';
+
+// Generate a Shopify-compatible variant ID from the chair ID
+// This ensures we have a consistent format that matches Shopify API expectations
+const generateVariantId = (chairId: string): string => {
+  // Create a deterministic numeric ID based on the chair ID
+  // In a real implementation, this would be the actual Shopify variant ID
+  const numericId = chairId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
+  return `gid://shopify/ProductVariant/${numericId}`;
+};
 
 interface ProductCardProps {
   chair: Chair;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
+  const { addItem } = useCart();
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation to product page
+    e.stopPropagation(); // Stop event propagation
+    
+    setIsLoading(true);
+    try {
+      // Generate a Shopify variant ID from the chair ID
+      const variantId = generateVariantId(chair.id);
+      
+      console.log(`[Cart] Adding item to cart: ${chair.name} (${chair.id}) with variant ID: ${variantId}`);
+      
+      // Add the item to the cart with retry logic
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      while (retryCount <= maxRetries) {
+        try {
+          await addItem(variantId, 1);
+          console.log(`[Cart] Successfully added item to cart: ${chair.name}`);
+          break; // Success, exit the retry loop
+        } catch (retryError) {
+          retryCount++;
+          if (retryCount > maxRetries) {
+            throw retryError; // Rethrow the error after max retries
+          }
+          console.warn(`[Cart] Retry ${retryCount}/${maxRetries} adding to cart: ${chair.name}`);
+          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Exponential backoff
+        }
+      }
+      
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      // Show error message to user
+      alert(`Failed to add ${chair.name} to cart. Please try again.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <img 
-        src={chair.image}
-        alt={chair.name} 
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <div className="flex items-center mb-2">
-          {[...Array(5)].map((_, i) => (
-            <Star 
-              key={i} 
-              className={`h-4 w-4 ${i < Math.floor(chair.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-            />
-          ))}
-          <span className="ml-2 text-sm text-gray-600">{chair.rating}</span>
+    <Link to={`/product/${chair.id}`} className="block">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <img 
+          src={chair.image}
+          alt={chair.name} 
+          className="w-full h-48 object-cover"
+        />
+        <div className="p-4">
+          <div className="flex items-center mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star 
+                key={i} 
+                className={`h-4 w-4 ${i < Math.floor(chair.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+              />
+            ))}
+            <span className="ml-2 text-sm text-gray-600">{chair.rating}</span>
+          </div>
+          <h3 className="font-semibold mb-2">{chair.name}</h3>
+          <p className="text-gray-600 mb-2 line-clamp-2">{chair.description}</p>
+          <p className="text-xl font-bold text-red-600">
+            ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+          </p>
+          <button 
+            onClick={handleAddToCart}
+            disabled={isLoading}
+            className={`w-full mt-4 py-2 rounded transition-colors ${
+              success 
+                ? 'bg-green-600 hover:bg-green-700 text-white' 
+                : 'bg-red-600 hover:bg-red-700 text-white'
+            }`}
+          >
+            {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'}
+          </button>
         </div>
-        <h3 className="font-semibold mb-2">{chair.name}</h3>
-        <p className="text-gray-600 mb-2">{chair.description}</p>
-        <p className="text-xl font-bold text-red-600">
-          ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
-        </p>
-        <button className="w-full mt-4 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors">
-          Agregar al Carrito
-        </button>
       </div>
-    </div>
+    </Link>
   );
 };
 

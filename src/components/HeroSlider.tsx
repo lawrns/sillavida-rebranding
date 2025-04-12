@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Star, CreditCard, Package } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+
+// Mock Shopify variant IDs for the slider products
+const SLIDER_VARIANT_IDS: Record<number, string> = {
+  1: 'gid://shopify/ProductVariant/111222333', // Silla Gamer Xperience Helix
+  2: 'gid://shopify/ProductVariant/444555666', // Silla Oficina ErgoComfort
+  3: 'gid://shopify/ProductVariant/777888999', // Pack 4x Silla Vida Confort Pro
+};
 
 const slides = [
   {
@@ -26,7 +34,7 @@ const slides = [
     description: "Pensada para largas jornadas, diseñada para tu bienestar",
     price: 2239.91,
     originalPrice: 3200.00,
-    image: "/images/sand.png",
+    image: "/images/—Pngtree—single comfort noise style sofa_4372281.png",
     theme: {
       bg: "from-yellow-700 via-yellow-600 to-yellow-700",
       accent: "bg-yellow-500/20",
@@ -55,7 +63,10 @@ const slides = [
 ];
 
 const HeroSlider = () => {
+  const { addItem } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -63,6 +74,28 @@ const HeroSlider = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleAddToCart = async () => {
+    setIsLoading(true);
+    try {
+      // Get the variant ID for the current slide
+      const variantId = SLIDER_VARIANT_IDS[currentSlide + 1];
+      
+      if (!variantId) {
+        console.error('No variant ID found for slide:', currentSlide + 1);
+        return;
+      }
+      
+      // Add the item to the cart
+      await addItem(variantId, 1);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const currentTheme = slides[currentSlide].theme;
   const currentSlideData = slides[currentSlide];
@@ -127,8 +160,16 @@ const HeroSlider = () => {
                     ${currentSlideData.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </div>
                 </div>
-                <button className={`${currentTheme.button} text-white px-8 py-3 rounded-lg font-bold transition-colors`}>
-                  COMPRAR AHORA
+                <button 
+                  onClick={handleAddToCart}
+                  disabled={isLoading}
+                  className={`${
+                    success 
+                      ? 'bg-green-600 hover:bg-green-700' 
+                      : currentTheme.button
+                  } text-white px-8 py-3 rounded-lg font-bold transition-colors`}
+                >
+                  {isLoading ? 'AGREGANDO...' : success ? '¡AGREGADO!' : 'COMPRAR AHORA'}
                 </button>
               </div>
             </motion.div>
@@ -147,15 +188,27 @@ const HeroSlider = () => {
                 className="absolute bottom-20 right-[20%] w-32 h-auto object-contain z-20 mix-blend-screen"
                 style={{ transform: 'scale(0.75)' }}
               />
-              <motion.img 
-                src={currentSlideData.image}
-                alt={currentSlideData.title}
-                className="w-full h-auto max-h-[400px] object-contain relative z-0"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
+              <motion.div
+                className="w-full h-[600px] relative overflow-hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-              />
+              >
+                <motion.img 
+                  src={currentSlideData.image}
+                  alt={currentSlideData.title}
+                  className="w-full h-full object-contain relative z-0"
+                  style={{ 
+                    objectPosition: 'center',
+                    maxWidth: '100%'
+                  }}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                />
+              </motion.div>
             </motion.div>
           </div>
         </AnimatePresence>
