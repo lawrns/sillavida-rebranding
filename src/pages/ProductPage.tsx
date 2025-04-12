@@ -34,16 +34,56 @@ const ProductPage: React.FC = () => {
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
   
+  // Generate a Shopify-compatible variant ID from the product ID
+  const generateVariantId = (productId: string): string => {
+    // Create a deterministic numeric ID based on the product ID
+    // In a real implementation, this would be the actual Shopify variant ID
+    const numericId = productId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
+    return `gid://shopify/ProductVariant/${numericId}`;
+  };
+
   // Add to cart functionality
   const handleAddToCart = async () => {
-    if (!product || !selectedVariantId) return;
+    if (!product) return;
+    
+    // Use selectedVariantId if available, otherwise generate one from the product ID
+    let variantId = selectedVariantId;
+    
+    if (!variantId) {
+      console.warn(`[ProductPage] No variant ID selected for product: ${product.title}, generating one`);
+      variantId = generateVariantId(product.id);
+      console.log(`[ProductPage] Generated variant ID: ${variantId} for product: ${product.title}`);
+    }
+    
+    console.log(`[ProductPage] Adding item to cart: ${product.title} with variant ID: ${variantId}, quantity: ${quantity}`);
     
     try {
-      await addItem(selectedVariantId, quantity);
-      setCartSuccess(true);
-      setTimeout(() => setCartSuccess(false), 3000);
+      // Add the item to the cart with retry logic
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      while (retryCount <= maxRetries) {
+        try {
+          await addItem(variantId, quantity);
+          console.log(`[ProductPage] Successfully added item to cart: ${product.title}`);
+          setCartSuccess(true);
+          setTimeout(() => setCartSuccess(false), 3000);
+          break; // Success, exit the retry loop
+        } catch (retryError) {
+          retryCount++;
+          console.warn(`[ProductPage] Retry ${retryCount}/${maxRetries} adding to cart: ${product.title}`);
+          
+          if (retryCount > maxRetries) {
+            throw retryError; // Rethrow the error after max retries
+          }
+          
+          // Wait before retrying
+          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Exponential backoff
+        }
+      }
     } catch (error) {
       console.error('Error adding to cart:', error);
+      alert(`Failed to add ${product.title} to cart. Please try again.`);
     }
   };
 
@@ -113,7 +153,7 @@ const ProductPage: React.FC = () => {
         <meta property="og:description" content={product.description.substring(0, 160)} />
         <meta property="og:image" content={product.images.edges[0]?.node.url} />
         <meta property="og:type" content="product" />
-        <link rel="canonical" href={`https://sillavida.netlify.app/product/${handle}`} />
+        <link rel="canonical" href={`${window.location.origin}/product/${handle}`} />
       </Helmet>
       
       <div className="max-w-7xl mx-auto px-4 py-8">

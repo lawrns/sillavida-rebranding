@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Menu, Search, ChevronDown } from 'lucide-react';
 import { getCollections } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import MiniCart from './MiniCart';
+import AccountButton from './AccountButton';
 
 interface Collection {
   id: string;
@@ -18,6 +19,24 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const { cartCount, toggleCart } = useCart();
+  const categoriesRef = useRef<HTMLDivElement>(null);
+  const [officeChairHandle, setOfficeChairHandle] = useState<string | null>(null);
+  const [promocionesHandle, setPromocionesHandle] = useState<string | null>(null);
+  const [tiendaHandle, setTiendaHandle] = useState<string | null>(null);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (categoriesRef.current && !categoriesRef.current.contains(event.target as Node)) {
+        setCategoriesOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -25,6 +44,30 @@ const Navbar = () => {
         setLoading(true);
         const collectionsData = await getCollections();
         setCollections(collectionsData);
+        
+        // Find collection handles for office chairs, promociones, and tienda
+        const officeCollection = collectionsData.find(
+          (collection: Collection) => collection.title.toLowerCase().includes('oficina')
+        );
+        const promocionesCollection = collectionsData.find(
+          (collection: Collection) => collection.title.toLowerCase().includes('promociones')
+        );
+        const tiendaCollection = collectionsData.find(
+          (collection: Collection) => collection.title.toLowerCase().includes('tienda')
+        );
+        
+        if (officeCollection) {
+          setOfficeChairHandle(officeCollection.handle);
+        }
+        
+        if (promocionesCollection) {
+          setPromocionesHandle(promocionesCollection.handle);
+        }
+        
+        if (tiendaCollection) {
+          setTiendaHandle(tiendaCollection.handle);
+        }
+        
         setLoading(false);
       } catch (err) {
         console.error('Error fetching collections:', err);
@@ -62,12 +105,8 @@ const Navbar = () => {
           </div>
           
           <div className="hidden sm:flex space-x-8">
-            <Link to="/tienda" className="text-gray-700 hover:text-red-600">
-              Tienda
-            </Link>
-            
             {/* Categories Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={categoriesRef}>
               <button 
                 className="flex items-center text-gray-700 hover:text-red-600"
                 onClick={toggleCategories}
@@ -79,7 +118,7 @@ const Navbar = () => {
               </button>
               
               {categoriesOpen && (
-                <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="absolute z-50 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                   <div className="py-1" role="menu" aria-orientation="vertical">
                     {loading ? (
                       <div className="px-4 py-2 text-sm text-gray-500">Loading categories...</div>
@@ -104,11 +143,11 @@ const Navbar = () => {
               )}
             </div>
             
-            <Link to="/oficina" className="text-gray-700 hover:text-red-600">
-              Sillas de Oficina
-            </Link>
-            <Link to="/gamer" className="text-gray-700 hover:text-red-600">
-              Sillas Gamer
+            <Link 
+              to={promocionesHandle ? `/category/${promocionesHandle}` : "/tienda"} 
+              className="text-gray-700 hover:text-red-600"
+            >
+              Promociones
             </Link>
           </div>
 
@@ -116,6 +155,7 @@ const Navbar = () => {
             <button className="p-2">
               <Search className="h-5 w-5 text-gray-600" />
             </button>
+            <AccountButton />
             <button 
               className="p-2 relative"
               onClick={toggleCart}
@@ -137,18 +177,10 @@ const Navbar = () => {
       
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden">
+        <div className="sm:hidden relative z-50">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link 
-              to="/tienda" 
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Tienda
-            </Link>
-            
             {/* Mobile Categories */}
-            <div>
+            <div ref={categoriesRef}>
               <button 
                 className="flex w-full items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
                 onClick={toggleCategories}
@@ -158,7 +190,7 @@ const Navbar = () => {
               </button>
               
               {categoriesOpen && (
-                <div className="pl-4">
+                <div className="pl-4 relative z-50">
                   {loading ? (
                     <div className="px-3 py-2 text-sm text-gray-500">Loading categories...</div>
                   ) : error ? (
@@ -182,18 +214,11 @@ const Navbar = () => {
             </div>
             
             <Link 
-              to="/oficina" 
+              to={promocionesHandle ? `/category/${promocionesHandle}` : "/tienda"} 
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Sillas de Oficina
-            </Link>
-            <Link 
-              to="/gamer" 
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sillas Gamer
+              Promociones
             </Link>
           </div>
         </div>

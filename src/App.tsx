@@ -10,6 +10,10 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import CheckoutDemoPage from './pages/CheckoutDemoPage';
 import TestPage from './pages/TestPage';
 import ShopifyTestPage from './pages/ShopifyTestPage';
+import AccountPage from './pages/AccountPage';
+import OrdersPage from './pages/OrdersPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
@@ -32,6 +36,11 @@ function App() {
               <Route path="/checkout-demo" element={<CheckoutDemoPage />} />
               <Route path="/test" element={<TestPage />} />
               <Route path="/shopify-test" element={<ShopifyTestPage />} />
+              {/* Account Routes */}
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/account/orders" element={<OrdersPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
             </Routes>
           </main>
           <Footer />

@@ -104,54 +104,144 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   // Cart actions
   const addItem = async (merchandiseId: string, quantity: number) => {
     setIsLoading(true);
-    try {
-      let updatedCart;
-      
-      if (cartId) {
-        // Add to existing cart
-        updatedCart = await addToCart(cartId, [{ merchandiseId, quantity }]);
-      } else {
-        // Create new cart
-        updatedCart = await createCart([{ merchandiseId, quantity }]);
-        setCartId(updatedCart.id);
-        localStorage.setItem('cartId', updatedCart.id);
+    
+    console.log(`[CartContext] Adding item to cart: ${merchandiseId}, quantity: ${quantity}`);
+    console.log(`[CartContext] Current cart state: cartId=${cartId}, itemCount=${cartCount}`);
+    
+    // Retry logic
+    let retryCount = 0;
+    const maxRetries = 2;
+    
+    while (retryCount <= maxRetries) {
+      try {
+        let updatedCart;
+        
+        if (cartId) {
+          // Add to existing cart
+          console.log(`[CartContext] Adding to existing cart: ${cartId}`);
+          updatedCart = await addToCart(cartId, [{ merchandiseId, quantity }]);
+        } else {
+          // Create new cart
+          console.log(`[CartContext] Creating new cart`);
+          updatedCart = await createCart([{ merchandiseId, quantity }]);
+          setCartId(updatedCart.id);
+          localStorage.setItem('cartId', updatedCart.id);
+        }
+        
+        console.log(`[CartContext] Cart updated successfully:`, {
+          cartId: updatedCart.id,
+          lineCount: updatedCart.lines?.edges?.length || 0
+        });
+        
+        setCart(updatedCart);
+        setIsCartOpen(true); // Open cart when item is added
+        
+        // Success, exit the retry loop
+        break;
+      } catch (error) {
+        retryCount++;
+        console.error(`[CartContext] Error adding item to cart (attempt ${retryCount}/${maxRetries}):`, error);
+        
+        if (error instanceof Error) {
+          console.error(`[CartContext] Error details: ${error.message}`);
+          
+          // Check for specific error types
+          if (error.message.includes('cart not found') && cartId) {
+            console.warn(`[CartContext] Cart not found, creating a new cart`);
+            localStorage.removeItem('cartId');
+            setCartId(null);
+          }
+        }
+        
+        if (retryCount > maxRetries) {
+          console.error(`[CartContext] Failed to add item after ${maxRetries} retries`);
+          throw error; // Rethrow the error after max retries
+        }
+        
+        // Wait before retrying
+        const delay = retryCount * 1000; // Increase delay with each retry
+        console.log(`[CartContext] Retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } finally {
+        if (retryCount === maxRetries) {
+          setIsLoading(false);
+        }
       }
-      
-      setCart(updatedCart);
-      setIsCartOpen(true); // Open cart when item is added
-    } catch (error) {
-      console.error('Error adding item to cart:', error);
-    } finally {
-      setIsLoading(false);
     }
+    
+    setIsLoading(false);
   };
 
   const updateItem = async (lineId: string, quantity: number) => {
-    if (!cartId) return;
+    if (!cartId) {
+      console.error('[CartContext] Cannot update item: No cart ID');
+      return;
+    }
     
     setIsLoading(true);
-    try {
-      const updatedCart = await updateCartLines(cartId, [{ id: lineId, quantity }]);
-      setCart(updatedCart);
-    } catch (error) {
-      console.error('Error updating cart item:', error);
-    } finally {
-      setIsLoading(false);
+    console.log(`[CartContext] Updating cart item: ${lineId}, quantity: ${quantity}`);
+    
+    // Retry logic
+    let retryCount = 0;
+    const maxRetries = 2;
+    
+    while (retryCount <= maxRetries) {
+      try {
+        const updatedCart = await updateCartLines(cartId, [{ id: lineId, quantity }]);
+        console.log(`[CartContext] Cart item updated successfully`);
+        setCart(updatedCart);
+        break; // Success, exit the retry loop
+      } catch (error) {
+        retryCount++;
+        console.error(`[CartContext] Error updating cart item (attempt ${retryCount}/${maxRetries}):`, error);
+        
+        if (retryCount > maxRetries) {
+          console.error(`[CartContext] Failed to update item after ${maxRetries} retries`);
+          break;
+        }
+        
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
+    
+    setIsLoading(false);
   };
 
   const removeItem = async (lineId: string) => {
-    if (!cartId) return;
+    if (!cartId) {
+      console.error('[CartContext] Cannot remove item: No cart ID');
+      return;
+    }
     
     setIsLoading(true);
-    try {
-      const updatedCart = await removeFromCart(cartId, [lineId]);
-      setCart(updatedCart);
-    } catch (error) {
-      console.error('Error removing cart item:', error);
-    } finally {
-      setIsLoading(false);
+    console.log(`[CartContext] Removing cart item: ${lineId}`);
+    
+    // Retry logic
+    let retryCount = 0;
+    const maxRetries = 2;
+    
+    while (retryCount <= maxRetries) {
+      try {
+        const updatedCart = await removeFromCart(cartId, [lineId]);
+        console.log(`[CartContext] Cart item removed successfully`);
+        setCart(updatedCart);
+        break; // Success, exit the retry loop
+      } catch (error) {
+        retryCount++;
+        console.error(`[CartContext] Error removing cart item (attempt ${retryCount}/${maxRetries}):`, error);
+        
+        if (retryCount > maxRetries) {
+          console.error(`[CartContext] Failed to remove item after ${maxRetries} retries`);
+          break;
+        }
+        
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
+    
+    setIsLoading(false);
   };
 
   const clearCart = () => {

@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getProductsByCollection, getCollections } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
 import ShopifyProductCard from '../components/ShopifyProductCard';
+import Pagination from '../components/Pagination';
 import { ChevronRight, Filter, SortAsc, X, Search } from 'lucide-react';
 
 // Define filter types
@@ -562,31 +563,43 @@ const CategoryPage: React.FC = () => {
       {/* Product Grid */}
       {filteredAndSortedProducts.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div id="product-grid" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredAndSortedProducts.map((product: ShopifyProduct) => (
               <ShopifyProductCard key={product.id} product={product} />
             ))}
           </div>
           
           {/* Pagination */}
-          {hasNextPage && (
-            <div className="mt-12 text-center">
-              <button
-                onClick={loadMoreProducts}
-                disabled={isLoadingMore}
-                className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
-              >
-                {isLoadingMore ? (
-                  <span className="flex items-center justify-center">
-                    <span className="animate-spin h-5 w-5 mr-2 border-t-2 border-b-2 border-white rounded-full"></span>
-                    Cargando...
-                  </span>
-                ) : (
-                  'Cargar más productos'
-                )}
-              </button>
-            </div>
-          )}
+          <div className="mt-12">
+            {isLoadingMore ? (
+              <div className="flex justify-center">
+                <span className="flex items-center justify-center">
+                  <span className="animate-spin h-5 w-5 mr-2 border-t-2 border-b-2 border-red-600 rounded-full"></span>
+                  Cargando...
+                </span>
+              </div>
+            ) : (
+              <Pagination 
+                currentPage={currentPage}
+                totalPages={Math.ceil(filteredAndSortedProducts.length / productsPerPage) || 1}
+                onPageChange={(page: number) => {
+                  // If we're going to a page we haven't loaded yet, load more products
+                  if (page > currentPage && hasNextPage) {
+                    loadMoreProducts();
+                  } else {
+                    // Otherwise just update the current page
+                    setCurrentPage(page);
+                    // Scroll to top of products
+                    window.scrollTo({
+                      top: document.getElementById('product-grid')?.offsetTop || 0,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+                className="mb-8"
+              />
+            )}
+          </div>
           
           {/* Products per page selector */}
           <div className="mt-8 flex justify-end">

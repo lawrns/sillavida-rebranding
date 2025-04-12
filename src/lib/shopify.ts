@@ -195,14 +195,32 @@ export const shopifyClient = {
 };
 
 /**
- * Get a list of products
+ * Get a list of products with pagination support
  * @param limit Number of products to fetch (default: 10)
- * @returns Array of products
+ * @param sortKey Field to sort by (default: BEST_SELLING)
+ * @param reverse Reverse the sort order (default: false)
+ * @param cursor Cursor for pagination (optional)
+ * @returns Object containing products array and pagination info
  */
-export async function getProducts(limit = 10): Promise<ShopifyProduct[]> {
+export async function getProducts(
+  limit = 10, 
+  sortKey = 'BEST_SELLING', 
+  reverse = false,
+  cursor?: string
+): Promise<{ 
+  products: ShopifyProduct[]; 
+  pageInfo: { 
+    hasNextPage: boolean; 
+    endCursor: string | null;
+  } 
+}> {
   const query = `
-    query Products($limit: Int!) {
-      products(first: $limit) {
+    query Products($limit: Int!, $sortKey: ProductSortKeys!, $reverse: Boolean!, $cursor: String) {
+      products(first: $limit, sortKey: $sortKey, reverse: $reverse, after: $cursor) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         edges {
           node {
             id
@@ -210,6 +228,12 @@ export async function getProducts(limit = 10): Promise<ShopifyProduct[]> {
             handle
             description
             priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            compareAtPriceRange {
               minVariantPrice {
                 amount
                 currencyCode
@@ -232,11 +256,104 @@ export async function getProducts(limit = 10): Promise<ShopifyProduct[]> {
   const response = await shopifyClient.query({
     data: { 
       query,
-      variables: { limit }
+      variables: { 
+        limit,
+        sortKey,
+        reverse,
+        cursor: cursor || null
+      }
     },
   });
 
-  return response.data.products.edges.map((edge: any) => edge.node);
+  const products = response.data.products.edges.map((edge: any) => edge.node);
+  const pageInfo = response.data.products.pageInfo;
+
+  return {
+    products,
+    pageInfo
+  };
+}
+
+/**
+ * Get featured products based on collection or tag
+ * @param options Options for fetching featured products
+ * @param options.collectionHandle Collection handle to fetch products from (optional)
+ * @param options.tag Tag to filter products by (optional)
+ * @param options.limit Number of products to fetch (default: 4)
+ * @returns Array of featured products
+ */
+export async function getFeaturedProducts({
+  collectionHandle,
+  tag,
+  limit = 4
+}: {
+  collectionHandle?: string;
+  tag?: string;
+  limit?: number;
+}): Promise<ShopifyProduct[]> {
+  // If a collection handle is provided, get products from that collection
+  if (collectionHandle) {
+    const result = await getProductsByCollection(collectionHandle, limit);
+    return result.products;
+  }
+  
+  // If a tag is provided, get products with that tag
+  if (tag) {
+    const query = `
+      query ProductsByTag($tag: String!, $limit: Int!) {
+        products(first: $limit, query: "tag:$tag") {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          edges {
+            node {
+              id
+              title
+              handle
+              description
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              compareAtPriceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await shopifyClient.query({
+      data: { 
+        query,
+        variables: { 
+          tag,
+          limit
+        }
+      },
+    });
+
+    return response.data.products.edges.map((edge: any) => edge.node);
+  }
+  
+  // If no collection or tag is provided, get best-selling products
+  const result = await getProducts(limit, 'BEST_SELLING');
+  return result.products;
 }
 
 /**
@@ -258,6 +375,12 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
             currencyCode
           }
         }
+        compareAtPriceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
         images(first: 5) {
           edges {
             node {
@@ -272,6 +395,10 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
               id
               title
               price {
+                amount
+                currencyCode
+              }
+              compareAtPrice {
                 amount
                 currencyCode
               }
@@ -328,6 +455,12 @@ export async function getProductsByCollection(
               handle
               description
               priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              compareAtPriceRange {
                 minVariantPrice {
                   amount
                   currencyCode

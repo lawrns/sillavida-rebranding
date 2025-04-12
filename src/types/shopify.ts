@@ -9,6 +9,12 @@ export interface ShopifyProduct {
       currencyCode: string;
     };
   };
+  compareAtPriceRange?: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
   images: {
     edges: Array<{
       node: {
@@ -23,6 +29,10 @@ export interface ShopifyProduct {
         id: string;
         title: string;
         price: {
+          amount: string;
+          currencyCode: string;
+        };
+        compareAtPrice?: {
           amount: string;
           currencyCode: string;
         };

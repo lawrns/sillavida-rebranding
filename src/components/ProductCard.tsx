@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { Chair } from '../data/chairs';
 import { useCart } from '../context/CartContext';
 
-// Mock Shopify variant IDs for testing
-// In a real implementation, these would come from the Shopify API
-const MOCK_VARIANT_IDS: Record<string, string> = {
-  'ergopro-elite': 'gid://shopify/ProductVariant/123456789',
-  'xgamer-pro': 'gid://shopify/ProductVariant/987654321',
-  'ergo-mesh': 'gid://shopify/ProductVariant/456789123',
-  'gamer-elite': 'gid://shopify/ProductVariant/789123456',
+// Generate a Shopify-compatible variant ID from the chair ID
+// This ensures we have a consistent format that matches Shopify API expectations
+const generateVariantId = (chairId: string): string => {
+  // Create a deterministic numeric ID based on the chair ID
+  // In a real implementation, this would be the actual Shopify variant ID
+  const numericId = chairId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
+  return `gid://shopify/ProductVariant/${numericId}`;
 };
 
 interface ProductCardProps {
@@ -28,15 +28,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
     
     setIsLoading(true);
     try {
-      // Get the mock Shopify variant ID for this chair
-      const variantId = MOCK_VARIANT_IDS[chair.id] || chair.id;
+      // Generate a Shopify variant ID from the chair ID
+      const variantId = generateVariantId(chair.id);
       
-      // Add the item to the cart
-      await addItem(variantId, 1);
+      console.log(`[Cart] Adding item to cart: ${chair.name} (${chair.id}) with variant ID: ${variantId}`);
+      
+      // Add the item to the cart with retry logic
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      while (retryCount <= maxRetries) {
+        try {
+          await addItem(variantId, 1);
+          console.log(`[Cart] Successfully added item to cart: ${chair.name}`);
+          break; // Success, exit the retry loop
+        } catch (retryError) {
+          retryCount++;
+          if (retryCount > maxRetries) {
+            throw retryError; // Rethrow the error after max retries
+          }
+          console.warn(`[Cart] Retry ${retryCount}/${maxRetries} adding to cart: ${chair.name}`);
+          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Exponential backoff
+        }
+      }
+      
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (error) {
       console.error('Error adding to cart:', error);
+      // Show error message to user
+      alert(`Failed to add ${chair.name} to cart. Please try again.`);
     } finally {
       setIsLoading(false);
     }

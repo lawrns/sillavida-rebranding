@@ -3,7 +3,7 @@ title: Silla Vida E-commerce Project Plan
 type: plan
 status: active
 created: 2025-04-11T14:01:12
-updated: 2025-04-11T14:01:12
+updated: 2025-04-12T16:44:21-06:00
 id: PLAN-001
 priority: high
 dependencies: []
@@ -73,6 +73,16 @@ Silla Vida is an e-commerce website for a chair/furniture company, built with Re
      - Implement caching strategies
      - Set up performance monitoring
 
+6. **Code Quality and Testing**
+   - Description: Improvements to code quality, testing, and architecture
+   - Tasks:
+     - Implement route consistency tests (TASK-018)
+     - Create centralized routing configuration (TASK-019)
+     - Implement UI navigation tests (TASK-020)
+     - Standardize route patterns across the application
+     - Implement automated tests for critical functionality
+     - Improve code organization and maintainability
+
 ## Dependencies
 - Frontend Architecture must be completed before UI Components
 - UI Components must be completed before Page Templates
@@ -102,4 +112,9 @@ Silla Vida is an e-commerce website for a chair/furniture company, built with Re
 - Set up project structure and build pipeline
 - Begin implementation of core UI components
 - Explore current state of Shopify integration
+- Fix cart functionality for product cards (TASK-024) - HIGH PRIORITY
+- Prepare and deploy to Netlify (TASK-025) - After cart functionality is fixed
 - Resolve checkout flow issues and implement enhancements (TASK-014)
+- Implement route consistency tests (TASK-018)
+- Create centralized routing configuration (TASK-019)
+- Implement UI navigation tests (TASK-020)
