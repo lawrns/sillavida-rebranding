@@ -474,6 +474,19 @@ export async function getProductsByCollection(
                   }
                 }
               }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                    title
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    availableForSale
+                  }
+                }
+              }
             }
           }
         }
@@ -546,6 +559,8 @@ export async function getCollections(limit = 10) {
  * @returns Cart data
  */
 export async function createCart(lines: { merchandiseId: string; quantity: number }[] = []) {
+  console.log('[Shopify] Creating cart with lines:', lines);
+  
   const query = `
     mutation CartCreate($lines: [CartLineInput!]) {
       cartCreate(input: { lines: $lines }) {
@@ -583,6 +598,10 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
             }
           }
         }
+        userErrors {
+          field
+          message
+        }
       }
     }
   `;
@@ -592,17 +611,42 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
     quantity: line.quantity
   }));
 
-  const response = await shopifyClient.query({
-    data: {
-      query,
-      variables: {
-        lines: formattedLines
+  try {
+    const response = await shopifyClient.query({
+      data: {
+        query,
+        variables: {
+          lines: formattedLines
+        },
       },
-    },
-    cache: false
-  });
-
-  return response.data.cartCreate.cart;
+      cache: false
+    });
+    
+    console.log('[Shopify] Cart creation response:', response);
+    
+    // Check for user errors
+    if (response.data.cartCreate.userErrors && response.data.cartCreate.userErrors.length > 0) {
+      console.error('[Shopify] Cart creation user errors:', response.data.cartCreate.userErrors);
+      throw new Error(`Cart creation failed: ${response.data.cartCreate.userErrors[0].message}`);
+    }
+    
+    // Check if cart is null
+    if (!response.data.cartCreate.cart) {
+      console.error('[Shopify] Cart creation failed: cart is null');
+      throw new Error('Cart creation failed: cart is null');
+    }
+    
+    return response.data.cartCreate.cart;
+  } catch (error) {
+    console.error('[Shopify] Error creating cart:', error);
+    
+    // Throw a more user-friendly error
+    if (error instanceof Error) {
+      throw new ShopifyError(`Unable to create cart: ${error.message}`);
+    } else {
+      throw new ShopifyError('Unable to create cart: Unknown error');
+    }
+  }
 }
 
 /**
@@ -670,6 +714,8 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
  * @returns Updated cart
  */
 export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
+  console.log('[Shopify] Adding to cart:', { cartId, lines });
+  
   const query = `
     mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
       cartLinesAdd(cartId: $cartId, lines: $lines) {
@@ -707,6 +753,10 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
             }
           }
         }
+        userErrors {
+          field
+          message
+        }
       }
     }
   `;
@@ -716,18 +766,43 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
     quantity: line.quantity
   }));
 
-  const response = await shopifyClient.query({
-    data: {
-      query,
-      variables: {
-        cartId,
-        lines: formattedLines
+  try {
+    const response = await shopifyClient.query({
+      data: {
+        query,
+        variables: {
+          cartId,
+          lines: formattedLines
+        },
       },
-    },
-    cache: false
-  });
-
-  return response.data.cartLinesAdd.cart;
+      cache: false
+    });
+    
+    console.log('[Shopify] Add to cart response:', response);
+    
+    // Check for user errors
+    if (response.data.cartLinesAdd.userErrors && response.data.cartLinesAdd.userErrors.length > 0) {
+      console.error('[Shopify] Add to cart user errors:', response.data.cartLinesAdd.userErrors);
+      throw new Error(`Add to cart failed: ${response.data.cartLinesAdd.userErrors[0].message}`);
+    }
+    
+    // Check if cart is null
+    if (!response.data.cartLinesAdd.cart) {
+      console.error('[Shopify] Add to cart failed: cart is null');
+      throw new Error('Add to cart failed: cart is null');
+    }
+    
+    return response.data.cartLinesAdd.cart;
+  } catch (error) {
+    console.error('[Shopify] Error adding to cart:', error);
+    
+    // Throw a more user-friendly error
+    if (error instanceof Error) {
+      throw new ShopifyError(`Unable to add item to cart: ${error.message}`);
+    } else {
+      throw new ShopifyError('Unable to add item to cart: Unknown error');
+    }
+  }
 }
 
 /**

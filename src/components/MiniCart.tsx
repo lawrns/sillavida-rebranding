@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { X, ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
+import { X, ShoppingBag, Trash2, Plus, Minus, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const MiniCart: React.FC = () => {
@@ -12,8 +12,50 @@ const MiniCart: React.FC = () => {
     cartCount,
     updateItem,
     removeItem,
-    isLoading
+    isLoading,
+    cart,
+    cartId
   } = useCart();
+  
+  // Local state to track if cart data has been loaded
+  const [isCartLoaded, setIsCartLoaded] = useState(false);
+  
+  // Enhanced debug logging
+  useEffect(() => {
+    if (isCartOpen) {
+      console.log('[MiniCart] Cart opened, current state:', {
+        cartId,
+        cartItems,
+        cartCount,
+        cartTotal,
+        isLoading,
+        isCartLoaded,
+        rawCart: cart
+      });
+      
+      // Log detailed cart structure
+      console.log('[MiniCart] Cart structure details:');
+      console.log('[MiniCart] cartId:', cartId);
+      console.log('[MiniCart] cart object:', cart);
+      console.log('[MiniCart] cart?.lines?.edges:', cart?.lines?.edges);
+      console.log('[MiniCart] cartItems array:', cartItems);
+      console.log('[MiniCart] cartCount:', cartCount);
+      
+      // Check if cart is actually empty or if there's a data issue
+      if (cartCount === 0) {
+        console.log('[MiniCart] Cart appears empty (cartCount === 0)');
+        if (cart?.lines?.edges && cart.lines.edges.length > 0) {
+          console.warn('[MiniCart] Data inconsistency: cart has lines but cartCount is 0');
+          console.log('[MiniCart] Raw cart lines:', cart.lines.edges);
+        }
+      }
+      
+      // Mark cart as loaded after initial render
+      if (!isCartLoaded) {
+        setIsCartLoaded(true);
+      }
+    }
+  }, [isCartOpen, cartItems, cartCount, cartTotal, cart, cartId, isLoading, isCartLoaded]);
   const navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -55,7 +97,39 @@ const MiniCart: React.FC = () => {
               </div>
 
               <div className="mt-8">
-                {cartCount === 0 ? (
+                {isLoading ? (
+                  // Loading state
+                  <div className="flex flex-col items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+                    <p className="mt-4 text-gray-500 text-lg">Cargando carrito...</p>
+                  </div>
+                ) : cart?.lines?.edges && cart.lines.edges.length > 0 && cartItems.length === 0 ? (
+                  // Data inconsistency state - cart has items but cartItems is empty
+                  <div className="flex flex-col items-center justify-center py-12">
+                    <AlertCircle className="h-16 w-16 text-yellow-500" />
+                    <p className="mt-4 text-gray-700 text-lg text-center">
+                      Hay un problema al mostrar tu carrito
+                    </p>
+                    <p className="mt-2 text-gray-500 text-sm text-center">
+                      Intenta recargar la página o cerrar y abrir el carrito nuevamente
+                    </p>
+                    <div className="mt-6 flex space-x-4">
+                      <button
+                        className="bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300"
+                        onClick={closeCart}
+                      >
+                        Cerrar
+                      </button>
+                      <button
+                        className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+                        onClick={() => window.location.reload()}
+                      >
+                        Recargar página
+                      </button>
+                    </div>
+                  </div>
+                ) : cartItems.length === 0 ? (
+                  // Empty cart state - using cartItems.length instead of cartCount
                   <div className="flex flex-col items-center justify-center py-12">
                     <ShoppingBag className="h-16 w-16 text-gray-300" />
                     <p className="mt-4 text-gray-500 text-lg">Tu carrito está vacío</p>
@@ -67,6 +141,7 @@ const MiniCart: React.FC = () => {
                     </button>
                   </div>
                 ) : (
+                  // Cart with items
                   <div className="flow-root">
                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                       {cartItems.map((item) => {
@@ -142,7 +217,7 @@ const MiniCart: React.FC = () => {
             </div>
 
             {/* Cart footer */}
-            {cartCount > 0 && (
+            {cartItems.length > 0 && (
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                 <div className="flex justify-between text-base font-medium text-gray-900">
                   <p>Subtotal</p>

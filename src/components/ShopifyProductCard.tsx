@@ -9,15 +9,6 @@ const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
   console.log(`[Analytics] ${eventName}:`, eventData);
 };
 
-// Generate a Shopify-compatible variant ID from the product ID
-// This ensures we have a consistent format that matches Shopify API expectations
-const generateVariantId = (productId: string): string => {
-  // Create a deterministic numeric ID based on the product ID
-  // In a real implementation, this would be the actual Shopify variant ID
-  const numericId = productId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
-  return `gid://shopify/ProductVariant/${numericId}`;
-};
-
 interface ShopifyProductCardProps {
   product: ShopifyProduct;
 }
@@ -86,14 +77,12 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
     });
     
     try {
-      // Try to get the variant ID from the product
-      let variantId = product.variants?.edges[0]?.node.id;
+      // Get the variant ID from the product
+      const variantId = product.variants?.edges[0]?.node.id;
       
-      // If no variant ID is found, generate one from the product ID
+      // Validate that we have a variant ID
       if (!variantId) {
-        console.warn('No variant ID found for product:', product.title);
-        variantId = generateVariantId(product.id);
-        console.log(`[Cart] Generated variant ID: ${variantId} for product: ${product.title}`);
+        throw new Error(`No variant ID found for product: ${product.title}`);
       }
       
       console.log(`[Cart] Adding Shopify product to cart: ${product.title} with variant ID: ${variantId}`);
@@ -129,8 +118,18 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
       console.error('Error adding to cart:', error);
       setError('No se pudo agregar al carrito');
       
-      // Show error message to user
-      alert(`Failed to add ${product.title} to cart. Please try again.`);
+      // Show more specific error message
+      if (error instanceof Error) {
+        if (error.message.includes('No variant ID found')) {
+          alert(`Cannot add ${product.title} to cart: Missing variant information. Please contact support.`);
+        } else if (error.message.includes('no existe')) {
+          alert(`Cannot add ${product.title} to cart: Product variant not found in Shopify.`);
+        } else {
+          alert(`Failed to add ${product.title} to cart: ${error.message}`);
+        }
+      } else {
+        alert(`Failed to add ${product.title} to cart. Please try again.`);
+      }
       
       // Track error
       trackEvent('add_to_cart_error', {

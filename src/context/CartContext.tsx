@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import { createCart, getCart, addToCart, updateCartLines, removeFromCart, getCheckoutUrl } from '../lib/shopify';
 import type { ShopifyCart } from '../types/shopify';
 
@@ -78,19 +78,59 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     initializeCart();
   }, []);
 
-  // Derived cart data
-  const cartItems: CartItem[] = cart?.lines?.edges ? 
-    cart.lines.edges.map((edge: any) => {
-      const line = edge.node;
-      return {
-        id: line.id || '',
-        merchandiseId: line.merchandise.id,
-        quantity: line.quantity,
-        title: line.merchandise.title,
-        price: line.merchandise.price,
-        productTitle: line.merchandise.product?.title
-      };
-    }) : [];
+  // Derived cart data with improved validation and error handling
+  const cartItems: CartItem[] = useMemo(() => {
+    if (!cart?.lines?.edges) {
+      return [];
+    }
+    
+    try {
+      // Log the raw cart data for debugging
+      console.log('[CartContext] Deriving cartItems from cart data:', {
+        cartId,
+        linesCount: cart.lines.edges.length,
+        rawLines: cart.lines.edges
+      });
+      
+      // Process cart items and filter out any invalid ones
+      const validItems: CartItem[] = [];
+      
+      for (const edge of cart.lines.edges) {
+        const line = edge.node;
+        
+        // Validate required fields
+        if (!line || !line.merchandise) {
+          console.warn('[CartContext] Invalid line item structure:', line);
+          continue;
+        }
+        
+        console.log('[CartContext] Processing cart item:', line);
+        
+        validItems.push({
+          id: line.id || '',
+          merchandiseId: line.merchandise.id,
+          quantity: line.quantity,
+          title: line.merchandise.title,
+          price: line.merchandise.price,
+          productTitle: line.merchandise.product?.title
+        });
+      }
+      
+      console.log('[CartContext] Cart items processed successfully:', validItems);
+      return validItems;
+    } catch (error) {
+      console.error('[CartContext] Error processing cart items:', error);
+      return [];
+    }
+  }, [cart, cartId]);
+  
+  // Log cart items for debugging
+  useEffect(() => {
+    console.log('[CartContext] Cart items state:', {
+      count: cartItems.length,
+      items: cartItems
+    });
+  }, [cartItems]);
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   
@@ -108,9 +148,16 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     console.log(`[CartContext] Adding item to cart: ${merchandiseId}, quantity: ${quantity}`);
     console.log(`[CartContext] Current cart state: cartId=${cartId}, itemCount=${cartCount}`);
     
+    // Validate merchandiseId
+    if (!merchandiseId) {
+      setIsLoading(false);
+      throw new Error('Cannot add item to cart: Missing variant ID');
+    }
+    
     // Retry logic
     let retryCount = 0;
     const maxRetries = 2;
+    let lastError: Error | null = null;
     
     while (retryCount <= maxRetries) {
       try {
@@ -130,7 +177,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         
         console.log(`[CartContext] Cart updated successfully:`, {
           cartId: updatedCart.id,
-          lineCount: updatedCart.lines?.edges?.length || 0
+          lineCount: updatedCart.lines?.edges?.length || 0,
+          lines: updatedCart.lines?.edges?.map((edge: any) => ({
+            id: edge.node.id,
+            quantity: edge.node.quantity,
+            title: edge.node.merchandise.title,
+            productTitle: edge.node.merchandise.product?.title
+          }))
         });
         
         setCart(updatedCart);
@@ -140,6 +193,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         break;
       } catch (error) {
         retryCount++;
+        lastError = error instanceof Error ? error : new Error('Unknown error');
         console.error(`[CartContext] Error adding item to cart (attempt ${retryCount}/${maxRetries}):`, error);
         
         if (error instanceof Error) {
@@ -151,30 +205,39 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
             localStorage.removeItem('cartId');
             setCartId(null);
           }
+          
+          // Check for variant not found errors
+          if (error.message.includes('no existe')) {
+            console.error(`[CartContext] Product variant does not exist: ${merchandiseId}`);
+            setIsLoading(false);
+            throw new Error(`Product variant does not exist: ${merchandiseId}`);
+          }
         }
         
         if (retryCount > maxRetries) {
           console.error(`[CartContext] Failed to add item after ${maxRetries} retries`);
-          throw error; // Rethrow the error after max retries
+          break; // Don't throw, we'll handle the error after the loop
         }
         
         // Wait before retrying
         const delay = retryCount * 1000; // Increase delay with each retry
         console.log(`[CartContext] Retrying in ${delay}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
-      } finally {
-        if (retryCount === maxRetries) {
-          setIsLoading(false);
-        }
       }
     }
     
     setIsLoading(false);
+    
+    // If we've exhausted all retries and still have an error, throw the error
+    if (retryCount > maxRetries && lastError) {
+      throw lastError;
+    }
   };
 
   const updateItem = async (lineId: string, quantity: number) => {
     if (!cartId) {
       console.error('[CartContext] Cannot update item: No cart ID');
+      alert('Unable to update item: Cart not found');
       return;
     }
     
@@ -184,6 +247,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     // Retry logic
     let retryCount = 0;
     const maxRetries = 2;
+    let lastError: Error | null = null;
     
     while (retryCount <= maxRetries) {
       try {
@@ -193,6 +257,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         break; // Success, exit the retry loop
       } catch (error) {
         retryCount++;
+        lastError = error instanceof Error ? error : new Error('Unknown error');
         console.error(`[CartContext] Error updating cart item (attempt ${retryCount}/${maxRetries}):`, error);
         
         if (retryCount > maxRetries) {
@@ -206,11 +271,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
     
     setIsLoading(false);
+    
+    // If we've exhausted all retries and still have an error, show an alert to the user
+    if (retryCount > maxRetries && lastError) {
+      const errorMessage = lastError.message || 'Unknown error';
+      alert(`Unable to update item: ${errorMessage}. Please try again later.`);
+      return;
+    }
   };
 
   const removeItem = async (lineId: string) => {
     if (!cartId) {
       console.error('[CartContext] Cannot remove item: No cart ID');
+      alert('Unable to remove item: Cart not found');
       return;
     }
     
@@ -220,6 +293,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     // Retry logic
     let retryCount = 0;
     const maxRetries = 2;
+    let lastError: Error | null = null;
     
     while (retryCount <= maxRetries) {
       try {
@@ -229,6 +303,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         break; // Success, exit the retry loop
       } catch (error) {
         retryCount++;
+        lastError = error instanceof Error ? error : new Error('Unknown error');
         console.error(`[CartContext] Error removing cart item (attempt ${retryCount}/${maxRetries}):`, error);
         
         if (retryCount > maxRetries) {
@@ -242,6 +317,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
     
     setIsLoading(false);
+    
+    // If we've exhausted all retries and still have an error, show an alert to the user
+    if (retryCount > maxRetries && lastError) {
+      const errorMessage = lastError.message || 'Unknown error';
+      alert(`Unable to remove item: ${errorMessage}. Please try again later.`);
+      return;
+    }
   };
 
   const clearCart = () => {
@@ -255,12 +337,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const openCart = () => setIsCartOpen(true);
 
   const getCheckout = async (): Promise<string> => {
-    if (!cartId) return '';
+    if (!cartId) {
+      alert('Unable to checkout: Cart not found');
+      return '';
+    }
     
     try {
       return await getCheckoutUrl(cartId);
     } catch (error) {
-      console.error('Error getting checkout URL:', error);
+      console.error('[CartContext] Error getting checkout URL:', error);
+      
+      // Show a user-friendly error message
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Unable to proceed to checkout: ${errorMessage}. Please try again later.`);
       return '';
     }
   };
