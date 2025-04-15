@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion
+import { motion, AnimatePresence } from 'framer-motion'; // Import motion and AnimatePresence
 import { getProduct, getProductsByCollection } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import type { ShopifyProduct } from '../types/shopify';
@@ -189,80 +189,120 @@ const ProductPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div 
+            <motion.div 
               ref={imageRef}
               className={`aspect-square bg-gray-100 rounded-lg overflow-hidden relative ${
                 zoomActive ? 'cursor-zoom-out' : 'cursor-zoom-in'
               }`}
               onClick={() => setZoomActive(!zoomActive)}
               onMouseMove={handleZoom}
+              onMouseLeave={() => zoomActive && imageRef.current && (imageRef.current.style.backgroundPosition = 'center')}
               style={
                 zoomActive 
                   ? {
                       backgroundImage: `url(${product.images.edges[activeImageIndex]?.node.url})`,
-                      backgroundSize: '200%',
-                      backgroundRepeat: 'no-repeat'
+                      backgroundSize: '250%',
+                      backgroundRepeat: 'no-repeat',
                     }
                   : undefined
               }
+              whileHover={{ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              transition={{ duration: 0.3 }}
             >
               {!zoomActive && (
-                <img
+                <motion.img
                   src={product.images.edges[activeImageIndex]?.node.url}
                   alt={product.images.edges[activeImageIndex]?.node.altText || product.title}
                   className="w-full h-full object-cover"
                   loading="lazy"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  key={activeImageIndex} // This ensures it animates when changing images
                 />
               )}
-              <button 
-                className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-gray-100"
+              <motion.button 
+                className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-md hover:bg-gray-100 z-10"
                 onClick={(e) => {
                   e.stopPropagation();
                   setZoomActive(!zoomActive);
                 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Maximize2 className="h-5 w-5 text-gray-600" />
-              </button>
+              </motion.button>
               
               {/* Image navigation buttons */}
               {product.images.edges.length > 1 && (
                 <>
-                  <button 
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow-md hover:bg-gray-100"
+                  <motion.button 
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-md hover:bg-white z-10"
                     onClick={(e) => {
                       e.stopPropagation();
                       setActiveImageIndex(prev => 
                         prev === 0 ? product.images.edges.length - 1 : prev - 1
                       );
                     }}
+                    whileHover={{ scale: 1.1, x: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <ChevronLeft className="h-5 w-5 text-gray-600" />
-                  </button>
-                  <button 
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow-md hover:bg-gray-100"
+                    <ChevronLeft className="h-5 w-5 text-gray-700" />
+                  </motion.button>
+                  <motion.button 
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-md hover:bg-white z-10"
                     onClick={(e) => {
                       e.stopPropagation();
                       setActiveImageIndex(prev => 
                         prev === product.images.edges.length - 1 ? 0 : prev + 1
                       );
                     }}
+                    whileHover={{ scale: 1.1, x: 2 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <ChevronRightIcon className="h-5 w-5 text-gray-600" />
-                  </button>
+                    <ChevronRightIcon className="h-5 w-5 text-gray-700" />
+                  </motion.button>
                 </>
               )}
-            </div>
+              
+              {/* Zoom indicator */}
+              {!zoomActive && (
+                <motion.div 
+                  className="absolute bottom-2 right-2 text-xs bg-black/60 text-white px-2 py-1 rounded-md"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.3 }}
+                >
+                  Clic para ampliar
+                </motion.div>
+              )}
+            </motion.div>
             
             {/* Thumbnail gallery */}
             {product.images.edges.length > 1 && (
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-5 gap-3 mt-4">
                 {product.images.edges.map((image, index) => (
-                  <div 
+                  <motion.div 
                     key={index} 
-                    className={`aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer border-2 ${
-                      activeImageIndex === index ? 'border-red-600' : 'border-transparent'
+                    className={`aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer ${
+                      activeImageIndex === index 
+                        ? 'ring-2 ring-red-600 shadow-md' 
+                        : 'border border-gray-200 hover:border-red-300'
                     }`}
                     onClick={() => setActiveImageIndex(index)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    animate={{ 
+                      y: activeImageIndex === index ? -4 : 0,
+                      opacity: activeImageIndex === index ? 1 : 0.8
+                    }}
+                    transition={{ duration: 0.2 }}
                   >
                     <img
                       src={image.node.url}
@@ -270,7 +310,7 @@ const ProductPage: React.FC = () => {
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}
@@ -303,72 +343,130 @@ const ProductPage: React.FC = () => {
             {product.variants && product.variants.edges.length > 0 && (
               <div className="mb-6">
                 <h3 className="font-semibold mb-2">Variantes</h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   {product.variants.edges.map(({ node }) => (
-                    <button
+                    <motion.button
                       key={node.id}
                       onClick={() => setSelectedVariantId(node.id)}
-                      className={`p-3 rounded border ${
+                      className={`p-3 rounded-md shadow-sm ${
                         selectedVariantId === node.id
-                          ? 'border-red-600 bg-red-50'
-                          : 'border-gray-300 hover:border-red-600'
+                          ? 'bg-red-50 border border-red-400 text-red-700'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:border-red-300'
                       }`}
+                      whileHover={{ 
+                        scale: 1.03, 
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' 
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      animate={{ 
+                        y: selectedVariantId === node.id ? -2 : 0,
+                        boxShadow: selectedVariantId === node.id 
+                          ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' 
+                          : '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                      }}
+                      transition={{ duration: 0.2 }}
                     >
                       {node.title}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </div>
             )}
 
             {/* Quantity Selector */}
-            <div className="mb-6">
+            <div className="mb-8">
               <h3 className="font-semibold mb-2">Cantidad</h3>
               <div className="flex items-center">
-                <button 
+                <motion.button 
                   onClick={decrementQuantity}
-                  className="p-2 border border-gray-300 rounded-l hover:bg-gray-100"
+                  className="p-2.5 border border-gray-200 rounded-l-md hover:bg-gray-50"
+                  whileHover={{ backgroundColor: "#f9fafb" }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={quantity <= 1}
+                  aria-label="Disminuir cantidad"
                 >
-                  <Minus className="h-4 w-4" />
-                </button>
-                <div className="px-4 py-2 border-t border-b border-gray-300 text-center min-w-[60px]">
+                  <Minus className={`h-4 w-4 ${quantity <= 1 ? 'text-gray-300' : 'text-gray-500'}`} />
+                </motion.button>
+                <motion.div 
+                  className="px-4 py-2.5 border-t border-b border-gray-200 text-center font-medium min-w-[64px]"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    transition: { duration: 0.3 }
+                  }}
+                  key={quantity} // This triggers animation when quantity changes
+                >
                   {quantity}
-                </div>
-                <button 
+                </motion.div>
+                <motion.button 
                   onClick={incrementQuantity}
-                  className="p-2 border border-gray-300 rounded-r hover:bg-gray-100"
+                  className="p-2.5 border border-gray-200 rounded-r-md hover:bg-gray-50"
+                  whileHover={{ backgroundColor: "#f9fafb" }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label="Aumentar cantidad"
                 >
-                  <Plus className="h-4 w-4" />
-                </button>
+                  <Plus className="h-4 w-4 text-gray-500" />
+                </motion.button>
               </div>
             </div>
 
             {/* Add to Cart Button */}
-            <button 
+            <motion.button 
               onClick={handleAddToCart}
               disabled={isCartLoading}
-              className={`w-full py-3 rounded-lg font-semibold transition-colors mb-2 flex items-center justify-center ${
+              className={`w-full py-3.5 rounded-lg font-semibold mb-2 flex items-center justify-center ${
                 isCartLoading 
                   ? 'bg-gray-400 text-white cursor-not-allowed' 
                   : 'bg-red-600 text-white hover:bg-red-700'
               }`}
+              whileHover={!isCartLoading ? { scale: 1.02, backgroundColor: "#b91c1c" } : {}}
+              whileTap={!isCartLoading ? { scale: 0.98 } : {}}
+              transition={{ duration: 0.2 }}
             >
               {isCartLoading ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                  <motion.div 
+                    className="rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  />
                   Agregando...
                 </>
               ) : (
-                'Agregar al Carrito'
+                <motion.span
+                  initial={{ opacity: 1 }}
+                  whileHover={{ x: 4 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center"
+                >
+                  Agregar al Carrito
+                  <ChevronRight className="h-5 w-5 ml-1" />
+                </motion.span>
               )}
-            </button>
+            </motion.button>
             
             {/* Success Message */}
-            {cartSuccess && (
-              <div className="bg-green-100 text-green-800 p-3 rounded-lg mb-6 text-center">
-                ¡Producto agregado al carrito!
-              </div>
-            )}
+            <AnimatePresence>
+              {cartSuccess && (
+                <motion.div 
+                  className="bg-green-100 text-green-800 p-3.5 rounded-lg mb-6 flex items-center justify-center shadow-sm"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                  >
+                    <svg className="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                    </svg>
+                  </motion.div>
+                  <span className="font-medium">¡Producto agregado al carrito!</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Product Features */}
             <div className="space-y-4 border-t pt-6">
@@ -429,34 +527,78 @@ const ProductPage: React.FC = () => {
         
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold mb-6">Productos Relacionados</h2>
+          <motion.div 
+            className="mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">Productos Relacionados</h2>
+              <Link 
+                to="/category/all" 
+                className="text-sm text-red-600 hover:text-red-800 flex items-center transition-colors duration-200"
+              >
+                Ver todos los productos
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </div>
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <div key={relatedProduct.id} className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                  <Link to={`/product/${relatedProduct.handle}`}>
-                    <div className="aspect-square bg-gray-100">
-                      <img
+              {relatedProducts.map((relatedProduct, index) => (
+                <motion.div 
+                  key={relatedProduct.id} 
+                  className="rounded-lg overflow-hidden bg-white border border-gray-200 hover:border-red-200 transition-all duration-300"
+                  whileHover={{ 
+                    y: -5, 
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                    borderColor: "rgba(252, 165, 165, 1)" // red-300
+                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.3,
+                    delay: index * 0.1,
+                    y: { type: "spring", stiffness: 300, damping: 15 }
+                  }}
+                >
+                  <Link to={`/product/${relatedProduct.handle}`} className="flex flex-col h-full">
+                    <div className="aspect-square bg-gray-100 overflow-hidden">
+                      <motion.img
                         src={relatedProduct.images.edges[0]?.node.url}
                         alt={relatedProduct.images.edges[0]?.node.altText || relatedProduct.title}
                         className="w-full h-full object-cover"
                         loading="lazy"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
                       />
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-lg mb-2 line-clamp-1">{relatedProduct.title}</h3>
-                      <p className="text-red-600 font-bold">
-                        {parseFloat(relatedProduct.priceRange.minVariantPrice.amount).toLocaleString('es-MX', {
-                          style: 'currency',
-                          currency: relatedProduct.priceRange.minVariantPrice.currencyCode
-                        })}
-                      </p>
+                    <div className="p-4 flex flex-col flex-grow">
+                      <h3 className="font-semibold text-lg mb-1 line-clamp-1 text-gray-800">{relatedProduct.title}</h3>
+                      <div className="flex items-center space-x-1 mb-2">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-3.5 w-3.5 ${i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                          />
+                        ))}
+                        <span className="text-xs text-gray-500 ml-1">(4.0)</span>
+                      </div>
+                      <div className="mt-auto pt-2">
+                        <p className="text-red-600 font-bold">
+                          {parseFloat(relatedProduct.priceRange.minVariantPrice.amount).toLocaleString('es-MX', {
+                            style: 'currency',
+                            currency: relatedProduct.priceRange.minVariantPrice.currencyCode
+                          })}
+                        </p>
+                      </div>
                     </div>
                   </Link>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.div>
