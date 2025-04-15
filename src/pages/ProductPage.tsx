@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import { getProduct, getProductsByCollection } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import type { ShopifyProduct } from '../types/shopify';
@@ -144,8 +145,27 @@ const ProductPage: React.FC = () => {
     currency: product.priceRange.minVariantPrice.currencyCode
   });
 
+  // Page transition variants (can be shared across pages)
+  const pageVariants = {
+    initial: { opacity: 0 },
+    in: { opacity: 1 },
+    out: { opacity: 0 }
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5
+  };
+
   return (
-    <>
+    <motion.div
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+    >
       <Helmet>
         <title>{product.title} | Silla Vida</title>
         <meta name="description" content={product.description.substring(0, 160)} />
@@ -272,7 +292,12 @@ const ProductPage: React.FC = () => {
 
             <div className="mb-6">
               <p className="text-3xl font-bold text-red-600">{formattedPrice}</p>
-              <p className="text-gray-600">Hasta 12 meses sin intereses</p>
+              <p 
+                className="text-gray-600 cursor-help" 
+                title="Paga a 12 meses sin intereses con tarjetas participantes."
+              >
+                Hasta 12 meses sin intereses (?)
+              </p>
             </div>
 
             {product.variants && product.variants.edges.length > 0 && (
@@ -373,8 +398,20 @@ const ProductPage: React.FC = () => {
             {/* Product Description */}
             <div className="mt-8">
               <h3 className="font-semibold mb-2">Descripción</h3>
-              <p className="text-gray-600 whitespace-pre-line">{product.description}</p>
+              <p className="text-gray-600 whitespace-pre-line">{product.description || 'No description available.'}</p>
             </div>
+
+            {/* Product Features (from Tags) */}
+            {product.tags && product.tags.length > 0 && (
+              <div className="mt-8">
+                <h3 className="font-semibold mb-2">Características</h3>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  {product.tags.map((tag, index) => (
+                    <li key={index}>{tag}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             
             {/* Social Sharing */}
             <div className="mt-8 flex items-center gap-4">
@@ -422,7 +459,7 @@ const ProductPage: React.FC = () => {
           </div>
         )}
       </div>
-    </>
+    </motion.div>
   );
 };
 

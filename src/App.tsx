@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion'; // Import AnimatePresence
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -14,20 +15,19 @@ import AccountPage from './pages/AccountPage';
 import OrdersPage from './pages/OrdersPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import UiShowcasePage from './pages/UiShowcasePage';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
 
-function App() {
+// Component to handle animated routes
+function AnimatedRoutes() {
+  const location = useLocation();
   return (
-    <CartProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/product/:handle" element={<ProductPage />} />
+    <AnimatePresence mode="wait"> {/* Use mode="wait" for smoother exit/enter */}
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/product/:handle" element={<ProductPage />} />
               <Route path="/category/:handle" element={<CategoryPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/carrito" element={<CartPage />} />
@@ -41,7 +41,21 @@ function App() {
               <Route path="/account/orders" element={<OrdersPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              {/* UI Improvements Showcase Page */}
+              <Route path="/ui-showcase" element={<UiShowcasePage />} />
             </Routes>
+    </AnimatePresence>
+  );
+}
+
+function App() {
+  return (
+    <CartProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-grow">
+            <AnimatedRoutes /> {/* Use the animated routes component */}
           </main>
           <Footer />
           <WhatsAppButton />

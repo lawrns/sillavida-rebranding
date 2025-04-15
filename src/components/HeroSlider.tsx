@@ -169,7 +169,7 @@ const HeroSlider = () => {
                       : currentTheme.button
                   } text-white px-8 py-3 rounded-lg font-bold transition-colors`}
                 >
-                  {isLoading ? 'AGREGANDO...' : success ? '¡AGREGADO!' : 'COMPRAR AHORA'}
+                  {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'} {/* Changed CTA text */}
                 </button>
               </div>
             </motion.div>

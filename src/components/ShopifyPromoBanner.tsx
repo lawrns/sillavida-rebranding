@@ -85,9 +85,9 @@ const ShopifyPromoBanner: React.FC<ShopifyPromoBannerProps> = ({ product, dark =
             <button 
               className="mt-6 px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               onClick={handleBuyClick}
-              aria-label={`Comprar ${product.title}`}
+              aria-label={`Ver ${product.title}`}
             >
-              Comprar Ahora
+              Ver Producto
             </button>
           </Link>
         </div>

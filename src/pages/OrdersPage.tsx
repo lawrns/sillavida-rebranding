@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import { isLoggedIn, getCustomerOrders } from '../services/customerAuth';
 import { Package, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -73,8 +74,28 @@ const OrdersPage: React.FC = () => {
     return <Navigate to="/" />;
   }
 
+  // Page transition variants
+  const pageVariants = {
+    initial: { opacity: 0 },
+    in: { opacity: 1 },
+    out: { opacity: 0 }
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <motion.div 
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+      className="max-w-4xl mx-auto px-4 py-8"
+    >
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Mis Pedidos</h1>
       
       {orders.length === 0 ? (
@@ -224,7 +245,7 @@ const OrdersPage: React.FC = () => {
           ))}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

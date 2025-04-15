@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import { getProductsByCollection, getCollections } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
 import ShopifyProductCard from '../components/ShopifyProductCard';
@@ -315,8 +316,28 @@ const CategoryPage: React.FC = () => {
     );
   }
 
+  // Page transition variants (can be shared across pages)
+  const pageVariants = {
+    initial: { opacity: 0 },
+    in: { opacity: 1 },
+    out: { opacity: 0 }
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <motion.div 
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+      className="max-w-7xl mx-auto px-4 py-8"
+    >
       {/* Breadcrumb */}
       <div className="flex items-center text-sm text-gray-500 mb-6">
         <a href="/" className="hover:text-red-600">Inicio</a>
@@ -623,7 +644,7 @@ const CategoryPage: React.FC = () => {
           <p className="text-gray-600">No se encontraron productos en esta categoría.</p>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,12 +2,18 @@
   "name": "Silla Vida",
   "description": "E-commerce website for a chair/furniture company",
   "created": "2025-04-11T13:54:49",
-  "updated": "2025-04-11T14:02:33",
-  "activeTasks": [],
-  "plannedTasks": ["TASK-001", "TASK-002", "TASK-003"],
-  "completedTasks": [],
-  "holdTasks": [],
-  "decisions": [],
+  "updated": "2025-04-14T21:45:06-06:00",
+  "activeTasks": ["TASK-028", "TASK-029", "TASK-030", "TASK-031", "TASK-032"],
+  "plannedTasks": ["TASK-015"],
+  "completedTasks": ["TASK-010", "TASK-023", "TASK-024", "TASK-026", "TASK-027"],
+  "holdTasks": ["TASK-025"],
+  "decisions": [
+    "2025-04-14_15-39-39_task_consistency_fix.md",
+    "2025-04-14_16-18-34_task_redefinition_decision.md",
+    "2025-04-14_16-25-00_navbar_redesign_implementation.md",
+    "2025-04-14_16-54-42_navbar_modern_design_enhancements.md",
+    "2025-04-14_17-00-29_navbar_color_scheme_update.md"
+  ],
   "components": [
     {
       "name": "Frontend",
@@ -25,6 +31,6 @@
       "status": "in_progress"
     }
   ],
-  "currentSession": "SESSION-001",
-  "lastSessionDate": "2025-04-11T13:54:16"
+  "currentSession": "SESSION-2025-04-14-20-49-43",
+  "lastSessionDate": "2025-04-14T20:49:43-06:00"
 }

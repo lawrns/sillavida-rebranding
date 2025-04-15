@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import { Chair } from '../data/chairs';
 import { useCart } from '../context/CartContext';
 
@@ -63,11 +64,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
     }
   };
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <Link to={`/product/${chair.id}`} className="block">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-        <img 
-          src={chair.image}
+    // Wrap the Link with motion.div for animation
+    <motion.div
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible" // Animate directly on mount for simplicity
+      transition={{ duration: 0.5, ease: "easeOut" }} 
+      className="block" // Apply block display to the motion div
+    >
+      <Link to={`/product/${chair.id}`} className="block"> {/* Link remains block inside motion div */}
+        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col"> {/* Added h-full and flex flex-col */}
+          <img
+            src={chair.image}
           alt={chair.name} 
           className="w-full h-48 object-cover"
         />
@@ -82,24 +96,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
             <span className="ml-2 text-sm text-gray-600">{chair.rating}</span>
           </div>
           <h3 className="font-semibold mb-2">{chair.name}</h3>
-          <p className="text-gray-600 mb-2 line-clamp-2">{chair.description}</p>
-          <p className="text-xl font-bold text-red-600">
-            ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
-          </p>
-          <button 
+          <p className="text-gray-600 mb-2 line-clamp-2 flex-grow">{chair.description}</p> {/* Added flex-grow */}
+          <div className="mt-auto pt-2"> {/* Push button to bottom, added padding top */}
+            <p className="text-xl font-bold text-red-600">
+              ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+            </p>
+            <button
             onClick={handleAddToCart}
             disabled={isLoading}
             className={`w-full mt-4 py-2 rounded transition-colors ${
               success 
                 ? 'bg-green-600 hover:bg-green-700 text-white' 
                 : 'bg-red-600 hover:bg-red-700 text-white'
-            }`}
-          >
-            {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'}
-          </button>
-        </div>
-      </div>
+              }`}
+            >
+              {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'}
+            </button>
+          </div>
+        </div> {/* This is the closing div for p-4 */}
+      </div> {/* This is the closing div for bg-white */}
     </Link>
+    </motion.div>
   );
 };
 

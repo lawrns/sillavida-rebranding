@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import type { ShopifyProduct } from '../types/shopify';
 import { useCart } from '../context/CartContext';
 
@@ -154,8 +155,35 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
     });
   };
 
+  // Card animation variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    hover: { 
+      y: -5,
+      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    }
+  };
+
+  // Button animation variants
+  const buttonVariants = {
+    hover: { scale: 1.05 },
+    tap: { scale: 0.98 },
+    success: { backgroundColor: "#16a34a" }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <motion.div 
+      className="bg-white rounded-lg shadow-md overflow-hidden"
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
+      transition={{ 
+        duration: 0.5,
+        ease: "easeOut" 
+      }}
+    >
       <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
         <div className="relative w-full h-48">
           {!imageLoaded && !imageError && (
@@ -218,20 +246,33 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         {error && (
           <div className="text-red-500 text-sm mt-2 mb-2">{error}</div>
         )}
-        <button 
+        <motion.button 
           onClick={handleAddToCart}
           disabled={isLoading}
           aria-label={`Agregar ${product.title} al carrito`}
-          className={`w-full mt-4 py-2 rounded transition-colors ${
+          className={`w-full mt-4 py-3 rounded text-white ${
             success 
-              ? 'bg-green-600 hover:bg-green-700 text-white' 
-              : 'bg-red-600 hover:bg-red-700 text-white'
+              ? 'bg-green-600' 
+              : 'bg-red-600'
           }`}
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          animate={success ? "success" : ""}
         >
-          {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'}
-        </button>
+          {isLoading ? (
+            <span className="flex items-center justify-center">
+              <motion.div
+                className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              />
+              Agregando...
+            </span>
+          ) : success ? '¡Agregado!' : 'Agregar al Carrito'}
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

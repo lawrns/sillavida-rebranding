@@ -369,6 +369,7 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
         title
         handle
         description
+        tags # Added tags
         priceRange {
           minVariantPrice {
             amount
@@ -960,3 +961,5 @@ export async function getCheckoutUrl(cartId: string) {
 
   return response.data.cart.checkoutUrl;
 }
+
+// Removed searchProducts function
