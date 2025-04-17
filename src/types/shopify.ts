@@ -40,6 +40,7 @@ export interface ShopifyProduct {
       };
     }>;
   };
+  tags?: string[]; // Added optional tags field
 }
 
 export interface ShopifyCart {

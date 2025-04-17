@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowRight, Truck, CreditCard, Shield, Star, ChevronRight, Tag, Lock, FileCheck, HeadphonesIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import { chairs } from '../data/chairs';
 import ProductCard from '../components/ProductCard';
 import PromoBanner from '../components/PromoBanner';
@@ -147,8 +148,28 @@ const HomePage = () => {
   const displayedFeaturedOfficeChair = featuredOfficeChair || staticFeaturedOfficeChair;
   const displayedFeaturedGamingChair = featuredGamingChair || staticFeaturedGamingChair;
 
+  // Page transition variants
+  const pageVariants = {
+    initial: { opacity: 0 },
+    in: { opacity: 1 },
+    out: { opacity: 0 }
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5
+  };
+
   return (
-    <div className="flex flex-col">
+    <motion.div 
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+      className="flex flex-col"
+    >
       <HeroSlider />
       
       {/* Personalized Banner for logged-in users */}
@@ -526,7 +547,7 @@ const HomePage = () => {
           </form>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

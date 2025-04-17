@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { X, ShoppingBag, Trash2, Plus, Minus, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ShoppingBag, Trash2, Plus, Minus, AlertCircle, ChevronRight, CreditCard, Shield } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const MiniCart: React.FC = () => {
@@ -17,10 +18,58 @@ const MiniCart: React.FC = () => {
     cartId
   } = useCart();
   
-  // Local state to track if cart data has been loaded
   const [isCartLoaded, setIsCartLoaded] = useState(false);
+
+  // Helper functions for the free shipping calculation
+  const calculateProgressPercentage = () => {
+    if (!cartItems.length) return 0;
+    
+    let subtotal = 0;
+    if (cart?.cost?.subtotalAmount?.amount) {
+      subtotal = parseFloat(cart.cost.subtotalAmount.amount);
+    } else if (cartTotal) {
+      // Extract the numeric value from the formatted currency string
+      subtotal = parseFloat(cartTotal.replace(/[^\d.-]/g, ''));
+    } else {
+      // Calculate from cart items if needed
+      subtotal = cartItems.reduce((sum, item) => {
+        return sum + (parseFloat(item.price.amount) * item.quantity);
+      }, 0);
+    }
+    
+    return Math.min(100, (subtotal / 10000) * 100);
+  };
   
-  // Enhanced debug logging
+  const formatRemainingAmount = () => {
+    if (!cartItems.length) return "$0.00";
+    
+    let subtotal = 0;
+    let currencyCode = 'MXN';
+    
+    if (cart?.cost?.subtotalAmount?.amount) {
+      subtotal = parseFloat(cart.cost.subtotalAmount.amount);
+      currencyCode = cart.cost.subtotalAmount.currencyCode;
+    } else if (cartTotal) {
+      // Extract the numeric value from the formatted currency string
+      subtotal = parseFloat(cartTotal.replace(/[^\d.-]/g, ''));
+    } else {
+      // Calculate from cart items
+      subtotal = cartItems.reduce((sum, item) => {
+        currencyCode = item.price.currencyCode; // Use currency from first item
+        return sum + (parseFloat(item.price.amount) * item.quantity);
+      }, 0);
+    }
+    
+    const remaining = Math.max(0, 10000 - subtotal);
+    
+    return remaining.toLocaleString('es-MX', {
+      style: 'currency',
+      currency: currencyCode,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+  
   useEffect(() => {
     if (isCartOpen) {
       console.log('[MiniCart] Cart opened, current state:', {
@@ -33,7 +82,6 @@ const MiniCart: React.FC = () => {
         rawCart: cart
       });
       
-      // Log detailed cart structure
       console.log('[MiniCart] Cart structure details:');
       console.log('[MiniCart] cartId:', cartId);
       console.log('[MiniCart] cart object:', cart);
@@ -41,7 +89,6 @@ const MiniCart: React.FC = () => {
       console.log('[MiniCart] cartItems array:', cartItems);
       console.log('[MiniCart] cartCount:', cartCount);
       
-      // Check if cart is actually empty or if there's a data issue
       if (cartCount === 0) {
         console.log('[MiniCart] Cart appears empty (cartCount === 0)');
         if (cart?.lines?.edges && cart.lines.edges.length > 0) {
@@ -50,12 +97,12 @@ const MiniCart: React.FC = () => {
         }
       }
       
-      // Mark cart as loaded after initial render
       if (!isCartLoaded) {
         setIsCartLoaded(true);
       }
     }
   }, [isCartOpen, cartItems, cartCount, cartTotal, cart, cartId, isLoading, isCartLoaded]);
+  
   const navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -63,203 +110,234 @@ const MiniCart: React.FC = () => {
     navigate('/checkout');
   };
 
+  // Animation variants
+  const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.2 } },
+    exit: { opacity: 0, transition: { duration: 0.2, delay: 0.1 } }
+  };
+
+  const cartVariants = {
+    hidden: { x: '100%' },
+    visible: { x: 0, transition: { type: 'tween', duration: 0.3, ease: 'easeOut' } },
+    exit: { x: '100%', transition: { type: 'tween', duration: 0.2 } }
+  };
+
   if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-50 isolate">
       {/* Background overlay */}
-      <div 
-        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
-        aria-hidden="true"
+      <motion.div 
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 backdrop-blur-sm"
         onClick={closeCart}
-      ></div>
+        variants={backdropVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      />
       
       {/* Cart panel */}
-      <div className="fixed inset-y-0 right-0 max-w-full flex">
-        <div className="w-screen max-w-md">
-          <div className="h-full flex flex-col bg-white shadow-xl">
-            {/* Cart header */}
-            <div className="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
-              <div className="flex items-start justify-between">
-                <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">
-                  Carrito de Compras
-                </h2>
-                <div className="ml-3 h-7 flex items-center">
-                  <button
-                    type="button"
-                    className="-m-2 p-2 text-gray-400 hover:text-gray-500"
-                    onClick={closeCart}
-                  >
-                    <span className="sr-only">Cerrar panel</span>
-                    <X className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-8">
-                {isLoading ? (
-                  // Loading state
-                  <div className="flex flex-col items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
-                    <p className="mt-4 text-gray-500 text-lg">Cargando carrito...</p>
-                  </div>
-                ) : cart?.lines?.edges && cart.lines.edges.length > 0 && cartItems.length === 0 ? (
-                  // Data inconsistency state - cart has items but cartItems is empty
-                  <div className="flex flex-col items-center justify-center py-12">
-                    <AlertCircle className="h-16 w-16 text-yellow-500" />
-                    <p className="mt-4 text-gray-700 text-lg text-center">
-                      Hay un problema al mostrar tu carrito
-                    </p>
-                    <p className="mt-2 text-gray-500 text-sm text-center">
-                      Intenta recargar la página o cerrar y abrir el carrito nuevamente
-                    </p>
-                    <div className="mt-6 flex space-x-4">
-                      <button
-                        className="bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300"
-                        onClick={closeCart}
-                      >
-                        Cerrar
-                      </button>
-                      <button
-                        className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
-                        onClick={() => window.location.reload()}
-                      >
-                        Recargar página
-                      </button>
-                    </div>
-                  </div>
-                ) : cartItems.length === 0 ? (
-                  // Empty cart state - using cartItems.length instead of cartCount
-                  <div className="flex flex-col items-center justify-center py-12">
-                    <ShoppingBag className="h-16 w-16 text-gray-300" />
-                    <p className="mt-4 text-gray-500 text-lg">Tu carrito está vacío</p>
-                    <button
-                      className="mt-6 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
-                      onClick={closeCart}
-                    >
-                      Continuar Comprando
-                    </button>
-                  </div>
-                ) : (
-                  // Cart with items
-                  <div className="flow-root">
-                    <ul role="list" className="-my-6 divide-y divide-gray-200">
-                      {cartItems.map((item) => {
-                        const price = parseFloat(item.price.amount);
-                        const formattedPrice = price.toLocaleString('es-MX', {
-                          style: 'currency',
-                          currency: item.price.currencyCode
-                        });
-                        
-                        return (
-                          <li key={item.id} className="py-6 flex">
-                            <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
-                              {/* Placeholder image - in a real app, you'd fetch the product image */}
-                              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                <ShoppingBag className="h-8 w-8 text-gray-400" />
-                              </div>
-                            </div>
-
-                            <div className="ml-4 flex-1 flex flex-col">
-                              <div>
-                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                  <h3>
-                                    {item.productTitle || item.title}
-                                  </h3>
-                                  <p className="ml-4">{formattedPrice}</p>
-                                </div>
-                                <p className="mt-1 text-sm text-gray-500">
-                                  {item.title !== item.productTitle ? item.title : ''}
-                                </p>
-                              </div>
-                              
-                              <div className="flex-1 flex items-end justify-between text-sm">
-                                <div className="flex items-center border border-gray-300 rounded">
-                                  <button 
-                                    onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
-                                    disabled={isLoading}
-                                    className="p-1 text-gray-600 hover:text-gray-900"
-                                  >
-                                    <Minus className="h-4 w-4" />
-                                  </button>
-                                  <span className="px-2 py-1 min-w-[30px] text-center">
-                                    {item.quantity}
-                                  </span>
-                                  <button 
-                                    onClick={() => updateItem(item.id, item.quantity + 1)}
-                                    disabled={isLoading}
-                                    className="p-1 text-gray-600 hover:text-gray-900"
-                                  >
-                                    <Plus className="h-4 w-4" />
-                                  </button>
-                                </div>
-
-                                <div className="flex">
-                                  <button
-                                    type="button"
-                                    className="font-medium text-red-600 hover:text-red-500 flex items-center"
-                                    onClick={() => removeItem(item.id)}
-                                    disabled={isLoading}
-                                  >
-                                    <Trash2 className="h-4 w-4 mr-1" />
-                                    Eliminar
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
+      <div className="fixed inset-y-0 right-0 max-w-md z-[100]">
+        <motion.div 
+          className="w-screen max-w-md h-full"
+          variants={cartVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          style={{ backgroundColor: '#FFFFFF', borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem', boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)' }}
+        >
+          <div className="flex flex-col h-full bg-white" style={{ borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
+            {/* Header */}
+            <div className="p-4 border-b border-gray-200 bg-white" style={{ backgroundColor: '#FFFFFF', borderTopLeftRadius: '0.5rem' }}>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold">Tu Carrito</h2>
+                <button 
+                  className="p-1 rounded-full hover:bg-gray-100"
+                  onClick={closeCart}
+                >
+                  <X className="h-6 w-6" />
+                </button>
               </div>
             </div>
+            
+            {/* Cart content - scrollable */}
+            <div className="flex-1 overflow-auto p-4 bg-white" style={{ backgroundColor: '#FFFFFF' }}>
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+                  <p className="mt-4 text-gray-500 text-lg">Cargando carrito...</p>
+                </div>
+              ) : cartItems.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <ShoppingBag className="h-16 w-16 text-gray-300" />
+                  <p className="mt-4 text-gray-500 text-lg">Tu carrito está vacío</p>
+                  <button
+                    className="mt-6 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+                    onClick={closeCart}
+                  >
+                    Continuar Comprando
+                  </button>
+                </div>
+              ) : (
+                <ul className="divide-y divide-gray-200">
+                  {cartItems.map((item) => {
+                    const price = parseFloat(item.price.amount);
+                    const formattedPrice = price.toLocaleString('es-MX', {
+                      style: 'currency',
+                      currency: item.price.currencyCode
+                    });
+                    
+                    return (
+                      <li key={item.id} className="py-4 flex">
+                        <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
+                          <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                            <ShoppingBag className="h-8 w-8 text-gray-400" />
+                          </div>
+                        </div>
 
-            {/* Cart footer */}
+                        <div className="ml-4 flex-1">
+                          <div className="flex justify-between">
+                            <h3 className="text-base font-medium">
+                              {item.productTitle || item.title}
+                            </h3>
+                            <p className="ml-4 font-medium">{formattedPrice}</p>
+                          </div>
+                          
+                          <p className="mt-1 text-sm text-gray-500">
+                            {item.title !== item.productTitle ? item.title : ''}
+                          </p>
+                          
+                          <div className="mt-2 flex justify-between">
+                            <div className="flex items-center border border-gray-200 rounded-md">
+                              <button 
+                                onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
+                                disabled={isLoading}
+                                className="p-1 text-gray-600 hover:text-red-600"
+                              >
+                                <Minus className="h-4 w-4" />
+                              </button>
+                              <span className="px-2 py-1 min-w-[32px] text-center text-sm font-medium">
+                                {item.quantity}
+                              </span>
+                              <button 
+                                onClick={() => updateItem(item.id, item.quantity + 1)}
+                                disabled={isLoading}
+                                className="p-1 text-gray-600 hover:text-red-600"
+                              >
+                                <Plus className="h-4 w-4" />
+                              </button>
+                            </div>
+
+                            <button
+                              className="text-red-600 hover:text-red-800 text-sm font-medium flex items-center"
+                              onClick={() => removeItem(item.id)}
+                              disabled={isLoading}
+                            >
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              <span>Eliminar</span>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
+            {/* Footer with totals and checkout button */}
             {cartItems.length > 0 && (
-              <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                <div className="flex justify-between text-base font-medium text-gray-900">
+              <div className="border-t border-gray-200 p-4 bg-white" style={{ backgroundColor: '#FFFFFF', borderBottomLeftRadius: '0.5rem' }}>
+                <div className="flex justify-between font-medium text-base mb-1">
                   <p>Subtotal</p>
                   <p>{cartTotal}</p>
                 </div>
-                <p className="mt-0.5 text-sm text-gray-500">
+                
+                {/* Free shipping threshold section */}
+                <div className="my-3">
+                  {cartItems.length > 0 && (
+                    <>
+                      {(cart?.cost?.subtotalAmount?.amount && parseFloat(cart.cost.subtotalAmount.amount) >= 10000) || 
+                       (cartTotal && parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000) ? (
+                      <div className="bg-green-100 text-green-800 p-2 rounded-md flex items-center">
+                        <div className="mr-2 text-green-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                        </div>
+                        <span className="text-sm font-medium">¡Tu pedido califica para envío gratis!</span>
+                      </div>
+                      ) : (
+                        <div>
+                          <div className="bg-gray-100 rounded-full h-2 mb-2">
+                            <div 
+                              className="bg-red-600 h-2 rounded-full" 
+                              style={{ 
+                                width: `${Math.min(100, calculateProgressPercentage())}%` 
+                              }}
+                            />
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Te faltan <span className="font-medium text-red-600">
+                              {formatRemainingAmount()}
+                            </span> para obtener envío gratis
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+                
+                <p className="text-sm text-gray-500 mb-4">
                   Envío e impuestos calculados al finalizar la compra.
                 </p>
-                <div className="mt-6">
-                  <button
-                    onClick={handleCheckout}
-                    disabled={isLoading}
-                    className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 ${
-                      isLoading ? 'opacity-75 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    {isLoading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
-                        Procesando...
-                      </>
-                    ) : (
-                      'Finalizar Compra'
-                    )}
-                  </button>
-                </div>
-                <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
-                  <p>
+                
+                <button
+                  onClick={handleCheckout}
+                  disabled={isLoading}
+                  className="w-full bg-red-600 text-white py-3 rounded-md font-medium hover:bg-red-700 flex items-center justify-center"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
+                      Procesando...
+                    </>
+                  ) : (
+                    <>
+                      <span>Finalizar Compra</span>
+                      <ChevronRight className="ml-1 h-5 w-5" />
+                    </>
+                  )}
+                </button>
+                
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-500">
                     o{' '}
                     <Link
                       to="/cart"
                       onClick={closeCart}
-                      className="text-red-600 font-medium hover:text-red-500"
+                      className="text-red-600 font-medium hover:text-red-800"
                     >
                       Ver Carrito Completo
                     </Link>
                   </p>
                 </div>
+                
+                <div className="mt-4 pt-4 border-t border-gray-100 flex justify-center space-x-4">
+                  <div className="flex items-center">
+                    <Shield className="h-4 w-4 text-green-600 mr-1.5" />
+                    <span className="text-xs text-gray-500">Pago Seguro</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CreditCard className="h-4 w-4 text-green-600 mr-1.5" />
+                    <span className="text-xs text-gray-500">Métodos de Pago</span>
+                  </div>
+                </div>
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

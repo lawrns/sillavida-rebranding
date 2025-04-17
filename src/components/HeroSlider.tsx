@@ -5,9 +5,9 @@ import { useCart } from '../context/CartContext';
 
 // Mock Shopify variant IDs for the slider products
 const SLIDER_VARIANT_IDS: Record<number, string> = {
-  1: 'gid://shopify/ProductVariant/111222333', // Silla Gamer Xperience Helix
-  2: 'gid://shopify/ProductVariant/444555666', // Silla Oficina ErgoComfort
-  3: 'gid://shopify/ProductVariant/777888999', // Pack 4x Silla Vida Confort Pro
+  1: 'mock-variant-345678901', // Silla Gamer Xperience Helix (gamer model)
+  2: 'mock-variant-123456789', // Silla Oficina ErgoComfort (ergonomic model)
+  3: 'mock-variant-567890123', // Pack 4x Silla Vida Confort Pro (secretarial model)
 };
 
 const slides = [
@@ -169,7 +169,7 @@ const HeroSlider = () => {
                       : currentTheme.button
                   } text-white px-8 py-3 rounded-lg font-bold transition-colors`}
                 >
-                  {isLoading ? 'AGREGANDO...' : success ? '¡AGREGADO!' : 'COMPRAR AHORA'}
+                  {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'} {/* Changed CTA text */}
                 </button>
               </div>
             </motion.div>

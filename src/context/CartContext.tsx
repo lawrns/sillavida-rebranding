@@ -12,6 +12,7 @@ interface CartItem {
     currencyCode: string;
   };
   productTitle?: string;
+  imageUrl?: string; // Add image URL field
 }
 
 interface CartContextType {
@@ -106,13 +107,21 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         
         console.log('[CartContext] Processing cart item:', line);
         
+        // Extract image URL if available
+        let imageUrl = undefined;
+        // Safely check for image property in the merchandise object
+        if (line.merchandise && (line.merchandise as any).image && (line.merchandise as any).image.url) {
+          imageUrl = (line.merchandise as any).image.url;
+        }
+        
         validItems.push({
           id: line.id || '',
           merchandiseId: line.merchandise.id,
           quantity: line.quantity,
           title: line.merchandise.title,
           price: line.merchandise.price,
-          productTitle: line.merchandise.product?.title
+          productTitle: line.merchandise.product?.title,
+          imageUrl: imageUrl
         });
       }
       
@@ -153,6 +162,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       setIsLoading(false);
       throw new Error('Cannot add item to cart: Missing variant ID');
     }
+    
+    // Check if it's a mock variant (for backward compatibility)
+    const isMockVariant = merchandiseId.startsWith('mock-variant-');
     
     // Retry logic
     let retryCount = 0;

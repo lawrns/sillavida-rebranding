@@ -369,6 +369,7 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
         title
         handle
         description
+        tags # Added tags
         priceRange {
           minVariantPrice {
             amount
@@ -553,6 +554,75 @@ export async function getCollections(limit = 10) {
 
 // Cart Operations
 
+// Mock cart for demonstration purposes
+let mockCart: any = null;
+
+// Add a flag to force using mock variants for testability
+const FORCE_MOCK_CART = false; // Set to false to use real Shopify API for cart operations
+
+// Mock product data for our test variants
+const mockProducts: Record<string, { title: string, price: number, productTitle: string }> = {
+  "mock-variant-123456789": { title: "Ergonomic Chair", price: 2399.99, productTitle: "Ergonomic Chair" },
+  "mock-variant-234567890": { title: "Executive Chair", price: 2599.99, productTitle: "Executive Chair" },
+  "mock-variant-345678901": { title: "Gamer Chair", price: 2639.91, productTitle: "Gamer Chair Experience" },
+  "mock-variant-456789012": { title: "Visitor Chair", price: 1399.99, productTitle: "Visitor Chair" },
+  "mock-variant-567890123": { title: "Secretarial Chair", price: 1899.99, productTitle: "Secretarial Chair" },
+  "mock-variant-678901234": { title: "Gaming Chair Pro", price: 2899.99, productTitle: "Gaming Chair Pro" },
+  "mock-variant-789012345": { title: "Chair Accessory", price: 599.99, productTitle: "Chair Accessory" }
+};
+
+// Check if a variant ID is one of our mock variants
+function isMockVariant(variantId: string): boolean {
+  return variantId.startsWith('mock-variant-');
+}
+
+// Generate mock cart line item
+function generateMockCartLine(merchandiseId: string, quantity: number) {
+  // Generate a random unique ID for the line item
+  const lineId = `gid://shopify/CartLine/${Date.now() + Math.floor(Math.random() * 1000000)}`;
+  
+  // Get the mock product data or use a default
+  const mockProduct = mockProducts[merchandiseId] || { 
+    title: "Mock Product", 
+    price: 1000.00,
+    productTitle: "Mock Product" 
+  };
+  
+  return {
+    id: lineId,
+    quantity,
+    merchandise: {
+      id: merchandiseId,
+      title: mockProduct.title,
+      product: {
+        title: mockProduct.productTitle
+      },
+      price: {
+        amount: mockProduct.price.toString(),
+        currencyCode: "MXN"
+      }
+    }
+  };
+}
+
+// Calculate the total cost of a mock cart
+function calculateMockCartCost(lines: any[]) {
+  const subtotal = lines.reduce((sum, line) => {
+    return sum + (parseFloat(line.merchandise.price.amount) * line.quantity);
+  }, 0);
+  
+  return {
+    subtotalAmount: {
+      amount: subtotal.toString(),
+      currencyCode: "MXN"
+    },
+    totalAmount: {
+      amount: subtotal.toString(),  // In a real implementation, this would include taxes and shipping
+      currencyCode: "MXN"
+    }
+  };
+}
+
 /**
  * Create a new cart
  * @param lines Optional initial cart lines
@@ -561,6 +631,46 @@ export async function getCollections(limit = 10) {
 export async function createCart(lines: { merchandiseId: string; quantity: number }[] = []) {
   console.log('[Shopify] Creating cart with lines:', lines);
   
+  // Check if all lines are mock variants or if we should force mock implementation
+  const allMockVariants = lines.every(line => isMockVariant(line.merchandiseId));
+  
+  // If lines contain mock variants or if we should force mock implementation, use mock implementation
+  if (allMockVariants || FORCE_MOCK_CART) {
+    console.log('[Shopify] Using mock cart implementation for demonstration');
+    
+    try {
+      // Generate a mock cart ID
+      const cartId = `mock-cart-${Date.now()}`;
+      
+      // Create mock cart lines
+      const cartLines = lines.map(line => 
+        generateMockCartLine(line.merchandiseId, line.quantity)
+      );
+      
+      // Calculate mock cart cost
+      const cost = calculateMockCartCost(cartLines);
+      
+      // Create the mock cart structure
+      mockCart = {
+        id: cartId,
+        lines: {
+          edges: cartLines.map(line => ({ node: line }))
+        },
+        cost: cost,
+        checkoutUrl: `/checkout?cart=${cartId}`
+      };
+      
+      console.log('[Shopify] Mock cart created:', mockCart);
+      
+      return mockCart;
+    } catch (error) {
+      console.error('[Shopify] Error creating mock cart:', error);
+      
+      throw new ShopifyError(`Unable to create cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  // For real variants, use Shopify API
   const query = `
     mutation CartCreate($lines: [CartLineInput!]) {
       cartCreate(input: { lines: $lines }) {
@@ -581,6 +691,10 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
                     price {
                       amount
                       currencyCode
+                    }
+                    image {
+                      url
+                      altText
                     }
                   }
                 }
@@ -640,7 +754,13 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
   } catch (error) {
     console.error('[Shopify] Error creating cart:', error);
     
-    // Throw a more user-friendly error
+    // If we get here and have mock variants, try the mock implementation
+    if (lines.some(line => isMockVariant(line.merchandiseId))) {
+      console.warn('[Shopify] Falling back to mock cart implementation');
+      return createCart(lines.filter(line => isMockVariant(line.merchandiseId)));
+    }
+    
+    // Otherwise throw the error
     if (error instanceof Error) {
       throw new ShopifyError(`Unable to create cart: ${error.message}`);
     } else {
@@ -655,6 +775,12 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
  * @returns Cart data
  */
 export async function getCart(cartId: string): Promise<ShopifyCart> {
+  // Check if it's a mock cart
+  if (cartId.startsWith('mock-cart-') && mockCart && mockCart.id === cartId) {
+    console.log('[Shopify] Returning mock cart:', mockCart);
+    return mockCart;
+  }
+  
   const query = `
     query Cart($cartId: ID!) {
       cart(id: $cartId) {
@@ -675,6 +801,10 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
                     amount
                     currencyCode
                   }
+                  image {
+                    url
+                    altText
+                  }
                 }
               }
             }
@@ -694,17 +824,22 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
     }
   `;
 
-  const response = await shopifyClient.query({
-    data: {
-      query,
-      variables: {
-        cartId
+  try {
+    const response = await shopifyClient.query({
+      data: {
+        query,
+        variables: {
+          cartId
+        },
       },
-    },
-    cache: false
-  });
+      cache: false
+    });
 
-  return response.data.cart;
+    return response.data.cart;
+  } catch (error) {
+    console.error('[Shopify] Error getting cart:', error);
+    throw new ShopifyError(`Unable to get cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 }
 
 /**
@@ -716,6 +851,52 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
 export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
   console.log('[Shopify] Adding to cart:', { cartId, lines });
   
+  // Check if it's a mock cart or if lines contain mock variants or if we should force mock implementation
+  const isMockCartId = cartId.startsWith('mock-cart-');
+  const containsMockVariants = lines.some(line => isMockVariant(line.merchandiseId));
+  
+  // If it's a mock cart or contains mock variants or if we should force mock implementation, use mock implementation
+  if (isMockCartId || containsMockVariants || FORCE_MOCK_CART) {
+    console.log('[Shopify] Using mock cart implementation for demonstration');
+    
+    try {
+      // If we don't have a mock cart yet, create one
+      if (!mockCart || mockCart.id !== cartId) {
+        // For a real cart ID with mock variants, create a new mock cart
+        return await createCart(lines);
+      }
+      
+      // Add lines to existing mock cart
+      const newCartLines = lines.map(line => 
+        generateMockCartLine(line.merchandiseId, line.quantity)
+      );
+      
+      // Merge with existing cart lines
+      const existingLines = mockCart.lines.edges.map((edge: any) => edge.node);
+      const allLines = [...existingLines, ...newCartLines];
+      
+      // Recalculate cost
+      const cost = calculateMockCartCost(allLines);
+      
+      // Update mock cart
+      mockCart = {
+        ...mockCart,
+        lines: {
+          edges: allLines.map(line => ({ node: line }))
+        },
+        cost: cost
+      };
+      
+      console.log('[Shopify] Updated mock cart:', mockCart);
+      
+      return mockCart;
+    } catch (error) {
+      console.error('[Shopify] Error adding to mock cart:', error);
+      throw new ShopifyError(`Unable to add item to cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  // Use real Shopify API for non-mock cart
   const query = `
     mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
       cartLinesAdd(cartId: $cartId, lines: $lines) {
@@ -736,6 +917,10 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
                     price {
                       amount
                       currencyCode
+                    }
+                    image {
+                      url
+                      altText
                     }
                   }
                 }
@@ -812,6 +997,47 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
  * @returns Updated cart
  */
 export async function updateCartLines(cartId: string, lines: { id: string; quantity: number }[]) {
+  // Check if it's a mock cart
+  if (cartId.startsWith('mock-cart-') && mockCart) {
+    console.log('[Shopify] Updating mock cart lines:', lines);
+    
+    try {
+      // Update the mock cart lines
+      const updatedEdges = mockCart.lines.edges.map((edge: any) => {
+        const line = lines.find(l => l.id === edge.node.id);
+        if (line) {
+          return {
+            node: {
+              ...edge.node,
+              quantity: line.quantity
+            }
+          };
+        }
+        return edge;
+      });
+      
+      // Calculate the new cost
+      const cost = calculateMockCartCost(updatedEdges.map((edge: any) => edge.node));
+      
+      // Update the mock cart
+      mockCart = {
+        ...mockCart,
+        lines: {
+          edges: updatedEdges
+        },
+        cost: cost
+      };
+      
+      console.log('[Shopify] Mock cart updated:', mockCart);
+      
+      return mockCart;
+    } catch (error) {
+      console.error('[Shopify] Error updating mock cart:', error);
+      throw new ShopifyError(`Unable to update cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  // Use real Shopify API for non-mock cart
   const query = `
     mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
       cartLinesUpdate(cartId: $cartId, lines: $lines) {
@@ -832,6 +1058,10 @@ export async function updateCartLines(cartId: string, lines: { id: string; quant
                     price {
                       amount
                       currencyCode
+                    }
+                    image {
+                      url
+                      altText
                     }
                   }
                 }
@@ -879,6 +1109,38 @@ export async function updateCartLines(cartId: string, lines: { id: string; quant
  * @returns Updated cart
  */
 export async function removeFromCart(cartId: string, lineIds: string[]) {
+  // Check if it's a mock cart
+  if (cartId.startsWith('mock-cart-') && mockCart) {
+    console.log('[Shopify] Removing items from mock cart:', lineIds);
+    
+    try {
+      // Filter out the lines to remove
+      const filteredEdges = mockCart.lines.edges.filter((edge: any) => 
+        !lineIds.includes(edge.node.id)
+      );
+      
+      // Calculate the new cost
+      const cost = calculateMockCartCost(filteredEdges.map((edge: any) => edge.node));
+      
+      // Update the mock cart
+      mockCart = {
+        ...mockCart,
+        lines: {
+          edges: filteredEdges
+        },
+        cost: cost
+      };
+      
+      console.log('[Shopify] Mock cart updated after removal:', mockCart);
+      
+      return mockCart;
+    } catch (error) {
+      console.error('[Shopify] Error removing from mock cart:', error);
+      throw new ShopifyError(`Unable to remove item from cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  // Use real Shopify API for non-mock cart
   const query = `
     mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
       cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
@@ -900,6 +1162,10 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                   }
                 }
               }
@@ -916,22 +1182,43 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
             }
           }
         }
+        userErrors {
+          field
+          message
+        }
       }
     }
   `;
 
-  const response = await shopifyClient.query({
-    data: {
-      query,
-      variables: {
-        cartId,
-        lineIds
+  try {
+    const response = await shopifyClient.query({
+      data: {
+        query,
+        variables: {
+          cartId,
+          lineIds
+        },
       },
-    },
-    cache: false
-  });
-
-  return response.data.cartLinesRemove.cart;
+      cache: false
+    });
+    
+    // Check for user errors
+    if (response.data.cartLinesRemove.userErrors && response.data.cartLinesRemove.userErrors.length > 0) {
+      console.error('[Shopify] Remove from cart user errors:', response.data.cartLinesRemove.userErrors);
+      throw new Error(`Remove from cart failed: ${response.data.cartLinesRemove.userErrors[0].message}`);
+    }
+    
+    return response.data.cartLinesRemove.cart;
+  } catch (error) {
+    console.error('[Shopify] Error removing from cart:', error);
+    
+    // Throw a more user-friendly error
+    if (error instanceof Error) {
+      throw new ShopifyError(`Unable to remove item from cart: ${error.message}`);
+    } else {
+      throw new ShopifyError('Unable to remove item from cart: Unknown error');
+    }
+  }
 }
 
 /**
@@ -940,6 +1227,12 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
  * @returns Checkout URL
  */
 export async function getCheckoutUrl(cartId: string) {
+  // Check if it's a mock cart
+  if (cartId.startsWith('mock-cart-') && mockCart) {
+    console.log('[Shopify] Returning mock checkout URL');
+    return `/checkout?cart=${cartId}`;
+  }
+  
   const query = `
     query CartCheckoutUrl($cartId: ID!) {
       cart(id: $cartId) {

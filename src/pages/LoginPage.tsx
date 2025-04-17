@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion'; // Import motion
 import { isLoggedIn, login } from '../services/customerAuth';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -98,8 +99,28 @@ const LoginPage: React.FC = () => {
     return <Navigate to="/account" />;
   }
 
+  // Page transition variants
+  const pageVariants = {
+    initial: { opacity: 0 },
+    in: { opacity: 1 },
+    out: { opacity: 0 }
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5
+  };
+
   return (
-    <div className="max-w-md mx-auto px-4 py-8">
+    <motion.div 
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+      className="max-w-md mx-auto px-4 py-8"
+    >
       <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Iniciar Sesión</h1>
       
       {error && (
@@ -178,7 +199,7 @@ const LoginPage: React.FC = () => {
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
