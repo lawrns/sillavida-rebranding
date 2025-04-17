@@ -558,7 +558,7 @@ export async function getCollections(limit = 10) {
 let mockCart: any = null;
 
 // Add a flag to force using mock variants for testability
-const FORCE_MOCK_CART = true; // Set to true to always use mock implementation
+const FORCE_MOCK_CART = false; // Set to false to use real Shopify API for cart operations
 
 // Mock product data for our test variants
 const mockProducts: Record<string, { title: string, price: number, productTitle: string }> = {
@@ -692,6 +692,10 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                   }
                 }
               }
@@ -796,6 +800,10 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
                   price {
                     amount
                     currencyCode
+                  }
+                  image {
+                    url
+                    altText
                   }
                 }
               }
@@ -909,6 +917,10 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
                     price {
                       amount
                       currencyCode
+                    }
+                    image {
+                      url
+                      altText
                     }
                   }
                 }
@@ -1047,6 +1059,10 @@ export async function updateCartLines(cartId: string, lines: { id: string; quant
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                   }
                 }
               }
@@ -1145,6 +1161,10 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
                     price {
                       amount
                       currencyCode
+                    }
+                    image {
+                      url
+                      altText
                     }
                   }
                 }

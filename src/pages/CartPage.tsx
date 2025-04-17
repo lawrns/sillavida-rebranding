@@ -209,11 +209,42 @@ const CartPage: React.FC = () => {
                     
                     return (
                       <li key={item.id} className="p-6 flex flex-col sm:flex-row">
-                        <div className="flex-shrink-0 w-full sm:w-32 h-32 bg-gray-200 rounded-md overflow-hidden mb-4 sm:mb-0">
-                          {/* Placeholder image - in a real app, you'd fetch the product image */}
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ShoppingBag className="h-12 w-12 text-gray-400" />
-                          </div>
+                        <div className="flex-shrink-0 w-full sm:w-32 h-32 bg-gray-100 rounded-md overflow-hidden mb-4 sm:mb-0">
+                          {/* Display product image with fallback to placeholder */}
+                          {item.imageUrl ? (
+                            <div className="w-full h-full relative">
+                              <img 
+                                src={item.imageUrl}
+                                alt={item.productTitle || item.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  // If image fails to load, show fallback icon
+                                  e.currentTarget.style.display = 'none';
+                                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                }}
+                              />
+                              <div className="w-full h-full flex items-center justify-center absolute inset-0 hidden">
+                                <ShoppingBag className="h-12 w-12 text-gray-400" />
+                              </div>
+                            </div>
+                          ) : (
+                            // Try to load image based on variant ID as fallback
+                            <div className="w-full h-full relative">
+                              <img 
+                                src={`https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/cdn/shop/products/${item.merchandiseId.split('/').pop()}.jpg`}
+                                alt={item.productTitle || item.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  // If image fails to load, show fallback icon
+                                  e.currentTarget.style.display = 'none';
+                                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                }}
+                              />
+                              <div className="w-full h-full flex items-center justify-center absolute inset-0 hidden">
+                                <ShoppingBag className="h-12 w-12 text-gray-400" />
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         <div className="sm:ml-6 flex-1 flex flex-col">

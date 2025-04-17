@@ -156,7 +156,7 @@ const Navbar = () => {
               <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-[#B02020] border-b-2 border-[#B02020]' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200`}>Promociones</Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={masVendidosHandle ? `/category/${masVendidosHandle}` : "/mas-vendidos"} className={`${isActive(masVendidosHandle ? `/category/${masVendidosHandle}` : "/mas-vendidos") ? 'text-[#B02020] border-b-2 border-[#B02020]' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
+              <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-[#B02020] border-b-2 border-[#B02020]' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
             </motion.div>
 
             {/* Categories Dropdown */}
@@ -269,9 +269,9 @@ const Navbar = () => {
                 Promociones
               </Link>
               <Link 
-                to={masVendidosHandle ? `/category/${masVendidosHandle}` : "/mas-vendidos"} 
+                to="/category/mas-vendidos" 
                 className={`block px-4 py-3 rounded-md text-base font-semibold ${
-                  isActive(masVendidosHandle ? `/category/${masVendidosHandle}` : "/mas-vendidos") 
+                  isActive("/category/mas-vendidos") 
                     ? 'text-[#B02020] bg-red-50' 
                     : 'text-gray-700'
                 } hover:text-[#B02020] hover:bg-red-50 transition-all duration-200`} 

@@ -12,6 +12,7 @@ interface CartItem {
     currencyCode: string;
   };
   productTitle?: string;
+  imageUrl?: string; // Add image URL field
 }
 
 interface CartContextType {
@@ -106,13 +107,21 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         
         console.log('[CartContext] Processing cart item:', line);
         
+        // Extract image URL if available
+        let imageUrl = undefined;
+        // Safely check for image property in the merchandise object
+        if (line.merchandise && (line.merchandise as any).image && (line.merchandise as any).image.url) {
+          imageUrl = (line.merchandise as any).image.url;
+        }
+        
         validItems.push({
           id: line.id || '',
           merchandiseId: line.merchandise.id,
           quantity: line.quantity,
           title: line.merchandise.title,
           price: line.merchandise.price,
-          productTitle: line.merchandise.product?.title
+          productTitle: line.merchandise.product?.title,
+          imageUrl: imageUrl
         });
       }
       
@@ -154,25 +163,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       throw new Error('Cannot add item to cart: Missing variant ID');
     }
     
-    // Convert regular variant ID to mock variant ID if needed
-    // This handles the case where ProductCard is passing a regular ID that needs to be used with our mock system
+    // Check if it's a mock variant (for backward compatibility)
     const isMockVariant = merchandiseId.startsWith('mock-variant-');
-    
-    // For standard Shopify variant IDs (non-mock), check if we should convert to mock variant
-    if (!isMockVariant && merchandiseId.startsWith('gid://shopify/ProductVariant/')) {
-      // Extract the numeric part to match with our mock variant naming system
-      const numericPart = merchandiseId.split('/').pop() || '';
-      
-      // If this appears to be our test data, use mock variant instead
-      if (['123456789', '234567890', '345678901', '456789012', '567890123', '678901234', '789012345'].includes(numericPart)) {
-        console.log(`[CartContext] Converting standard variant ID to mock variant ID: ${merchandiseId} -> mock-variant-${numericPart}`);
-        merchandiseId = `mock-variant-${numericPart}`;
-      } else if (merchandiseId.includes('777888999')) {
-        // Special case for our test product
-        console.log(`[CartContext] Converting test variant ID to mock variant: ${merchandiseId} -> mock-variant-345678901`);
-        merchandiseId = 'mock-variant-345678901'; // Map to gamer chair
-      }
-    }
     
     // Retry logic
     let retryCount = 0;
