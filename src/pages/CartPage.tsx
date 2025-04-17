@@ -296,9 +296,79 @@ const CartPage: React.FC = () => {
                     <p className="text-gray-600">Subtotal</p>
                     <p className="font-medium">{cartTotal}</p>
                   </div>
+                  
+                  {/* Free shipping threshold section */}
+                  {cartItems.length > 0 && (
+                    <div className="py-2">
+                      {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
+                        <div className="bg-green-100 text-green-800 p-3 rounded-md flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mr-2 text-green-600">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <div>
+                            <span className="font-medium">¡Calificado para envío gratis!</span>
+                            <p className="text-sm">Tu pedido califica para envío gratuito en todo México.</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span>Progreso hacia envío gratis</span>
+                            <span className="font-medium">
+                              {(() => {
+                                try {
+                                  return Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100).toFixed(0) + '%';
+                                } catch (e) {
+                                  console.warn('[CartPage] Error calculating shipping progress percentage:', e);
+                                  return '0%';
+                                }
+                              })()}
+                            </span>
+                          </div>
+                          <div className="bg-gray-100 rounded-full h-2.5 mb-2">
+                            <div 
+                              className="bg-red-600 h-2.5 rounded-full" 
+                              style={{ 
+                                width: (() => {
+                                  try {
+                                    return `${Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100)}%`;
+                                  } catch (e) {
+                                    console.warn('[CartPage] Error calculating shipping progress width:', e);
+                                    return '0%';
+                                  }
+                                })()
+                              }}
+                            />
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            <span>Añade </span>
+                            <span className="font-medium text-red-600">
+                              {(() => {
+                                try {
+                                  return (10000 - parseFloat(cartTotal.replace(/[^\d.-]/g, ''))).toLocaleString('es-MX', {
+                                    style: 'currency',
+                                    currency: 'MXN'
+                                  });
+                                } catch (e) {
+                                  console.warn('[CartPage] Error calculating remaining amount:', e);
+                                  return '$10,000.00';
+                                }
+                              })()}
+                            </span> más para obtener envío gratis
+                            <Link to="/promociones" className="ml-1 text-red-600 underline">Ver detalles</Link>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
                   <div className="flex justify-between">
                     <p className="text-gray-600">Envío</p>
-                    <p className="font-medium">Calculado al finalizar</p>
+                    {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
+                      <p className="font-medium text-green-600">Gratis</p>
+                    ) : (
+                      <p className="font-medium">Calculado al finalizar</p>
+                    )}
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-600">Impuestos</p>
@@ -351,8 +421,8 @@ const CartPage: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <Truck className="h-6 w-6 text-red-600" />
                       <div>
-                        <h4 className="font-semibold">Envío Gratis</h4>
-                        <p className="text-sm text-gray-600">En pedidos mayores a $999 MXN</p>
+                    <h4 className="font-semibold">Envío Gratis</h4>
+                    <p className="text-sm text-gray-600">En pedidos mayores a $10,000 MXN</p>
                       </div>
                     </div>
                   </motion.div>

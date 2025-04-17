@@ -19,6 +19,56 @@ const MiniCart: React.FC = () => {
   } = useCart();
   
   const [isCartLoaded, setIsCartLoaded] = useState(false);
+
+  // Helper functions for the free shipping calculation
+  const calculateProgressPercentage = () => {
+    if (!cartItems.length) return 0;
+    
+    let subtotal = 0;
+    if (cart?.cost?.subtotalAmount?.amount) {
+      subtotal = parseFloat(cart.cost.subtotalAmount.amount);
+    } else if (cartTotal) {
+      // Extract the numeric value from the formatted currency string
+      subtotal = parseFloat(cartTotal.replace(/[^\d.-]/g, ''));
+    } else {
+      // Calculate from cart items if needed
+      subtotal = cartItems.reduce((sum, item) => {
+        return sum + (parseFloat(item.price.amount) * item.quantity);
+      }, 0);
+    }
+    
+    return Math.min(100, (subtotal / 10000) * 100);
+  };
+  
+  const formatRemainingAmount = () => {
+    if (!cartItems.length) return "$0.00";
+    
+    let subtotal = 0;
+    let currencyCode = 'MXN';
+    
+    if (cart?.cost?.subtotalAmount?.amount) {
+      subtotal = parseFloat(cart.cost.subtotalAmount.amount);
+      currencyCode = cart.cost.subtotalAmount.currencyCode;
+    } else if (cartTotal) {
+      // Extract the numeric value from the formatted currency string
+      subtotal = parseFloat(cartTotal.replace(/[^\d.-]/g, ''));
+    } else {
+      // Calculate from cart items
+      subtotal = cartItems.reduce((sum, item) => {
+        currencyCode = item.price.currencyCode; // Use currency from first item
+        return sum + (parseFloat(item.price.amount) * item.quantity);
+      }, 0);
+    }
+    
+    const remaining = Math.max(0, 10000 - subtotal);
+    
+    return remaining.toLocaleString('es-MX', {
+      style: 'currency',
+      currency: currencyCode,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
   
   useEffect(() => {
     if (isCartOpen) {
@@ -203,6 +253,42 @@ const MiniCart: React.FC = () => {
                   <p>Subtotal</p>
                   <p>{cartTotal}</p>
                 </div>
+                
+                {/* Free shipping threshold section */}
+                <div className="my-3">
+                  {cartItems.length > 0 && (
+                    <>
+                      {(cart?.cost?.subtotalAmount?.amount && parseFloat(cart.cost.subtotalAmount.amount) >= 10000) || 
+                       (cartTotal && parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000) ? (
+                      <div className="bg-green-100 text-green-800 p-2 rounded-md flex items-center">
+                        <div className="mr-2 text-green-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                        </div>
+                        <span className="text-sm font-medium">¡Tu pedido califica para envío gratis!</span>
+                      </div>
+                      ) : (
+                        <div>
+                          <div className="bg-gray-100 rounded-full h-2 mb-2">
+                            <div 
+                              className="bg-red-600 h-2 rounded-full" 
+                              style={{ 
+                                width: `${Math.min(100, calculateProgressPercentage())}%` 
+                              }}
+                            />
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Te faltan <span className="font-medium text-red-600">
+                              {formatRemainingAmount()}
+                            </span> para obtener envío gratis
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+                
                 <p className="text-sm text-gray-500 mb-4">
                   Envío e impuestos calculados al finalizar la compra.
                 </p>

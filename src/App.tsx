@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'; // Import AnimatePresence
 import Navbar from './components/Navbar';
+import ShippingPromoBanner from './components/ShippingPromoBanner';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CategoryPage from './pages/CategoryPage';
@@ -16,6 +17,7 @@ import OrdersPage from './pages/OrdersPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UiShowcasePage from './pages/UiShowcasePage';
+import PromotionsPage from './pages/PromotionsPage';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
@@ -43,6 +45,9 @@ function AnimatedRoutes() {
               <Route path="/register" element={<RegisterPage />} />
               {/* UI Improvements Showcase Page */}
               <Route path="/ui-showcase" element={<UiShowcasePage />} />
+              {/* Promotions Page */}
+              <Route path="/promociones" element={<PromotionsPage />} />
+              <Route path="/promotions" element={<PromotionsPage />} />
             </Routes>
     </AnimatePresence>
   );
@@ -53,6 +58,7 @@ function App() {
     <CartProvider>
       <Router>
         <div className="min-h-screen flex flex-col">
+          <ShippingPromoBanner threshold={10000} />
           <Navbar />
           <main className="flex-grow">
             <AnimatedRoutes /> {/* Use the animated routes component */}

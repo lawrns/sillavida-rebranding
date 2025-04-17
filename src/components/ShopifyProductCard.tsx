@@ -79,11 +79,32 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
     
     try {
       // Get the variant ID from the product
-      const variantId = product.variants?.edges[0]?.node.id;
+      let variantId = product.variants?.edges[0]?.node.id;
       
       // Validate that we have a variant ID
       if (!variantId) {
         throw new Error(`No variant ID found for product: ${product.title}`);
+      }
+      
+      // Extract the numeric part from Shopify variant ID if present
+      if (variantId.startsWith('gid://shopify/ProductVariant/')) {
+        const numericPart = variantId.split('/').pop() || '';
+        
+        // Check if this is a test product ID that should be converted to a mock variant
+        if (['111222333', '444555666', '777888999'].includes(numericPart)) {
+          console.log(`[Cart] Converting Shopify variant ID to mock variant ID: ${variantId}`);
+          
+          // Map specific test IDs to mock variants
+          if (numericPart === '111222333') {
+            variantId = 'mock-variant-345678901'; // Gamer model
+          } else if (numericPart === '444555666') {
+            variantId = 'mock-variant-123456789'; // Ergonomic model
+          } else if (numericPart === '777888999') {
+            variantId = 'mock-variant-567890123'; // Secretarial model
+          }
+          
+          console.log(`[Cart] Converted to mock variant ID: ${variantId}`);
+        }
       }
       
       console.log(`[Cart] Adding Shopify product to cart: ${product.title} with variant ID: ${variantId}`);

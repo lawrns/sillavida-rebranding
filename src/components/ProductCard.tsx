@@ -5,13 +5,31 @@ import { motion } from 'framer-motion'; // Import motion
 import { Chair } from '../data/chairs';
 import { useCart } from '../context/CartContext';
 
-// Generate a Shopify-compatible variant ID from the chair ID
-// This ensures we have a consistent format that matches Shopify API expectations
+// Generate a stable Shopify-compatible mock variant ID from the chair ID
+// For demonstration purposes - generates a consistent test ID
 const generateVariantId = (chairId: string): string => {
-  // Create a deterministic numeric ID based on the chair ID
+  // For testing purposes, generate a predictable ID based on the chair ID
   // In a real implementation, this would be the actual Shopify variant ID
-  const numericId = chairId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
-  return `gid://shopify/ProductVariant/${numericId}`;
+  
+  // Use a fixed numeric ID based on the number of chairs we have
+  // This avoids errors with trying to reference non-existent Shopify variants
+  let mockId = "";
+  
+  // Map known chair IDs to fixed test variant IDs
+  // In a real implementation, this would come from the actual Shopify data
+  if (chairId === "ergonomic") mockId = "123456789";
+  else if (chairId === "executive") mockId = "234567890";
+  else if (chairId === "gamer") mockId = "345678901";
+  else if (chairId === "visitor") mockId = "456789012";
+  else if (chairId === "secretarial") mockId = "567890123";
+  else if (chairId === "gamer2") mockId = "678901234";
+  else if (chairId === "accessory") mockId = "789012345";
+  else {
+    // Generate a deterministic but consistent ID for any other chairs
+    mockId = chairId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0).toString();
+  }
+  
+  return `mock-variant-${mockId}`;
 };
 
 interface ProductCardProps {
@@ -32,7 +50,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
       // Generate a Shopify variant ID from the chair ID
       const variantId = generateVariantId(chair.id);
       
-      console.log(`[Cart] Adding item to cart: ${chair.name} (${chair.id}) with variant ID: ${variantId}`);
+      console.log(`[Cart] Adding item to cart: ${chair.name} (${chair.id})`);
+      console.log(`[Cart] Using mock variant ID: ${variantId}`);
       
       // Add the item to the cart with retry logic
       let retryCount = 0;

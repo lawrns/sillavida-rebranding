@@ -154,6 +154,26 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       throw new Error('Cannot add item to cart: Missing variant ID');
     }
     
+    // Convert regular variant ID to mock variant ID if needed
+    // This handles the case where ProductCard is passing a regular ID that needs to be used with our mock system
+    const isMockVariant = merchandiseId.startsWith('mock-variant-');
+    
+    // For standard Shopify variant IDs (non-mock), check if we should convert to mock variant
+    if (!isMockVariant && merchandiseId.startsWith('gid://shopify/ProductVariant/')) {
+      // Extract the numeric part to match with our mock variant naming system
+      const numericPart = merchandiseId.split('/').pop() || '';
+      
+      // If this appears to be our test data, use mock variant instead
+      if (['123456789', '234567890', '345678901', '456789012', '567890123', '678901234', '789012345'].includes(numericPart)) {
+        console.log(`[CartContext] Converting standard variant ID to mock variant ID: ${merchandiseId} -> mock-variant-${numericPart}`);
+        merchandiseId = `mock-variant-${numericPart}`;
+      } else if (merchandiseId.includes('777888999')) {
+        // Special case for our test product
+        console.log(`[CartContext] Converting test variant ID to mock variant: ${merchandiseId} -> mock-variant-345678901`);
+        merchandiseId = 'mock-variant-345678901'; // Map to gamer chair
+      }
+    }
+    
     // Retry logic
     let retryCount = 0;
     const maxRetries = 2;
