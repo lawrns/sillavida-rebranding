@@ -133,7 +133,7 @@ const CartPage: React.FC = () => {
               >
                 <Link
                   to="/"
-                  className="mt-8 bg-red-600 text-white py-3 px-6 rounded-md hover:bg-red-700 inline-flex items-center font-medium shadow-sm"
+                  className="mt-8 bg-teal text-white py-3 px-6 rounded-md hover:bg-teal-light inline-flex items-center font-medium shadow-sm"
                   aria-label="Continuar comprando"
                 >
                   <ArrowLeft className="h-5 w-5 mr-2" />
@@ -174,7 +174,7 @@ const CartPage: React.FC = () => {
                 animate={{ opacity: 1 }}
               >
                 <motion.div 
-                  className="w-10 h-10 border-4 border-gray-200 border-t-red-600 rounded-full"
+                  className="w-10 h-10 border-4 border-gray-200 border-t-teal rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
@@ -286,7 +286,7 @@ const CartPage: React.FC = () => {
 
                             <button
                               type="button"
-                              className="font-medium text-red-600 hover:text-red-500 flex items-center"
+                              className="font-medium text-teal hover:text-teal-light flex items-center"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
                             >
@@ -303,7 +303,7 @@ const CartPage: React.FC = () => {
                 <div className="p-6 border-t border-gray-200">
                   <Link
                     to="/"
-                    className="text-red-600 hover:text-red-500 flex items-center"
+                    className="text-teal hover:text-teal-light flex items-center"
                   >
                     <ArrowLeft className="h-5 w-5 mr-2" />
                     Continuar Comprando
@@ -358,7 +358,7 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="bg-gray-100 rounded-full h-2.5 mb-2">
                             <div 
-                              className="bg-red-600 h-2.5 rounded-full" 
+                              className="bg-teal h-2.5 rounded-full" 
                               style={{ 
                                 width: (() => {
                                   try {
@@ -373,7 +373,7 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="text-sm text-gray-600">
                             <span>Añade </span>
-                            <span className="font-medium text-red-600">
+                            <span className="font-medium text-teal">
                               {(() => {
                                 try {
                                   return (10000 - parseFloat(cartTotal.replace(/[^\d.-]/g, ''))).toLocaleString('es-MX', {
@@ -386,7 +386,7 @@ const CartPage: React.FC = () => {
                                 }
                               })()}
                             </span> más para obtener envío gratis
-                            <Link to="/promociones" className="ml-1 text-red-600 underline">Ver detalles</Link>
+                            <Link to="/promociones" className="ml-1 text-teal underline">Ver detalles</Link>
                           </div>
                         </div>
                       )}
@@ -420,7 +420,7 @@ const CartPage: React.FC = () => {
                 <motion.button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 ${
+                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal hover:bg-teal-light ${
                     isLoading ? 'opacity-75 cursor-not-allowed' : ''
                   }`}
                   whileHover={{ scale: 1.03 }}
@@ -450,7 +450,7 @@ const CartPage: React.FC = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="flex items-center gap-3">
-                      <Truck className="h-6 w-6 text-red-600" />
+                      <Truck className="h-6 w-6 text-teal" />
                       <div>
                     <h4 className="font-semibold">Envío Gratis</h4>
                     <p className="text-sm text-gray-600">En pedidos mayores a $10,000 MXN</p>
@@ -464,7 +464,7 @@ const CartPage: React.FC = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="flex items-center gap-3">
-                      <Shield className="h-6 w-6 text-red-600" />
+                      <Shield className="h-6 w-6 text-teal" />
                       <div>
                         <h4 className="font-semibold">Garantía de 12 Meses</h4>
                         <p className="text-sm text-gray-600">En todos nuestros productos</p>
@@ -478,7 +478,7 @@ const CartPage: React.FC = () => {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="flex items-center gap-3">
-                      <CreditCard className="h-6 w-6 text-red-600" />
+                      <CreditCard className="h-6 w-6 text-teal" />
                       <div>
                         <h4 className="font-semibold">Pago Seguro</h4>
                         <p className="text-sm text-gray-600">Múltiples métodos de pago</p>

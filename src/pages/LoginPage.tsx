@@ -88,7 +88,7 @@ const LoginPage: React.FC = () => {
     return (
       <div className="max-w-md mx-auto px-4 py-8">
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
         </div>
       </div>
     );
@@ -142,7 +142,7 @@ const LoginPage: React.FC = () => {
                 id="email"
                 value={email}
                 onChange={handleEmailChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
               />
             </div>
             
@@ -157,7 +157,7 @@ const LoginPage: React.FC = () => {
                   id="password"
                   value={password}
                   onChange={handlePasswordChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
                 />
                 <button
                   type="button"
@@ -175,7 +175,7 @@ const LoginPage: React.FC = () => {
             
             {/* Forgot Password */}
             <div className="text-right">
-              <a href="#" className="text-sm text-red-600 hover:text-red-800">
+              <a href="#" className="text-sm text-teal hover:text-teal-light">
                 ¿Olvidaste tu contraseña?
               </a>
             </div>
@@ -183,7 +183,7 @@ const LoginPage: React.FC = () => {
           
           <button
             type="submit"
-            className="w-full mt-6 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-6 px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={submitting}
           >
             {submitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
@@ -193,7 +193,7 @@ const LoginPage: React.FC = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             ¿No tienes una cuenta?{' '}
-            <Link to="/register" className="text-red-600 hover:text-red-800">
+            <Link to="/register" className="text-teal hover:text-teal-light">
               Crear cuenta
             </Link>
           </p>

@@ -179,7 +179,7 @@ const RegisterPage: React.FC = () => {
     return (
       <div className="max-w-md mx-auto px-4 py-8">
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
         </div>
       </div>
     );
@@ -236,7 +236,7 @@ const RegisterPage: React.FC = () => {
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border ${
                   errors.firstName ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-red-500`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
               />
               {errors.firstName && (
                 <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
@@ -256,7 +256,7 @@ const RegisterPage: React.FC = () => {
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border ${
                   errors.lastName ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-red-500`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
               />
               {errors.lastName && (
                 <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
@@ -276,7 +276,7 @@ const RegisterPage: React.FC = () => {
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-red-500`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -297,7 +297,7 @@ const RegisterPage: React.FC = () => {
                   onChange={handleInputChange}
                   className={`w-full px-3 py-2 border ${
                     errors.password ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-red-500`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
                 />
                 <button
                   type="button"
@@ -334,7 +334,7 @@ const RegisterPage: React.FC = () => {
                   onChange={handleInputChange}
                   className={`w-full px-3 py-2 border ${
                     errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-red-500`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
                 />
                 <button
                   type="button"
@@ -356,7 +356,7 @@ const RegisterPage: React.FC = () => {
           
           <button
             type="submit"
-            className="w-full mt-6 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-6 px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={submitting}
           >
             {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
@@ -366,7 +366,7 @@ const RegisterPage: React.FC = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             ¿Ya tienes una cuenta?{' '}
-            <Link to="/login" className="text-red-600 hover:text-red-800">
+            <Link to="/login" className="text-teal hover:text-teal-light">
               Iniciar sesión
             </Link>
           </p>

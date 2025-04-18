@@ -124,19 +124,19 @@ const Navbar = () => {
                 <motion.span
                   animate={{ rotate: mobileMenuOpen ? 45 : 0, y: mobileMenuOpen ? 0 : -3 }} // Adjusted y for centering rotation
                   transition={{ duration: 0.2 }}
-                  className="absolute block h-0.5 w-6 bg-[#B02020]"
+                  className="absolute block h-0.5 w-6 bg-teal"
                   style={{ top: 'calc(50% - 1px)' }} // Centered vertically
                 />
                 <motion.span
                   animate={{ opacity: mobileMenuOpen ? 0 : 1 }}
                   transition={{ duration: 0.1 }}
-                  className="absolute block h-0.5 w-6 bg-[#B02020]"
+                  className="absolute block h-0.5 w-6 bg-teal"
                    style={{ top: 'calc(50% - 1px)' }} // Centered vertically
                 />
                 <motion.span
                   animate={{ rotate: mobileMenuOpen ? -45 : 0, y: mobileMenuOpen ? 0 : 3 }} // Adjusted y for centering rotation
                   transition={{ duration: 0.2 }}
-                  className="absolute block h-0.5 w-6 bg-[#B02020]"
+                  className="absolute block h-0.5 w-6 bg-teal"
                    style={{ top: 'calc(50% - 1px)' }} // Centered vertically
                 />
               </div>
@@ -150,20 +150,20 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center space-x-6 lg:space-x-8">
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} className={`${isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") ? 'text-[#B02020] border-b-2 border-[#B02020]' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200`}>Tienda</Link>
+              <Link to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} className={`${isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200`}>Tienda</Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-[#B02020] border-b-2 border-[#B02020]' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200`}>Promociones</Link>
+              <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200`}>Promociones</Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-[#B02020] border-b-2 border-[#B02020]' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
+              <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
             </motion.div>
 
             {/* Categories Dropdown */}
             <div className="relative" ref={categoriesRef}>
               <motion.button 
                 whileHover={{ y: -2 }} 
-                className="flex items-center text-gray-800 text-base font-semibold tracking-wide hover:text-[#B02020] py-2 px-1 transition-colors duration-200"
+                className="flex items-center text-gray-800 text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200"
                 onClick={toggleCategories} 
                 aria-expanded={categoriesOpen} 
                 aria-haspopup="true" 
@@ -175,7 +175,7 @@ const Navbar = () => {
                   transition={{ duration: 0.2 }}
                   className="ml-1 flex items-center justify-center"
                 >
-                  <ChevronDown className={`h-4 w-4 text-[#B02020]`} />
+                  <ChevronDown className={`h-4 w-4 text-teal`} />
                 </motion.div>
               </motion.button>
               <AnimatePresence>
@@ -202,7 +202,7 @@ const Navbar = () => {
                               <Link 
                                 key={collection.id} 
                                 to={`/category/${collection.handle}`} 
-                                className="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-red-50 hover:text-[#B02020] transition-all duration-200" 
+                                className="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
                                 role="menuitem" 
                                 onClick={() => setCategoriesOpen(false)}
                               >
@@ -222,9 +222,9 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <AccountButton />
             <button className="p-2 relative transition-all duration-200 hover:scale-110" onClick={toggleCart} aria-label={`Open cart (${cartCount} items)`}>
-              <ShoppingCart className="h-5 w-5 text-[#B02020] transition-colors duration-200 hover:text-[#B02020]" />
+              <ShoppingCart className="h-5 w-5 text-teal transition-colors duration-200" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#B02020] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{cartCount}</span>
+                <span className="absolute -top-1 -right-1 bg-teal text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{cartCount}</span>
               )}
             </button>
           </div>
@@ -250,9 +250,9 @@ const Navbar = () => {
                 to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} 
                 className={`block px-4 py-3 rounded-md text-base font-semibold ${
                   isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") 
-                    ? 'text-[#B02020] bg-red-50' 
+                    ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
-                } hover:text-[#B02020] hover:bg-red-50 transition-all duration-200`} 
+                } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tienda
@@ -261,9 +261,9 @@ const Navbar = () => {
                 to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} 
                 className={`block px-4 py-3 rounded-md text-base font-semibold ${
                   isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") 
-                    ? 'text-[#B02020] bg-red-50' 
+                    ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
-                } hover:text-[#B02020] hover:bg-red-50 transition-all duration-200`} 
+                } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Promociones
@@ -272,9 +272,9 @@ const Navbar = () => {
                 to="/category/mas-vendidos" 
                 className={`block px-4 py-3 rounded-md text-base font-semibold ${
                   isActive("/category/mas-vendidos") 
-                    ? 'text-[#B02020] bg-red-50' 
+                    ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
-                } hover:text-[#B02020] hover:bg-red-50 transition-all duration-200`} 
+                } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Más Vendidos
@@ -282,7 +282,7 @@ const Navbar = () => {
               {/* Mobile Categories */}
               <div ref={categoriesRef}>
                 <button 
-                  className="flex w-full items-center px-4 py-3 rounded-md text-base font-semibold text-gray-700 hover:text-[#B02020] hover:bg-red-50 transition-all duration-200" 
+                  className="flex w-full items-center px-4 py-3 rounded-md text-base font-semibold text-gray-700 hover:text-teal hover:bg-teal-extralight transition-all duration-200" 
                   onClick={toggleCategories}
                 >
                   Categorías
@@ -291,7 +291,7 @@ const Navbar = () => {
                     transition={{ duration: 0.2 }}
                     className="ml-1 flex items-center justify-center"
                   >
-                     <ChevronDown className={`h-4 w-4 text-[#B02020]`} />
+                     <ChevronDown className={`h-4 w-4 text-teal`} />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -312,7 +312,7 @@ const Navbar = () => {
                             <Link 
                               key={collection.id} 
                               to={`/category/${collection.handle}`} 
-                              className="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-red-50 hover:text-[#B02020] transition-all duration-200" 
+                              className="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               {collection.title}

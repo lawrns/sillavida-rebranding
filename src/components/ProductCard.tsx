@@ -117,7 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
           <h3 className="font-semibold mb-2">{chair.name}</h3>
           <p className="text-gray-600 mb-2 line-clamp-2 flex-grow">{chair.description}</p> {/* Added flex-grow */}
           <div className="mt-auto pt-2"> {/* Push button to bottom, added padding top */}
-            <p className="text-xl font-bold text-red-600">
+            <p className="text-xl font-bold text-teal">
               ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
             </p>
             <button
@@ -125,8 +125,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
             disabled={isLoading}
             className={`w-full mt-4 py-2 rounded transition-colors ${
               success 
-                ? 'bg-green-600 hover:bg-green-700 text-white' 
-                : 'bg-red-600 hover:bg-red-700 text-white'
+                ? 'bg-sage hover:bg-sage-light text-white' 
+                : 'bg-teal hover:bg-teal-light text-white'
               }`}
             >
               {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'}

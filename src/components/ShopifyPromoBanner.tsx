@@ -62,7 +62,7 @@ const ShopifyPromoBanner: React.FC<ShopifyPromoBannerProps> = ({ product, dark =
     <div className={`relative overflow-hidden rounded-2xl ${dark ? 'bg-gray-900' : 'bg-gray-100'}`}>
       <div className="flex flex-col md:flex-row items-center justify-between p-8">
         <div className="flex-1 mb-8 md:mb-0">
-          <div className="inline-block px-4 py-1 rounded-full bg-red-600 text-white text-sm mb-4">
+          <div className="inline-block px-4 py-1 rounded-full bg-teal text-white text-sm mb-4">
             Campeón de Ventas
           </div>
           <h3 className={`text-3xl font-bold mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>
@@ -83,7 +83,7 @@ const ShopifyPromoBanner: React.FC<ShopifyPromoBannerProps> = ({ product, dark =
           </div>
           <Link to={`/product/${product.handle}`}>
             <button 
-              className="mt-6 px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              className="mt-6 px-8 py-3 bg-teal text-white rounded-lg hover:bg-teal-light transition-colors"
               onClick={handleBuyClick}
               aria-label={`Ver ${product.title}`}
             >

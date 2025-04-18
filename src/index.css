@@ -1,3 +1,94 @@
+@import './styles/colors.css';
+@import './styles/buttons.css';
+@import './styles/forms.css';
+@import './styles/shadows.css';
+@import './styles/interactions.css';
+@import './styles/dark-mode.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global styles that use our color variables */
+@layer base {
+  body {
+    color: var(--color-black);
+    background-color: var(--color-white);
+  }
+
+  a {
+    color: var(--color-teal);
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover {
+    color: var(--color-teal-light);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-black);
+  }
+
+  button, .btn {
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Primary button styles */
+  .btn-primary {
+    background-color: var(--color-button-primary);
+    color: var(--color-button-primary-text);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-button-primary-hover);
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-button-primary-active);
+  }
+
+  .btn-primary:disabled {
+    background-color: var(--color-button-primary-disabled);
+    color: var(--color-button-primary-disabled-text);
+  }
+
+  /* Secondary button styles */
+  .btn-secondary {
+    background-color: var(--color-button-secondary);
+    color: var(--color-button-secondary-text);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-button-secondary-hover);
+  }
+
+  .btn-secondary:active {
+    background-color: var(--color-button-secondary-active);
+  }
+
+  .btn-secondary:disabled {
+    background-color: var(--color-button-secondary-disabled);
+    color: var(--color-button-secondary-disabled-text);
+  }
+
+  /* Tertiary button styles */
+  .btn-tertiary {
+    background-color: transparent;
+    border: 1px solid var(--color-button-tertiary-border);
+    color: var(--color-button-tertiary-text);
+  }
+
+  .btn-tertiary:hover {
+    background-color: var(--color-button-tertiary-hover);
+  }
+
+  .btn-tertiary:active {
+    background-color: var(--color-button-tertiary-active-bg);
+    color: var(--color-button-tertiary-active-text);
+  }
+
+  .btn-tertiary:disabled {
+    border-color: var(--color-button-tertiary-disabled);
+    color: var(--color-button-tertiary-disabled);
+  }
+}

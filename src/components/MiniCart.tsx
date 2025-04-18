@@ -165,7 +165,7 @@ const MiniCart: React.FC = () => {
             <div className="flex-1 overflow-auto p-4 bg-white" style={{ backgroundColor: '#FFFFFF' }}>
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
                   <p className="mt-4 text-gray-500 text-lg">Cargando carrito...</p>
                 </div>
               ) : cartItems.length === 0 ? (
@@ -173,7 +173,7 @@ const MiniCart: React.FC = () => {
                   <ShoppingBag className="h-16 w-16 text-gray-300" />
                   <p className="mt-4 text-gray-500 text-lg">Tu carrito está vacío</p>
                   <button
-                    className="mt-6 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700"
+                    className="mt-6 bg-teal text-white py-2 px-4 rounded-md hover:bg-teal-light"
                     onClick={closeCart}
                   >
                     Continuar Comprando
@@ -213,7 +213,7 @@ const MiniCart: React.FC = () => {
                               <button 
                                 onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isLoading}
-                                className="p-1 text-gray-600 hover:text-red-600"
+                                className="p-1 text-gray-600 hover:text-teal"
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
@@ -223,14 +223,14 @@ const MiniCart: React.FC = () => {
                               <button 
                                 onClick={() => updateItem(item.id, item.quantity + 1)}
                                 disabled={isLoading}
-                                className="p-1 text-gray-600 hover:text-red-600"
+                                className="p-1 text-gray-600 hover:text-teal"
                               >
                                 <Plus className="h-4 w-4" />
                               </button>
                             </div>
 
                             <button
-                              className="text-red-600 hover:text-red-800 text-sm font-medium flex items-center"
+                              className="text-teal hover:text-teal-dark text-sm font-medium flex items-center"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
                             >
@@ -260,8 +260,8 @@ const MiniCart: React.FC = () => {
                     <>
                       {(cart?.cost?.subtotalAmount?.amount && parseFloat(cart.cost.subtotalAmount.amount) >= 10000) || 
                        (cartTotal && parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000) ? (
-                      <div className="bg-green-100 text-green-800 p-2 rounded-md flex items-center">
-                        <div className="mr-2 text-green-600">
+                      <div className="bg-sage-extralight text-sage-dark p-2 rounded-md flex items-center">
+                        <div className="mr-2 text-sage">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
@@ -272,14 +272,14 @@ const MiniCart: React.FC = () => {
                         <div>
                           <div className="bg-gray-100 rounded-full h-2 mb-2">
                             <div 
-                              className="bg-red-600 h-2 rounded-full" 
+                              className="bg-teal h-2 rounded-full" 
                               style={{ 
                                 width: `${Math.min(100, calculateProgressPercentage())}%` 
                               }}
                             />
                           </div>
                           <div className="text-sm text-gray-600">
-                            Te faltan <span className="font-medium text-red-600">
+                            Te faltan <span className="font-medium text-teal">
                               {formatRemainingAmount()}
                             </span> para obtener envío gratis
                           </div>
@@ -296,7 +296,7 @@ const MiniCart: React.FC = () => {
                 <button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className="w-full bg-red-600 text-white py-3 rounded-md font-medium hover:bg-red-700 flex items-center justify-center"
+                  className="w-full bg-teal text-white py-3 rounded-md font-medium hover:bg-teal-light flex items-center justify-center"
                 >
                   {isLoading ? (
                     <>
@@ -317,7 +317,7 @@ const MiniCart: React.FC = () => {
                     <Link
                       to="/cart"
                       onClick={closeCart}
-                      className="text-red-600 font-medium hover:text-red-800"
+                      className="text-teal font-medium hover:text-teal-dark"
                     >
                       Ver Carrito Completo
                     </Link>
@@ -326,11 +326,11 @@ const MiniCart: React.FC = () => {
                 
                 <div className="mt-4 pt-4 border-t border-gray-100 flex justify-center space-x-4">
                   <div className="flex items-center">
-                    <Shield className="h-4 w-4 text-green-600 mr-1.5" />
+                    <Shield className="h-4 w-4 text-sage mr-1.5" />
                     <span className="text-xs text-gray-500">Pago Seguro</span>
                   </div>
                   <div className="flex items-center">
-                    <CreditCard className="h-4 w-4 text-green-600 mr-1.5" />
+                    <CreditCard className="h-4 w-4 text-sage mr-1.5" />
                     <span className="text-xs text-gray-500">Métodos de Pago</span>
                   </div>
                 </div>

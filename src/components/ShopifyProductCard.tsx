@@ -190,7 +190,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
   const buttonVariants = {
     hover: { scale: 1.05 },
     tap: { scale: 0.98 },
-    success: { backgroundColor: "#16a34a" }
+    success: { backgroundColor: "#7D9D8C" } // Sage color
   };
 
   return (
@@ -246,11 +246,11 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
           <span className="ml-2 text-sm text-gray-600">{rating}</span>
         </div>
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-          <h3 className="font-semibold mb-2 hover:text-red-600 transition-colors">{product.title}</h3>
+          <h3 className="font-semibold mb-2 hover:text-teal transition-colors">{product.title}</h3>
         </Link>
         <p className="text-gray-600 mb-2 line-clamp-2">{product.description}</p>
         <div className="flex items-center gap-2 mb-1">
-          <p className="text-xl font-bold text-red-600">
+          <p className="text-xl font-bold text-teal">
             {formattedPrice}
           </p>
           {hasCompareAtPrice && (
@@ -273,8 +273,8 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
           aria-label={`Agregar ${product.title} al carrito`}
           className={`w-full mt-4 py-3 rounded text-white ${
             success 
-              ? 'bg-green-600' 
-              : 'bg-red-600'
+              ? 'bg-sage' 
+              : 'bg-teal'
           }`}
           variants={buttonVariants}
           whileHover="hover"

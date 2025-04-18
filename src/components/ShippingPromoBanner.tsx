@@ -56,7 +56,7 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
   // Don't show if cart is empty
   if (cartItems.length === 0) {
     return (
-      <div className="bg-red-600 text-white py-2 px-4 text-center">
+      <div className="bg-teal text-white py-2 px-4 text-center">
         <div className="container mx-auto flex items-center justify-center">
           <Truck className="h-5 w-5 mr-2" />
           <p className="text-sm font-medium">
@@ -69,7 +69,7 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
   }
   
   return (
-    <div className={hasQualifiedForFreeShipping ? "bg-green-600 text-white py-2 px-4 text-center" : "bg-red-600 text-white py-2 px-4 text-center"}>
+    <div className={hasQualifiedForFreeShipping ? "bg-sage text-white py-2 px-4 text-center" : "bg-teal text-white py-2 px-4 text-center"}>
       <div className="container mx-auto flex items-center justify-center">
         <Truck className="h-5 w-5 mr-2" />
         {hasQualifiedForFreeShipping ? (

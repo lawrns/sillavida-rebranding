@@ -20,11 +20,11 @@ const slides = [
     originalPrice: 3800.00,
     image: "/images/gamer2.png",
     theme: {
-      bg: "from-red-900 via-red-800 to-red-900",
-      accent: "bg-red-500/20",
-      text: "text-red-300",
-      button: "bg-red-500 hover:bg-red-400",
-      gradient: "from-white via-white to-red-200"
+      bg: "from-teal-dark via-teal to-teal-dark",
+      accent: "bg-teal-light/20",
+      text: "text-beige-light",
+      button: "bg-teal hover:bg-teal-light",
+      gradient: "from-white via-white to-beige-extralight"
     }
   },
   {
@@ -36,11 +36,11 @@ const slides = [
     originalPrice: 3200.00,
     image: "/images/—Pngtree—single comfort noise style sofa_4372281.png",
     theme: {
-      bg: "from-yellow-700 via-yellow-600 to-yellow-700",
-      accent: "bg-yellow-500/20",
-      text: "text-yellow-300",
-      button: "bg-yellow-500 hover:bg-yellow-400",
-      gradient: "from-white via-white to-yellow-200"
+      bg: "from-sage-dark via-sage to-sage-dark",
+      accent: "bg-sage-light/20",
+      text: "text-beige-light",
+      button: "bg-sage hover:bg-sage-light",
+      gradient: "from-white via-white to-beige-extralight"
     }
   },
   {
@@ -52,11 +52,11 @@ const slides = [
     originalPrice: 12800.00,
     image: "/images/bundle.png",
     theme: {
-      bg: "from-gray-800 via-gray-700 to-gray-800",
-      accent: "bg-gray-500/20",
-      text: "text-gray-300",
-      button: "bg-gray-600 hover:bg-gray-500",
-      gradient: "from-white via-white to-gray-200"
+      bg: "from-terracotta-dark via-terracotta to-terracotta-dark",
+      accent: "bg-terracotta-light/20",
+      text: "text-beige-light",
+      button: "bg-terracotta hover:bg-terracotta-light",
+      gradient: "from-white via-white to-beige-extralight"
     },
     features: ["Comodidad", "Estilo", "Durabilidad", "12 MSI"]
   }
@@ -165,7 +165,7 @@ const HeroSlider = () => {
                   disabled={isLoading}
                   className={`${
                     success 
-                      ? 'bg-green-600 hover:bg-green-700' 
+                      ? 'bg-sage hover:bg-sage-light' 
                       : currentTheme.button
                   } text-white px-8 py-3 rounded-lg font-bold transition-colors`}
                 >

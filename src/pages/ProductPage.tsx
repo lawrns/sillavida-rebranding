@@ -126,7 +126,7 @@ const ProductPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
       </div>
     );
   }
@@ -179,9 +179,9 @@ const ProductPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-gray-500 mb-6">
-          <Link to="/" className="hover:text-red-600">Inicio</Link>
+          <Link to="/" className="hover:text-teal">Inicio</Link>
           <ChevronRight className="h-4 w-4 mx-2" />
-          <Link to="/category/all" className="hover:text-red-600">Productos</Link>
+          <Link to="/category/all" className="hover:text-teal">Productos</Link>
           <ChevronRight className="h-4 w-4 mx-2" />
           <span className="font-medium text-gray-900">{product.title}</span>
         </div>
@@ -292,8 +292,8 @@ const ProductPage: React.FC = () => {
                     key={index} 
                     className={`aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer ${
                       activeImageIndex === index 
-                        ? 'ring-2 ring-red-600 shadow-md' 
-                        : 'border border-gray-200 hover:border-red-300'
+                        ? 'ring-2 ring-teal shadow-md' 
+                        : 'border border-gray-200 hover:border-teal-light'
                     }`}
                     onClick={() => setActiveImageIndex(index)}
                     whileHover={{ scale: 1.05 }}
@@ -331,7 +331,7 @@ const ProductPage: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <p className="text-3xl font-bold text-red-600">{formattedPrice}</p>
+              <p className="text-3xl font-bold text-teal">{formattedPrice}</p>
               <p 
                 className="text-gray-600 cursor-help" 
                 title="Paga a 12 meses sin intereses con tarjetas participantes."
@@ -350,8 +350,8 @@ const ProductPage: React.FC = () => {
                       onClick={() => setSelectedVariantId(node.id)}
                       className={`p-3 rounded-md shadow-sm ${
                         selectedVariantId === node.id
-                          ? 'bg-red-50 border border-red-400 text-red-700'
-                          : 'bg-white border border-gray-200 text-gray-700 hover:border-red-300'
+                          ? 'bg-teal-50 border border-teal text-teal-dark'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:border-teal-light'
                       }`}
                       whileHover={{ 
                         scale: 1.03, 
@@ -416,9 +416,9 @@ const ProductPage: React.FC = () => {
               className={`w-full py-3.5 rounded-lg font-semibold mb-2 flex items-center justify-center ${
                 isCartLoading 
                   ? 'bg-gray-400 text-white cursor-not-allowed' 
-                  : 'bg-red-600 text-white hover:bg-red-700'
+                  : 'bg-teal text-white hover:bg-teal-light'
               }`}
-              whileHover={!isCartLoading ? { scale: 1.02, backgroundColor: "#b91c1c" } : {}}
+              whileHover={!isCartLoading ? { scale: 1.02, backgroundColor: "#0D9488" } : {}}
               whileTap={!isCartLoading ? { scale: 0.98 } : {}}
               transition={{ duration: 0.2 }}
             >
@@ -513,11 +513,11 @@ const ProductPage: React.FC = () => {
             
             {/* Social Sharing */}
             <div className="mt-8 flex items-center gap-4">
-              <button className="flex items-center gap-2 text-gray-600 hover:text-red-600">
+              <button className="flex items-center gap-2 text-gray-600 hover:text-teal">
                 <Share2 className="h-5 w-5" />
                 <span>Compartir</span>
               </button>
-              <button className="flex items-center gap-2 text-gray-600 hover:text-red-600">
+              <button className="flex items-center gap-2 text-gray-600 hover:text-teal">
                 <Heart className="h-5 w-5" />
                 <span>Favorito</span>
               </button>
@@ -538,7 +538,7 @@ const ProductPage: React.FC = () => {
               <h2 className="text-2xl font-bold">Productos Relacionados</h2>
               <Link 
                 to="/category/all" 
-                className="text-sm text-red-600 hover:text-red-800 flex items-center transition-colors duration-200"
+                className="text-sm text-teal hover:text-teal-light flex items-center transition-colors duration-200"
               >
                 Ver todos los productos
                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -549,11 +549,11 @@ const ProductPage: React.FC = () => {
               {relatedProducts.map((relatedProduct, index) => (
                 <motion.div 
                   key={relatedProduct.id} 
-                  className="rounded-lg overflow-hidden bg-white border border-gray-200 hover:border-red-200 transition-all duration-300"
+                  className="rounded-lg overflow-hidden bg-white border border-gray-200 hover:border-teal-light transition-all duration-300"
                   whileHover={{ 
                     y: -5, 
                     boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-                    borderColor: "rgba(252, 165, 165, 1)" // red-300
+                    borderColor: "rgba(45, 212, 191, 0.7)" // teal-light
                   }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -586,7 +586,7 @@ const ProductPage: React.FC = () => {
                         <span className="text-xs text-gray-500 ml-1">(4.0)</span>
                       </div>
                       <div className="mt-auto pt-2">
-                        <p className="text-red-600 font-bold">
+                        <p className="text-teal font-bold">
                           {parseFloat(relatedProduct.priceRange.minVariantPrice.amount).toLocaleString('es-MX', {
                             style: 'currency',
                             currency: relatedProduct.priceRange.minVariantPrice.currencyCode
