@@ -38,32 +38,37 @@ const Footer = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.div variants={itemVariants}>
-            <h3 className="text-xl font-bold mb-4">Silla Vida</h3>
-            <p className="text-beige-light text-sm md:text-base">
+            <h3 className="text-xl mb-4">
+              <div className="vida-logo">
+                <span className="vida-logo-silla text-white">Silla</span>
+                <span className="vida-logo-vida text-beige">Vida</span>
+              </div>
+            </h3>
+            <p className="text-beige-light text-sm md:text-base font-body">
               Comodidad y estilo para tu espacio de trabajo y gaming.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-4" id="footer-links">Enlaces</h4>
+            <h4 className="font-heading font-semibold mb-4" id="footer-links">Enlaces</h4>
             <ul className="space-y-3" aria-labelledby="footer-links">
               <motion.li variants={itemVariants}>
-                <Link to="/tienda" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/tienda" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Tienda
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/oficina" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/oficina" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Sillas de Oficina
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/gamer" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/gamer" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Sillas Gamer
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/nosotros" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/nosotros" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Nosotros
                 </Link>
               </motion.li>
@@ -71,25 +76,25 @@ const Footer = () => {
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-4" id="footer-help">Ayuda</h4>
+            <h4 className="font-heading font-semibold mb-4" id="footer-help">Ayuda</h4>
             <ul className="space-y-3" aria-labelledby="footer-help">
               <motion.li variants={itemVariants}>
-                <Link to="/faq" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/faq" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Preguntas Frecuentes
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/envios" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/envios" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Envíos
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/garantia" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/garantia" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Garantía
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/contacto" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center">
+                <Link to="/contacto" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Contacto
                 </Link>
               </motion.li>
@@ -97,7 +102,7 @@ const Footer = () => {
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <h4 className="font-semibold mb-4" id="footer-social">Síguenos</h4>
+            <h4 className="font-heading font-semibold mb-4" id="footer-social">Síguenos</h4>
             <div className="flex space-x-6" aria-labelledby="footer-social">
               <motion.a 
                 href="https://facebook.com" 
@@ -144,7 +149,13 @@ const Footer = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
-          <p className="text-sm">&copy; {new Date().getFullYear()} Silla Vida. Todos los derechos reservados.</p>
+          <p className="text-sm font-body footer-text">&copy; {new Date().getFullYear()} 
+            <span className="vida-logo mx-1">
+              <span className="vida-logo-silla text-white">Silla</span>
+              <span className="vida-logo-vida text-beige">Vida</span>
+            </span>
+            Todos los derechos reservados.
+          </p>
         </motion.div>
       </div>
     </footer>

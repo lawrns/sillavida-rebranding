@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion'; // Import motion and An
 import { getProduct, getProductsByCollection } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import type { ShopifyProduct } from '../types/shopify';
-import { Star, Truck, Shield, CreditCard, ChevronRight, Plus, Minus, Share2, Heart, Maximize2, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import { Star, ChevronRight, Plus, Minus, Share2, Heart, Maximize2, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import { Helmet } from 'react-helmet';
 
 const ProductPage: React.FC = () => {
@@ -468,29 +469,13 @@ const ProductPage: React.FC = () => {
               )}
             </AnimatePresence>
 
-            {/* Product Features */}
-            <div className="space-y-4 border-t pt-6">
-              <div className="flex items-center gap-3">
-                <Truck className="h-6 w-6 text-gray-600" />
-                <div>
-                  <h4 className="font-semibold">Envío Gratis</h4>
-                  <p className="text-sm text-gray-600">En pedidos mayores a $999 MXN</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Shield className="h-6 w-6 text-gray-600" />
-                <div>
-                  <h4 className="font-semibold">Garantía de 12 Meses</h4>
-                  <p className="text-sm text-gray-600">En todos nuestros productos</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <CreditCard className="h-6 w-6 text-gray-600" />
-                <div>
-                  <h4 className="font-semibold">Pago Seguro</h4>
-                  <p className="text-sm text-gray-600">Múltiples métodos de pago</p>
-                </div>
-              </div>
+            {/* Trust Indicators */}
+            <div className="border-t pt-6">
+              <TrustIndicatorGroup 
+                types={['warranty', 'shipping', 'payment']} 
+                layout="horizontal" 
+                size="medium" 
+              />
             </div>
 
             {/* Product Description */}

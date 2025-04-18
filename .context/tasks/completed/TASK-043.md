@@ -1,9 +1,9 @@
 ---
 title: Update Hero Section with Wellness-Focused Messaging
 type: task
-status: planned
+status: completed
 created: 2025-04-17T23:19:30
-updated: 2025-04-17T23:19:30
+updated: 2025-04-18T14:10:51
 id: TASK-043
 priority: high
 memory_types: [procedural, semantic]

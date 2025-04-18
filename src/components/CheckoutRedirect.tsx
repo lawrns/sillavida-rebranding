@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // Import framer-motion
 import { useCart } from '../context/CartContext';
-import { ShoppingBag, ArrowRight, Loader, Lock, CreditCard, Shield, CheckCircle } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Loader, CheckCircle } from 'lucide-react';
+import TrustIndicatorGroup from './TrustIndicatorGroup';
 import { Helmet } from 'react-helmet';
 
 const CheckoutRedirect: React.FC = () => {
@@ -178,53 +179,36 @@ const CheckoutRedirect: React.FC = () => {
                   <span>Redirigiendo</span>
                 </motion.div>
 
-                {/* Enhanced Trust Elements */}
+                {/* Trust Indicators */}
                 <motion.div 
                   className="mt-8 border-t pt-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
-                  <p className="text-base font-medium text-gray-800 mb-4">Pago 100% Seguro</p>
+                  <p className="text-base font-medium text-gray-800 mb-4">Invierte en tu bienestar con total tranquilidad</p>
                   
-                  {/* Security Badges */}
-                  <div className="flex flex-wrap justify-center gap-4 mb-6">
-                    <motion.div 
-                      className="flex flex-col items-center px-4 py-2 bg-gray-50 rounded-lg"
-                      whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                    >
-                      <Lock className="h-6 w-6 text-green-600 mb-1" aria-label="Conexión Segura" />
-                      <span className="text-xs font-medium text-gray-700">Conexión Segura</span>
-                    </motion.div>
-                    
-                    <motion.div 
-                      className="flex flex-col items-center px-4 py-2 bg-gray-50 rounded-lg"
-                      whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                    >
-                      <Shield className="h-6 w-6 text-green-600 mb-1" aria-label="Protección de Datos" />
-                      <span className="text-xs font-medium text-gray-700">Datos Protegidos</span>
-                    </motion.div>
-                    
-                    <motion.div 
-                      className="flex flex-col items-center px-4 py-2 bg-gray-50 rounded-lg"
-                      whileHover={{ y: -2, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                    >
-                      <CreditCard className="h-6 w-6 text-green-600 mb-1" aria-label="Pago Seguro" />
-                      <span className="text-xs font-medium text-gray-700">Pago Seguro</span>
-                    </motion.div>
-                  </div>
+                  {/* Trust Indicator Group */}
+                  <TrustIndicatorGroup 
+                    types={['warranty', 'payment']} 
+                    layout="grid" 
+                    size="small" 
+                    showDescription={false}
+                  />
                   
                   {/* Payment Method Logos */}
-                  <p className="text-sm font-medium text-gray-700 mb-3">Aceptamos</p>
+                  <p className="text-sm font-medium text-gray-700 mt-4 mb-3">Aceptamos</p>
                   <div className="flex items-center justify-center space-x-4 mb-4">
                     <img src="/images/visa.png" alt="Visa" className="h-8" />
                     <img src="/images/mastercard.png" alt="Mastercard" className="h-8" />
                     <img src="/images/amex.png" alt="American Express" className="h-8" />
                     <img src="/images/paypal.png" alt="PayPal" className="h-8" />
                   </div>
+                  
+                  {/* Compromiso Vida Message */}
+                  <p className="text-xs text-center text-gray-600 mt-4">
+                    Nuestro Compromiso Vida va más allá de una simple venta. Estamos dedicados a apoyar tu inversión en bienestar.
+                  </p>
                 </motion.div>
                 
                 <motion.div 

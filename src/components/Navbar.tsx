@@ -103,8 +103,7 @@ const Navbar = () => {
     <nav
       className={`bg-white backdrop-blur-sm bg-opacity-95 ${
         scrolled ? 'shadow-lg border-b border-gray-100' : 'shadow-sm'
-      } sticky top-0 z-50 transition-all duration-300`}
-      style={{ fontFamily: "'Poppins Medium', sans-serif" }}
+      } sticky top-0 z-50 transition-all duration-300 font-heading`}
       role="navigation"
       aria-label="Main Navigation"
     >
@@ -141,29 +140,32 @@ const Navbar = () => {
                 />
               </div>
             </button>
-            {/* Logo */}
+            {/* Logo with "Vida" emphasis */}
             <Link to="/" className="flex items-center md:ml-12">
-              <img src="/images/logored.png" alt="Silla Vida" className="h-12" />
+              <div className="vida-logo text-2xl">
+                <span className="vida-logo-silla">Silla</span>
+                <span className="vida-logo-vida">Vida</span>
+              </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center space-x-6 lg:space-x-8">
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} className={`${isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200`}>Tienda</Link>
+              <Link to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} className={`${isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} nav-item hover:text-teal py-2 px-1 transition-colors duration-200`}>Tienda</Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200`}>Promociones</Link>
+              <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} nav-item hover:text-teal py-2 px-1 transition-colors duration-200`}>Promociones</Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
+              <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} nav-item hover:text-teal py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
             </motion.div>
 
             {/* Categories Dropdown */}
             <div className="relative" ref={categoriesRef}>
               <motion.button 
                 whileHover={{ y: -2 }} 
-                className="flex items-center text-gray-800 text-base font-semibold tracking-wide hover:text-teal py-2 px-1 transition-colors duration-200"
+                className="flex items-center text-gray-800 nav-item hover:text-teal py-2 px-1 transition-colors duration-200"
                 onClick={toggleCategories} 
                 aria-expanded={categoriesOpen} 
                 aria-haspopup="true" 
@@ -189,7 +191,7 @@ const Navbar = () => {
                     role="menu" aria-orientation="vertical" aria-labelledby="categories-button"
                   >
                     <div className="border-b border-gray-100 bg-gray-50 py-2 px-4">
-                      <h3 className="text-sm font-semibold text-gray-800">Nuestras Categorías</h3>
+                      <h3 className="text-sm font-heading font-semibold text-gray-800">Nuestras Categorías</h3>
                     </div>
                     <div className="p-4">
                       {loading ? <div className="text-sm text-gray-500">Loading categories...</div> :
@@ -202,7 +204,7 @@ const Navbar = () => {
                               <Link 
                                 key={collection.id} 
                                 to={`/category/${collection.handle}`} 
-                                className="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
+                                className="block px-3 py-2.5 text-sm font-heading font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
                                 role="menuitem" 
                                 onClick={() => setCategoriesOpen(false)}
                               >
@@ -248,7 +250,7 @@ const Navbar = () => {
             <div className="px-3 pt-3 pb-4 space-y-2">
               <Link 
                 to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} 
-                className={`block px-4 py-3 rounded-md text-base font-semibold ${
+                className={`block px-4 py-3 rounded-md nav-item ${
                   isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
@@ -259,7 +261,7 @@ const Navbar = () => {
               </Link>
               <Link 
                 to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} 
-                className={`block px-4 py-3 rounded-md text-base font-semibold ${
+                className={`block px-4 py-3 rounded-md nav-item ${
                   isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
@@ -270,7 +272,7 @@ const Navbar = () => {
               </Link>
               <Link 
                 to="/category/mas-vendidos" 
-                className={`block px-4 py-3 rounded-md text-base font-semibold ${
+                className={`block px-4 py-3 rounded-md nav-item ${
                   isActive("/category/mas-vendidos") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
@@ -282,7 +284,7 @@ const Navbar = () => {
               {/* Mobile Categories */}
               <div ref={categoriesRef}>
                 <button 
-                  className="flex w-full items-center px-4 py-3 rounded-md text-base font-semibold text-gray-700 hover:text-teal hover:bg-teal-extralight transition-all duration-200" 
+                  className="flex w-full items-center px-4 py-3 rounded-md nav-item text-gray-700 hover:text-teal hover:bg-teal-extralight transition-all duration-200" 
                   onClick={toggleCategories}
                 >
                   Categorías
@@ -312,7 +314,7 @@ const Navbar = () => {
                             <Link 
                               key={collection.id} 
                               to={`/category/${collection.handle}`} 
-                              className="block px-4 py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
+                              className="block px-4 py-2.5 text-sm font-heading font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               {collection.title}

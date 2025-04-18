@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingBag, Trash2, Plus, Minus, AlertCircle, ChevronRight, CreditCard, Shield } from 'lucide-react';
+import { X, ShoppingBag, Trash2, Plus, Minus, AlertCircle, ChevronRight } from 'lucide-react';
+import TrustIndicator from './TrustIndicator';
 import { useCart } from '../context/CartContext';
 
 const MiniCart: React.FC = () => {
@@ -140,18 +141,18 @@ const MiniCart: React.FC = () => {
       {/* Cart panel */}
       <div className="fixed inset-y-0 right-0 max-w-md z-[100]">
         <motion.div 
-          className="w-screen max-w-md h-full"
+          className="w-screen max-w-md h-full flex flex-col"
           variants={cartVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
           style={{ backgroundColor: '#FFFFFF', borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem', boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)' }}
         >
-          <div className="flex flex-col h-full bg-white" style={{ borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
+          <div className="flex flex-col h-full min-h-[500px] bg-white" style={{ borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 bg-white" style={{ backgroundColor: '#FFFFFF', borderTopLeftRadius: '0.5rem' }}>
+            <div className="p-4 border-b border-gray-200 bg-white" style={{ borderTopLeftRadius: '0.5rem' }}>
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold">Tu Carrito</h2>
+                <h2 className="text-xl font-heading font-bold">Tu Carrito</h2>
                 <button 
                   className="p-1 rounded-full hover:bg-gray-100"
                   onClick={closeCart}
@@ -162,18 +163,18 @@ const MiniCart: React.FC = () => {
             </div>
             
             {/* Cart content - scrollable */}
-            <div className="flex-1 overflow-auto p-4 bg-white" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="flex-1 overflow-auto p-4 bg-white flex items-center justify-center min-h-[300px]">
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
-                  <p className="mt-4 text-gray-500 text-lg">Cargando carrito...</p>
+                  <p className="mt-4 text-gray-500 text-lg font-body">Cargando carrito...</p>
                 </div>
               ) : cartItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12">
+                <div className="flex flex-col items-center justify-center py-8 px-4 max-w-xs mx-auto">
                   <ShoppingBag className="h-16 w-16 text-gray-300" />
-                  <p className="mt-4 text-gray-500 text-lg">Tu carrito está vacío</p>
+                  <p className="mt-4 text-gray-500 text-lg font-body text-center">Tu carrito está vacío</p>
                   <button
-                    className="mt-6 bg-teal text-white py-2 px-4 rounded-md hover:bg-teal-light"
+                    className="mt-6 bg-teal text-white py-2 px-6 rounded hover:bg-teal-light font-heading font-semibold tracking-wide"
                     onClick={closeCart}
                   >
                     Continuar Comprando
@@ -191,20 +192,40 @@ const MiniCart: React.FC = () => {
                     return (
                       <li key={item.id} className="py-4 flex">
                         <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
-                          <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                            <ShoppingBag className="h-8 w-8 text-gray-400" />
-                          </div>
+                          {item.imageUrl ? (
+                            <img 
+                              src={item.imageUrl} 
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // If image fails to load, show placeholder
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
+                                if (parent) {
+                                  const placeholder = document.createElement('div');
+                                  placeholder.className = 'w-full h-full bg-gray-100 flex items-center justify-center';
+                                  placeholder.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-gray-400"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>';
+                                  parent.appendChild(placeholder);
+                                }
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                              <ShoppingBag className="h-8 w-8 text-gray-400" />
+                            </div>
+                          )}
                         </div>
 
                         <div className="ml-4 flex-1">
                           <div className="flex justify-between">
-                            <h3 className="text-base font-medium">
+                            <h3 className="text-base font-heading font-medium">
                               {item.productTitle || item.title}
                             </h3>
-                            <p className="ml-4 font-medium">{formattedPrice}</p>
+                            <p className="ml-4 font-heading font-semibold">{formattedPrice}</p>
                           </div>
                           
-                          <p className="mt-1 text-sm text-gray-500">
+                          <p className="mt-1 text-sm text-gray-500 font-body">
                             {item.title !== item.productTitle ? item.title : ''}
                           </p>
                           
@@ -217,7 +238,7 @@ const MiniCart: React.FC = () => {
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
-                              <span className="px-2 py-1 min-w-[32px] text-center text-sm font-medium">
+                              <span className="px-2 py-1 min-w-[32px] text-center text-sm font-heading font-medium">
                                 {item.quantity}
                               </span>
                               <button 
@@ -230,7 +251,7 @@ const MiniCart: React.FC = () => {
                             </div>
 
                             <button
-                              className="text-teal hover:text-teal-dark text-sm font-medium flex items-center"
+                              className="text-teal hover:text-teal-dark text-sm font-heading font-medium flex items-center"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
                             >
@@ -248,8 +269,8 @@ const MiniCart: React.FC = () => {
 
             {/* Footer with totals and checkout button */}
             {cartItems.length > 0 && (
-              <div className="border-t border-gray-200 p-4 bg-white" style={{ backgroundColor: '#FFFFFF', borderBottomLeftRadius: '0.5rem' }}>
-                <div className="flex justify-between font-medium text-base mb-1">
+              <div className="border-t border-gray-200 p-4 bg-white" style={{ borderBottomLeftRadius: '0.5rem' }}>
+                <div className="flex justify-between font-heading font-medium text-base mb-1">
                   <p>Subtotal</p>
                   <p>{cartTotal}</p>
                 </div>
@@ -266,7 +287,7 @@ const MiniCart: React.FC = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
                         </div>
-                        <span className="text-sm font-medium">¡Tu pedido califica para envío gratis!</span>
+                        <span className="text-sm font-heading font-medium">¡Tu pedido califica para envío gratis!</span>
                       </div>
                       ) : (
                         <div>
@@ -278,8 +299,8 @@ const MiniCart: React.FC = () => {
                               }}
                             />
                           </div>
-                          <div className="text-sm text-gray-600">
-                            Te faltan <span className="font-medium text-teal">
+                          <div className="text-sm text-gray-600 font-body">
+                            Te faltan <span className="font-heading font-medium text-teal">
                               {formatRemainingAmount()}
                             </span> para obtener envío gratis
                           </div>
@@ -289,14 +310,14 @@ const MiniCart: React.FC = () => {
                   )}
                 </div>
                 
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm text-gray-500 mb-4 font-body">
                   Envío e impuestos calculados al finalizar la compra.
                 </p>
                 
                 <button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className="w-full bg-teal text-white py-3 rounded-md font-medium hover:bg-teal-light flex items-center justify-center"
+                  className="w-full bg-teal text-white py-3 rounded font-heading font-semibold tracking-wide hover:bg-teal-light flex items-center justify-center"
                 >
                   {isLoading ? (
                     <>
@@ -312,27 +333,36 @@ const MiniCart: React.FC = () => {
                 </button>
                 
                 <div className="mt-4 text-center">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 font-body">
                     o{' '}
                     <Link
                       to="/cart"
                       onClick={closeCart}
-                      className="text-teal font-medium hover:text-teal-dark"
+                      className="text-teal font-heading font-medium hover:text-teal-dark"
                     >
                       Ver Carrito Completo
                     </Link>
                   </p>
                 </div>
                 
-                <div className="mt-4 pt-4 border-t border-gray-100 flex justify-center space-x-4">
-                  <div className="flex items-center">
-                    <Shield className="h-4 w-4 text-sage mr-1.5" />
-                    <span className="text-xs text-gray-500">Pago Seguro</span>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="flex justify-center space-x-6">
+                    <TrustIndicator 
+                      type="warranty" 
+                      size="small" 
+                      layout="horizontal" 
+                      showDescription={false} 
+                    />
+                    <TrustIndicator 
+                      type="payment" 
+                      size="small" 
+                      layout="horizontal" 
+                      showDescription={false} 
+                    />
                   </div>
-                  <div className="flex items-center">
-                    <CreditCard className="h-4 w-4 text-sage mr-1.5" />
-                    <span className="text-xs text-gray-500">Métodos de Pago</span>
-                  </div>
+                  <p className="text-xs text-center text-gray-500 mt-2 font-body">
+                    Garantía de Bienestar en todos nuestros productos
+                  </p>
                 </div>
               </div>
             )}

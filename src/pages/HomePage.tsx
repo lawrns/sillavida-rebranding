@@ -181,29 +181,29 @@ const HomePage = () => {
           <div className="flex items-center justify-center">
             <Truck className="h-8 w-8 text-teal mr-4" />
             <div>
-              <h3 className="font-semibold">Envío a Todo México</h3>
-              <p className="text-gray-600">Entrega rápida y segura</p>
+              <h3 className="font-heading font-semibold">Envío a Todo México</h3>
+              <p className="text-gray-600 font-body">Entrega rápida y segura</p>
             </div>
           </div>
           <div className="flex items-center justify-center">
             <CreditCard className="h-8 w-8 text-teal mr-4" />
             <div>
-              <h3 className="font-semibold">Pagos Seguros</h3>
-              <p className="text-gray-600">Múltiples métodos de pago</p>
+              <h3 className="font-heading font-semibold">Pagos Seguros</h3>
+              <p className="text-gray-600 font-body">Múltiples métodos de pago</p>
             </div>
           </div>
           <div className="flex items-center justify-center">
             <Shield className="h-8 w-8 text-teal mr-4" />
             <div>
-              <h3 className="font-semibold">Garantía de Calidad</h3>
-              <p className="text-gray-600">12 meses de garantía</p>
+              <h3 className="font-heading font-semibold">Garantía de Calidad</h3>
+              <p className="text-gray-600 font-body">12 meses de garantía</p>
             </div>
           </div>
           <div className="flex items-center justify-center">
             <HeadphonesIcon className="h-8 w-8 text-teal mr-4" />
             <div>
-              <h3 className="font-semibold">Atención al Cliente</h3>
-              <p className="text-gray-600">Soporte 24/7</p>
+              <h3 className="font-heading font-semibold">Atención al Cliente</h3>
+              <p className="text-gray-600 font-body">Soporte 24/7</p>
             </div>
           </div>
         </div>
@@ -231,7 +231,7 @@ const HomePage = () => {
       {/* Featured Categories */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Nuestras Categorías</h2>
+          <h2 className="text-3xl font-heading font-bold text-center mb-12">Nuestras Categorías</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {collections.length > 0 ? (
               // Map through Shopify collections that start with "Silla"
@@ -275,8 +275,8 @@ const HomePage = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                         <div className="text-white">
-                          <h3 className="text-2xl font-bold mb-2">{collection.title}</h3>
-                          <p className="mb-4">{description}</p>
+                          <h3 className="text-2xl font-heading font-bold mb-2">{collection.title}</h3>
+                          <p className="mb-4 font-body">{description}</p>
                           <span className="flex items-center text-teal-light">
                             Ver colección <ChevronRight className="ml-2" />
                           </span>
@@ -296,8 +296,8 @@ const HomePage = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">Sillas Ejecutivas</h3>
-                      <p className="mb-4">Elegancia y confort para ejecutivos</p>
+                      <h3 className="text-2xl font-heading font-bold mb-2">Sillas Ejecutivas</h3>
+                      <p className="mb-4 font-body">Elegancia y confort para ejecutivos</p>
                       <span className="flex items-center text-teal-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
@@ -312,8 +312,8 @@ const HomePage = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">Sillas Ergonómicas</h3>
-                      <p className="mb-4">Diseñadas para tu bienestar</p>
+                      <h3 className="text-2xl font-heading font-bold mb-2">Sillas Ergonómicas</h3>
+                      <p className="mb-4 font-body">Diseñadas para tu bienestar</p>
                       <span className="flex items-center text-teal-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
@@ -328,8 +328,8 @@ const HomePage = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">Sillas Gamer</h3>
-                      <p className="mb-4">Para sesiones épicas de juego</p>
+                      <h3 className="text-2xl font-heading font-bold mb-2">Sillas Gamer</h3>
+                      <p className="mb-4 font-body">Para sesiones épicas de juego</p>
                       <span className="flex items-center text-red-400">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
@@ -344,8 +344,8 @@ const HomePage = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">Sillas Secretariales</h3>
-                      <p className="mb-4">Funcionalidad y comodidad</p>
+                      <h3 className="text-2xl font-heading font-bold mb-2">Sillas Secretariales</h3>
+                      <p className="mb-4 font-body">Funcionalidad y comodidad</p>
                       <span className="flex items-center text-red-400">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
@@ -360,8 +360,8 @@ const HomePage = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">Sillas de Visita</h3>
-                      <p className="mb-4">Para espacios de recepción</p>
+                      <h3 className="text-2xl font-heading font-bold mb-2">Sillas de Visita</h3>
+                      <p className="mb-4 font-body">Para espacios de recepción</p>
                       <span className="flex items-center text-red-400">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
@@ -376,8 +376,8 @@ const HomePage = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div className="text-white">
-                      <h3 className="text-2xl font-bold mb-2">Accesorios</h3>
-                      <p className="mb-4">Complementos para tu silla</p>
+                      <h3 className="text-2xl font-heading font-bold mb-2">Accesorios</h3>
+                      <p className="mb-4 font-body">Complementos para tu silla</p>
                       <span className="flex items-center text-red-400">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
@@ -396,8 +396,8 @@ const HomePage = () => {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-1/4">
               <div className="bg-white p-8 rounded-lg shadow-sm">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Super Selección de los Más Vendidos</h2>
-                <p className="text-gray-600 mb-6">¡Aprovecha las ofertas y compre!</p>
+                <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">Super Selección de los Más Vendidos</h2>
+                <p className="text-gray-600 mb-6 font-body">¡Aprovecha las ofertas y compre!</p>
                 <Link 
                   to="/category/mas-vendidos"
                   className="inline-flex items-center text-teal hover:text-teal-light transition-colors"
@@ -444,29 +444,29 @@ const HomePage = () => {
             <div className="flex items-center gap-3 p-4">
               <Tag className="h-6 w-6" />
               <div>
-                <h4 className="font-bold">HASTA 12% DE DESCUENTO*</h4>
-                <p className="text-sm">en Pix o Boleto. 1x en Tarjeta 5%</p>
+                <h4 className="font-heading font-bold">HASTA 12% DE DESCUENTO*</h4>
+                <p className="text-sm font-body">en Pix o Boleto. 1x en Tarjeta 5%</p>
               </div>
             </div>
             <div className="flex items-center gap-3 p-4">
               <CreditCard className="h-6 w-6" />
               <div>
-                <h4 className="font-bold">PAGO FÁCIL</h4>
-                <p className="text-sm">Hasta 10x sin Intereses</p>
+                <h4 className="font-heading font-bold">PAGO FÁCIL</h4>
+                <p className="text-sm font-body">Hasta 10x sin Intereses</p>
               </div>
             </div>
             <div className="flex items-center gap-3 p-4">
               <Lock className="h-6 w-6" />
               <div>
-                <h4 className="font-bold">COMPRA SEGURA</h4>
-                <p className="text-sm">Ambiente seguro y certificado</p>
+                <h4 className="font-heading font-bold">COMPRA SEGURA</h4>
+                <p className="text-sm font-body">Ambiente seguro y certificado</p>
               </div>
             </div>
             <div className="flex items-center gap-3 p-4">
               <FileCheck className="h-6 w-6" />
               <div>
-                <h4 className="font-bold">NF Y GARANTÍA</h4>
-                <p className="text-sm">En todos los productos</p>
+                <h4 className="font-heading font-bold">NF Y GARANTÍA</h4>
+                <p className="text-sm font-body">En todos los productos</p>
               </div>
             </div>
           </div>
@@ -478,7 +478,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-6 border-b border-gray-700 pb-2">SEGURIDAD</h3>
+              <h3 className="text-lg font-heading font-bold mb-6 border-b border-gray-700 pb-2">SEGURIDAD</h3>
               <div className="flex items-center gap-6">
                 <div className="bg-white rounded-full p-2">
                   <div className="relative w-16 h-16 flex items-center justify-center">
@@ -500,7 +500,7 @@ const HomePage = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-bold mb-6 border-b border-gray-700 pb-2">FORMAS DE PAGO</h3>
+              <h3 className="text-lg font-heading font-bold mb-6 border-b border-gray-700 pb-2">FORMAS DE PAGO</h3>
               <div className="grid grid-cols-3 gap-4">
                 <img src="/images/visa-logo.png" alt="Visa" className="h-8" />
                 <img src="/images/mastercard-logo.png" alt="Mastercard" className="h-8" />
@@ -514,7 +514,7 @@ const HomePage = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-bold mb-6 border-b border-gray-700 pb-2">ENVÍO</h3>
+              <h3 className="text-lg font-heading font-bold mb-6 border-b border-gray-700 pb-2">ENVÍO</h3>
               <div className="bg-blue-900 p-4 rounded">
                 <img 
                   src="/images/transportadora-logo.png"
@@ -530,8 +530,8 @@ const HomePage = () => {
       {/* Newsletter */}
       <section className="bg-teal py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">¡No te pierdas nuestras ofertas!</h2>
-          <p className="text-teal-100 mb-8">Suscríbete para recibir novedades y descuentos exclusivos</p>
+          <h2 className="text-3xl font-heading font-bold text-white mb-4">¡No te pierdas nuestras ofertas!</h2>
+          <p className="text-teal-100 mb-8 font-body">Suscríbete para recibir novedades y descuentos exclusivos</p>
           <form className="max-w-md mx-auto flex gap-4">
             <input
               type="email"
@@ -540,7 +540,7 @@ const HomePage = () => {
             />
             <button
               type="submit"
-              className="bg-white text-teal px-6 py-3 rounded-lg font-semibold hover:bg-teal-50 transition-colors"
+              className="bg-white text-teal px-6 py-3 rounded-lg font-heading font-semibold hover:bg-teal-50 transition-colors"
             >
               Suscribirse
             </button>

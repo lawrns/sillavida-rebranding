@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
-import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, CreditCard, Truck, Shield } from 'lucide-react';
+import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
+import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import { useCart } from '../context/CartContext';
 import { getFeaturedProducts } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify'; // Import product type
@@ -31,6 +32,8 @@ const CartPage: React.FC = () => {
       price: parseFloat(product.priceRange.minVariantPrice.amount),
       image: product.images?.edges[0]?.node?.url || '/images/placeholder.png',
       category: 'office', // Default category, adjust if possible
+      lifeCategory: 'Vida Profesional', // Default life category
+      primaryBenefit: 'Más bienestar para tu vida', // Default primary benefit
       features: product.tags || [],
       rating: 4.5, // Default rating
     };
@@ -441,53 +444,17 @@ const CartPage: React.FC = () => {
                   )}
                 </motion.button>
                 
-                {/* Trust Elements - Enhanced as per TASK-031 */}
-                <div className="mt-8 space-y-5">
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Compra con confianza</h3>
-                  <motion.div 
-                    className="p-4 border border-gray-200 rounded-lg"
-                    whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Truck className="h-6 w-6 text-teal" />
-                      <div>
-                    <h4 className="font-semibold">Envío Gratis</h4>
-                    <p className="text-sm text-gray-600">En pedidos mayores a $10,000 MXN</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="p-4 border border-gray-200 rounded-lg"
-                    whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Shield className="h-6 w-6 text-teal" />
-                      <div>
-                        <h4 className="font-semibold">Garantía de 12 Meses</h4>
-                        <p className="text-sm text-gray-600">En todos nuestros productos</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="p-4 border border-gray-200 rounded-lg"
-                    whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <CreditCard className="h-6 w-6 text-teal" />
-                      <div>
-                        <h4 className="font-semibold">Pago Seguro</h4>
-                        <p className="text-sm text-gray-600">Múltiples métodos de pago</p>
-                      </div>
-                    </div>
-                  </motion.div>
+                {/* Trust Indicators */}
+                <div className="mt-8">
+                  <TrustIndicatorGroup 
+                    title="Invierte en tu bienestar con confianza"
+                    types={['warranty', 'shipping', 'payment']} 
+                    layout="vertical" 
+                    size="medium" 
+                  />
                   
                   {/* Payment methods logos */}
-                  <div className="mt-4 flex justify-center gap-3">
+                  <div className="mt-6 flex justify-center gap-3">
                     <img src="/images/visa.png" alt="Visa" className="h-6" />
                     <img src="/images/mastercard.png" alt="Mastercard" className="h-6" />
                     <img src="/images/amex.png" alt="American Express" className="h-6" />

@@ -59,31 +59,31 @@ const ShopifyPromoBanner: React.FC<ShopifyPromoBannerProps> = ({ product, dark =
   };
 
   return (
-    <div className={`relative overflow-hidden rounded-2xl ${dark ? 'bg-gray-900' : 'bg-gray-100'}`}>
+    <div className={`relative overflow-hidden vida-shape-organic ${dark ? 'bg-gray-900 vida-bg-pattern-breathing' : 'bg-gray-100 vida-bg-pattern-leaf'}`}>
       <div className="flex flex-col md:flex-row items-center justify-between p-8">
         <div className="flex-1 mb-8 md:mb-0">
-          <div className="inline-block px-4 py-1 rounded-full bg-teal text-white text-sm mb-4">
+          <div className="inline-block px-4 py-1 rounded-full bg-teal text-white text-sm mb-4 font-heading font-medium">
             Campeón de Ventas
           </div>
-          <h3 className={`text-3xl font-bold mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>
+          <h3 className={`text-3xl font-heading font-bold mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>
             {product.title}
           </h3>
-          <ul className={`space-y-2 mb-6 ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+          <ul className={`vida-feature-list space-y-2 mb-6 ${dark ? 'text-gray-300' : 'text-gray-600'} font-body`}>
             {features.map((feature, index) => (
-              <li key={index}>✓ {feature}</li>
+              <li key={index}>{feature}</li>
             ))}
           </ul>
           <div className="flex items-center gap-4">
-            <span className={`text-sm line-through ${dark ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm line-through ${dark ? 'text-gray-400' : 'text-gray-500'} font-heading`}>
               {formattedOriginalPrice}
             </span>
-            <span className={`text-2xl font-bold ${dark ? 'text-white' : 'text-gray-900'}`}>
+            <span className={`text-2xl font-heading font-bold ${dark ? 'text-white' : 'text-gray-900'} product-price`}>
               {formattedPrice}
             </span>
           </div>
           <Link to={`/product/${product.handle}`}>
             <button 
-              className="mt-6 px-8 py-3 bg-teal text-white rounded-lg hover:bg-teal-light transition-colors"
+              className="mt-6 px-8 py-3 bg-teal text-white vida-shape-soft hover:bg-teal-light transition-colors font-heading font-semibold tracking-wide"
               onClick={handleBuyClick}
               aria-label={`Ver ${product.title}`}
             >
@@ -94,18 +94,18 @@ const ShopifyPromoBanner: React.FC<ShopifyPromoBannerProps> = ({ product, dark =
         <div className="flex-1 relative">
           {!imageLoaded && !imageError && (
             <div className="w-full h-[400px] bg-gray-200 animate-pulse flex items-center justify-center">
-              <span className={dark ? 'text-gray-600' : 'text-gray-400'}>Cargando imagen...</span>
+              <span className={`${dark ? 'text-gray-600' : 'text-gray-400'} font-body`}>Cargando imagen...</span>
             </div>
           )}
           {imageError && (
             <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center">
-              <span className={dark ? 'text-gray-600' : 'text-gray-400'}>Imagen no disponible</span>
+              <span className={`${dark ? 'text-gray-600' : 'text-gray-400'} font-body`}>Imagen no disponible</span>
             </div>
           )}
           <img 
             src={imageUrl} 
             alt={product.title}
-            className={`w-full h-[400px] object-contain ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
+            className={`w-full h-[400px] object-contain vida-hover-breathing ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
             loading="lazy"
             onLoad={() => {
               setImageLoaded(true);

@@ -195,7 +195,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
 
   return (
     <motion.div 
-      className="bg-white rounded-lg shadow-md overflow-hidden"
+      className="bg-white vida-shape-organic vida-bg-pattern-leaf shadow-md overflow-hidden"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -243,35 +243,46 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
               className={`h-4 w-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
             />
           ))}
-          <span className="ml-2 text-sm text-gray-600">{rating}</span>
+          <span className="ml-2 text-sm text-gray-600 font-body">{rating}</span>
         </div>
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-          <h3 className="font-semibold mb-2 hover:text-teal transition-colors">{product.title}</h3>
+          <h3 className="font-heading font-semibold mb-2 hover:text-teal transition-colors product-title">{product.title}</h3>
         </Link>
-        <p className="text-gray-600 mb-2 line-clamp-2">{product.description}</p>
+        <p className="text-gray-600 mb-2 line-clamp-2 font-body product-description">{product.description}</p>
+        
+        {/* Feature highlights with Vida theme styling */}
+        <ul className="vida-feature-list text-sm text-gray-700 mb-3">
+          {product.description
+            .split('.')
+            .filter(sentence => sentence.trim().length > 0)
+            .slice(0, 2)
+            .map((feature, index) => (
+              <li key={index} className="font-body">{feature.trim()}</li>
+            ))}
+        </ul>
         <div className="flex items-center gap-2 mb-1">
-          <p className="text-xl font-bold text-teal">
+          <p className="text-xl font-heading font-bold text-teal product-price">
             {formattedPrice}
           </p>
           {hasCompareAtPrice && (
-            <p className="text-sm text-gray-500 line-through">
+            <p className="text-sm text-gray-500 line-through font-heading">
               {formattedCompareAtPrice}
             </p>
           )}
         </div>
         {hasCompareAtPrice && discountPercentage > 0 && (
-          <p className="text-sm font-semibold text-green-600 mb-2">
+          <p className="text-sm font-heading font-semibold text-green-600 mb-2">
             ¡{discountPercentage}% de descuento!
           </p>
         )}
         {error && (
-          <div className="text-red-500 text-sm mt-2 mb-2">{error}</div>
+          <div className="text-red-500 text-sm mt-2 mb-2 font-body">{error}</div>
         )}
         <motion.button 
           onClick={handleAddToCart}
           disabled={isLoading}
           aria-label={`Agregar ${product.title} al carrito`}
-          className={`w-full mt-4 py-3 rounded text-white ${
+          className={`w-full mt-4 py-3 vida-shape-soft text-white font-heading font-semibold tracking-wide ${
             success 
               ? 'bg-sage' 
               : 'bg-teal'
@@ -290,7 +301,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
               />
               Agregando...
             </span>
-          ) : success ? '¡Agregado!' : 'Agregar al Carrito'}
+          ) : success ? '¡Agregado!' : 'Invierte en tu bienestar'}
         </motion.button>
       </div>
     </motion.div>
