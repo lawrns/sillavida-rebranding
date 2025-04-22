@@ -7,6 +7,8 @@ import type { ShopifyProduct } from '../types/shopify';
 import { Star, ChevronRight, Plus, Minus, Share2, Heart, Maximize2, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
 import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import BenefitTabs from '../components/BenefitTabs';
+import TestimonialCarousel from '../components/TestimonialCarousel';
+import { testimonials, Testimonial } from '../data/testimonials';
 import { Helmet } from 'react-helmet';
 
 const ProductPage: React.FC = () => {
@@ -344,13 +346,13 @@ const ProductPage: React.FC = () => {
 
             {product.variants && product.variants.edges.length > 0 && (
               <div className="mb-6">
-                <h3 className="font-semibold mb-2">Variantes</h3>
+                <h3 className="font-semibold mb-2 text-base">Variantes</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {product.variants.edges.map(({ node }) => (
                     <motion.button
                       key={node.id}
                       onClick={() => setSelectedVariantId(node.id)}
-                      className={`p-3 rounded-md shadow-sm ${
+                      className={`p-4 sm:p-3 rounded-md shadow-sm text-base ${
                         selectedVariantId === node.id
                           ? 'bg-teal-50 border border-teal text-teal-dark'
                           : 'bg-white border border-gray-200 text-gray-700 hover:border-teal-light'
@@ -367,6 +369,8 @@ const ProductPage: React.FC = () => {
                           : '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                       }}
                       transition={{ duration: 0.2 }}
+                      aria-label={`Seleccionar variante: ${node.title}`}
+                      aria-pressed={selectedVariantId === node.id}
                     >
                       {node.title}
                     </motion.button>
@@ -377,20 +381,20 @@ const ProductPage: React.FC = () => {
 
             {/* Quantity Selector */}
             <div className="mb-8">
-              <h3 className="font-semibold mb-2">Cantidad</h3>
+              <h3 className="font-semibold mb-2 text-base">Cantidad</h3>
               <div className="flex items-center">
                 <motion.button 
                   onClick={decrementQuantity}
-                  className="p-2.5 border border-gray-200 rounded-l-md hover:bg-gray-50"
+                  className="p-3 sm:p-2.5 border border-gray-200 rounded-l-md hover:bg-gray-50"
                   whileHover={{ backgroundColor: "#f9fafb" }}
                   whileTap={{ scale: 0.95 }}
                   disabled={quantity <= 1}
                   aria-label="Disminuir cantidad"
                 >
-                  <Minus className={`h-4 w-4 ${quantity <= 1 ? 'text-gray-300' : 'text-gray-500'}`} />
+                  <Minus className={`h-5 w-5 sm:h-4 sm:w-4 ${quantity <= 1 ? 'text-gray-300' : 'text-gray-500'}`} />
                 </motion.button>
                 <motion.div 
-                  className="px-4 py-2.5 border-t border-b border-gray-200 text-center font-medium min-w-[64px]"
+                  className="px-4 py-3 sm:py-2.5 border-t border-b border-gray-200 text-center font-medium min-w-[64px] text-base"
                   animate={{ 
                     scale: [1, 1.1, 1],
                     transition: { duration: 0.3 }
@@ -401,12 +405,12 @@ const ProductPage: React.FC = () => {
                 </motion.div>
                 <motion.button 
                   onClick={incrementQuantity}
-                  className="p-2.5 border border-gray-200 rounded-r-md hover:bg-gray-50"
+                  className="p-3 sm:p-2.5 border border-gray-200 rounded-r-md hover:bg-gray-50"
                   whileHover={{ backgroundColor: "#f9fafb" }}
                   whileTap={{ scale: 0.95 }}
                   aria-label="Aumentar cantidad"
                 >
-                  <Plus className="h-4 w-4 text-gray-500" />
+                  <Plus className="h-5 w-5 sm:h-4 sm:w-4 text-gray-500" />
                 </motion.button>
               </div>
             </div>
@@ -415,7 +419,7 @@ const ProductPage: React.FC = () => {
             <motion.button 
               onClick={handleAddToCart}
               disabled={isCartLoading}
-              className={`w-full py-3.5 rounded-lg font-semibold mb-2 flex items-center justify-center ${
+              className={`w-full py-4 sm:py-3.5 rounded-lg font-semibold mb-2 flex items-center justify-center text-base ${
                 isCartLoading 
                   ? 'bg-gray-400 text-white cursor-not-allowed' 
                   : 'bg-teal text-white hover:bg-teal-light'
@@ -423,15 +427,16 @@ const ProductPage: React.FC = () => {
               whileHover={!isCartLoading ? { scale: 1.02, backgroundColor: "#0D9488" } : {}}
               whileTap={!isCartLoading ? { scale: 0.98 } : {}}
               transition={{ duration: 0.2 }}
+              aria-label="Agregar al carrito"
             >
               {isCartLoading ? (
                 <>
                   <motion.div 
-                    className="rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"
+                    className="rounded-full h-6 w-6 sm:h-5 sm:w-5 border-2 border-white border-t-transparent mr-2"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                   />
-                  Agregando...
+                  <span>Agregando...</span>
                 </>
               ) : (
                 <motion.span
@@ -575,17 +580,52 @@ const ProductPage: React.FC = () => {
             
             {/* Social Sharing */}
             <div className="mt-8 flex items-center gap-4">
-              <button className="flex items-center gap-2 text-gray-600 hover:text-teal">
+              <button 
+                className="flex items-center gap-2 text-gray-600 hover:text-teal py-2 px-3 rounded-md hover:bg-gray-50"
+                aria-label="Compartir producto"
+              >
                 <Share2 className="h-5 w-5" />
-                <span>Compartir</span>
+                <span className="text-base">Compartir</span>
               </button>
-              <button className="flex items-center gap-2 text-gray-600 hover:text-teal">
+              <button 
+                className="flex items-center gap-2 text-gray-600 hover:text-teal py-2 px-3 rounded-md hover:bg-gray-50"
+                aria-label="Agregar a favoritos"
+              >
                 <Heart className="h-5 w-5" />
-                <span>Favorito</span>
+                <span className="text-base">Favorito</span>
               </button>
             </div>
           </div>
         </div>
+        
+        {/* Testimonials Section */}
+        <motion.div 
+          className="mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Historias de Vida</h2>
+            <Link 
+              to="/testimonials" 
+              className="text-sm text-teal hover:text-teal-light flex items-center transition-colors duration-200"
+            >
+              Ver todas las historias
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Link>
+          </div>
+          
+          <div className="mb-16">
+            <TestimonialCarousel 
+              testimonials={testimonials.filter(t => t.featured).slice(0, 3)} 
+              autoRotate={true} 
+              rotationInterval={10000}
+              className="shadow-lg"
+            />
+          </div>
+        </motion.div>
         
         {/* Related Products */}
         {relatedProducts.length > 0 && (

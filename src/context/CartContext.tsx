@@ -23,6 +23,8 @@ interface CartContextType {
   cartTotal: string;
   isCartOpen: boolean;
   isLoading: boolean;
+  isGuestCheckout: boolean;
+  setGuestCheckout: (value: boolean) => void;
   addItem: (merchandiseId: string, quantity: number) => Promise<void>;
   updateItem: (lineId: string, quantity: number) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
@@ -52,6 +54,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartId, setCartId] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGuestCheckout, setGuestCheckout] = useState(false);
 
   // Initialize cart from localStorage
   useEffect(() => {
@@ -355,7 +358,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
     
     try {
-      return await getCheckoutUrl(cartId);
+      // Pass the isGuestCheckout flag to the getCheckoutUrl function
+      return await getCheckoutUrl(cartId, isGuestCheckout);
     } catch (error) {
       console.error('[CartContext] Error getting checkout URL:', error);
       
@@ -374,6 +378,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     cartTotal,
     isCartOpen,
     isLoading,
+    isGuestCheckout,
+    setGuestCheckout,
     addItem,
     updateItem,
     removeItem,

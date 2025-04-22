@@ -11,6 +11,7 @@ import HeroSlider from '../components/HeroSlider';
 import PersonalizedBanner from '../components/PersonalizedBanner';
 import ErgonomicEducationalSectionCondensed from '../components/ErgonomicEducationalSectionCondensed';
 import TestimonialCarousel from '../components/TestimonialCarousel';
+import LazyImage from '../components/LazyImage';
 import { getFeaturedTestimonials } from '../data/testimonials';
 import { getProducts, getFeaturedProducts, getCollections, shopifyClient } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
@@ -178,35 +179,37 @@ const HomePage = () => {
       {/* Personalized Banner for logged-in users */}
       <PersonalizedBanner />
 
-      {/* Trust Bar */}
-      <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="flex items-center justify-center">
-            <Truck className="h-8 w-8 text-teal mr-4" />
-            <div>
-              <h3 className="font-heading font-semibold">Envío a Todo México</h3>
-              <p className="text-gray-600 font-body">Entrega rápida y segura</p>
+      {/* Trust Bar - Optimized for mobile with horizontal scrolling */}
+      <section className="bg-white py-8 sm:py-12 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex overflow-x-auto pb-4 sm:pb-0 sm:grid sm:grid-cols-4 gap-6 hide-scrollbar">
+            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <Truck className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
+              <div>
+                <h3 className="font-heading font-semibold text-base">Envío a Todo México</h3>
+                <p className="text-gray-600 font-body text-sm">Entrega rápida y segura</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <CreditCard className="h-8 w-8 text-teal mr-4" />
-            <div>
-              <h3 className="font-heading font-semibold">Pagos Seguros</h3>
-              <p className="text-gray-600 font-body">Múltiples métodos de pago</p>
+            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <CreditCard className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
+              <div>
+                <h3 className="font-heading font-semibold text-base">Pagos Seguros</h3>
+                <p className="text-gray-600 font-body text-sm">Múltiples métodos de pago</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <Shield className="h-8 w-8 text-teal mr-4" />
-            <div>
-              <h3 className="font-heading font-semibold">Garantía de Calidad</h3>
-              <p className="text-gray-600 font-body">12 meses de garantía</p>
+            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
+              <div>
+                <h3 className="font-heading font-semibold text-base">Garantía de Calidad</h3>
+                <p className="text-gray-600 font-body text-sm">12 meses de garantía</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <HeadphonesIcon className="h-8 w-8 text-teal mr-4" />
-            <div>
-              <h3 className="font-heading font-semibold">Atención al Cliente</h3>
-              <p className="text-gray-600 font-body">Soporte 24/7</p>
+            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <HeadphonesIcon className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
+              <div>
+                <h3 className="font-heading font-semibold text-base">Atención al Cliente</h3>
+                <p className="text-gray-600 font-body text-sm">Soporte 24/7</p>
+              </div>
             </div>
           </div>
         </div>
@@ -318,16 +321,18 @@ const HomePage = () => {
                       to={`/category/${collection.handle}`} 
                       className="group relative overflow-hidden rounded-lg"
                     >
-                      <img 
-                        src={imageSrc} 
-                        alt={collection.title} 
-                        className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                      <div className="w-full h-[300px]">
+                        <LazyImage 
+                          src={imageSrc} 
+                          alt={collection.title} 
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                         <div className="text-beige">
-                          <h3 className="text-2xl font-heading font-bold mb-2 text-beige">{collection.title}</h3>
-                          <p className="mb-4 font-body text-terracota">{description}</p>
-                          <span className="flex items-center text-sage-light">
+                          <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">{collection.title}</h3>
+                          <p className="mb-4 font-body text-base text-terracota">{description}</p>
+                          <span className="flex items-center text-base text-sage-light">
                             Ver colección <ChevronRight className="ml-2" />
                           </span>
                         </div>
@@ -339,96 +344,108 @@ const HomePage = () => {
               // Fallback to static category cards if no collections are available
               <>
                 <Link to="/category/sillas-ejecutivas" className="group relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/images/ejecutiva.png" 
-                    alt="Sillas Ejecutivas" 
-                    className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                  <div className="w-full h-[300px]">
+                    <LazyImage 
+                      src="/images/ejecutiva.png" 
+                      alt="Sillas Ejecutivas" 
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-2xl font-heading font-bold mb-2 text-beige">Sillas Ejecutivas</h3>
-                      <p className="mb-4 font-body text-terracota">Elegancia y confort para ejecutivos</p>
-                      <span className="flex items-center text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Ejecutivas</h3>
+                      <p className="mb-4 font-body text-base text-terracota">Elegancia y confort para ejecutivos</p>
+                      <span className="flex items-center text-base text-sage-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
                   </div>
                 </Link>
                 <Link to="/category/sillas-ergonomicas" className="group relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/images/ergonomica.png" 
-                    alt="Sillas Ergonómicas" 
-                    className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                  <div className="w-full h-[300px]">
+                    <LazyImage 
+                      src="/images/ergonomica.png" 
+                      alt="Sillas Ergonómicas" 
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-2xl font-heading font-bold mb-2 text-beige">Sillas Ergonómicas</h3>
-                      <p className="mb-4 font-body text-terracota">Diseñadas para tu bienestar</p>
-                      <span className="flex items-center text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Ergonómicas</h3>
+                      <p className="mb-4 font-body text-base text-terracota">Diseñadas para tu bienestar</p>
+                      <span className="flex items-center text-base text-sage-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
                   </div>
                 </Link>
                 <Link to="/category/sillas-gamer" className="group relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/images/gamer.png" 
-                    alt="Sillas Gamer" 
-                    className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                  <div className="w-full h-[300px]">
+                    <LazyImage 
+                      src="/images/gamer.png" 
+                      alt="Sillas Gamer" 
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-2xl font-heading font-bold mb-2 text-beige">Sillas Gamer</h3>
-                      <p className="mb-4 font-body text-terracota">Para sesiones épicas de juego</p>
-                      <span className="flex items-center text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Gamer</h3>
+                      <p className="mb-4 font-body text-base text-terracota">Para sesiones épicas de juego</p>
+                      <span className="flex items-center text-base text-sage-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
                   </div>
                 </Link>
                 <Link to="/category/sillas-secretariales" className="group relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/images/secretariales.png" 
-                    alt="Sillas Secretariales" 
-                    className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                  <div className="w-full h-[300px]">
+                    <LazyImage 
+                      src="/images/secretariales.png" 
+                      alt="Sillas Secretariales" 
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-2xl font-heading font-bold mb-2 text-beige">Sillas Secretariales</h3>
-                      <p className="mb-4 font-body text-terracota">Funcionalidad y comodidad</p>
-                      <span className="flex items-center text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Secretariales</h3>
+                      <p className="mb-4 font-body text-base text-terracota">Funcionalidad y comodidad</p>
+                      <span className="flex items-center text-base text-sage-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
                   </div>
                 </Link>
                 <Link to="/category/sillas-de-visita" className="group relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/images/visita.png" 
-                    alt="Sillas de Visita" 
-                    className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                  <div className="w-full h-[300px]">
+                    <LazyImage 
+                      src="/images/visita.png" 
+                      alt="Sillas de Visita" 
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-2xl font-heading font-bold mb-2 text-beige">Sillas de Visita</h3>
-                      <p className="mb-4 font-body text-terracota">Para espacios de recepción</p>
-                      <span className="flex items-center text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas de Visita</h3>
+                      <p className="mb-4 font-body text-base text-terracota">Para espacios de recepción</p>
+                      <span className="flex items-center text-base text-sage-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
                   </div>
                 </Link>
                 <Link to="/category/accesorios" className="group relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/images/accesorio.png" 
-                    alt="Accesorios" 
-                    className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-8">
+                  <div className="w-full h-[300px]">
+                    <LazyImage 
+                      src="/images/accesorio.png" 
+                      alt="Accesorios" 
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-2xl font-heading font-bold mb-2 text-beige">Accesorios</h3>
-                      <p className="mb-4 font-body text-terracota">Complementos para tu silla</p>
-                      <span className="flex items-center text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Accesorios</h3>
+                      <p className="mb-4 font-body text-base text-terracota">Complementos para tu silla</p>
+                      <span className="flex items-center text-base text-sage-light">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -471,62 +488,77 @@ const HomePage = () => {
       </section>
 
 
-      {/* Promotional Banner */}
-      <section className="bg-[#E8DED1]">
+      {/* Promotional Banner - Optimized for mobile with horizontal scrolling */}
+      <section className="bg-[#E8DED1] py-4 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#C87D55]/30">
-            <div className="flex items-center gap-3 p-4">
-              <Tag className="h-6 w-6" />
+          <div className="flex overflow-x-auto pb-4 sm:pb-0 sm:grid sm:grid-cols-4 gap-6 hide-scrollbar">
+            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <Tag className="h-6 w-6 flex-shrink-0" />
               <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C]">HASTA 12% DE DESCUENTO*</h4>
-                <p className="text-sm font-body text-[#C87D55]">en Pix o Boleto. 1x en Tarjeta 5%</p>
+                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">HASTA 12% DE DESCUENTO*</h4>
+                <p className="text-xs sm:text-sm font-body text-[#C87D55]">en Pix o Boleto. 1x en Tarjeta 5%</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4">
-              <CreditCard className="h-6 w-6" />
+            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <CreditCard className="h-6 w-6 flex-shrink-0" />
               <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C]">PAGO FÁCIL</h4>
-                <p className="text-sm font-body text-[#C87D55]">Hasta 10x sin Intereses</p>
+                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">PAGO FÁCIL</h4>
+                <p className="text-xs sm:text-sm font-body text-[#C87D55]">Hasta 10x sin Intereses</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4">
-              <Lock className="h-6 w-6" />
+            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <Lock className="h-6 w-6 flex-shrink-0" />
               <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C]">COMPRA SEGURA</h4>
-                <p className="text-sm font-body text-[#C87D55]">Ambiente seguro y certificado</p>
+                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">COMPRA SEGURA</h4>
+                <p className="text-xs sm:text-sm font-body text-[#C87D55]">Ambiente seguro y certificado</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4">
-              <FileCheck className="h-6 w-6" />
+            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
+              <FileCheck className="h-6 w-6 flex-shrink-0" />
               <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C]">NF Y GARANTÍA</h4>
-                <p className="text-sm font-body text-[#C87D55]">En todos los productos</p>
+                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">NF Y GARANTÍA</h4>
+                <p className="text-xs sm:text-sm font-body text-[#C87D55]">En todos los productos</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="bg-[#7D9D8C] py-16">
+      {/* Newsletter - Optimized for mobile */}
+      <section className="bg-[#7D9D8C] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-heading font-bold text-[#E8DED1] mb-4">¡No te pierdas nuestras ofertas!</h2>
-          <p className="text-[#E8DED1]/80 mb-8 font-body">Suscríbete para recibir novedades y descuentos exclusivos</p>
-          <form className="max-w-md mx-auto flex gap-4">
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#E8DED1] mb-3 sm:mb-4">¡No te pierdas nuestras ofertas!</h2>
+          <p className="text-[#E8DED1]/80 mb-6 sm:mb-8 font-body text-base">Suscríbete para recibir novedades y descuentos exclusivos</p>
+          <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
             <input
               type="email"
               placeholder="Tu correo electrónico"
-              className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8DED1]"
+              className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8DED1] text-base"
+              aria-label="Correo electrónico para suscripción"
             />
             <button
               type="submit"
-              className="bg-[#E8DED1] text-[#7D9D8C] px-6 py-3 rounded-lg font-heading font-semibold hover:bg-[#E8DED1]/90 transition-colors"
+              className="bg-[#E8DED1] text-[#7D9D8C] px-6 py-3 rounded-lg font-heading font-semibold hover:bg-[#E8DED1]/90 transition-colors text-base"
+              aria-label="Suscribirse al boletín"
             >
               Suscribirse
             </button>
           </form>
         </div>
       </section>
+
+      {/* Back to Top Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <button 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="bg-teal text-white p-3 rounded-full shadow-lg hover:bg-teal-light transition-colors"
+          aria-label="Volver al inicio"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      </div>
     </motion.div>
   );
 };

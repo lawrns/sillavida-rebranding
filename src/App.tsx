@@ -21,6 +21,7 @@ import PromotionsPage from './pages/PromotionsPage';
 import ErgonomicEducationPage from './pages/ErgonomicEducationPage';
 import TestimonialsPage from './pages/TestimonialsPage';
 import ProductCardDemo from './pages/ProductCardDemo';
+import AnimationDemoPage from './pages/AnimationDemoPage';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
@@ -58,6 +59,7 @@ function AnimatedRoutes() {
               <Route path="/testimonials" element={<TestimonialsPage />} />
               {/* Demo Pages */}
               <Route path="/demos/product-cards" element={<ProductCardDemo />} />
+              <Route path="/demos/animations" element={<AnimationDemoPage />} />
             </Routes>
     </AnimatePresence>
   );

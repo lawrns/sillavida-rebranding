@@ -154,8 +154,9 @@ const MiniCart: React.FC = () => {
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-heading font-bold">Tu Carrito</h2>
                 <button 
-                  className="p-1 rounded-full hover:bg-gray-100"
+                  className="p-2 rounded-full hover:bg-gray-100"
                   onClick={closeCart}
+                  aria-label="Cerrar carrito"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -174,8 +175,9 @@ const MiniCart: React.FC = () => {
                   <ShoppingBag className="h-16 w-16 text-gray-300" />
                   <p className="mt-4 text-gray-500 text-lg font-body text-center">Tu carrito está vacío</p>
                   <button
-                    className="mt-6 bg-teal text-white py-2 px-6 rounded hover:bg-teal-light font-heading font-semibold tracking-wide"
+                    className="mt-6 bg-teal text-white py-3 px-6 rounded hover:bg-teal-light font-heading font-semibold tracking-wide text-base"
                     onClick={closeCart}
+                    aria-label="Continuar comprando"
                   >
                     Continuar Comprando
                   </button>
@@ -234,28 +236,31 @@ const MiniCart: React.FC = () => {
                               <button 
                                 onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isLoading}
-                                className="p-1 text-gray-600 hover:text-teal"
+                                className="p-2 sm:p-1 text-gray-600 hover:text-teal"
+                                aria-label="Disminuir cantidad"
                               >
-                                <Minus className="h-4 w-4" />
+                                <Minus className="h-5 w-5 sm:h-4 sm:w-4" />
                               </button>
-                              <span className="px-2 py-1 min-w-[32px] text-center text-sm font-heading font-medium">
+                              <span className="px-3 py-1 min-w-[40px] sm:min-w-[32px] text-center text-base sm:text-sm font-heading font-medium">
                                 {item.quantity}
                               </span>
                               <button 
                                 onClick={() => updateItem(item.id, item.quantity + 1)}
                                 disabled={isLoading}
-                                className="p-1 text-gray-600 hover:text-teal"
+                                className="p-2 sm:p-1 text-gray-600 hover:text-teal"
+                                aria-label="Aumentar cantidad"
                               >
-                                <Plus className="h-4 w-4" />
+                                <Plus className="h-5 w-5 sm:h-4 sm:w-4" />
                               </button>
                             </div>
 
                             <button
-                              className="text-teal hover:text-teal-dark text-sm font-heading font-medium flex items-center"
+                              className="text-teal hover:text-teal-dark text-base sm:text-sm font-heading font-medium flex items-center px-2 py-1"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
+                              aria-label={`Eliminar ${item.title} del carrito`}
                             >
-                              <Trash2 className="h-4 w-4 mr-1" />
+                              <Trash2 className="h-5 w-5 sm:h-4 sm:w-4 mr-1" />
                               <span>Eliminar</span>
                             </button>
                           </div>
@@ -317,12 +322,13 @@ const MiniCart: React.FC = () => {
                 <button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className="w-full bg-teal text-white py-3 rounded font-heading font-semibold tracking-wide hover:bg-teal-light flex items-center justify-center"
+                  className="w-full bg-teal text-white py-4 sm:py-3 rounded font-heading font-semibold tracking-wide hover:bg-teal-light flex items-center justify-center text-base"
+                  aria-label="Finalizar compra"
                 >
                   {isLoading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
-                      Procesando...
+                      <div className="animate-spin rounded-full h-5 w-5 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2" />
+                      <span>Procesando...</span>
                     </>
                   ) : (
                     <>
@@ -333,12 +339,13 @@ const MiniCart: React.FC = () => {
                 </button>
                 
                 <div className="mt-4 text-center">
-                  <p className="text-sm text-gray-500 font-body">
+                  <p className="text-base sm:text-sm text-gray-500 font-body">
                     o{' '}
                     <Link
                       to="/cart"
                       onClick={closeCart}
-                      className="text-teal font-heading font-medium hover:text-teal-dark"
+                      className="text-teal font-heading font-medium hover:text-teal-dark px-2 py-1 inline-block"
+                      aria-label="Ver carrito completo"
                     >
                       Ver Carrito Completo
                     </Link>

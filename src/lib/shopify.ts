@@ -1224,13 +1224,15 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
 /**
  * Get checkout URL for cart
  * @param cartId Cart ID
+ * @param isGuestCheckout Whether to use guest checkout
  * @returns Checkout URL
  */
-export async function getCheckoutUrl(cartId: string) {
+export async function getCheckoutUrl(cartId: string, isGuestCheckout: boolean = false) {
   // Check if it's a mock cart
   if (cartId.startsWith('mock-cart-') && mockCart) {
     console.log('[Shopify] Returning mock checkout URL');
-    return `/checkout?cart=${cartId}`;
+    const guestParam = isGuestCheckout ? '&guest=true' : '';
+    return `/checkout?cart=${cartId}${guestParam}`;
   }
   
   const query = `
@@ -1251,5 +1253,17 @@ export async function getCheckoutUrl(cartId: string) {
     cache: false
   });
 
-  return response.data.cart.checkoutUrl;
+  // Get the base checkout URL
+  const baseCheckoutUrl = response.data.cart.checkoutUrl;
+  
+  // Add guest checkout parameter if requested
+  if (isGuestCheckout) {
+    // Shopify uses 'checkout[email]' parameter for guest checkout
+    // We'll add a placeholder that will be replaced by the user's email
+    // We also add 'checkout[remember_me]=0' to disable account creation prompt
+    const separator = baseCheckoutUrl.includes('?') ? '&' : '?';
+    return `${baseCheckoutUrl}${separator}checkout[remember_me]=0`;
+  }
+  
+  return baseCheckoutUrl;
 }
