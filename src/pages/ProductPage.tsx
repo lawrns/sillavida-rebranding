@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion'; // Import motion and An
 import { getProduct, getProductsByCollection } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import type { ShopifyProduct } from '../types/shopify';
-import { Star, Truck, Shield, CreditCard, ChevronRight, Plus, Minus, Share2, Heart, Maximize2, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import { Star, ChevronRight, Plus, Minus, Share2, Heart, Maximize2, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
+import BenefitTabs from '../components/BenefitTabs';
 import { Helmet } from 'react-helmet';
 
 const ProductPage: React.FC = () => {
@@ -126,7 +128,7 @@ const ProductPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
       </div>
     );
   }
@@ -179,9 +181,9 @@ const ProductPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-gray-500 mb-6">
-          <Link to="/" className="hover:text-red-600">Inicio</Link>
+          <Link to="/" className="hover:text-teal">Inicio</Link>
           <ChevronRight className="h-4 w-4 mx-2" />
-          <Link to="/category/all" className="hover:text-red-600">Productos</Link>
+          <Link to="/category/all" className="hover:text-teal">Productos</Link>
           <ChevronRight className="h-4 w-4 mx-2" />
           <span className="font-medium text-gray-900">{product.title}</span>
         </div>
@@ -292,8 +294,8 @@ const ProductPage: React.FC = () => {
                     key={index} 
                     className={`aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer ${
                       activeImageIndex === index 
-                        ? 'ring-2 ring-red-600 shadow-md' 
-                        : 'border border-gray-200 hover:border-red-300'
+                        ? 'ring-2 ring-teal shadow-md' 
+                        : 'border border-gray-200 hover:border-teal-light'
                     }`}
                     onClick={() => setActiveImageIndex(index)}
                     whileHover={{ scale: 1.05 }}
@@ -331,7 +333,7 @@ const ProductPage: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <p className="text-3xl font-bold text-red-600">{formattedPrice}</p>
+              <p className="text-3xl font-bold text-teal">{formattedPrice}</p>
               <p 
                 className="text-gray-600 cursor-help" 
                 title="Paga a 12 meses sin intereses con tarjetas participantes."
@@ -350,8 +352,8 @@ const ProductPage: React.FC = () => {
                       onClick={() => setSelectedVariantId(node.id)}
                       className={`p-3 rounded-md shadow-sm ${
                         selectedVariantId === node.id
-                          ? 'bg-red-50 border border-red-400 text-red-700'
-                          : 'bg-white border border-gray-200 text-gray-700 hover:border-red-300'
+                          ? 'bg-teal-50 border border-teal text-teal-dark'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:border-teal-light'
                       }`}
                       whileHover={{ 
                         scale: 1.03, 
@@ -416,9 +418,9 @@ const ProductPage: React.FC = () => {
               className={`w-full py-3.5 rounded-lg font-semibold mb-2 flex items-center justify-center ${
                 isCartLoading 
                   ? 'bg-gray-400 text-white cursor-not-allowed' 
-                  : 'bg-red-600 text-white hover:bg-red-700'
+                  : 'bg-teal text-white hover:bg-teal-light'
               }`}
-              whileHover={!isCartLoading ? { scale: 1.02, backgroundColor: "#b91c1c" } : {}}
+              whileHover={!isCartLoading ? { scale: 1.02, backgroundColor: "#0D9488" } : {}}
               whileTap={!isCartLoading ? { scale: 0.98 } : {}}
               transition={{ duration: 0.2 }}
             >
@@ -468,56 +470,116 @@ const ProductPage: React.FC = () => {
               )}
             </AnimatePresence>
 
-            {/* Product Features */}
-            <div className="space-y-4 border-t pt-6">
-              <div className="flex items-center gap-3">
-                <Truck className="h-6 w-6 text-gray-600" />
-                <div>
-                  <h4 className="font-semibold">Envío Gratis</h4>
-                  <p className="text-sm text-gray-600">En pedidos mayores a $999 MXN</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Shield className="h-6 w-6 text-gray-600" />
-                <div>
-                  <h4 className="font-semibold">Garantía de 12 Meses</h4>
-                  <p className="text-sm text-gray-600">En todos nuestros productos</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <CreditCard className="h-6 w-6 text-gray-600" />
-                <div>
-                  <h4 className="font-semibold">Pago Seguro</h4>
-                  <p className="text-sm text-gray-600">Múltiples métodos de pago</p>
-                </div>
-              </div>
+            {/* Trust Indicators */}
+            <div className="border-t pt-6">
+              <TrustIndicatorGroup 
+                types={['warranty', 'shipping', 'payment']} 
+                layout="horizontal" 
+                size="medium" 
+              />
             </div>
 
-            {/* Product Description */}
-            <div className="mt-8">
-              <h3 className="font-semibold mb-2">Descripción</h3>
-              <p className="text-gray-600 whitespace-pre-line">{product.description || 'No description available.'}</p>
-            </div>
-
-            {/* Product Features (from Tags) */}
-            {product.tags && product.tags.length > 0 && (
-              <div className="mt-8">
-                <h3 className="font-semibold mb-2">Características</h3>
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
-                  {product.tags.map((tag, index) => (
-                    <li key={index}>{tag}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {/* Benefit-Focused Tabs */}
+            <BenefitTabs 
+              content={{
+                bienestar: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-[#C87D55]">Bienestar</h3>
+                    <p className="text-gray-600 mb-4">
+                      Nuestras sillas están diseñadas para mejorar tu bienestar físico y mental durante largas jornadas de trabajo.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                      <li>Soporte lumbar ajustable que reduce la tensión en la espalda baja</li>
+                      <li>Diseño ergonómico que promueve una postura saludable</li>
+                      <li>Materiales transpirables que mantienen una temperatura confortable</li>
+                      <li>Reduce la fatiga y el estrés durante largas sesiones de trabajo</li>
+                      {product.description && (
+                        <li>{product.description.split('.')[0]}.</li>
+                      )}
+                    </ul>
+                  </div>
+                ),
+                productividad: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-[#7D9D8C]">Productividad</h3>
+                    <p className="text-gray-600 mb-4">
+                      Aumenta tu rendimiento y concentración con características diseñadas para optimizar tu espacio de trabajo.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                      <li>Ajustes personalizables que se adaptan a tu estilo de trabajo</li>
+                      <li>Movilidad fluida que te permite desplazarte eficientemente</li>
+                      <li>Diseño que facilita mantener tu espacio de trabajo organizado</li>
+                      <li>Reduce las distracciones causadas por incomodidad física</li>
+                      {product.description && product.description.split('.').length > 1 && (
+                        <li>{product.description.split('.')[1]}.</li>
+                      )}
+                    </ul>
+                  </div>
+                ),
+                durabilidad: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-teal">Durabilidad</h3>
+                    <p className="text-gray-600 mb-4">
+                      Invierte en una solución duradera con materiales y construcción de alta calidad que resisten el uso diario.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                      <li>Estructura robusta diseñada para soportar uso intensivo</li>
+                      <li>Materiales de alta calidad que mantienen su apariencia con el tiempo</li>
+                      <li>Mecanismos probados para miles de ciclos de uso</li>
+                      <li>Garantía que respalda la calidad y durabilidad del producto</li>
+                      {product.description && product.description.split('.').length > 2 && (
+                        <li>{product.description.split('.')[2]}.</li>
+                      )}
+                    </ul>
+                  </div>
+                ),
+                especificaciones: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-gray-600">Especificaciones</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Detalles Técnicos</h4>
+                        <ul className="list-disc list-inside text-gray-600 space-y-1">
+                          {product.tags && product.tags.map((tag, index) => (
+                            <li key={index}>{tag}</li>
+                          ))}
+                          {(!product.tags || product.tags.length === 0) && (
+                            <>
+                              <li>Peso máximo soportado: 120 kg</li>
+                              <li>Altura ajustable: 45-55 cm</li>
+                              <li>Material del asiento: Espuma de alta densidad</li>
+                              <li>Material de la estructura: Aluminio reforzado</li>
+                            </>
+                          )}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-2">Dimensiones</h4>
+                        <ul className="list-disc list-inside text-gray-600 space-y-1">
+                          <li>Altura total: 110-120 cm</li>
+                          <li>Ancho del asiento: 50 cm</li>
+                          <li>Profundidad del asiento: 48 cm</li>
+                          <li>Altura del respaldo: 65 cm</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <h4 className="font-medium mb-2">Descripción Completa</h4>
+                      <p className="text-gray-600 whitespace-pre-line">{product.description || 'No description available.'}</p>
+                    </div>
+                  </div>
+                )
+              }}
+              className="mt-8"
+            />
             
             {/* Social Sharing */}
             <div className="mt-8 flex items-center gap-4">
-              <button className="flex items-center gap-2 text-gray-600 hover:text-red-600">
+              <button className="flex items-center gap-2 text-gray-600 hover:text-teal">
                 <Share2 className="h-5 w-5" />
                 <span>Compartir</span>
               </button>
-              <button className="flex items-center gap-2 text-gray-600 hover:text-red-600">
+              <button className="flex items-center gap-2 text-gray-600 hover:text-teal">
                 <Heart className="h-5 w-5" />
                 <span>Favorito</span>
               </button>
@@ -538,7 +600,7 @@ const ProductPage: React.FC = () => {
               <h2 className="text-2xl font-bold">Productos Relacionados</h2>
               <Link 
                 to="/category/all" 
-                className="text-sm text-red-600 hover:text-red-800 flex items-center transition-colors duration-200"
+                className="text-sm text-teal hover:text-teal-light flex items-center transition-colors duration-200"
               >
                 Ver todos los productos
                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -549,11 +611,11 @@ const ProductPage: React.FC = () => {
               {relatedProducts.map((relatedProduct, index) => (
                 <motion.div 
                   key={relatedProduct.id} 
-                  className="rounded-lg overflow-hidden bg-white border border-gray-200 hover:border-red-200 transition-all duration-300"
+                  className="rounded-lg overflow-hidden bg-white border border-gray-200 hover:border-teal-light transition-all duration-300"
                   whileHover={{ 
                     y: -5, 
                     boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-                    borderColor: "rgba(252, 165, 165, 1)" // red-300
+                    borderColor: "rgba(45, 212, 191, 0.7)" // teal-light
                   }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -586,7 +648,7 @@ const ProductPage: React.FC = () => {
                         <span className="text-xs text-gray-500 ml-1">(4.0)</span>
                       </div>
                       <div className="mt-auto pt-2">
-                        <p className="text-red-600 font-bold">
+                        <p className="text-teal font-bold">
                           {parseFloat(relatedProduct.priceRange.minVariantPrice.amount).toLocaleString('es-MX', {
                             style: 'currency',
                             currency: relatedProduct.priceRange.minVariantPrice.currencyCode

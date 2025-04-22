@@ -5,60 +5,62 @@ import { useCart } from '../context/CartContext';
 
 // Mock Shopify variant IDs for the slider products
 const SLIDER_VARIANT_IDS: Record<number, string> = {
-  1: 'mock-variant-345678901', // Silla Gamer Xperience Helix (gamer model)
+  1: 'mock-variant-345678901', // Silla Ergonómica Xperience Helix (ergonomic model)
   2: 'mock-variant-123456789', // Silla Oficina ErgoComfort (ergonomic model)
-  3: 'mock-variant-567890123', // Pack 4x Silla Vida Confort Pro (secretarial model)
+  3: 'mock-variant-567890123', // Pack 4x Silla Vida Confort Pro (office model)
 };
 
 const slides = [
   {
     id: 1,
-    title: "Silla Gamer Xperience Helix",
-    subtitle: "Nueva Colección 2024",
-    description: "Diseñada para la victoria, construida para la comodidad",
+    title: "Silla Ergonómica Xperience Helix",
+    subtitle: "Invierte en tu bienestar",
+    description: "Diseñada para largas jornadas, construida para tu salud postural",
     price: 2639.91,
     originalPrice: 3800.00,
     image: "/images/gamer2.png",
     theme: {
-      bg: "from-red-900 via-red-800 to-red-900",
-      accent: "bg-red-500/20",
-      text: "text-red-300",
-      button: "bg-red-500 hover:bg-red-400",
-      gradient: "from-white via-white to-red-200"
-    }
+      bg: "from-teal-dark via-teal to-teal-dark",
+      accent: "bg-teal-light/20",
+      text: "text-beige-light",
+      button: "bg-teal hover:bg-teal-light",
+      gradient: "from-white via-white to-beige-extralight"
+    },
+    features: ["Soporte Lumbar", "Ajuste Personalizado", "Materiales Transpirables", "12 MSI"]
   },
   {
     id: 2,
     title: "Silla Oficina ErgoComfort",
-    subtitle: "Nueva Colección 2024",
-    description: "Pensada para largas jornadas, diseñada para tu bienestar",
+    subtitle: "Mejora tu productividad",
+    description: "Confort que transforma tu espacio de trabajo en un santuario de productividad",
     price: 2239.91,
     originalPrice: 3200.00,
     image: "/images/—Pngtree—single comfort noise style sofa_4372281.png",
     theme: {
-      bg: "from-yellow-700 via-yellow-600 to-yellow-700",
-      accent: "bg-yellow-500/20",
-      text: "text-yellow-300",
-      button: "bg-yellow-500 hover:bg-yellow-400",
-      gradient: "from-white via-white to-yellow-200"
-    }
+      bg: "from-sage-dark via-sage to-sage-dark",
+      accent: "bg-sage-light/20",
+      text: "text-beige-light",
+      button: "bg-sage hover:bg-sage-light",
+      gradient: "from-white via-white to-beige-extralight"
+    },
+    features: ["Ergonomía Certificada", "Reduce Fatiga", "Ajuste 4D", "12 MSI"]
   },
   {
     id: 3,
     title: "Pack 4x Silla Vida Confort Pro",
-    subtitle: "Oferta Especial",
-    description: "El paquete ideal para oficinas modernas y espacios productivos",
+    subtitle: "Bienestar para tu equipo",
+    description: "Invierte en el bienestar de tu equipo y potencia la productividad colectiva",
     price: 8499.91,
     originalPrice: 12800.00,
     image: "/images/bundle.png",
     theme: {
-      bg: "from-gray-800 via-gray-700 to-gray-800",
-      accent: "bg-gray-500/20",
-      text: "text-gray-300",
-      button: "bg-gray-600 hover:bg-gray-500",
-      gradient: "from-white via-white to-gray-200"
+      bg: "from-terracotta-dark via-terracotta to-terracotta-dark",
+      accent: "bg-terracotta-light/20",
+      text: "text-beige-light",
+      button: "bg-terracotta hover:bg-terracotta-light",
+      gradient: "from-white via-white to-beige-extralight"
     },
-    features: ["Comodidad", "Estilo", "Durabilidad", "12 MSI"]
+    features: ["Confort Prolongado", "Diseño Ergonómico", "Durabilidad Premium", "12 MSI"]
   }
 ];
 
@@ -101,7 +103,7 @@ const HeroSlider = () => {
   const currentSlideData = slides[currentSlide];
 
   return (
-    <section className={`relative bg-gradient-to-r ${currentTheme.bg} overflow-hidden transition-colors duration-500`}>
+    <section className={`relative bg-gradient-to-r ${currentTheme.bg} overflow-hidden transition-colors duration-500 vida-bg-pattern-breathing`}>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_50%)]" />
       
       <div className="max-w-7xl mx-auto px-4">
@@ -114,19 +116,19 @@ const HeroSlider = () => {
               transition={{ duration: 0.5 }}
               className="text-white max-w-xl mb-8 md:mb-0 relative z-10"
             >
-              <div className={`inline-block px-4 py-1 rounded-full ${currentTheme.accent} ${currentTheme.text} text-sm mb-4`}>
+              <div className={`inline-block px-4 py-1 rounded-full ${currentTheme.accent} ${currentTheme.text} text-sm mb-4 font-heading font-medium`}>
                 {currentSlideData.subtitle}
               </div>
-              <h1 className={`text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r ${currentTheme.gradient} bg-clip-text text-transparent`}>
+              <h1 className={`text-4xl md:text-5xl font-heading font-bold mb-4 bg-gradient-to-r ${currentTheme.gradient} bg-clip-text text-transparent tracking-tight`}>
                 {currentSlideData.title}
               </h1>
-              <p className="text-xl mb-4 text-white/90">
+              <p className="text-xl mb-4 text-white/90 font-body">
                 {currentSlideData.description}
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 {currentSlideData.features ? (
                   currentSlideData.features.map((feature, index) => (
-                    <span key={index} className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center`}>
+                    <span key={index} className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center font-body`}>
                       {index === 0 && <Shield className="h-4 w-4 mr-2" />}
                       {index === 1 && <Star className="h-4 w-4 mr-2" />}
                       {index === 2 && <Package className="h-4 w-4 mr-2" />}
@@ -136,15 +138,15 @@ const HeroSlider = () => {
                   ))
                 ) : (
                   <>
-                    <span className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center`}>
+                    <span className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center font-body`}>
                       <Shield className="h-4 w-4 mr-2" />
                       Comodidad
                     </span>
-                    <span className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center`}>
+                    <span className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center font-body`}>
                       <Star className="h-4 w-4 mr-2" />
                       Durabilidad
                     </span>
-                    <span className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center`}>
+                    <span className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center font-body`}>
                       <CreditCard className="h-4 w-4 mr-2" />
                       12 MSI
                     </span>
@@ -153,10 +155,10 @@ const HeroSlider = () => {
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-white">
-                  <span className={`text-lg line-through ${currentTheme.text}`}>
+                  <span className={`text-lg line-through ${currentTheme.text} font-heading`}>
                     ${currentSlideData.originalPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </span>
-                  <div className="text-4xl font-bold">
+                  <div className="text-4xl font-heading font-bold">
                     ${currentSlideData.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </div>
                 </div>
@@ -165,11 +167,11 @@ const HeroSlider = () => {
                   disabled={isLoading}
                   className={`${
                     success 
-                      ? 'bg-green-600 hover:bg-green-700' 
+                      ? 'bg-sage hover:bg-sage-light' 
                       : currentTheme.button
-                  } text-white px-8 py-3 rounded-lg font-bold transition-colors`}
+                  } text-white px-8 py-3 vida-shape-soft font-heading font-semibold tracking-wide transition-colors`}
                 >
-                  {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al Carrito'} {/* Changed CTA text */}
+                  {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Invierte en tu bienestar'}
                 </button>
               </div>
             </motion.div>
@@ -198,7 +200,7 @@ const HeroSlider = () => {
                 <motion.img 
                   src={currentSlideData.image}
                   alt={currentSlideData.title}
-                  className="w-full h-full object-contain relative z-0"
+                  className="w-full h-full object-contain relative z-0 vida-hover-breathing"
                   style={{ 
                     objectPosition: 'center',
                     maxWidth: '100%'
@@ -227,6 +229,7 @@ const HeroSlider = () => {
           ))}
         </div>
       </div>
+      <div className="vida-divider-wave w-full"></div>
     </section>
   );
 };

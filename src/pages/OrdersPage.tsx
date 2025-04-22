@@ -63,7 +63,7 @@ const OrdersPage: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
         </div>
       </div>
     );
@@ -107,7 +107,7 @@ const OrdersPage: React.FC = () => {
           </p>
           <a 
             href="/tienda" 
-            className="inline-block px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700"
+            className="inline-block px-6 py-3 bg-teal text-white rounded-md hover:bg-teal-light"
           >
             Explorar productos
           </a>
@@ -152,7 +152,7 @@ const OrdersPage: React.FC = () => {
                 </div>
                 
                 <button
-                  className="mt-4 flex items-center text-sm text-gray-600 hover:text-red-600"
+                  className="mt-4 flex items-center text-sm text-gray-600 hover:text-teal"
                   onClick={() => toggleOrderExpansion(order.id)}
                 >
                   {expandedOrders.has(order.id) ? (

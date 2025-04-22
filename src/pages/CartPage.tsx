@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
-import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, CreditCard, Truck, Shield } from 'lucide-react';
+import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
+import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import { useCart } from '../context/CartContext';
 import { getFeaturedProducts } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify'; // Import product type
@@ -31,6 +32,8 @@ const CartPage: React.FC = () => {
       price: parseFloat(product.priceRange.minVariantPrice.amount),
       image: product.images?.edges[0]?.node?.url || '/images/placeholder.png',
       category: 'office', // Default category, adjust if possible
+      lifeCategory: 'Vida Profesional', // Default life category
+      primaryBenefit: 'Más bienestar para tu vida', // Default primary benefit
       features: product.tags || [],
       rating: 4.5, // Default rating
     };
@@ -133,7 +136,7 @@ const CartPage: React.FC = () => {
               >
                 <Link
                   to="/"
-                  className="mt-8 bg-red-600 text-white py-3 px-6 rounded-md hover:bg-red-700 inline-flex items-center font-medium shadow-sm"
+                  className="mt-8 bg-teal text-white py-3 px-6 rounded-md hover:bg-teal-light inline-flex items-center font-medium shadow-sm"
                   aria-label="Continuar comprando"
                 >
                   <ArrowLeft className="h-5 w-5 mr-2" />
@@ -174,7 +177,7 @@ const CartPage: React.FC = () => {
                 animate={{ opacity: 1 }}
               >
                 <motion.div 
-                  className="w-10 h-10 border-4 border-gray-200 border-t-red-600 rounded-full"
+                  className="w-10 h-10 border-4 border-gray-200 border-t-teal rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
@@ -286,7 +289,7 @@ const CartPage: React.FC = () => {
 
                             <button
                               type="button"
-                              className="font-medium text-red-600 hover:text-red-500 flex items-center"
+                              className="font-medium text-teal hover:text-teal-light flex items-center"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
                             >
@@ -303,7 +306,7 @@ const CartPage: React.FC = () => {
                 <div className="p-6 border-t border-gray-200">
                   <Link
                     to="/"
-                    className="text-red-600 hover:text-red-500 flex items-center"
+                    className="text-teal hover:text-teal-light flex items-center"
                   >
                     <ArrowLeft className="h-5 w-5 mr-2" />
                     Continuar Comprando
@@ -358,7 +361,7 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="bg-gray-100 rounded-full h-2.5 mb-2">
                             <div 
-                              className="bg-red-600 h-2.5 rounded-full" 
+                              className="bg-teal h-2.5 rounded-full" 
                               style={{ 
                                 width: (() => {
                                   try {
@@ -373,7 +376,7 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="text-sm text-gray-600">
                             <span>Añade </span>
-                            <span className="font-medium text-red-600">
+                            <span className="font-medium text-teal">
                               {(() => {
                                 try {
                                   return (10000 - parseFloat(cartTotal.replace(/[^\d.-]/g, ''))).toLocaleString('es-MX', {
@@ -386,7 +389,7 @@ const CartPage: React.FC = () => {
                                 }
                               })()}
                             </span> más para obtener envío gratis
-                            <Link to="/promociones" className="ml-1 text-red-600 underline">Ver detalles</Link>
+                            <Link to="/promociones" className="ml-1 text-teal underline">Ver detalles</Link>
                           </div>
                         </div>
                       )}
@@ -420,7 +423,7 @@ const CartPage: React.FC = () => {
                 <motion.button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 ${
+                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal hover:bg-teal-light ${
                     isLoading ? 'opacity-75 cursor-not-allowed' : ''
                   }`}
                   whileHover={{ scale: 1.03 }}
@@ -441,53 +444,17 @@ const CartPage: React.FC = () => {
                   )}
                 </motion.button>
                 
-                {/* Trust Elements - Enhanced as per TASK-031 */}
-                <div className="mt-8 space-y-5">
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Compra con confianza</h3>
-                  <motion.div 
-                    className="p-4 border border-gray-200 rounded-lg"
-                    whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Truck className="h-6 w-6 text-red-600" />
-                      <div>
-                    <h4 className="font-semibold">Envío Gratis</h4>
-                    <p className="text-sm text-gray-600">En pedidos mayores a $10,000 MXN</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="p-4 border border-gray-200 rounded-lg"
-                    whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Shield className="h-6 w-6 text-red-600" />
-                      <div>
-                        <h4 className="font-semibold">Garantía de 12 Meses</h4>
-                        <p className="text-sm text-gray-600">En todos nuestros productos</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="p-4 border border-gray-200 rounded-lg"
-                    whileHover={{ scale: 1.02, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <CreditCard className="h-6 w-6 text-red-600" />
-                      <div>
-                        <h4 className="font-semibold">Pago Seguro</h4>
-                        <p className="text-sm text-gray-600">Múltiples métodos de pago</p>
-                      </div>
-                    </div>
-                  </motion.div>
+                {/* Trust Indicators */}
+                <div className="mt-8">
+                  <TrustIndicatorGroup 
+                    title="Invierte en tu bienestar con confianza"
+                    types={['warranty', 'shipping', 'payment']} 
+                    layout="vertical" 
+                    size="medium" 
+                  />
                   
                   {/* Payment methods logos */}
-                  <div className="mt-4 flex justify-center gap-3">
+                  <div className="mt-6 flex justify-center gap-3">
                     <img src="/images/visa.png" alt="Visa" className="h-6" />
                     <img src="/images/mastercard.png" alt="Mastercard" className="h-6" />
                     <img src="/images/amex.png" alt="American Express" className="h-6" />

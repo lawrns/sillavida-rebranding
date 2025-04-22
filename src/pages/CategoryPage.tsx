@@ -303,7 +303,7 @@ const CategoryPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
       </div>
     );
   }
@@ -340,7 +340,7 @@ const CategoryPage: React.FC = () => {
     >
       {/* Breadcrumb */}
       <div className="flex items-center text-sm text-gray-500 mb-6">
-        <a href="/" className="hover:text-red-600">Inicio</a>
+        <a href="/" className="hover:text-teal">Inicio</a>
         <ChevronRight className="h-4 w-4 mx-2" />
         <span className="font-medium text-gray-900">{collection.title}</span>
       </div>
@@ -361,7 +361,7 @@ const CategoryPage: React.FC = () => {
             placeholder="Buscar productos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           {searchQuery && (
@@ -381,13 +381,13 @@ const CategoryPage: React.FC = () => {
           <button 
             onClick={() => setFilterOpen(!filterOpen)}
             className={`flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 ${
-              activeFilterCount > 0 ? 'border-red-500 text-red-600' : ''
+              activeFilterCount > 0 ? 'border-teal text-teal' : ''
             }`}
           >
             <Filter className="h-5 w-5" />
             <span>Filtrar</span>
             {activeFilterCount > 0 && (
-              <span className="ml-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="ml-1 bg-teal text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {activeFilterCount}
               </span>
             )}
@@ -396,7 +396,7 @@ const CategoryPage: React.FC = () => {
           {activeFilterCount > 0 && (
             <button 
               onClick={resetFilters}
-              className="text-sm text-gray-500 hover:text-red-600"
+              className="text-sm text-gray-500 hover:text-teal"
               title="Limpiar todos los filtros"
             >
               <X className="h-4 w-4" />
@@ -409,7 +409,7 @@ const CategoryPage: React.FC = () => {
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal"
           >
             <option value="default">Ordenar por</option>
             <option value="price-asc">Precio: Menor a Mayor</option>
@@ -428,7 +428,7 @@ const CategoryPage: React.FC = () => {
             {activeFilterCount > 0 && (
               <button 
                 onClick={resetFilters}
-                className="text-sm text-red-600 hover:text-red-800 flex items-center"
+                className="text-sm text-teal hover:text-teal-light flex items-center"
               >
                 <X className="h-4 w-4 mr-1" />
                 Limpiar filtros
@@ -573,7 +573,7 @@ const CategoryPage: React.FC = () => {
             </button>
             <button 
               onClick={applyFilters}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              className="bg-teal text-white px-4 py-2 rounded hover:bg-teal-light"
             >
               Aplicar Filtros
             </button>
@@ -595,7 +595,7 @@ const CategoryPage: React.FC = () => {
             {isLoadingMore ? (
               <div className="flex justify-center">
                 <span className="flex items-center justify-center">
-                  <span className="animate-spin h-5 w-5 mr-2 border-t-2 border-b-2 border-red-600 rounded-full"></span>
+                  <span className="animate-spin h-5 w-5 mr-2 border-t-2 border-b-2 border-teal rounded-full"></span>
                   Cargando...
                 </span>
               </div>
@@ -629,7 +629,7 @@ const CategoryPage: React.FC = () => {
               <select
                 value={productsPerPage}
                 onChange={(e) => setProductsPerPage(Number(e.target.value))}
-                className="border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
               >
                 <option value={12}>12</option>
                 <option value={20}>20</option>

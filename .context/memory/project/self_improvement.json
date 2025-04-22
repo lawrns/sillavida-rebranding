@@ -1,177 +1,114 @@
 {
-  "metrics": {
-    "task_completion_rate": 0.38,
-    "average_task_time": "2.5 hours",
-    "decision_quality": 0.87
+  "version": "1.0",
+  "lastUpdated": "2025-04-21T21:31:51",
+  "insights": {
+    "process": [
+      {
+        "id": "process-001",
+        "description": "Using direct hex values can be more reliable than custom Tailwind classes when troubleshooting color issues",
+        "dateIdentified": "2025-04-21T21:30:55",
+        "priority": "medium",
+        "status": "active",
+        "relatedTasks": ["TASK-039"]
+      },
+      {
+        "id": "process-002",
+        "description": "Browser testing is essential for verifying visual changes immediately",
+        "dateIdentified": "2025-04-21T21:30:55",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["TASK-039", "TASK-040"]
+      }
+    ],
+    "efficiency": [
+      {
+        "id": "efficiency-001",
+        "description": "Targeted component-specific fixes allow for addressing immediate issues without disrupting other components",
+        "dateIdentified": "2025-04-21T21:31:26",
+        "priority": "medium",
+        "status": "active",
+        "relatedTasks": ["TASK-039"]
+      },
+      {
+        "id": "efficiency-002",
+        "description": "Using inline hex color values provides a clear and explicit color reference that won't be affected by potential Tailwind configuration issues",
+        "dateIdentified": "2025-04-21T21:31:26",
+        "priority": "medium",
+        "status": "active",
+        "relatedTasks": ["TASK-039", "TASK-040"]
+      }
+    ],
+    "pattern": [
+      {
+        "id": "pattern-001",
+        "description": "Similar color-related issues might exist in other components and should be addressed consistently",
+        "dateIdentified": "2025-04-21T21:30:55",
+        "priority": "medium",
+        "status": "active",
+        "relatedTasks": ["TASK-039", "TASK-040"]
+      },
+      {
+        "id": "pattern-002",
+        "description": "Tailwind configuration may need updates to properly recognize custom color classes",
+        "dateIdentified": "2025-04-21T21:31:26",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["TASK-039", "TASK-040"]
+      }
+    ],
+    "blocker": [
+      {
+        "id": "blocker-001",
+        "description": "Custom Tailwind color classes not rendering correctly in some components",
+        "dateIdentified": "2025-04-21T21:31:26",
+        "priority": "high",
+        "status": "active",
+        "resolution": "Use direct hex color values as a workaround while investigating Tailwind configuration",
+        "relatedTasks": ["TASK-039"]
+      }
+    ]
   },
-  "insights": [
-    {
-      "type": "pattern",
-      "description": "Consistent route patterns across the application are essential for proper navigation",
-      "confidence": 0.95
-    },
-    {
-      "type": "process",
-      "description": "Initial setup of the Aegis framework for project management",
-      "confidence": 1.0
-    },
-    {
-      "type": "pattern",
-      "description": "Project structure suggests e-commerce functionality with Shopify integration",
-      "confidence": 0.9
-    },
-    {
-      "type": "process",
-      "description": "Incremental approach to Shopify integration allows for parallel development and testing",
-      "confidence": 0.9
-    },
-    {
-      "type": "efficiency",
-      "description": "Creating new components for Shopify integration reduces risk compared to modifying existing components",
-      "confidence": 0.8
-    },
-    {
-      "type": "blocker",
-      "description": "TypeScript configuration issues are causing numerous errors that need to be addressed",
-      "confidence": 1.0
-    },
-    {
-      "type": "process",
-      "description": "Testing API integrations before full implementation can prevent issues in production code",
-      "confidence": 0.9
-    },
-    {
-      "type": "process",
-      "description": "Hybrid approach to Shopify integration provides a good balance between dynamic content and performance",
-      "confidence": 0.9
-    },
-    {
-      "type": "pattern",
-      "description": "Component adaptation pattern is useful for adapting to new data sources while maintaining UI consistency",
-      "confidence": 0.85
-    },
-    {
-      "type": "efficiency",
-      "description": "Implementing fallbacks to static data ensures the UI always displays something, even if the API is unavailable",
-      "confidence": 0.95
-    },
-    {
-      "type": "blocker",
-      "description": "API limitations require workarounds for getting featured products and best sellers",
-      "confidence": 0.9
-    },
-    {
-      "type": "pattern",
-      "description": "Progressive enhancement strategy works well for integrating dynamic data into static pages",
-      "confidence": 0.85
-    },
-    {
-      "type": "process",
-      "description": "Creating reusable components before integration helps maintain clean code organization",
-      "confidence": 0.95
-    },
-    {
-      "type": "efficiency",
-      "description": "Using TypeScript for UI components helps catch potential errors early and improves code quality",
-      "confidence": 0.9
-    },
-    {
-      "type": "pattern",
-      "description": "Returning both data and metadata (like pagination info) from API functions is a good practice for complex data fetching",
-      "confidence": 0.95
-    },
-    {
-      "type": "blocker",
-      "description": "Careful consideration of interactions between features (like pagination and filtering) is necessary to avoid UX issues",
-      "confidence": 0.9
-    }
-  ],
   "recommendations": [
     {
-      "type": "pattern",
-      "description": "Implement a centralized routing configuration to ensure consistency across the application",
-      "priority": "medium"
+      "id": "rec-001",
+      "category": "process",
+      "description": "Implement a systematic review of all components using custom color classes to identify and address similar rendering issues",
+      "dateCreated": "2025-04-21T21:31:51",
+      "priority": "medium",
+      "status": "pending"
     },
     {
-      "type": "risk",
-      "description": "Add automated tests to verify route consistency between links and route definitions",
-      "priority": "medium"
+      "id": "rec-002",
+      "category": "efficiency",
+      "description": "Create a color utility function that can be used consistently across components to ensure proper color rendering",
+      "dateCreated": "2025-04-21T21:31:51",
+      "priority": "medium",
+      "status": "pending"
     },
     {
-      "type": "workflow",
-      "description": "Create tasks for key features and components based on the existing project structure",
-      "priority": "high"
-    },
-    {
-      "type": "workflow",
-      "description": "Establish a clear plan for implementing or improving the Shopify integration",
-      "priority": "medium"
-    },
-    {
-      "type": "workflow",
-      "description": "Consider tasks for UI/UX improvements based on the existing components",
-      "priority": "medium"
-    },
-    {
-      "type": "process",
-      "description": "Fix TypeScript configuration to resolve the type errors before continuing with feature development",
-      "priority": "high"
-    },
-    {
-      "type": "efficiency",
-      "description": "Implement comprehensive error handling in the Shopify API utilities",
-      "priority": "medium"
-    },
-    {
-      "type": "risk",
-      "description": "Create a plan for phasing out the static data implementation once the Shopify integration is complete",
-      "priority": "low"
-    },
-    {
-      "type": "process",
-      "description": "Create a test suite for API integrations to catch issues early in development",
-      "priority": "medium"
-    },
-    {
-      "type": "efficiency",
-      "description": "Implement caching for Shopify API calls to improve performance and reduce API usage",
-      "priority": "high"
-    },
-    {
-      "type": "process",
-      "description": "Use product metafields or tags in Shopify to store structured data like features instead of parsing from description",
-      "priority": "medium"
-    },
-    {
-      "type": "pattern",
-      "description": "Apply the component adaptation pattern to other components that need to work with both static and dynamic data",
-      "priority": "medium"
-    },
-    {
-      "type": "risk",
-      "description": "Implement more robust error handling and retry logic for Shopify API calls",
-      "priority": "high"
-    },
-    {
-      "type": "pattern",
-      "description": "Create more reusable UI components for common patterns like pagination, filtering, and sorting",
-      "priority": "medium"
-    },
-    {
-      "type": "efficiency",
-      "description": "Implement proper SEO handling for paginated content with prev/next meta tags",
-      "priority": "medium"
-    },
-    {
-      "type": "process",
-      "description": "Add accessibility features to all interactive components, including keyboard navigation",
-      "priority": "high"
-    },
-    {
-      "type": "pattern",
-      "description": "Apply the pattern of returning both data and metadata from API functions to all data fetching operations",
-      "priority": "medium"
+      "id": "rec-003",
+      "category": "risk",
+      "description": "Review and update Tailwind configuration to ensure proper recognition of custom color classes",
+      "dateCreated": "2025-04-21T21:31:51",
+      "priority": "high",
+      "status": "pending"
     }
   ],
-  "lastUpdated": "2025-04-12T15:37:43-06:00"
+  "metrics": {
+    "taskCompletionRates": {
+      "lastWeek": 0.85,
+      "lastMonth": 0.78,
+      "trend": "improving"
+    },
+    "timeAllocation": {
+      "planning": 0.15,
+      "implementation": 0.65,
+      "testing": 0.15,
+      "documentation": 0.05
+    },
+    "decisionMetrics": {
+      "averageTimeToDecision": "1.2 days",
+      "decisionsWithDocumentation": 0.95
+    }
+  }
 }

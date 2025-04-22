@@ -1,0 +1,233 @@
+/* ErgonomicEducationalSectionCondensed.css */
+
+.ergonomic-educational-section-condensed {
+  background-color: #E8DED1; /* Warm beige background */
+  padding: 4rem 0;
+}
+
+.ergonomic-educational-section-condensed .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.ergonomic-educational-section-condensed .content-wrapper {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.ergonomic-educational-section-condensed .text-content {
+  flex: 1;
+}
+
+.ergonomic-educational-section-condensed h2 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #7D9D8C; /* Sage green */
+  margin-bottom: 1rem;
+}
+
+.ergonomic-educational-section-condensed .subtitle {
+  font-size: 1.2rem;
+  color: #C87D55; /* Terracotta */
+  margin-bottom: 2rem;
+}
+
+.ergonomic-educational-section-condensed .benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ergonomic-educational-section-condensed .benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--color-background);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ergonomic-educational-section-condensed .benefit-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.ergonomic-educational-section-condensed .benefit-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #7D9D8C; /* Sage green */
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ergonomic-educational-section-condensed .benefit-icon img {
+  width: 36px;
+  height: 36px;
+}
+
+.ergonomic-educational-section-condensed .benefit-text {
+  flex: 1;
+}
+
+.ergonomic-educational-section-condensed .benefit-text h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #7D9D8C; /* Sage green */
+  margin-bottom: 0.5rem;
+}
+
+.ergonomic-educational-section-condensed .benefit-text p {
+  font-size: 0.9rem;
+  color: #C87D55; /* Terracotta */
+  line-height: 1.4;
+}
+
+.ergonomic-educational-section-condensed .learn-more-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.ergonomic-educational-section-condensed .learn-more-link:hover {
+  color: var(--color-primary-dark);
+}
+
+.ergonomic-educational-section-condensed .arrow-icon {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.ergonomic-educational-section-condensed .learn-more-link:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+.ergonomic-educational-section-condensed .image-content {
+  flex: 1;
+  position: relative;
+}
+
+.ergonomic-educational-section-condensed .main-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+
+.ergonomic-educational-section-condensed .statistic-overlay {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #7D9D8C; /* Sage green */
+  color: #E8DED1; /* Warm beige */
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  max-width: 200px;
+  text-align: center;
+}
+
+.ergonomic-educational-section-condensed .statistic-value {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.ergonomic-educational-section-condensed .statistic-label {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 992px) {
+  .ergonomic-educational-section-condensed .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .ergonomic-educational-section-condensed .text-content,
+  .ergonomic-educational-section-condensed .image-content {
+    width: 100%;
+  }
+  
+  .ergonomic-educational-section-condensed h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ergonomic-educational-section-condensed {
+    padding: 3rem 0;
+  }
+  
+  .ergonomic-educational-section-condensed h2 {
+    font-size: 1.8rem;
+  }
+  
+  .ergonomic-educational-section-condensed .subtitle {
+    font-size: 1rem;
+  }
+  
+  .ergonomic-educational-section-condensed .statistic-overlay {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 1rem;
+    max-width: 150px;
+  }
+  
+  .ergonomic-educational-section-condensed .statistic-value {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ergonomic-educational-section-condensed {
+    padding: 2rem 0;
+  }
+  
+  .ergonomic-educational-section-condensed .container {
+    padding: 0 1rem;
+  }
+  
+  .ergonomic-educational-section-condensed h2 {
+    font-size: 1.5rem;
+  }
+  
+  .ergonomic-educational-section-condensed .benefit-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .ergonomic-educational-section-condensed .benefit-icon img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .ergonomic-educational-section-condensed .statistic-overlay {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.75rem;
+    max-width: 120px;
+  }
+  
+  .ergonomic-educational-section-condensed .statistic-value {
+    font-size: 1.5rem;
+  }
+  
+  .ergonomic-educational-section-condensed .statistic-label {
+    font-size: 0.8rem;
+  }
+}
