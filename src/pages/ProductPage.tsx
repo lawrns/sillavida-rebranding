@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext';
 import type { ShopifyProduct } from '../types/shopify';
 import { Star, ChevronRight, Plus, Minus, Share2, Heart, Maximize2, ChevronLeft, ChevronRight as ChevronRightIcon } from 'lucide-react';
 import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
+import BenefitTabs from '../components/BenefitTabs';
 import { Helmet } from 'react-helmet';
 
 const ProductPage: React.FC = () => {
@@ -478,23 +479,99 @@ const ProductPage: React.FC = () => {
               />
             </div>
 
-            {/* Product Description */}
-            <div className="mt-8">
-              <h3 className="font-semibold mb-2">Descripción</h3>
-              <p className="text-gray-600 whitespace-pre-line">{product.description || 'No description available.'}</p>
-            </div>
-
-            {/* Product Features (from Tags) */}
-            {product.tags && product.tags.length > 0 && (
-              <div className="mt-8">
-                <h3 className="font-semibold mb-2">Características</h3>
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
-                  {product.tags.map((tag, index) => (
-                    <li key={index}>{tag}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {/* Benefit-Focused Tabs */}
+            <BenefitTabs 
+              content={{
+                bienestar: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-[#C87D55]">Bienestar</h3>
+                    <p className="text-gray-600 mb-4">
+                      Nuestras sillas están diseñadas para mejorar tu bienestar físico y mental durante largas jornadas de trabajo.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                      <li>Soporte lumbar ajustable que reduce la tensión en la espalda baja</li>
+                      <li>Diseño ergonómico que promueve una postura saludable</li>
+                      <li>Materiales transpirables que mantienen una temperatura confortable</li>
+                      <li>Reduce la fatiga y el estrés durante largas sesiones de trabajo</li>
+                      {product.description && (
+                        <li>{product.description.split('.')[0]}.</li>
+                      )}
+                    </ul>
+                  </div>
+                ),
+                productividad: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-[#7D9D8C]">Productividad</h3>
+                    <p className="text-gray-600 mb-4">
+                      Aumenta tu rendimiento y concentración con características diseñadas para optimizar tu espacio de trabajo.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                      <li>Ajustes personalizables que se adaptan a tu estilo de trabajo</li>
+                      <li>Movilidad fluida que te permite desplazarte eficientemente</li>
+                      <li>Diseño que facilita mantener tu espacio de trabajo organizado</li>
+                      <li>Reduce las distracciones causadas por incomodidad física</li>
+                      {product.description && product.description.split('.').length > 1 && (
+                        <li>{product.description.split('.')[1]}.</li>
+                      )}
+                    </ul>
+                  </div>
+                ),
+                durabilidad: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-teal">Durabilidad</h3>
+                    <p className="text-gray-600 mb-4">
+                      Invierte en una solución duradera con materiales y construcción de alta calidad que resisten el uso diario.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-2">
+                      <li>Estructura robusta diseñada para soportar uso intensivo</li>
+                      <li>Materiales de alta calidad que mantienen su apariencia con el tiempo</li>
+                      <li>Mecanismos probados para miles de ciclos de uso</li>
+                      <li>Garantía que respalda la calidad y durabilidad del producto</li>
+                      {product.description && product.description.split('.').length > 2 && (
+                        <li>{product.description.split('.')[2]}.</li>
+                      )}
+                    </ul>
+                  </div>
+                ),
+                especificaciones: (
+                  <div className="py-4">
+                    <h3 className="text-xl font-semibold mb-4 text-gray-600">Especificaciones</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Detalles Técnicos</h4>
+                        <ul className="list-disc list-inside text-gray-600 space-y-1">
+                          {product.tags && product.tags.map((tag, index) => (
+                            <li key={index}>{tag}</li>
+                          ))}
+                          {(!product.tags || product.tags.length === 0) && (
+                            <>
+                              <li>Peso máximo soportado: 120 kg</li>
+                              <li>Altura ajustable: 45-55 cm</li>
+                              <li>Material del asiento: Espuma de alta densidad</li>
+                              <li>Material de la estructura: Aluminio reforzado</li>
+                            </>
+                          )}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-2">Dimensiones</h4>
+                        <ul className="list-disc list-inside text-gray-600 space-y-1">
+                          <li>Altura total: 110-120 cm</li>
+                          <li>Ancho del asiento: 50 cm</li>
+                          <li>Profundidad del asiento: 48 cm</li>
+                          <li>Altura del respaldo: 65 cm</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <h4 className="font-medium mb-2">Descripción Completa</h4>
+                      <p className="text-gray-600 whitespace-pre-line">{product.description || 'No description available.'}</p>
+                    </div>
+                  </div>
+                )
+              }}
+              className="mt-8"
+            />
             
             {/* Social Sharing */}
             <div className="mt-8 flex items-center gap-4">

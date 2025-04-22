@@ -98,7 +98,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
       className="block" // Apply block display to the motion div
     >
       <Link to={`/product/${chair.id}`} className="block"> {/* Link remains block inside motion div */}
-        <div className="bg-white vida-shape-organic vida-hover-growth vida-bg-pattern-leaf shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col"> {/* Added Vida theme classes */}
+        <div className="bg-beige-light vida-shape-organic vida-hover-growth vida-bg-pattern-leaf shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col"> {/* Updated to beige-light background */}
           <img
             src={chair.image}
           alt={chair.name} 

@@ -4,7 +4,6 @@
 @import './styles/forms.css';
 @import './styles/shadows.css';
 @import './styles/interactions.css';
-@import './styles/dark-mode.css';
 @import './styles/vida-theme.css';
 
 @tailwind base;

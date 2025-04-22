@@ -160,6 +160,9 @@ const Navbar = () => {
             <motion.div whileHover={{ y: -2 }}>
               <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} nav-item hover:text-teal py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
             </motion.div>
+            <motion.div whileHover={{ y: -2 }}>
+              <Link to="/educacion/por-que-invertir-en-silla-ergonomica" className={`${isActive("/educacion/por-que-invertir-en-silla-ergonomica") ? 'text-teal border-b-2 border-teal' : 'text-gray-800'} nav-item hover:text-teal py-2 px-1 transition-colors duration-200`}>Ergonomía</Link>
+            </motion.div>
 
             {/* Categories Dropdown */}
             <div className="relative" ref={categoriesRef}>
@@ -280,6 +283,17 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Más Vendidos
+              </Link>
+              <Link 
+                to="/educacion/por-que-invertir-en-silla-ergonomica" 
+                className={`block px-4 py-3 rounded-md nav-item ${
+                  isActive("/educacion/por-que-invertir-en-silla-ergonomica") 
+                    ? 'text-teal bg-teal-extralight' 
+                    : 'text-gray-700'
+                } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Ergonomía
               </Link>
               {/* Mobile Categories */}
               <div ref={categoriesRef}>

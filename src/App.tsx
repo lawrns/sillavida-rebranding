@@ -18,6 +18,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UiShowcasePage from './pages/UiShowcasePage';
 import PromotionsPage from './pages/PromotionsPage';
+import ErgonomicEducationPage from './pages/ErgonomicEducationPage';
+import TestimonialsPage from './pages/TestimonialsPage';
+import ProductCardDemo from './pages/ProductCardDemo';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
@@ -48,6 +51,13 @@ function AnimatedRoutes() {
               {/* Promotions Page */}
               <Route path="/promociones" element={<PromotionsPage />} />
               <Route path="/promotions" element={<PromotionsPage />} />
+              {/* Educational Pages */}
+              <Route path="/educacion/por-que-invertir-en-silla-ergonomica" element={<ErgonomicEducationPage />} />
+              {/* Testimonials Page */}
+              <Route path="/testimonios" element={<TestimonialsPage />} />
+              <Route path="/testimonials" element={<TestimonialsPage />} />
+              {/* Demo Pages */}
+              <Route path="/demos/product-cards" element={<ProductCardDemo />} />
             </Routes>
     </AnimatePresence>
   );

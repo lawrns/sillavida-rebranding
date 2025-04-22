@@ -1,9 +1,9 @@
 ---
 title: Implement "Vida Score" Product Comparison Tool
 type: task
-status: planned
+status: hold
 created: 2025-04-17T23:22:40
-updated: 2025-04-17T23:22:40
+updated: 2025-04-21T21:14:57
 id: TASK-050
 priority: medium
 memory_types: [procedural, semantic]

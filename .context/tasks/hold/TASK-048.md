@@ -1,9 +1,9 @@
 ---
 title: Create "Vida Ergonómica" Blog/Content Section
 type: task
-status: planned
+status: hold
 created: 2025-04-17T23:21:35
-updated: 2025-04-17T23:21:35
+updated: 2025-04-21T19:06:04
 id: TASK-048
 priority: medium
 memory_types: [procedural, semantic]
