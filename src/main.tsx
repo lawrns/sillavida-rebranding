@@ -6,6 +6,10 @@ import './styles/hide-scrollbar.css';
 import './styles/animations.css';
 import './styles/product-page.css';
 import * as serviceWorkerRegistration from './services/serviceWorkerRegistration';
+import setupDesignSystem from './styles/tokens/initializeDesignSystem';
+
+// Initialize the design system
+setupDesignSystem();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

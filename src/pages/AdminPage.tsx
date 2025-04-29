@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import FeatureFlagToggle from '../components/admin/FeatureFlagToggle';
+import DesignSystemToggle from '../components/admin/DesignSystemToggle';
+import StyleGuide from '../components/admin/StyleGuide';
 import ThemePreviewPage from './ThemePreviewPage';
 import ThemeTestPage from './ThemeTestPage';
 import ShopifyApiTester from '../components/ShopifyApiTester';
@@ -14,7 +16,7 @@ import ProductCardDemo from './ProductCardDemo';
  * feature flag toggles, theme previews, API testing, and UI demos.
  */
 const AdminPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'features' | 'themes' | 'theme-test' | 'api-test' | 'ui-demos' | 'product-cards'>('features');
+  const [activeTab, setActiveTab] = useState<'features' | 'design-system' | 'themes' | 'theme-test' | 'api-test' | 'ui-demos' | 'product-cards' | 'style-guide'>('features');
 
   // Page transition variants
   const pageVariants = {
@@ -52,6 +54,16 @@ const AdminPage: React.FC = () => {
             onClick={() => setActiveTab('features')}
           >
             Configuración de Funciones
+          </button>
+          <button
+            className={`py-4 px-6 font-medium text-sm border-b-2 ${
+              activeTab === 'design-system'
+                ? 'border-teal text-teal'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+            onClick={() => setActiveTab('design-system')}
+          >
+            Sistema de Diseño
           </button>
           <button
             className={`py-4 px-6 font-medium text-sm border-b-2 ${
@@ -103,6 +115,16 @@ const AdminPage: React.FC = () => {
           >
             Tarjetas de Producto
           </button>
+          <button
+            className={`py-4 px-6 font-medium text-sm border-b-2 ${
+              activeTab === 'style-guide'
+                ? 'border-teal text-teal'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+            onClick={() => setActiveTab('style-guide')}
+          >
+            Guía de Estilos
+          </button>
         </nav>
       </div>
       
@@ -151,6 +173,13 @@ const AdminPage: React.FC = () => {
         </div>
       )}
       
+      {/* Design System Tab */}
+      {activeTab === 'design-system' && (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <DesignSystemToggle />
+        </div>
+      )}
+      
       {/* Themes Tab */}
       {activeTab === 'themes' && (
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -189,6 +218,13 @@ const AdminPage: React.FC = () => {
       {activeTab === 'product-cards' && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <ProductCardDemo />
+        </div>
+      )}
+
+      {/* Style Guide Tab */}
+      {activeTab === 'style-guide' && (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <StyleGuide />
         </div>
       )}
     </motion.div>

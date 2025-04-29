@@ -1,0 +1,211 @@
+/* SillaVida Interaction Styles */
+
+/* Focus Styles */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-primary);
+}
+
+/* Interactive Element Base Styles */
+.interactive {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover Effects */
+
+/* Text Hover Effects */
+.hover-text-primary:hover {
+  color: var(--color-teal);
+}
+
+.hover-text-primary-light:hover {
+  color: var(--color-teal-light);
+}
+
+.hover-text-primary-dark:hover {
+  color: var(--color-teal-dark);
+}
+
+.hover-text-secondary:hover {
+  color: var(--color-sage);
+}
+
+.hover-text-secondary-light:hover {
+  color: var(--color-sage-light);
+}
+
+.hover-text-accent:hover {
+  color: var(--color-terracotta);
+}
+
+.hover-text-accent-light:hover {
+  color: var(--color-terracotta-light);
+}
+
+/* Background Hover Effects */
+.hover-bg-primary:hover {
+  background-color: var(--color-teal);
+}
+
+.hover-bg-primary-light:hover {
+  background-color: var(--color-teal-light);
+}
+
+.hover-bg-primary-dark:hover {
+  background-color: var(--color-teal-dark);
+}
+
+.hover-bg-primary-extralight:hover {
+  background-color: var(--color-teal-extralight);
+}
+
+.hover-bg-secondary:hover {
+  background-color: var(--color-sage);
+}
+
+.hover-bg-secondary-light:hover {
+  background-color: var(--color-sage-light);
+}
+
+.hover-bg-secondary-extralight:hover {
+  background-color: var(--color-sage-extralight);
+}
+
+.hover-bg-accent:hover {
+  background-color: var(--color-terracotta);
+}
+
+.hover-bg-accent-light:hover {
+  background-color: var(--color-terracotta-light);
+}
+
+.hover-bg-accent-extralight:hover {
+  background-color: var(--color-terracotta-extralight);
+}
+
+/* Scale Hover Effects */
+.hover-scale-sm:hover {
+  transform: scale(1.025);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-scale-lg:hover {
+  transform: scale(1.1);
+}
+
+/* Combined Hover Effects */
+.hover-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.hover-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+}
+
+.hover-link {
+  position: relative;
+  transition: color 0.2s ease-in-out;
+}
+
+.hover-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--color-teal);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.hover-link:hover {
+  color: var(--color-teal);
+}
+
+.hover-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Active/Pressed States */
+.active-primary:active {
+  background-color: var(--color-teal-dark);
+  transform: translateY(1px);
+}
+
+.active-secondary:active {
+  background-color: var(--color-sage-dark);
+  transform: translateY(1px);
+}
+
+.active-accent:active {
+  background-color: var(--color-terracotta-dark);
+  transform: translateY(1px);
+}
+
+/* Focus States */
+.focus-primary:focus {
+  box-shadow: var(--focus-ring-primary);
+}
+
+.focus-secondary:focus {
+  box-shadow: var(--focus-ring-secondary);
+}
+
+.focus-accent:focus {
+  box-shadow: var(--focus-ring-accent);
+}
+
+.focus-error:focus {
+  box-shadow: var(--focus-ring-error);
+}
+
+/* Disabled States */
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}

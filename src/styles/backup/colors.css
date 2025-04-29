@@ -1,0 +1,116 @@
+/* SillaVida Color System CSS Variables */
+
+:root {
+  /* Primary Colors */
+  --color-teal: #1E5959;
+  --color-teal-light: #2A7A7A;
+  --color-teal-dark: #184747;
+  --color-teal-extralight: #E5EDED;
+
+  --color-beige: #E8DED1;
+  --color-beige-light: #F5F0E8;
+  --color-beige-dark: #D6C9B7;
+  --color-beige-extralight: #FAF7F3;
+
+  /* Accent Colors */
+  --color-sage: #7D9D8C;
+  --color-sage-light: #9CBCAB;
+  --color-sage-dark: #5E7A6A;
+  --color-sage-extralight: #EDF3F0;
+
+  --color-terracotta: #C87D55;
+  --color-terracotta-light: #D69A7A;
+  --color-terracotta-dark: #A66240;
+  --color-terracotta-extralight: #F7EDE7;
+
+  /* Neutral Colors */
+  --color-black: #212529;
+  --color-gray-dark: #495057;
+  --color-gray-medium: #6C757D;
+  --color-gray-light: #ADB5BD;
+  --color-gray-extralight: #E9ECEF;
+  --color-white: #FFFFFF;
+  --color-off-white: #F8F9FA;
+
+  /* Functional Colors */
+  --color-success: #2E7D32;
+  --color-success-light: #4CAF50;
+  --color-success-dark: #1B5E20;
+  --color-success-extralight: #E8F5E9;
+
+  --color-warning: #F9A825;
+  --color-warning-light: #FBC02D;
+  --color-warning-dark: #F57F17;
+  --color-warning-extralight: #FFF8E1;
+
+  --color-error: #C62828;
+  --color-error-light: #E53935;
+  --color-error-dark: #B71C1C;
+  --color-error-extralight: #FFEBEE;
+
+  --color-info: #0277BD;
+  --color-info-light: #039BE5;
+  --color-info-dark: #01579B;
+  --color-info-extralight: #E1F5FE;
+
+  /* Component-Specific Colors */
+  
+  /* Buttons */
+  --color-button-primary: var(--color-teal);
+  --color-button-primary-hover: var(--color-teal-light);
+  --color-button-primary-active: var(--color-teal-dark);
+  --color-button-primary-text: var(--color-white);
+  --color-button-primary-disabled: var(--color-teal-extralight);
+  --color-button-primary-disabled-text: var(--color-gray-medium);
+
+  --color-button-secondary: var(--color-sage);
+  --color-button-secondary-hover: var(--color-sage-light);
+  --color-button-secondary-active: var(--color-sage-dark);
+  --color-button-secondary-text: var(--color-white);
+  --color-button-secondary-disabled: var(--color-sage-extralight);
+  --color-button-secondary-disabled-text: var(--color-gray-medium);
+
+  --color-button-tertiary-border: var(--color-teal);
+  --color-button-tertiary-text: var(--color-teal);
+  --color-button-tertiary-hover: var(--color-teal-extralight);
+  --color-button-tertiary-active-bg: var(--color-teal-light);
+  --color-button-tertiary-active-text: var(--color-white);
+  --color-button-tertiary-disabled: var(--color-gray-light);
+
+  /* Navigation */
+  --color-nav-bg: var(--color-white);
+  --color-nav-active: var(--color-teal);
+  --color-nav-hover: var(--color-teal-extralight);
+  --color-nav-text: var(--color-black);
+  --color-nav-active-text: var(--color-teal);
+
+  /* Cards */
+  --color-card-bg: var(--color-white);
+  --color-card-bg-alt: var(--color-beige);
+  --color-card-border: var(--color-gray-light);
+  --color-card-border-alt: var(--color-beige-dark);
+  --color-card-shadow: rgba(33, 37, 41, 0.1);
+  --color-card-shadow-hover: rgba(33, 37, 41, 0.15);
+
+  /* Forms */
+  --color-form-border: var(--color-gray-light);
+  --color-form-focus: var(--color-teal);
+  --color-form-bg: var(--color-white);
+  --color-form-placeholder: var(--color-gray-medium);
+  --color-form-error: var(--color-error);
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px var(--color-card-shadow);
+  --shadow-card-hover: 0 4px 12px var(--color-card-shadow-hover);
+  --shadow-dropdown: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Legacy color variable for backward compatibility */
+:root {
+  --color-primary: var(--color-teal);
+  --color-primary-light: var(--color-teal-light);
+  --color-primary-dark: var(--color-teal-dark);
+  --color-accent: var(--color-sage);
+  --color-highlight: var(--color-terracotta);
+}
