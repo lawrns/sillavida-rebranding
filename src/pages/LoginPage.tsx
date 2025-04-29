@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion
-import { isLoggedIn, login } from '../services/customerAuth';
+import { Navigate, Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { isLoggedIn, login, authErrorHandler, AuthErrorType } from '../services/customerAuth';
 import { Eye, EyeOff } from 'lucide-react';
+import AuthErrorBanner from '../components/auth/AuthErrorBanner';
+import FallbackLoginForm from '../components/auth/FallbackLoginForm';
+import { getFeatureFlag } from '../config/featureFlags';
 
 /**
  * LoginPage component
  * 
  * This component provides a login form for users to authenticate
- * with Shopify's Customer Account API.
+ * with Shopify's Customer Account API. It also includes a fallback
+ * authentication mechanism when the Shopify API fails.
  */
 const LoginPage: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -18,6 +22,30 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<{type: AuthErrorType, message: string} | null>(null);
+  const [useFallback, setUseFallback] = useState<boolean>(false);
+  const location = useLocation();
+
+  // Check if fallback mode is requested in URL
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const fallback = searchParams.get('fallback') === 'true';
+    setUseFallback(fallback);
+  }, [location]);
+
+  // Subscribe to auth errors
+  useEffect(() => {
+    const unsubscribe = authErrorHandler.addListener((type, message) => {
+      setAuthError({ type, message });
+      
+      // Switch to fallback if login fails and fallback is enabled
+      if (type === AuthErrorType.LOGIN && getFeatureFlag('customerAccounts.enableFallback')) {
+        setUseFallback(true);
+      }
+    });
+    
+    return unsubscribe;
+  }, []);
 
   // Check login status on mount
   useEffect(() => {
@@ -74,10 +102,19 @@ const LoginPage: React.FC = () => {
     try {
       // The login function redirects to Shopify's login page
       // which handles the actual authentication
-      await login();
+      const success = await login();
+      
+      if (!success && getFeatureFlag('customerAccounts.enableFallback')) {
+        setUseFallback(true);
+      }
     } catch (error) {
       console.error('Error initiating login:', error);
       setError('Ocurrió un error al iniciar sesión. Por favor, intenta de nuevo.');
+      
+      // Switch to fallback if login fails and fallback is enabled
+      if (getFeatureFlag('customerAccounts.enableFallback')) {
+        setUseFallback(true);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -123,72 +160,86 @@ const LoginPage: React.FC = () => {
     >
       <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Iniciar Sesión</h1>
       
-      {error && (
+      {authError && (
+        <AuthErrorBanner 
+          type={authError.type} 
+          message={authError.message} 
+          onDismiss={() => setAuthError(null)}
+        />
+      )}
+      
+      {error && !authError && (
         <div className="mb-6 p-3 bg-red-100 text-red-700 rounded-md">
           {error}
         </div>
       )}
       
       <div className="bg-white rounded-lg shadow-md p-6">
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={handleEmailChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
-              />
-            </div>
-            
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Contraseña
-              </label>
-              <div className="relative">
+        {useFallback ? (
+          // Show fallback login form when Shopify authentication fails
+          <FallbackLoginForm />
+        ) : (
+          // Show standard login form that redirects to Shopify
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={handleEmailChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
                 />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
+              </div>
+              
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              
+              {/* Forgot Password */}
+              <div className="text-right">
+                <a href="#" className="text-sm text-teal hover:text-teal-light">
+                  ¿Olvidaste tu contraseña?
+                </a>
               </div>
             </div>
             
-            {/* Forgot Password */}
-            <div className="text-right">
-              <a href="#" className="text-sm text-teal hover:text-teal-light">
-                ¿Olvidaste tu contraseña?
-              </a>
-            </div>
-          </div>
-          
-          <button
-            type="submit"
-            className="w-full mt-6 px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={submitting}
-          >
-            {submitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full mt-6 px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={submitting}
+            >
+              {submitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            </button>
+          </form>
+        )}
         
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">

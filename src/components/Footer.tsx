@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion
-import { Facebook, Instagram, Mail, ExternalLink } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Facebook, Instagram, Mail } from 'lucide-react';
 
 const Footer = () => {
   // Animation variants

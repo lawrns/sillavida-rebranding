@@ -1,0 +1,41 @@
+/* HomePage.css - Custom styling for the HomePage component */
+
+/* Color palette from the redesign plan */
+:root {
+  --sv-color-teal: #008080;
+  --sv-color-teal-light: #00a0a0;
+  --sv-color-teal-dark: #006666;
+  --sv-color-beige: #f5f5dc;
+  --sv-color-beige-light: #fffff0;
+  --sv-color-beige-dark: #e6e6c8;
+  --sv-color-sage: #9caf88;
+  --sv-color-sage-light: #b8c9a7;
+  --sv-color-sage-dark: #7d8c6c;
+  --sv-color-terracotta: #e2725b;
+  --sv-color-terracotta-dark: #c87d55;
+}
+
+/* Category heading styles - beige without outline */
+.home-category-heading {
+  color: var(--sv-color-beige);
+}
+
+/* Category description styles - sage green without outline */
+.home-category-description {
+  color: var(--sv-color-sage);
+}
+
+/* Category link styles - terracotta without outline */
+.home-category-link {
+  color: var(--sv-color-terracotta);
+}
+
+/* Ensure SVG icons inherit the text color */
+.home-category-link svg {
+  color: inherit;
+}
+
+/* Hover effects */
+.home-category-link:hover {
+  color: var(--sv-color-terracotta-dark);
+}

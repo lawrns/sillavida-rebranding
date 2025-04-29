@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion
-import { isLoggedIn, getCurrentCustomer, getCustomerOrders, updateCustomer } from '../services/customerAuth';
+import { motion } from 'framer-motion';
+import { 
+  isLoggedIn, 
+  getCurrentCustomer, 
+  getCustomerOrders, 
+  updateCustomer, 
+  authErrorHandler, 
+  AuthErrorType 
+} from '../services/customerAuth';
 import { User, Package, Clock, Mail, Phone } from 'lucide-react';
+import AuthErrorBanner from '../components/auth/AuthErrorBanner';
+import { getFeatureFlag } from '../config/featureFlags';
 
 /**
  * AccountPage component
  * 
  * This component displays the user's account information, including
  * personal details and order history. It also allows the user to
- * update their information.
+ * update their information. It includes error handling for when the
+ * Shopify Customer Account API fails.
  */
 const AccountPage: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -25,6 +35,22 @@ const AccountPage: React.FC = () => {
   });
   const [updateSuccess, setUpdateSuccess] = useState<boolean>(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<{type: AuthErrorType, message: string} | null>(null);
+  const [needsReauthentication, setNeedsReauthentication] = useState<boolean>(false);
+
+  // Subscribe to auth errors
+  useEffect(() => {
+    const unsubscribe = authErrorHandler.addListener((type, message) => {
+      setAuthError({ type, message });
+      
+      // If account access error, may need reauthentication
+      if (type === AuthErrorType.ACCOUNT_ACCESS) {
+        setNeedsReauthentication(true);
+      }
+    });
+    
+    return unsubscribe;
+  }, []);
 
   // Check login status and fetch customer data on mount
   useEffect(() => {
@@ -36,18 +62,50 @@ const AccountPage: React.FC = () => {
         
         if (status) {
           const customerData = await getCurrentCustomer();
-          setCustomer(customerData);
-          setFormData({
-            firstName: customerData?.firstName || '',
-            lastName: customerData?.lastName || '',
-            phone: customerData?.phone || ''
-          });
           
-          const ordersData = await getCustomerOrders(10);
-          setOrders(ordersData || []);
+          if (customerData) {
+            setCustomer(customerData);
+            setFormData({
+              firstName: customerData?.firstName || '',
+              lastName: customerData?.lastName || '',
+              phone: customerData?.phone || ''
+            });
+            
+            const ordersData = await getCustomerOrders(10);
+            setOrders(ordersData || []);
+          } else if (getFeatureFlag('customerAccounts.enableFallback')) {
+            // If customer data couldn't be fetched but we're still logged in
+            // This could be a fallback auth scenario
+            setCustomer({
+              firstName: 'Usuario',
+              lastName: 'Temporal',
+              email: 'No disponible en modo fallback',
+              phone: ''
+            });
+            setFormData({
+              firstName: 'Usuario',
+              lastName: 'Temporal',
+              phone: ''
+            });
+            setOrders([]);
+            
+            // Show a specific error for fallback mode
+            setAuthError({
+              type: AuthErrorType.ACCOUNT_ACCESS,
+              message: 'Acceso limitado en modo de respaldo. Algunas funciones pueden no estar disponibles.'
+            });
+          }
         }
       } catch (error) {
         console.error('Error fetching account data:', error);
+        
+        // If error occurs and fallback is enabled, show appropriate message
+        if (getFeatureFlag('customerAccounts.enableFallback')) {
+          setAuthError({
+            type: AuthErrorType.ACCOUNT_ACCESS,
+            message: 'No se pudieron cargar los datos de la cuenta. Funcionando en modo limitado.'
+          });
+        }
       } finally {
         setLoading(false);
       }
@@ -85,10 +143,26 @@ const AccountPage: React.FC = () => {
         }, 3000);
       } else {
         setUpdateError('No se pudo actualizar la información. Intenta de nuevo.');
+        
+        // If fallback is enabled, show appropriate message
+        if (getFeatureFlag('customerAccounts.enableFallback')) {
+          setAuthError({
+            type: AuthErrorType.UPDATE_ACCOUNT,
+            message: 'La actualización de datos no está disponible en modo de respaldo.'
+          });
+        }
       }
     } catch (error) {
       console.error('Error updating customer:', error);
       setUpdateError('Ocurrió un error al actualizar la información.');
+      
+      // If fallback is enabled, show appropriate message
+      if (getFeatureFlag('customerAccounts.enableFallback')) {
+        setAuthError({
+          type: AuthErrorType.UPDATE_ACCOUNT,
+          message: 'La actualización de datos no está disponible en modo de respaldo.'
+        });
+      }
     }
   };
 
@@ -106,6 +180,11 @@ const AccountPage: React.FC = () => {
   // If not logged in, redirect to home page
   if (loggedIn === false) {
     return <Navigate to="/" />;
+  }
+
+  // If needs reauthentication, redirect to login page
+  if (needsReauthentication) {
+    return <Navigate to="/login?reauth=true" />;
   }
 
   // Page transition variants
@@ -132,6 +211,15 @@ const AccountPage: React.FC = () => {
     >
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Mi Cuenta</h1>
       
+      {/* Auth Error Banner */}
+      {authError && (
+        <AuthErrorBanner 
+          type={authError.type} 
+          message={authError.message} 
+          onDismiss={() => setAuthError(null)}
+        />
+      )}
+      
       {/* Tabs */}
       <div className="border-b border-gray-200 mb-8">
         <nav className="flex -mb-px">
@@ -153,6 +241,7 @@ const AccountPage: React.FC = () => {
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
             onClick={() => setActiveTab('orders')}
+            disabled={authError?.type === AuthErrorType.ACCOUNT_ACCESS}
           >
             <Package className="inline-block h-4 w-4 mr-2" />
             Pedidos
@@ -166,7 +255,7 @@ const AccountPage: React.FC = () => {
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-semibold text-gray-800">Información Personal</h2>
-              {!editMode && (
+              {!editMode && !authError && (
                 <button
                   className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
                   onClick={() => setEditMode(true)}
@@ -182,7 +271,7 @@ const AccountPage: React.FC = () => {
               </div>
             )}
             
-            {updateError && (
+            {updateError && !authError && (
               <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
                 {updateError}
               </div>
@@ -204,6 +293,7 @@ const AccountPage: React.FC = () => {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
                     />
                   </div>
+                  
                   <div>
                     <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
                       Apellido
@@ -217,6 +307,7 @@ const AccountPage: React.FC = () => {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
                     />
                   </div>
+                  
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                       Email
@@ -230,6 +321,7 @@ const AccountPage: React.FC = () => {
                     />
                     <p className="mt-1 text-xs text-gray-500">El email no se puede cambiar</p>
                   </div>
+                  
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                       Teléfono
@@ -244,7 +336,15 @@ const AccountPage: React.FC = () => {
                     />
                   </div>
                 </div>
-                <div className="flex justify-end space-x-4">
+                
+                <div className="flex space-x-4">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2"
+                  >
+                    Guardar Cambios
+                  </button>
+                  
                   <button
                     type="button"
                     className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
@@ -259,41 +359,35 @@ const AccountPage: React.FC = () => {
                   >
                     Cancelar
                   </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light"
-                  >
-                    Guardar Cambios
-                  </button>
                 </div>
               </form>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-start">
-                  <User className="h-5 w-5 text-gray-400 mt-0.5 mr-3" />
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <User className="h-5 w-5 text-gray-400 mr-3" />
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Nombre</h3>
-                    <p className="mt-1 text-gray-900">
-                      {customer?.firstName} {customer?.lastName}
-                    </p>
+                    <p className="text-sm text-gray-500">Nombre Completo</p>
+                    <p className="font-medium">{customer?.firstName} {customer?.lastName}</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <Mail className="h-5 w-5 text-gray-400 mt-0.5 mr-3" />
+                
+                <div className="flex items-center">
+                  <Mail className="h-5 w-5 text-gray-400 mr-3" />
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Email</h3>
-                    <p className="mt-1 text-gray-900">{customer?.email}</p>
+                    <p className="text-sm text-gray-500">Email</p>
+                    <p className="font-medium">{customer?.email}</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <Phone className="h-5 w-5 text-gray-400 mt-0.5 mr-3" />
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-500">Teléfono</h3>
-                    <p className="mt-1 text-gray-900">
-                      {customer?.phone || 'No especificado'}
-                    </p>
+                
+                {customer?.phone && (
+                  <div className="flex items-center">
+                    <Phone className="h-5 w-5 text-gray-400 mr-3" />
+                    <div>
+                      <p className="text-sm text-gray-500">Teléfono</p>
+                      <p className="font-medium">{customer.phone}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>
@@ -303,73 +397,59 @@ const AccountPage: React.FC = () => {
       {/* Orders Tab */}
       {activeTab === 'orders' && (
         <div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">Historial de Pedidos</h2>
-            
-            {orders.length === 0 ? (
-              <div className="text-center py-8">
-                <Package className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-1">No tienes pedidos</h3>
-                <p className="text-gray-500">
-                  Cuando realices un pedido, aparecerá aquí.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {orders.map((order) => (
-                  <div key={order.id} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex flex-wrap justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">
-                          Pedido #{order.orderNumber}
-                        </h3>
-                        <div className="flex items-center mt-1 text-sm text-gray-500">
-                          <Clock className="h-4 w-4 mr-1" />
-                          {new Date(order.processedAt).toLocaleDateString('es-MX', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
+          {orders.length > 0 ? (
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Pedido
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Fecha
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Estado
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {orders.map((order) => (
+                    <tr key={order.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-teal">#{order.orderNumber}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Clock className="h-4 w-4 text-gray-400 mr-2" />
+                          <div className="text-sm text-gray-900">{new Date(order.processedAt).toLocaleDateString()}</div>
                         </div>
-                      </div>
-                      <div className="mt-2 sm:mt-0">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          order.fulfillmentStatus === 'FULFILLED'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {order.fulfillmentStatus === 'FULFILLED' ? 'Enviado' : 'Pendiente'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          {order.fulfillmentStatus || 'Procesando'}
                         </span>
-                        <div className="mt-2 text-right">
-                          <span className="text-sm text-gray-500">Total:</span>
-                          <span className="ml-1 font-medium text-gray-900">
-                            ${parseFloat(order.totalPrice.amount).toFixed(2)} {order.totalPrice.currencyCode}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="border-t border-gray-200 pt-4 mt-4">
-                      <h4 className="text-sm font-medium text-gray-900 mb-2">Productos</h4>
-                      <ul className="space-y-3">
-                        {order.lineItems.edges.map(({ node }: any) => (
-                          <li key={node.id} className="flex justify-between">
-                            <div className="flex-1">
-                              <p className="text-sm text-gray-800">{node.title}</p>
-                              <p className="text-xs text-gray-500">Cantidad: {node.quantity}</p>
-                            </div>
-                            <div className="text-sm text-gray-900 font-medium">
-                              ${parseFloat(node.originalTotalPrice.amount).toFixed(2)}
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${order.totalPrice}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-md p-8 text-center">
+              <Package className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No tienes pedidos aún</h3>
+              <p className="text-gray-500">
+                Cuando realices un pedido, aparecerá aquí para que puedas hacer seguimiento.
+              </p>
+            </div>
+          )}
         </div>
       )}
     </motion.div>

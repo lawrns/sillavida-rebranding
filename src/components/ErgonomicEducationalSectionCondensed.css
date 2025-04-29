@@ -1,7 +1,7 @@
 /* ErgonomicEducationalSectionCondensed.css */
 
 .ergonomic-educational-section-condensed {
-  background-color: #E8DED1; /* Warm beige background */
+  background-color: #008080; /* Dark teal background (replacing beige) */
   padding: 4rem 0;
 }
 
@@ -25,13 +25,13 @@
   font-family: var(--font-heading);
   font-size: 2.5rem;
   font-weight: 700;
-  color: #7D9D8C; /* Sage green */
+  color: #F5F5DC; /* Beige (replacing sage green) */
   margin-bottom: 1rem;
 }
 
 .ergonomic-educational-section-condensed .subtitle {
   font-size: 1.2rem;
-  color: #C87D55; /* Terracotta */
+  color: #F5F5DC; /* Beige (replacing terracotta) */
   margin-bottom: 2rem;
 }
 
@@ -64,7 +64,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #7D9D8C; /* Sage green */
+  background-color: #006666; /* Darker teal for contrast */
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -82,13 +82,13 @@
   font-family: var(--font-heading);
   font-size: 1.2rem;
   font-weight: 600;
-  color: #7D9D8C; /* Sage green */
+  color: #F5F5DC; /* Beige (replacing sage green) */
   margin-bottom: 0.5rem;
 }
 
 .ergonomic-educational-section-condensed .benefit-text p {
   font-size: 0.9rem;
-  color: #C87D55; /* Terracotta */
+  color: #E6E6C8; /* Lighter beige for better readability */
   line-height: 1.4;
 }
 
@@ -97,13 +97,13 @@
   align-items: center;
   font-family: var(--font-heading);
   font-weight: 600;
-  color: var(--color-primary);
+  color: #E2725B; /* Terracotta color */
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .ergonomic-educational-section-condensed .learn-more-link:hover {
-  color: var(--color-primary-dark);
+  color: #C87D55; /* Darker terracotta for hover state */
 }
 
 .ergonomic-educational-section-condensed .arrow-icon {
@@ -131,8 +131,8 @@
   position: absolute;
   bottom: 2rem;
   right: 2rem;
-  background-color: #7D9D8C; /* Sage green */
-  color: #E8DED1; /* Warm beige */
+  background-color: #006666; /* Darker teal for contrast */
+  color: #F5F5DC; /* Beige (replacing warm beige) */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: var(--shadow-md);

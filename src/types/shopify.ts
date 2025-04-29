@@ -41,6 +41,28 @@ export interface ShopifyProduct {
     }>;
   };
   tags?: string[]; // Added optional tags field
+  collections?: {
+    edges: Array<{
+      node: {
+        id: string;
+        handle: string;
+        title: string;
+      };
+    }>;
+  };
+  // --- Custom fields for SillaVida product page integration ---
+  totalInventory?: number; // Optional: Shopify total inventory for inStock logic
+  metafields?: {
+    maxWeight?: string;
+    adjustableHeight?: string;
+    seatMaterial?: string;
+    frameMaterial?: string;
+    height?: string;
+    seatWidth?: string;
+    seatDepth?: string;
+    backrestHeight?: string;
+    // Add more fields as needed for specs/features
+  };
 }
 
 export interface ShopifyCart {

@@ -5,6 +5,9 @@
 @import './styles/shadows.css';
 @import './styles/interactions.css';
 @import './styles/vida-theme.css';
+@import './styles/sillavida-enhanced-theme.css';
+@import './styles/sillavida-original-theme.css';
+@import './styles/theme-switcher.css';
 
 @tailwind base;
 @tailwind components;

@@ -16,11 +16,11 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
               <div className="benefit-item">
                 <div className="benefit-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
-                    <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M24 16C25.6569 16 27 14.6569 27 13C27 11.3431 25.6569 10 24 10C22.3431 10 21 11.3431 21 13C21 14.6569 22.3431 16 24 16Z" fill="#E8DED1"/>
-                    <path d="M24 16V30" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M18 22H30" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M18 36L24 30L30 36" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 16C25.6569 16 27 14.6569 27 13C27 11.3431 25.6569 10 24 10C22.3431 10 21 11.3431 21 13C21 14.6569 22.3431 16 24 16Z" fill="#F5F5DC"/>
+                    <path d="M24 16V30" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M18 22H30" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M18 36L24 30L30 36" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
                 <div className="benefit-text">
@@ -32,12 +32,12 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
               <div className="benefit-item">
                 <div className="benefit-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
-                    <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M24 14C25.1046 14 26 13.1046 26 12C26 10.8954 25.1046 10 24 10C22.8954 10 22 10.8954 22 12C22 13.1046 22.8954 14 24 14Z" fill="#E8DED1"/>
-                    <path d="M32 20C33.1046 20 34 19.1046 34 18C34 16.8954 33.1046 16 32 16C30.8954 16 30 16.8954 30 18C30 19.1046 30.8954 20 32 20Z" fill="#E8DED1"/>
-                    <path d="M16 20C17.1046 20 18 19.1046 18 18C18 16.8954 17.1046 16 16 16C14.8954 16 14 16.8954 14 18C14 19.1046 14.8954 20 16 20Z" fill="#E8DED1"/>
-                    <path d="M24 38C28.4183 38 32 34.4183 32 30C32 25.5817 28.4183 22 24 22C19.5817 22 16 25.5817 16 30C16 34.4183 19.5817 38 24 38Z" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M24 26V30L27 33" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 14C25.1046 14 26 13.1046 26 12C26 10.8954 25.1046 10 24 10C22.8954 10 22 10.8954 22 12C22 13.1046 22.8954 14 24 14Z" fill="#F5F5DC"/>
+                    <path d="M32 20C33.1046 20 34 19.1046 34 18C34 16.8954 33.1046 16 32 16C30.8954 16 30 16.8954 30 18C30 19.1046 30.8954 20 32 20Z" fill="#F5F5DC"/>
+                    <path d="M16 20C17.1046 20 18 19.1046 18 18C18 16.8954 17.1046 16 16 16C14.8954 16 14 16.8954 14 18C14 19.1046 14.8954 20 16 20Z" fill="#F5F5DC"/>
+                    <path d="M24 38C28.4183 38 32 34.4183 32 30C32 25.5817 28.4183 22 24 22C19.5817 22 16 25.5817 16 30C16 34.4183 19.5817 38 24 38Z" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 26V30L27 33" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
                 <div className="benefit-text">
@@ -49,11 +49,11 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
               <div className="benefit-item">
                 <div className="benefit-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
-                    <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 28H32" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M24 20V36" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M32 12L16 20" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 12L32 20" stroke="#E8DED1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 28H32" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M24 20V36" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M32 12L16 20" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 12L32 20" stroke="#F5F5DC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
                 <div className="benefit-text">

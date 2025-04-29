@@ -15,6 +15,7 @@ import LazyImage from '../components/LazyImage';
 import { getFeaturedTestimonials } from '../data/testimonials';
 import { getProducts, getFeaturedProducts, getCollections, shopifyClient } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
+import './HomePage.css'; // Import the custom CSS for text styling
 
 // Analytics tracking function
 const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
@@ -225,7 +226,7 @@ const HomePage = () => {
                 <p className="text-[#7D9D8C] mb-6 font-body">¡Aprovecha las ofertas y compre!</p>
                 <Link 
                   to="/category/mas-vendidos"
-                  className="inline-flex items-center text-[#C87D55] hover:text-[#A6664A] transition-colors"
+                  className="inline-flex items-center text-beige hover:text-beige-dark transition-colors"
                 >
                   Ver Todos <ChevronRight className="ml-1 h-4 w-4" />
                 </Link>
@@ -262,24 +263,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Products Banners */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {featuredOfficeChair ? (
-              <ShopifyPromoBanner product={featuredOfficeChair} />
-            ) : (
-              <PromoBanner chair={staticFeaturedOfficeChair} />
-            )}
-            
-            {featuredGamingChair ? (
-              <ShopifyPromoBanner product={featuredGamingChair} dark />
-            ) : (
-              <PromoBanner chair={staticFeaturedGamingChair} dark />
-            )}
-          </div>
-        </div>
-      </section>
+      {/* Featured Products Banners section removed as requested */}
 
       {/* Featured Categories */}
       <section className="py-16 bg-white">
@@ -330,9 +314,9 @@ const HomePage = () => {
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                         <div className="text-beige">
-                          <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">{collection.title}</h3>
-                          <p className="mb-4 font-body text-base text-terracota">{description}</p>
-                          <span className="flex items-center text-base text-sage-light">
+                          <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">{collection.title}</h3>
+                          <p className="mb-4 font-body text-base home-category-description">{description}</p>
+                          <span className="flex items-center text-base home-category-link">
                             Ver colección <ChevronRight className="ml-2" />
                           </span>
                         </div>
@@ -353,9 +337,9 @@ const HomePage = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Ejecutivas</h3>
-                      <p className="mb-4 font-body text-base text-terracota">Elegancia y confort para ejecutivos</p>
-                      <span className="flex items-center text-base text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Ejecutivas</h3>
+                      <p className="mb-4 font-body text-base home-category-description">Elegancia y confort para ejecutivos</p>
+                      <span className="flex items-center text-base home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -371,9 +355,9 @@ const HomePage = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Ergonómicas</h3>
-                      <p className="mb-4 font-body text-base text-terracota">Diseñadas para tu bienestar</p>
-                      <span className="flex items-center text-base text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Ergonómicas</h3>
+                      <p className="mb-4 font-body text-base home-category-description">Diseñadas para tu bienestar</p>
+                      <span className="flex items-center text-base home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -389,9 +373,9 @@ const HomePage = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Gamer</h3>
-                      <p className="mb-4 font-body text-base text-terracota">Para sesiones épicas de juego</p>
-                      <span className="flex items-center text-base text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Gamer</h3>
+                      <p className="mb-4 font-body text-base home-category-description">Para sesiones épicas de juego</p>
+                      <span className="flex items-center text-base home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -407,9 +391,9 @@ const HomePage = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas Secretariales</h3>
-                      <p className="mb-4 font-body text-base text-terracota">Funcionalidad y comodidad</p>
-                      <span className="flex items-center text-base text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Secretariales</h3>
+                      <p className="mb-4 font-body text-base home-category-description">Funcionalidad y comodidad</p>
+                      <span className="flex items-center text-base home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -425,9 +409,9 @@ const HomePage = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Sillas de Visita</h3>
-                      <p className="mb-4 font-body text-base text-terracota">Para espacios de recepción</p>
-                      <span className="flex items-center text-base text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas de Visita</h3>
+                      <p className="mb-4 font-body text-base home-category-description">Para espacios de recepción</p>
+                      <span className="flex items-center text-base home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -443,9 +427,9 @@ const HomePage = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
                     <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-beige">Accesorios</h3>
-                      <p className="mb-4 font-body text-base text-terracota">Complementos para tu silla</p>
-                      <span className="flex items-center text-base text-sage-light">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Accesorios</h3>
+                      <p className="mb-4 font-body text-base home-category-description">Complementos para tu silla</p>
+                      <span className="flex items-center text-base home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -464,7 +448,7 @@ const HomePage = () => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">Historias de Vida</h2>
+            <h2 className="text-3xl font-heading font-bold text-teal-dark mb-4">Historias de Vida</h2>
             <p className="text-gray-600 max-w-2xl mx-auto font-body">
               Descubre cómo nuestras sillas han transformado la vida de nuestros clientes, mejorando su salud, productividad y bienestar.
             </p>

@@ -248,7 +248,6 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
           <h3 className="font-heading font-semibold mb-2 hover:text-teal transition-colors product-title">{product.title}</h3>
         </Link>
-        <p className="text-gray-600 mb-2 line-clamp-2 font-body product-description">{product.description}</p>
         
         {/* Feature highlights with Vida theme styling */}
         <ul className="vida-feature-list text-sm text-gray-700 mb-3">
