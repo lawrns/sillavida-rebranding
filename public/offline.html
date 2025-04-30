@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sin conexión - SillaVida</title>
+    <style>
+        :root {
+            --primary-color: #4A6741;
+            --secondary-color: #8A9A5B;
+            --text-color: #333333;
+            --background-color: #F5F5F5;
+            --accent-color: #D4AF37;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .cached-content {
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .cached-list {
+            list-style: none;
+            text-align: left;
+            margin-top: 15px;
+        }
+        
+        .cached-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cached-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .cached-list a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="icon">📶</div>
+        <h1>Sin conexión a Internet</h1>
+        <p>Parece que no tienes conexión a Internet en este momento. Algunas funciones pueden no estar disponibles hasta que te vuelvas a conectar.</p>
+        <p>Puedes intentar:</p>
+        <ul style="text-align: left; margin-left: 30px; margin-bottom: 20px;">
+            <li>Verificar tu conexión a Internet</li>
+            <li>Actualizar la página cuando estés conectado</li>
+            <li>Revisar el contenido que has visitado anteriormente (disponible sin conexión)</li>
+        </ul>
+        
+        <button class="btn" onclick="window.location.reload()">Intentar nuevamente</button>
+        
+        <div class="cached-content">
+            <h2>Contenido disponible sin conexión</h2>
+            <p>Puedes acceder a las páginas que has visitado anteriormente:</p>
+            <ul class="cached-list" id="cached-pages">
+                <li><a href="/">Página principal</a></li>
+                <!-- Dynamic cached pages will be inserted here by JavaScript -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Attempt to list cached pages if available
+        if ('caches' in window) {
+            caches.open('sillavida-dynamic-v1').then(cache => {
+                cache.keys().then(requests => {
+                    const cachedList = document.getElementById('cached-pages');
+                    const homePageLi = cachedList.querySelector('li');
+                    
+                    // Filter and limit the requests to show
+                    const pagesToShow = requests
+                        .filter(request => {
+                            const url = new URL(request.url);
+                            // Only show HTML pages, not assets
+                            return !url.pathname.includes('.') || 
+                                   url.pathname.endsWith('.html');
+                        })
+                        .slice(0, 5); // Limit to 5 pages
+                    
+                    if (pagesToShow.length === 0) {
+                        return;
+                    }
+                    
+                    // Clear the list except for the home page
+                    while (cachedList.children.length > 1) {
+                        cachedList.removeChild(cachedList.lastChild);
+                    }
+                    
+                    // Add the cached pages to the list
+                    pagesToShow.forEach(request => {
+                        const url = new URL(request.url);
+                        // Skip the home page as it's already in the list
+                        if (url.pathname === '/' || url.pathname === '/index.html') {
+                            return;
+                        }
+                        
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = url.pathname;
+                        
+                        // Create a friendly name from the pathname
+                        let pageName = url.pathname
+                            .replace(/\//g, '')
+                            .replace(/\.html$/, '')
+                            .replace(/-/g, ' ');
+                        
+                        // Capitalize the first letter of each word
+                        pageName = pageName
+                            .split(' ')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ');
+                        
+                        a.textContent = pageName || 'Página';
+                        li.appendChild(a);
+                        cachedList.appendChild(li);
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>

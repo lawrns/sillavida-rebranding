@@ -361,15 +361,17 @@ const CategoryPage: React.FC = () => {
             placeholder="Buscar productos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal"
+            className="w-full border border-gray-300 rounded-lg pl-10 pr-10 py-3 sm:py-2 text-base focus:outline-none focus:ring-2 focus:ring-teal"
+            aria-label="Buscar productos"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1"
+              aria-label="Limpiar búsqueda"
             >
-              <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+              <X className="h-5 w-5 sm:h-4 sm:w-4 text-gray-400 hover:text-gray-600" />
             </button>
           )}
         </div>
@@ -380,9 +382,10 @@ const CategoryPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setFilterOpen(!filterOpen)}
-            className={`flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 ${
+            className={`flex items-center gap-2 px-4 py-3 sm:py-2 border rounded-lg hover:bg-gray-50 text-base ${
               activeFilterCount > 0 ? 'border-teal text-teal' : ''
             }`}
+            aria-label="Abrir filtros"
           >
             <Filter className="h-5 w-5" />
             <span>Filtrar</span>
@@ -396,10 +399,11 @@ const CategoryPage: React.FC = () => {
           {activeFilterCount > 0 && (
             <button 
               onClick={resetFilters}
-              className="text-sm text-gray-500 hover:text-teal"
+              className="text-base sm:text-sm text-gray-500 hover:text-teal p-2"
               title="Limpiar todos los filtros"
+              aria-label="Limpiar todos los filtros"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5 sm:h-4 sm:w-4" />
             </button>
           )}
         </div>
@@ -409,7 +413,8 @@ const CategoryPage: React.FC = () => {
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal"
+            className="border rounded-lg px-4 py-3 sm:py-2 focus:outline-none focus:ring-2 focus:ring-teal text-base"
+            aria-label="Ordenar productos"
           >
             <option value="default">Ordenar por</option>
             <option value="price-asc">Precio: Menor a Mayor</option>
@@ -438,127 +443,127 @@ const CategoryPage: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <h4 className="font-medium mb-2">Precio</h4>
-              <div className="space-y-2">
-                <label className="flex items-center">
+              <h4 className="font-medium mb-3 text-base">Precio</h4>
+              <div className="space-y-3">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.price.includes('under-1000')}
                     onChange={() => handleFilterChange('price', 'under-1000')}
                   />
-                  <span>Menos de $1,000</span>
+                  <span className="text-base">Menos de $1,000</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.price.includes('1000-3000')}
                     onChange={() => handleFilterChange('price', '1000-3000')}
                   />
-                  <span>$1,000 - $3,000</span>
+                  <span className="text-base">$1,000 - $3,000</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.price.includes('3000-5000')}
                     onChange={() => handleFilterChange('price', '3000-5000')}
                   />
-                  <span>$3,000 - $5,000</span>
+                  <span className="text-base">$3,000 - $5,000</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.price.includes('over-5000')}
                     onChange={() => handleFilterChange('price', 'over-5000')}
                   />
-                  <span>Más de $5,000</span>
+                  <span className="text-base">Más de $5,000</span>
                 </label>
               </div>
             </div>
             
             <div>
-              <h4 className="font-medium mb-2">Color</h4>
-              <div className="space-y-2">
-                <label className="flex items-center">
+              <h4 className="font-medium mb-3 text-base">Color</h4>
+              <div className="space-y-3">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.color.includes('black')}
                     onChange={() => handleFilterChange('color', 'black')}
                   />
-                  <span>Negro</span>
+                  <span className="text-base">Negro</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.color.includes('white')}
                     onChange={() => handleFilterChange('color', 'white')}
                   />
-                  <span>Blanco</span>
+                  <span className="text-base">Blanco</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.color.includes('gray')}
                     onChange={() => handleFilterChange('color', 'gray')}
                   />
-                  <span>Gris</span>
+                  <span className="text-base">Gris</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.color.includes('red')}
                     onChange={() => handleFilterChange('color', 'red')}
                   />
-                  <span>Rojo</span>
+                  <span className="text-base">Rojo</span>
                 </label>
               </div>
             </div>
             
             <div>
-              <h4 className="font-medium mb-2">Material</h4>
-              <div className="space-y-2">
-                <label className="flex items-center">
+              <h4 className="font-medium mb-3 text-base">Material</h4>
+              <div className="space-y-3">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.material.includes('leather')}
                     onChange={() => handleFilterChange('material', 'leather')}
                   />
-                  <span>Cuero</span>
+                  <span className="text-base">Cuero</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.material.includes('mesh')}
                     onChange={() => handleFilterChange('material', 'mesh')}
                   />
-                  <span>Malla</span>
+                  <span className="text-base">Malla</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.material.includes('fabric')}
                     onChange={() => handleFilterChange('material', 'fabric')}
                   />
-                  <span>Tela</span>
+                  <span className="text-base">Tela</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center py-2">
                   <input 
                     type="checkbox" 
-                    className="mr-2"
+                    className="mr-3 h-5 w-5"
                     checked={filters.material.includes('plastic')}
                     onChange={() => handleFilterChange('material', 'plastic')}
                   />
-                  <span>Plástico</span>
+                  <span className="text-base">Plástico</span>
                 </label>
               </div>
             </div>
@@ -567,13 +572,15 @@ const CategoryPage: React.FC = () => {
           <div className="flex justify-end mt-6 gap-3">
             <button 
               onClick={() => setFilterOpen(false)}
-              className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+              className="px-4 py-3 sm:py-2 border border-gray-300 rounded hover:bg-gray-50 text-base"
+              aria-label="Cancelar filtros"
             >
               Cancelar
             </button>
             <button 
               onClick={applyFilters}
-              className="bg-teal text-white px-4 py-2 rounded hover:bg-teal-light"
+              className="bg-teal text-white px-6 py-3 sm:py-2 rounded hover:bg-teal-light text-base font-medium"
+              aria-label="Aplicar filtros seleccionados"
             >
               Aplicar Filtros
             </button>
@@ -625,11 +632,12 @@ const CategoryPage: React.FC = () => {
           {/* Products per page selector */}
           <div className="mt-8 flex justify-end">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Productos por página:</span>
+              <span className="text-base sm:text-sm text-gray-500">Productos por página:</span>
               <select
                 value={productsPerPage}
                 onChange={(e) => setProductsPerPage(Number(e.target.value))}
-                className="border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+                className="border rounded px-3 py-2 sm:px-2 sm:py-1 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+                aria-label="Seleccionar número de productos por página"
               >
                 <option value={12}>12</option>
                 <option value={20}>20</option>

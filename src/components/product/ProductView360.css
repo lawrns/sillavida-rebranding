@@ -1,0 +1,173 @@
+.product-view-360-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.product-view-360 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  background-color: var(--color-beige-extralight);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.product-view-360.dragging {
+  cursor: grabbing;
+}
+
+.product-view-360-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-beige-light);
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--color-teal);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-progress {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-teal);
+}
+
+.product-view-360-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.play-button {
+  background-color: var(--color-teal);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.play-button:hover {
+  background-color: var(--color-teal-light);
+}
+
+.play-button:disabled {
+  background-color: var(--color-gray-light);
+  cursor: not-allowed;
+}
+
+.play-button.playing {
+  background-color: var(--color-terracotta);
+}
+
+.play-button.playing:hover {
+  background-color: var(--color-terracotta-light);
+}
+
+.drag-indicator {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--color-teal);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.product-view-360:hover .drag-indicator {
+  opacity: 1;
+}
+
+.view-360-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: var(--color-teal);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for the 360 badge */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.view-360-badge {
+  animation: pulse 2s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-view-360-container {
+    min-height: 250px;
+  }
+  
+  .product-view-360 {
+    min-height: 250px;
+  }
+  
+  .drag-indicator {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

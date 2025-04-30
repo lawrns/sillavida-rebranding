@@ -2,57 +2,72 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // Import framer-motion
 import { useCart } from '../context/CartContext';
-import { ShoppingBag, ArrowRight, Loader, CheckCircle } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Loader, CheckCircle, User, UserX } from 'lucide-react';
 import TrustIndicatorGroup from './TrustIndicatorGroup';
 import { Helmet } from 'react-helmet';
 
 const CheckoutRedirect: React.FC = () => {
-  const { getCheckout, cartTotal, cartCount } = useCart();
+  const { getCheckout, cartTotal, cartCount, isGuestCheckout, setGuestCheckout } = useCart();
   const navigate = useNavigate();
-  const [status, setStatus] = useState<'loading' | 'redirecting' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'checkout-options' | 'redirecting' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [checkoutUrl, setCheckoutUrl] = useState<string>('');
 
+  // Function to proceed with checkout
+  const proceedToCheckout = async () => {
+    try {
+      setStatus('loading');
+      
+      // Get the base URL for the return URL
+      const baseUrl = window.location.origin;
+      const returnUrl = `${baseUrl}/order-confirmation`;
+      
+      // Get checkout URL
+      const url = await getCheckout();
+      
+      if (!url) {
+        throw new Error('No se pudo obtener la URL de pago');
+      }
+      
+      // Add return_to parameter to the checkout URL
+      const checkoutUrlWithReturn = `${url}&return_to=${encodeURIComponent(returnUrl)}`;
+      
+      setCheckoutUrl(checkoutUrlWithReturn);
+      setStatus('redirecting');
+      
+      // Short delay before redirecting to show the transition screen
+      setTimeout(() => {
+        window.location.href = checkoutUrlWithReturn;
+      }, 1500);
+    } catch (error) {
+      console.error('Error redirecting to checkout:', error);
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Error desconocido');
+    }
+  };
+
+  // Handle guest checkout selection
+  const handleGuestCheckout = () => {
+    setGuestCheckout(true);
+    proceedToCheckout();
+  };
+
+  // Handle account checkout selection
+  const handleAccountCheckout = () => {
+    setGuestCheckout(false);
+    proceedToCheckout();
+  };
+
   useEffect(() => {
-    const redirectToCheckout = async () => {
-      if (cartCount === 0) {
-        navigate('/cart');
-        return;
-      }
+    // Check if cart is empty
+    if (cartCount === 0) {
+      navigate('/cart');
+      return;
+    }
 
-      try {
-        setStatus('loading');
-        
-        // Get the base URL for the return URL
-        const baseUrl = window.location.origin;
-        const returnUrl = `${baseUrl}/order-confirmation`;
-        
-        // Get checkout URL
-        const url = await getCheckout();
-        
-        if (!url) {
-          throw new Error('No se pudo obtener la URL de pago');
-        }
-        
-        // Add return_to parameter to the checkout URL
-        const checkoutUrlWithReturn = `${url}&return_to=${encodeURIComponent(returnUrl)}`;
-        
-        setCheckoutUrl(checkoutUrlWithReturn);
-        setStatus('redirecting');
-        
-        // Short delay before redirecting to show the transition screen
-        setTimeout(() => {
-          window.location.href = checkoutUrlWithReturn;
-        }, 1500);
-      } catch (error) {
-        console.error('Error redirecting to checkout:', error);
-        setStatus('error');
-        setErrorMessage(error instanceof Error ? error.message : 'Error desconocido');
-      }
-    };
-
-    redirectToCheckout();
-  }, [getCheckout, navigate, cartCount]);
+    // Show checkout options
+    setStatus('checkout-options');
+  }, [cartCount, navigate]);
 
   return (
     <>
@@ -68,6 +83,88 @@ const CheckoutRedirect: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <AnimatePresence mode="wait">
+            {status === 'checkout-options' && (
+              <motion.div
+                key="checkout-options"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div 
+                  className="flex justify-center mb-6"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                >
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.05, 1],
+                      color: ["#dc2626", "#ef4444", "#dc2626"] 
+                    }}
+                    transition={{ 
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    className="text-red-600"
+                  >
+                    <ShoppingBag className="h-16 w-16" />
+                  </motion.div>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <h1 className="text-2xl font-bold mb-4">Opciones de Pago</h1>
+                  <p className="text-gray-600 mb-2">Total: {cartTotal}</p>
+                  <p className="text-gray-600 mb-6">Elige cómo quieres continuar con tu compra</p>
+                </motion.div>
+                
+                <motion.div 
+                  className="flex flex-col space-y-4 mb-8"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <motion.button
+                    onClick={handleAccountCheckout}
+                    className="w-full bg-red-600 text-white py-4 px-4 rounded-lg hover:bg-red-700 flex items-center justify-center"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <User className="h-5 w-5 mr-2" />
+                    <span className="font-medium">Pagar con mi cuenta</span>
+                  </motion.button>
+                  
+                  <motion.button
+                    onClick={handleGuestCheckout}
+                    className="w-full bg-gray-100 text-gray-800 py-4 px-4 rounded-lg hover:bg-gray-200 flex items-center justify-center"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <UserX className="h-5 w-5 mr-2" />
+                    <span className="font-medium">Pagar como invitado</span>
+                  </motion.button>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <p className="text-sm text-gray-500 mb-4">
+                    Pagar como invitado te permite completar tu compra sin crear una cuenta.
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Pagar con tu cuenta te permite acceder a tu historial de pedidos y guardar tus datos para futuras compras.
+                  </p>
+                </motion.div>
+              </motion.div>
+            )}
+            
             {status === 'loading' && (
               <motion.div
                 key="loading"
@@ -196,13 +293,29 @@ const CheckoutRedirect: React.FC = () => {
                     showDescription={false}
                   />
                   
-                  {/* Payment Method Logos */}
-                  <p className="text-sm font-medium text-gray-700 mt-4 mb-3">Aceptamos</p>
-                  <div className="flex items-center justify-center space-x-4 mb-4">
-                    <img src="/images/visa.png" alt="Visa" className="h-8" />
-                    <img src="/images/mastercard.png" alt="Mastercard" className="h-8" />
-                    <img src="/images/amex.png" alt="American Express" className="h-8" />
-                    <img src="/images/paypal.png" alt="PayPal" className="h-8" />
+                  {/* Payment Methods */}
+                  <p className="text-sm font-medium text-gray-700 mt-4 mb-3">Métodos de Pago Seguros</p>
+                  <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+                    <div className="flex items-center justify-center bg-white rounded-md px-3 py-2 shadow-sm border border-blue-100">
+                      <div className="w-4 h-4 bg-blue-600 rounded-sm mr-2"></div>
+                      <span className="text-xs font-medium text-blue-800">Visa</span>
+                    </div>
+                    <div className="flex items-center justify-center bg-white rounded-md px-3 py-2 shadow-sm border border-red-100">
+                      <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                      <span className="text-xs font-medium text-red-800">Mastercard</span>
+                    </div>
+                    <div className="flex items-center justify-center bg-white rounded-md px-3 py-2 shadow-sm border border-blue-100">
+                      <div className="w-4 h-4 bg-blue-800 rounded-sm mr-2"></div>
+                      <span className="text-xs font-medium text-blue-900">American Express</span>
+                    </div>
+                    <div className="flex items-center justify-center bg-white rounded-md px-3 py-2 shadow-sm border border-blue-100">
+                      <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
+                      <span className="text-xs font-medium text-blue-700">PayPal</span>
+                    </div>
+                    <div className="flex items-center justify-center bg-white rounded-md px-3 py-2 shadow-sm border border-red-100">
+                      <div className="w-4 h-4 bg-red-600 rounded-sm mr-2"></div>
+                      <span className="text-xs font-medium text-red-700">OXXO</span>
+                    </div>
                   </div>
                   
                   {/* Compromiso Vida Message */}

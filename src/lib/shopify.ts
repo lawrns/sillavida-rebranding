@@ -3,6 +3,7 @@ import {
   type StorefrontClientProps,
 } from '@shopify/hydrogen-react';
 import type { ShopifyProduct, ShopifyCart } from '../types/shopify';
+import apiCache from '../services/apiCache';
 
 /**
  * Custom error classes for better error handling
@@ -40,10 +41,6 @@ export class ShopifyTimeoutError extends ShopifyError {
     this.name = 'ShopifyTimeoutError';
   }
 }
-
-// Cache configuration
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
-const cache: Record<string, { data: any; timestamp: number }> = {};
 
 // Retry configuration
 const MAX_RETRIES = 3;
@@ -88,8 +85,8 @@ export const shopifyClient = {
     const cacheKey = JSON.stringify(data);
     
     // Return cached data if available and not expired
-    if (useCache && cache[cacheKey] && Date.now() - cache[cacheKey].timestamp < CACHE_TTL) {
-      return cache[cacheKey].data;
+    if (useCache && apiCache.has(cacheKey)) {
+      return apiCache.get(cacheKey);
     }
     
     let lastError: Error | null = null;
@@ -132,10 +129,7 @@ export const shopifyClient = {
         
         // Cache the response
         if (useCache) {
-          cache[cacheKey] = {
-            data: json,
-            timestamp: Date.now()
-          };
+          apiCache.set(cacheKey, json);
         }
         
         return json;
@@ -175,9 +169,9 @@ export const shopifyClient = {
    */
   clearCache(key?: string) {
     if (key) {
-      delete cache[key];
+      apiCache.delete(key);
     } else {
-      Object.keys(cache).forEach(k => delete cache[k]);
+      apiCache.clear();
     }
   },
   
@@ -190,7 +184,7 @@ export const shopifyClient = {
       throw new Error('Cache TTL must be a positive number');
     }
     // This is a global setting that affects all cached items
-    Object.defineProperty(this, 'CACHE_TTL', { value: ttl });
+    apiCache.setTTL(ttl);
   }
 };
 
@@ -382,11 +376,20 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
             currencyCode
           }
         }
-        images(first: 5) {
+        images(first: 10) {
           edges {
             node {
               url
               altText
+            }
+          }
+        }
+        collections(first: 5) {
+          edges {
+            node {
+              id
+              handle
+              title
             }
           }
         }
@@ -1224,13 +1227,15 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
 /**
  * Get checkout URL for cart
  * @param cartId Cart ID
+ * @param isGuestCheckout Whether to use guest checkout
  * @returns Checkout URL
  */
-export async function getCheckoutUrl(cartId: string) {
+export async function getCheckoutUrl(cartId: string, isGuestCheckout: boolean = false) {
   // Check if it's a mock cart
   if (cartId.startsWith('mock-cart-') && mockCart) {
     console.log('[Shopify] Returning mock checkout URL');
-    return `/checkout?cart=${cartId}`;
+    const guestParam = isGuestCheckout ? '&guest=true' : '';
+    return `/checkout?cart=${cartId}${guestParam}`;
   }
   
   const query = `
@@ -1251,5 +1256,17 @@ export async function getCheckoutUrl(cartId: string) {
     cache: false
   });
 
-  return response.data.cart.checkoutUrl;
+  // Get the base checkout URL
+  const baseCheckoutUrl = response.data.cart.checkoutUrl;
+  
+  // Add guest checkout parameter if requested
+  if (isGuestCheckout) {
+    // Shopify uses 'checkout[email]' parameter for guest checkout
+    // We'll add a placeholder that will be replaced by the user's email
+    // We also add 'checkout[remember_me]=0' to disable account creation prompt
+    const separator = baseCheckoutUrl.includes('?') ? '&' : '?';
+    return `${baseCheckoutUrl}${separator}checkout[remember_me]=0`;
+  }
+  
+  return baseCheckoutUrl;
 }

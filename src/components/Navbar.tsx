@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, ChevronDown } from 'lucide-react';
+import { ShoppingCart, Menu, ChevronDown, Search } from 'lucide-react';
 import { getCollections } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import MiniCart from './MiniCart';
@@ -104,6 +104,9 @@ const Navbar = () => {
       className={`bg-white backdrop-blur-sm bg-opacity-95 ${
         scrolled ? 'shadow-lg border-b border-gray-100' : 'shadow-sm'
       } sticky top-0 z-50 transition-all duration-300 font-heading`}
+      style={{
+        backgroundImage: scrolled ? 'linear-gradient(to right, rgba(255,255,255,0.97), rgba(240,253,250,0.97))' : 'none',
+      }}
       role="navigation"
       aria-label="Main Navigation"
     >
@@ -142,10 +145,28 @@ const Navbar = () => {
             </button>
             {/* Logo with "Vida" emphasis */}
             <Link to="/" className="flex items-center md:ml-12">
-              <div className="vida-logo text-2xl">
+              <motion.div 
+                className="vida-logo text-2xl"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
                 <span className="vida-logo-silla">Silla</span>
-                <span className="vida-logo-vida">Vida</span>
-              </div>
+                <motion.span 
+                  className="vida-logo-vida"
+                  initial={{ color: "#0D9488" }}
+                  animate={{ 
+                    color: ["#0D9488", "#1E5959", "#0D9488"],
+                    textShadow: ["0 0 0px rgba(13,148,136,0)", "0 0 8px rgba(13,148,136,0.3)", "0 0 0px rgba(13,148,136,0)"]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                >
+                  Vida
+                </motion.span>
+              </motion.div>
             </Link>
           </div>
 
@@ -225,13 +246,38 @@ const Navbar = () => {
 
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
+            <motion.div 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden sm:block"
+            >
+              <button 
+                className="p-2 rounded-full bg-teal-extralight hover:bg-teal-light transition-colors duration-200"
+                aria-label="Search products"
+              >
+                <Search className="h-5 w-5 text-teal-dark" />
+              </button>
+            </motion.div>
             <AccountButton />
-            <button className="p-2 relative transition-all duration-200 hover:scale-110" onClick={toggleCart} aria-label={`Open cart (${cartCount} items)`}>
+            <motion.button 
+              className="p-2 relative transition-all duration-200"
+              onClick={toggleCart} 
+              aria-label={`Open cart (${cartCount} items)`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <ShoppingCart className="h-5 w-5 text-teal transition-colors duration-200" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-teal text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{cartCount}</span>
+                <motion.span 
+                  className="absolute -top-1 -right-1 bg-teal text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  {cartCount}
+                </motion.span>
               )}
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -250,56 +296,62 @@ const Navbar = () => {
             className="sm:hidden relative z-50 overflow-hidden bg-white shadow-lg border-t border-gray-100" 
             id="mobile-menu-content"
           >
-            <div className="px-3 pt-3 pb-4 space-y-2">
+            <div className="px-3 pt-3 pb-4 space-y-3">
               <Link 
                 to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} 
-                className={`block px-4 py-3 rounded-md nav-item ${
+                className={`block px-4 py-4 rounded-md nav-item text-base ${
                   isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
                 } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Tienda"
               >
                 Tienda
               </Link>
               <Link 
                 to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} 
-                className={`block px-4 py-3 rounded-md nav-item ${
+                className={`block px-4 py-4 rounded-md nav-item text-base ${
                   isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
                 } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Promociones"
               >
                 Promociones
               </Link>
               <Link 
                 to="/category/mas-vendidos" 
-                className={`block px-4 py-3 rounded-md nav-item ${
+                className={`block px-4 py-4 rounded-md nav-item text-base ${
                   isActive("/category/mas-vendidos") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
                 } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Más Vendidos"
               >
                 Más Vendidos
               </Link>
               <Link 
                 to="/educacion/por-que-invertir-en-silla-ergonomica" 
-                className={`block px-4 py-3 rounded-md nav-item ${
+                className={`block px-4 py-4 rounded-md nav-item text-base ${
                   isActive("/educacion/por-que-invertir-en-silla-ergonomica") 
                     ? 'text-teal bg-teal-extralight' 
                     : 'text-gray-700'
                 } hover:text-teal hover:bg-teal-extralight transition-all duration-200`} 
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Ergonomía"
               >
                 Ergonomía
               </Link>
               {/* Mobile Categories */}
               <div ref={categoriesRef}>
                 <button 
-                  className="flex w-full items-center px-4 py-3 rounded-md nav-item text-gray-700 hover:text-teal hover:bg-teal-extralight transition-all duration-200" 
+                  className="flex w-full items-center px-4 py-4 rounded-md nav-item text-base text-gray-700 hover:text-teal hover:bg-teal-extralight transition-all duration-200" 
                   onClick={toggleCategories}
+                  aria-expanded={categoriesOpen}
+                  aria-controls="mobile-categories-dropdown"
                 >
                   Categorías
                   <motion.div 
@@ -307,7 +359,7 @@ const Navbar = () => {
                     transition={{ duration: 0.2 }}
                     className="ml-1 flex items-center justify-center"
                   >
-                     <ChevronDown className={`h-4 w-4 text-teal`} />
+                     <ChevronDown className={`h-5 w-5 text-teal`} />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -318,18 +370,20 @@ const Navbar = () => {
                       animate="visible"
                       exit="exit"
                       className="pl-4 relative z-50 overflow-hidden"
+                      id="mobile-categories-dropdown"
                     >
-                      {loading ? <div className="px-3 py-2 text-sm text-gray-500">Loading categories...</div> :
-                       error ? <div className="px-3 py-2 text-sm text-red-500">{error}</div> :
-                       collections.length === 0 ? <div className="px-3 py-2 text-sm text-gray-500">No categories found</div> : (
+                      {loading ? <div className="px-3 py-3 text-base text-gray-500">Loading categories...</div> :
+                       error ? <div className="px-3 py-3 text-base text-red-500">{error}</div> :
+                       collections.length === 0 ? <div className="px-3 py-3 text-base text-gray-500">No categories found</div> : (
                         collections
                           .filter(collection => !collection.title.toLowerCase().includes('promociones') && !collection.title.toLowerCase().includes('tienda') && !collection.title.toLowerCase().includes('más vendidos'))
                           .map((collection) => (
                             <Link 
                               key={collection.id} 
                               to={`/category/${collection.handle}`} 
-                              className="block px-4 py-2.5 text-sm font-heading font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
+                              className="block px-4 py-3.5 text-base font-heading font-medium text-gray-700 rounded-md hover:bg-teal-extralight hover:text-teal transition-all duration-200" 
                               onClick={() => setMobileMenuOpen(false)}
+                              aria-label={collection.title}
                             >
                               {collection.title}
                             </Link>

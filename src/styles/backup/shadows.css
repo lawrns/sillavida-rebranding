@@ -1,0 +1,151 @@
+/* SillaVida Shadow and Border Styles */
+
+:root {
+  /* Border Colors */
+  --border-primary: var(--color-teal);
+  --border-secondary: var(--color-sage);
+  --border-accent: var(--color-terracotta);
+  --border-light: var(--color-gray-light);
+  --border-medium: var(--color-gray-medium);
+  --border-dark: var(--color-teal-dark);
+  --border-beige: var(--color-beige-dark);
+  
+  /* Shadow Colors */
+  --shadow-color-primary: rgba(30, 89, 89, 0.15); /* Teal shadow */
+  --shadow-color-secondary: rgba(125, 157, 140, 0.15); /* Sage shadow */
+  --shadow-color-accent: rgba(200, 125, 85, 0.15); /* Terracotta shadow */
+  --shadow-color-neutral: rgba(33, 37, 41, 0.1); /* Neutral shadow */
+  
+  /* Shadow Styles */
+  --shadow-sm: 0 1px 2px var(--shadow-color-neutral);
+  --shadow: 0 1px 3px var(--shadow-color-neutral), 0 1px 2px var(--shadow-color-neutral);
+  --shadow-md: 0 4px 6px var(--shadow-color-neutral), 0 1px 3px var(--shadow-color-neutral);
+  --shadow-lg: 0 10px 15px var(--shadow-color-neutral), 0 4px 6px var(--shadow-color-neutral);
+  --shadow-xl: 0 20px 25px var(--shadow-color-neutral), 0 10px 10px var(--shadow-color-neutral);
+  
+  /* Component-Specific Shadows */
+  --shadow-card: 0 2px 8px var(--shadow-color-neutral);
+  --shadow-card-hover: 0 4px 12px var(--shadow-color-primary);
+  --shadow-dropdown: 0 4px 6px var(--shadow-color-neutral);
+  --shadow-button: 0 2px 4px var(--shadow-color-neutral);
+  --shadow-button-hover: 0 4px 8px var(--shadow-color-primary);
+  
+  /* Focus Rings */
+  --focus-ring-primary: 0 0 0 3px var(--color-teal-extralight);
+  --focus-ring-secondary: 0 0 0 3px var(--color-sage-extralight);
+  --focus-ring-accent: 0 0 0 3px var(--color-terracotta-extralight);
+  --focus-ring-error: 0 0 0 3px var(--color-error-extralight);
+}
+
+/* Border Utility Classes */
+.border-primary {
+  border-color: var(--border-primary);
+}
+
+.border-secondary {
+  border-color: var(--border-secondary);
+}
+
+.border-accent {
+  border-color: var(--border-accent);
+}
+
+.border-light {
+  border-color: var(--border-light);
+}
+
+.border-medium {
+  border-color: var(--border-medium);
+}
+
+.border-dark {
+  border-color: var(--border-dark);
+}
+
+.border-beige {
+  border-color: var(--border-beige);
+}
+
+/* Shadow Utility Classes */
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow {
+  box-shadow: var(--shadow);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+.shadow-card-hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.shadow-dropdown {
+  box-shadow: var(--shadow-dropdown);
+}
+
+.shadow-button {
+  box-shadow: var(--shadow-button);
+}
+
+.shadow-button-hover {
+  box-shadow: var(--shadow-button-hover);
+}
+
+/* Focus Ring Utility Classes */
+.focus-ring-primary {
+  box-shadow: var(--focus-ring-primary);
+}
+
+.focus-ring-secondary {
+  box-shadow: var(--focus-ring-secondary);
+}
+
+.focus-ring-accent {
+  box-shadow: var(--focus-ring-accent);
+}
+
+.focus-ring-error {
+  box-shadow: var(--focus-ring-error);
+}
+
+/* Hover Effect Utility Classes */
+.hover-shadow-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.hover-shadow-button:hover {
+  box-shadow: var(--shadow-button-hover);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.hover-border-primary:hover {
+  border-color: var(--border-primary);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.hover-border-secondary:hover {
+  border-color: var(--border-secondary);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.hover-border-accent:hover {
+  border-color: var(--border-accent);
+  transition: border-color 0.2s ease-in-out;
+}

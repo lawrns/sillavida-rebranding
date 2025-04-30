@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion
-import { isLoggedIn, initCustomerAccountClient } from '../services/customerAuth';
+import { Navigate, Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { isLoggedIn, register, authErrorHandler, AuthErrorType } from '../services/customerAuth';
 import { Eye, EyeOff } from 'lucide-react';
+import AuthErrorBanner from '../components/auth/AuthErrorBanner';
+import FallbackRegisterForm from '../components/auth/FallbackRegisterForm';
+import { getFeatureFlag } from '../config/featureFlags';
 
 /**
  * RegisterPage component
  * 
  * This component provides a form for users to create a new account
- * with Shopify's Customer Account API.
+ * with Shopify's Customer Account API. It also includes a fallback
+ * registration mechanism when the Shopify API fails.
  */
 const RegisterPage: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -25,6 +29,30 @@ const RegisterPage: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<{type: AuthErrorType, message: string} | null>(null);
+  const [useFallback, setUseFallback] = useState<boolean>(false);
+  const location = useLocation();
+
+  // Check if fallback mode is requested in URL
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const fallback = searchParams.get('fallback') === 'true';
+    setUseFallback(fallback);
+  }, [location]);
+
+  // Subscribe to auth errors
+  useEffect(() => {
+    const unsubscribe = authErrorHandler.addListener((type, message) => {
+      setAuthError({ type, message });
+      
+      // Switch to fallback if registration fails and fallback is enabled
+      if (type === AuthErrorType.REGISTRATION && getFeatureFlag('customerAccounts.enableFallback')) {
+        setUseFallback(true);
+      }
+    });
+    
+    return unsubscribe;
+  }, []);
 
   // Check login status on mount
   useEffect(() => {
@@ -114,61 +142,20 @@ const RegisterPage: React.FC = () => {
     setGeneralError(null);
     
     try {
-      const client = await initCustomerAccountClient();
+      // Use the register function which handles both Shopify API and fallback
+      const success = await register();
       
-      const { data, errors } = await client.mutate({
-        mutation: `
-          mutation customerCreate($input: CustomerCreateInput!) {
-            customerCreate(input: $input) {
-              customer {
-                id
-              }
-              customerUserErrors {
-                code
-                field
-                message
-              }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            password: formData.password,
-          },
-        },
-      });
-      
-      if (data.customerCreate.customerUserErrors.length > 0) {
-        // Handle specific field errors
-        const fieldErrors: Record<string, string> = {};
-        let hasGeneralError = false;
-        
-        data.customerCreate.customerUserErrors.forEach((error: any) => {
-          if (error.field && error.field.length > 0) {
-            // Convert field path to our form field name
-            const fieldName = error.field[error.field.length - 1];
-            fieldErrors[fieldName] = error.message;
-          } else {
-            hasGeneralError = true;
-            setGeneralError(error.message);
-          }
-        });
-        
-        if (Object.keys(fieldErrors).length > 0) {
-          setErrors(fieldErrors);
-        } else if (!hasGeneralError) {
-          setGeneralError('Ocurrió un error al crear la cuenta. Por favor, intenta de nuevo.');
-        }
-      } else {
-        // Registration successful, redirect to login
-        client.login();
+      if (!success && getFeatureFlag('customerAccounts.enableFallback')) {
+        setUseFallback(true);
       }
     } catch (error) {
       console.error('Error creating account:', error);
       setGeneralError('Ocurrió un error al crear la cuenta. Por favor, intenta de nuevo.');
+      
+      // Switch to fallback if registration fails and fallback is enabled
+      if (getFeatureFlag('customerAccounts.enableFallback')) {
+        setUseFallback(true);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -214,154 +201,156 @@ const RegisterPage: React.FC = () => {
     >
       <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Crear Cuenta</h1>
       
-      {generalError && (
+      {authError && (
+        <AuthErrorBanner 
+          type={authError.type} 
+          message={authError.message} 
+          onDismiss={() => setAuthError(null)}
+        />
+      )}
+      
+      {generalError && !authError && (
         <div className="mb-6 p-3 bg-red-100 text-red-700 rounded-md">
           {generalError}
         </div>
       )}
       
       <div className="bg-white rounded-lg shadow-md p-6">
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            {/* First Name */}
-            <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
-                Nombre *
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border ${
-                  errors.firstName ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
-              />
-              {errors.firstName && (
-                <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
-              )}
-            </div>
-            
-            {/* Last Name */}
-            <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
-                Apellido *
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border ${
-                  errors.lastName ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
-              />
-              {errors.lastName && (
-                <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-              )}
-            </div>
-            
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email *
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-              )}
-            </div>
-            
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Contraseña *
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400" />
+        {useFallback ? (
+          // Show fallback registration form when Shopify authentication fails
+          <FallbackRegisterForm />
+        ) : (
+          // Show standard registration form that redirects to Shopify
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              {/* Name fields */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Nombre
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
+                  />
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
                   )}
-                </button>
+                </div>
+                
+                <div>
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Apellido
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
+                  />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                  )}
+                </div>
               </div>
-              {errors.password ? (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              ) : (
-                <p className="mt-1 text-xs text-gray-500">
-                  La contraseña debe tener al menos 8 caracteres
-                </p>
-              )}
+              
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                )}
+              </div>
+              
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                )}
+                <p className="mt-1 text-xs text-gray-500">La contraseña debe tener al menos 8 caracteres</p>
+              </div>
+              
+              {/* Confirm Password */}
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                  Confirmar Contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
+              </div>
             </div>
             
-            {/* Confirm Password */}
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                Confirmar Contraseña *
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-teal`}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={toggleConfirmPasswordVisibility}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
-            </div>
-          </div>
-          
-          <button
-            type="submit"
-            className="w-full mt-6 px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={submitting}
-          >
-            {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full mt-6 px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={submitting}
+            >
+              {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
+            </button>
+          </form>
+        )}
         
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
