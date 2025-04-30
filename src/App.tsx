@@ -31,6 +31,7 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:handle" element={<ProductPage />} />
+        <Route path="/products/:handle" element={<ProductPage />} />
         <Route path="/category/:handle" element={<CategoryPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/carrito" element={<CartPage />} />
