@@ -3,7 +3,7 @@ title: Update Product Page Layout for Specs and Features
 type: task
 status: active
 created: 2025-04-30T20:51:22Z
-updated: 2025-04-30T16:36:19-06:00
+updated: 2025-04-30T17:39:26-06:00
 id: TASK-067
 priority: high
 memory_types: [procedural, semantic]
@@ -50,7 +50,8 @@ Modify the styling and structure of the product page's specification and feature
 - Added image zoom functionality for both specification and feature images with a modal overlay.
 - Implemented zigzag layout for the features section with alternating image positions (left/right).
 - Fixed routing issues with related products by supporting both URL formats (`/product/:handle` and `/products/:handle`).
-- Created session log documenting all changes and enhancements.
+- Added YouTube video section after the Características component.
+- Created session logs documenting all changes and enhancements.
 
 ## Dependencies
 - Completion of TASK-066 (initial integration of components).
