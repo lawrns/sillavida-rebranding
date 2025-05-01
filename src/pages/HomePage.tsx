@@ -222,7 +222,7 @@ const HomePage = () => {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-1/4">
               <div className="bg-white p-8 rounded-lg shadow-sm">
-                <h2 className="text-3xl font-heading font-bold text-[#1E5959] mb-4">Super Selección de los Más Vendidos</h2>
+                <h2 className="text-3xl font-heading font-bold text-[#1E5959] mb-4">Selección de los Más Vendidos</h2>
                 <p className="text-[#7D9D8C] mb-6 font-body">¡Aprovecha las ofertas y compre!</p>
                 <Link 
                   to="/category/mas-vendidos"
