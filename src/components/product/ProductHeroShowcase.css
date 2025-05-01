@@ -279,12 +279,27 @@
 
 .product-description {
   margin-top: 20px;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #444;
+  font-size: 0.9rem; /* Smaller font size */
+  max-height: none; /* Remove any height restrictions */
+  overflow: visible; /* Ensure content is not cut off */
 }
 
 .product-description p {
   margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: initial; /* Remove line clamping */
+  line-clamp: initial; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  overflow: visible;
+  text-overflow: initial;
+}
+
+.product-description::after {
+  content: "";
+  display: block;
+  min-height: 0;
 }
 
 /* Responsive adjustments */

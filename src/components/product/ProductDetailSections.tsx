@@ -88,7 +88,7 @@ const ProductDetailSections: React.FC<ProductDetailSectionsProps> = ({ product }
       {specImages.length > 0 && (
         <section className="specifications-detail-section">
           <h2 className="section-title">Especificaciones</h2>
-          <div className="spec-grid">
+          <div className={`spec-grid ${specImages.length === 1 ? 'spec-grid-single' : ''}`}>
             {specImages.map((image: any, index: number) => {
               const { title, description } = parseAltText(image.node.altText);
               
