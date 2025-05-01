@@ -15,3 +15,4 @@ export { default as RelatedProducts } from './RelatedProducts';
 export { default as ImageZoomModal } from './ImageZoomModal';
 export { default as ProductGallery } from './ProductGallery';
 export { default as ProductVideo } from './ProductVideo';
+export { default as ProductVideos } from './ProductVideos';

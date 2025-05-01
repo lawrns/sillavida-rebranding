@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { useCart } from '../context/CartContext';
-import { ProductHeroShowcase, ProductDetailSections, RelatedProducts, ProductVideo } from '../components/product';
+import { ProductHeroShowcase, ProductDetailSections, RelatedProducts, ProductVideos } from '../components/product';
 import { getProduct } from '../lib/shopify';
 import './ProductPage.css';
 
@@ -90,8 +90,8 @@ const ProductPage: React.FC = () => {
         <ProductDetailSections product={product} />
       </div>
 
-      {/* Product Video Section */}
-      <ProductVideo videoId="onBSRJi-Fso" title="Descubre Nuestras Sillas Ergonómicas" />
+      {/* Dynamic Product Videos Section */}
+      <ProductVideos product={product} />
 
       {/* Related Products Section */}
       <RelatedProducts currentProductId={product.id} limit={4} />

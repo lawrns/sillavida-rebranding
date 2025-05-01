@@ -384,6 +384,33 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
             }
           }
         }
+        media(first: 10) {
+          edges {
+            node {
+              ... on MediaImage {
+                id
+                image {
+                  url
+                  altText
+                }
+              }
+              ... on Video {
+                id
+                sources {
+                  url
+                  mimeType
+                }
+                alt
+              }
+              ... on ExternalVideo {
+                id
+                embeddedUrl
+                alt
+                host
+              }
+            }
+          }
+        }
         collections(first: 5) {
           edges {
             node {

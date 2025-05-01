@@ -35,6 +35,11 @@ export default defineConfig({
           },
         ],
       },
+      // Exclude problematic images from optimization
+      exclude: [
+        'public/images/sand.png',
+        'public/images/bundle.png'
+      ]
     }),
     // Bundle analyzer (only in build mode)
     process.env.ANALYZE === 'true' && visualizer({
