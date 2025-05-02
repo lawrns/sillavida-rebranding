@@ -61,7 +61,7 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
           <Truck className="h-5 w-5 mr-2 vida-hover-breathing" />
           <p className="text-sm font-heading font-medium">
             ¡Envío GRATIS en compras superiores a {formatCurrency(threshold)}! 
-            <Link to="/promociones" className="underline ml-2">Ver detalles</Link>
+            <Link to="/promociones" className="underline ml-2 text-white">Ver detalles</Link>
           </p>
         </div>
       </div>
@@ -79,7 +79,7 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
         ) : (
           <p className="text-sm font-heading font-medium">
             ¡Te faltan {formatCurrency(amountToFreeShipping)} para obtener envío GRATIS!
-            <Link to="/promociones" className="underline ml-2">Ver detalles</Link>
+            <Link to="/promociones" className="underline ml-2 text-white">Ver detalles</Link>
           </p>
         )}
       </div>

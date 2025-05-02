@@ -1,9 +1,9 @@
 ---
 title: Update Product Page Layout for Specs and Features
 type: task
-status: active
+status: completed
 created: 2025-04-30T20:51:22Z
-updated: 2025-04-30T17:39:26-06:00
+updated: 2025-05-02T11:21:42-06:00
 id: TASK-067
 priority: high
 memory_types: [procedural, semantic]

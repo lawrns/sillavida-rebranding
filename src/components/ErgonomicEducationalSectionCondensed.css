@@ -15,10 +15,12 @@
   display: flex;
   gap: 3rem;
   align-items: center;
+  justify-content: space-between;
 }
 
 .ergonomic-educational-section-condensed .text-content {
   flex: 1;
+  max-width: 50%;
 }
 
 .ergonomic-educational-section-condensed h2 {
@@ -97,13 +99,13 @@
   align-items: center;
   font-family: var(--font-heading);
   font-weight: 600;
-  color: #E2725B; /* Terracotta color */
+  color: #F5F5DC; /* Changed to match the beige used elsewhere (#F5F5DC) */
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .ergonomic-educational-section-condensed .learn-more-link:hover {
-  color: #C87D55; /* Darker terracotta for hover state */
+  color: #FFFFFF; /* White for hover state for better contrast */
 }
 
 .ergonomic-educational-section-condensed .arrow-icon {
@@ -118,13 +120,20 @@
 .ergonomic-educational-section-condensed .image-content {
   flex: 1;
   position: relative;
+  max-width: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 450px; /* Fixed height to match content */
 }
 
 .ergonomic-educational-section-condensed .main-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 8px;
   box-shadow: var(--shadow-md);
+  max-height: 450px; /* Limit the image height */
+  object-fit: contain; /* Maintain aspect ratio */
 }
 
 .ergonomic-educational-section-condensed .statistic-overlay {
@@ -146,6 +155,7 @@
   font-weight: 700;
   line-height: 1;
   margin-bottom: 0.5rem;
+  color: #F5F5DC; /* Beige color for the 80% text */
 }
 
 .ergonomic-educational-section-condensed .statistic-label {
@@ -161,6 +171,12 @@
   .ergonomic-educational-section-condensed .text-content,
   .ergonomic-educational-section-condensed .image-content {
     width: 100%;
+    max-width: 100%;
+  }
+  
+  .ergonomic-educational-section-condensed .image-content {
+    height: 350px;
+    margin-top: 2rem;
   }
   
   .ergonomic-educational-section-condensed h2 {

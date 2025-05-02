@@ -12,9 +12,10 @@ const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
 
 interface ShopifyProductCardProps {
   product: ShopifyProduct;
+  hideDescription?: boolean;
 }
 
-const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
+const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDescription = false }) => {
   const { addItem } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -33,16 +34,16 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
   
   // Check if there's a compare-at price
   const hasCompareAtPrice = product.compareAtPriceRange?.minVariantPrice?.amount && 
-    parseFloat(product.compareAtPriceRange.minVariantPrice.amount) > price;
+    parseFloat(product.compareAtPriceRange?.minVariantPrice.amount) > price;
   
   // Parse and format the compare-at price if it exists
-  const compareAtPrice = hasCompareAtPrice ? 
-    parseFloat(product.compareAtPriceRange!.minVariantPrice.amount) : 0;
+  const compareAtPrice = hasCompareAtPrice && product.compareAtPriceRange?.minVariantPrice?.amount ? 
+    parseFloat(product.compareAtPriceRange.minVariantPrice.amount) : 0;
   
-  const formattedCompareAtPrice = hasCompareAtPrice ? 
+  const formattedCompareAtPrice = hasCompareAtPrice && product.compareAtPriceRange?.minVariantPrice?.currencyCode ? 
     compareAtPrice.toLocaleString('es-MX', {
       style: 'currency',
-      currency: product.compareAtPriceRange!.minVariantPrice.currencyCode
+      currency: product.compareAtPriceRange.minVariantPrice.currencyCode
     }) : '';
     
   // Calculate discount percentage if there's a compare-at price
@@ -206,7 +207,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
       }}
     >
       <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-        <div className="relative w-full h-48">
+        <div className="relative w-full h-48 overflow-hidden">
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
               <span className="text-gray-400">Cargando...</span>
@@ -220,7 +221,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
           <img 
             src={product.images.edges[0]?.node.url}
             alt={product.images.edges[0]?.node.altText || product.title} 
-            className={`w-full h-48 object-cover ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
+            className={`w-full h-48 object-cover object-center ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
             loading="lazy"
             onLoad={() => {
               setImageLoaded(true);
@@ -250,15 +251,17 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         </Link>
         
         {/* Feature highlights with Vida theme styling */}
-        <ul className="vida-feature-list text-sm text-gray-700 mb-3">
-          {product.description
-            .split('.')
-            .filter(sentence => sentence.trim().length > 0)
-            .slice(0, 2)
-            .map((feature, index) => (
-              <li key={index} className="font-body">{feature.trim()}</li>
-            ))}
-        </ul>
+        {!hideDescription && (
+          <ul className="vida-feature-list text-sm text-gray-700 mb-3">
+            {product.description
+              .split('.')
+              .filter(sentence => sentence.trim().length > 0)
+              .slice(0, 2)
+              .map((feature, index) => (
+                <li key={index} className="font-body">{feature.trim()}</li>
+              ))}
+          </ul>
+        )}
         <div className="flex items-center gap-2 mb-1">
           <p className="text-xl font-heading font-bold text-teal product-price">
             {formattedPrice}

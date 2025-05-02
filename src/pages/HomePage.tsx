@@ -226,7 +226,7 @@ const HomePage = () => {
                 <p className="text-[#7D9D8C] mb-6 font-body">¡Aprovecha las ofertas y compre!</p>
                 <Link 
                   to="/category/mas-vendidos"
-                  className="inline-flex items-center text-beige hover:text-beige-dark transition-colors"
+                  className="inline-flex items-center text-[#A66240] hover:text-beige-dark transition-colors"
                 >
                   Ver Todos <ChevronRight className="ml-1 h-4 w-4" />
                 </Link>
@@ -250,7 +250,7 @@ const HomePage = () => {
               ) : bestSellers.length > 0 ? (
                 // Shopify products - show when we have actual data
                 bestSellers.slice(0, 6).map((product) => (
-                  <ShopifyProductCard key={`shopify-${product.id}`} product={product} />
+                  <ShopifyProductCard key={`shopify-${product.id}`} product={product} hideDescription={true} />
                 ))
               ) : (
                 // Fallback to static data - show when data has been fetched but no Shopify products available

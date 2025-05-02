@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, ChevronDown, Search } from 'lucide-react';
+import { ShoppingCart, Menu, ChevronDown } from 'lucide-react';
 import { getCollections } from '../lib/shopify';
 import { useCart } from '../context/CartContext';
 import MiniCart from './MiniCart';
@@ -246,18 +246,6 @@ const Navbar = () => {
 
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
-            <motion.div 
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="hidden sm:block"
-            >
-              <button 
-                className="p-2 rounded-full bg-teal-extralight hover:bg-teal-light transition-colors duration-200"
-                aria-label="Search products"
-              >
-                <Search className="h-5 w-5 text-teal-dark" />
-              </button>
-            </motion.div>
             <AccountButton />
             <motion.button 
               className="p-2 relative transition-all duration-200"

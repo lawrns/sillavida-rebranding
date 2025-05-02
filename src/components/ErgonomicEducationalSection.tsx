@@ -640,13 +640,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
       style={{ backgroundColor }}
     >
       <div className="ergonomic-educational-container">
-        <SectionHeader
-          title="Por qué invertir en una silla ergonómica"
-          subtitle="Una inversión en tu bienestar que se amortiza día tras día"
-          alignment="center"
-          titleColor="#7D9D8C" /* Sage green */
-          subtitleColor="#C87D55" /* Terracotta */
-        />
+        {/* SectionHeader removed to avoid duplication with ErgonomicEducationPage */}
 
         <Introduction
           content={
@@ -715,7 +709,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
             </>
           }
           buttonText="Explorar Sillas Ergonómicas"
-          buttonLink="/categorias/sillas-ergonomicas"
+          buttonLink="/category/tienda"
           buttonVariant="primary"
           backgroundColor="var(--color-primary-light)"
           textColor="var(--color-text)"
