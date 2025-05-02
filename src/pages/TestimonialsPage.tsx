@@ -42,8 +42,8 @@ const TestimonialsPage: React.FC = () => {
               <Users className="h-8 w-8" />
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">Historias de Vida</h1>
-          <p className="text-xl max-w-2xl mx-auto font-body">
+          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-[#E8DED1]">Historias de Vida</h1>
+          <p className="text-xl max-w-2xl mx-auto font-body text-[#F5F0E8]">
             Descubre cómo nuestras sillas ergonómicas han transformado la vida de nuestros clientes, mejorando su salud, productividad y bienestar.
           </p>
         </div>

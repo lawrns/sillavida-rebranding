@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Star, CreditCard, Package } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getHeroSlides, getSlideTheme, type HeroSlideMetaobject } from '../lib/metaobjects';
 
-// Mock Shopify variant IDs for the slider products
-const SLIDER_VARIANT_IDS: Record<number, string> = {
-  1: 'mock-variant-345678901', // Silla Ergonómica Xperience Helix (ergonomic model)
-  2: 'mock-variant-123456789', // Silla Oficina ErgoComfort (ergonomic model)
-  3: 'mock-variant-567890123', // Pack 4x Silla Vida Confort Pro (office model)
-};
-
-const slides = [
+// Fallback slides in case metaobjects aren't available
+const fallbackSlides = [
   {
     id: 1,
     title: "Silla Ergonómica Xperience Helix",
@@ -26,16 +22,17 @@ const slides = [
       button: "bg-teal hover:bg-teal-light",
       gradient: "from-white via-white to-beige-extralight"
     },
-    features: ["Soporte Lumbar", "Ajuste Personalizado", "Materiales Transpirables", "12 MSI"]
+    features: ["Soporte Lumbar", "Ajuste Personalizado", "Materiales Transpirables", "12 MSI"],
+    handle: "silla-ergonomica-xperience-helix"
   },
   {
     id: 2,
-    title: "Silla Oficina ErgoComfort",
-    subtitle: "Mejora tu productividad",
-    description: "Confort que transforma tu espacio de trabajo en un santuario de productividad",
-    price: 2239.91,
-    originalPrice: 3200.00,
-    image: "/images/—Pngtree—single comfort noise style sofa_4372281.png",
+    title: "Silla Ejecutiva ErgoComfort Pro",
+    subtitle: "Confort Ejecutivo",
+    description: "La combinación perfecta de elegancia y ergonomía para tu espacio de trabajo profesional.",
+    price: 3799,
+    originalPrice: 4599,
+    image: "/images/ejecutiva.png",
     theme: {
       bg: "from-sage-dark via-sage to-sage-dark",
       accent: "bg-sage-light/20",
@@ -43,16 +40,17 @@ const slides = [
       button: "bg-sage hover:bg-sage-light",
       gradient: "from-white via-white to-beige-extralight"
     },
-    features: ["Ergonomía Certificada", "Reduce Fatiga", "Ajuste 4D", "12 MSI"]
+    features: ["Ergonomía Certificada", "Reduce Fatiga", "Ajuste 4D", "12 MSI"],
+    handle: "silla-ejecutiva-ergocomfort-pro"
   },
   {
     id: 3,
-    title: "Pack 4x Silla Vida Confort Pro",
-    subtitle: "Bienestar para tu equipo",
-    description: "Invierte en el bienestar de tu equipo y potencia la productividad colectiva",
-    price: 8499.91,
-    originalPrice: 12800.00,
-    image: "/images/bundle.png",
+    title: "Pack 4x Silla Vida Confort",
+    subtitle: "Oferta Especial",
+    description: "Equipa tu oficina con nuestro pack de 4 sillas ergonómicas a un precio especial.",
+    price: 9999,
+    originalPrice: 13999,
+    image: "/images/pack.png",
     theme: {
       bg: "from-terracotta-dark via-terracotta to-terracotta-dark",
       accent: "bg-terracotta-light/20",
@@ -60,50 +58,187 @@ const slides = [
       button: "bg-terracotta hover:bg-terracotta-light",
       gradient: "from-white via-white to-beige-extralight"
     },
-    features: ["Confort Prolongado", "Diseño Ergonómico", "Durabilidad Premium", "12 MSI"]
+    features: ["Confort Prolongado", "Diseño Ergonómico", "Durabilidad Premium", "12 MSI"],
+    handle: "pack-4x-silla-vida-confort"
   }
 ];
 
+interface SlideData {
+  id: string | number;
+  title: string;
+  subtitle: string;
+  description: string;
+  price: number;
+  originalPrice: number;
+  image: string;
+  theme: {
+    bg: string;
+    accent: string;
+    text: string;
+    button: string;
+    gradient: string;
+  };
+  features: string[];
+  variantId?: string;
+  handle?: string;
+}
+
 const HeroSlider = () => {
-  const { addItem } = useCart();
+  // Import context but comment out unused variable to fix lint warning
+  const { /* addItem */ } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [isLoadingSlides, setIsLoadingSlides] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [slides, setSlides] = useState<SlideData[]>(fallbackSlides); // Initialize with fallback slides
+
+  // Fetch hero slides from Shopify Metaobjects
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        console.log('Fetching hero slides...');
+        const heroSlides = await getHeroSlides();
+        console.log('Hero slides fetched:', JSON.stringify(heroSlides, null, 2));
+        
+        if (heroSlides && heroSlides.length > 0) {
+          // Transform metaobjects to the format expected by the component
+          const formattedSlides = heroSlides.map((slide: HeroSlideMetaobject) => {
+            try {
+              // Extract product data
+              console.log('Processing slide:', slide.id);
+              console.log('Product data:', JSON.stringify(slide.productToFeature, null, 2));
+              
+              if (!slide.productToFeature) {
+                console.error('Missing product data for slide:', slide.id);
+                return null;
+              }
+              
+              // IMPORTANT: metaobjects.ts transforms the Shopify API data structure
+              // It changes variants.edges[0].node into variants[0]
+              const variant = Array.isArray(slide.productToFeature.variants) 
+                ? slide.productToFeature.variants[0] 
+                : null;
+                
+              console.log('Extracted variant:', JSON.stringify(variant, null, 2));
+              
+              if (!variant) {
+                console.error('Missing variant data for slide:', slide.id);
+                return null;
+              }
+              
+              const price = parseFloat(variant.price?.amount || '0');
+              const originalPrice = variant.compareAtPrice 
+                ? parseFloat(variant.compareAtPrice.amount) 
+                : price * 1.3; // Fallback if no compare price
+              
+              // Extract features from slide details (assuming they're comma-separated)
+              const features = slide.slideDetails.split(',').map(f => f.trim()).filter(f => f);
+              
+              // Create the formatted slide data
+              const slideData = {
+                id: slide.id,
+                title: slide.productToFeature.title || 'Product Title',
+                subtitle: slide.slideSubtitle || 'Product Subtitle',
+                description: slide.productToFeature.description || 'Product Description',
+                price: price,
+                originalPrice: originalPrice,
+                image: slide.slideImage?.url || '/images/placeholder.png',
+                theme: getSlideTheme(slide.themeColor),
+                features: features.length > 0 ? features : ["Comodidad", "Durabilidad", "Ergonomía", "12 MSI"],
+                variantId: variant.id,
+                handle: slide.productToFeature.handle
+              };
+              
+              console.log('Formatted slide data:', slideData);
+              return slideData;
+            } catch (err) {
+              console.error('Error processing slide:', slide.id, err);
+              return null;
+            }
+          }).filter(Boolean) as SlideData[];
+          
+          console.log('Total formatted slides:', formattedSlides.length);
+          
+          if (formattedSlides.length > 0) {
+            setSlides(formattedSlides);
+            setErrorMessage(null);
+          } else {
+            console.warn('No valid slides found after filtering');
+            // Keep using fallback slides
+            setErrorMessage('No se pudieron cargar todos los productos destacados. Mostrando contenido alternativo.');
+          }
+        } else {
+          console.warn('No hero slides returned from API');
+          // Keep using fallback slides
+          setErrorMessage('No se pudieron cargar los productos destacados. Mostrando contenido alternativo.');
+        }
+      } catch (err) {
+        console.error('Error fetching hero slides:', err);
+        // Keep using fallback slides
+        setErrorMessage('Error al cargar los productos destacados. Mostrando contenido alternativo.');
+      } finally {
+        setIsLoadingSlides(false);
+      }
+    };
+
+    fetchSlides();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
-  const handleAddToCart = async () => {
-    setIsLoading(true);
-    try {
-      // Get the variant ID for the current slide
-      const variantId = SLIDER_VARIANT_IDS[currentSlide + 1];
-      
-      if (!variantId) {
-        console.error('No variant ID found for slide:', currentSlide + 1);
-        return;
-      }
-      
-      // Add the item to the cart
-      await addItem(variantId, 1);
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 2000);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-    } finally {
-      setIsLoading(false);
+  // Get product handle for navigation
+  const getProductUrl = (slideData: SlideData) => {
+    // If we have a direct handle from the product data, use it
+    if (slideData.handle) {
+      return `/product/${slideData.handle}`;
     }
+    
+    // Fallback to a sanitized version of the title
+    return `/product/${slideData.title.toLowerCase().replace(/\s+/g, '-')}`;
   };
 
-  const currentTheme = slides[currentSlide].theme;
+  // Note: This function is kept for potential future use if "Add to Cart" functionality is restored
+  // but is not currently used in the component
+  /* 
+  const handleAddToCart = (slideData: SlideData) => {
+    if (slideData.variantId) {
+      addItem(slideData.variantId, 1);
+    }
+  };
+  */
+
+  if (isLoadingSlides) {
+    return (
+      <section className="bg-gradient-to-r from-teal-dark via-teal to-teal-dark h-[600px] flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-pulse mb-4">
+            <div className="h-8 w-48 bg-white/20 rounded mx-auto"></div>
+          </div>
+          <div className="animate-pulse mb-6">
+            <div className="h-16 w-64 bg-white/20 rounded mx-auto"></div>
+          </div>
+          <div className="animate-pulse">
+            <div className="h-10 w-40 bg-white/20 rounded mx-auto"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   const currentSlideData = slides[currentSlide];
+  const currentTheme = currentSlideData.theme;
 
   return (
     <section className={`relative bg-gradient-to-r ${currentTheme.bg} overflow-hidden transition-colors duration-500 vida-bg-pattern-breathing`}>
+      {errorMessage && (
+        <div className="absolute top-2 right-2 bg-terracotta/80 text-white px-4 py-2 rounded-md text-sm z-50">
+          {errorMessage}
+        </div>
+      )}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_50%)]" />
       
       <div className="max-w-7xl mx-auto px-4">
@@ -116,9 +251,6 @@ const HeroSlider = () => {
               transition={{ duration: 0.5 }}
               className="text-white max-w-xl mb-8 md:mb-0 relative z-10"
             >
-              <div className={`inline-block px-4 py-1 rounded-full ${currentTheme.accent} ${currentTheme.text} text-sm mb-4 font-heading font-medium`}>
-                {currentSlideData.subtitle}
-              </div>
               <h1 className={`text-4xl md:text-5xl font-heading font-bold mb-4 bg-gradient-to-r ${currentTheme.gradient} bg-clip-text text-transparent tracking-tight`}>
                 {currentSlideData.title}
               </h1>
@@ -127,7 +259,7 @@ const HeroSlider = () => {
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 {currentSlideData.features ? (
-                  currentSlideData.features.map((feature, index) => (
+                  currentSlideData.features.map((feature: string, index: number) => (
                     <span key={index} className={`${currentTheme.accent} px-4 py-2 rounded-full ${currentTheme.text} flex items-center font-body`}>
                       {index === 0 && <Shield className="h-4 w-4 mr-2" />}
                       {index === 1 && <Star className="h-4 w-4 mr-2" />}
@@ -162,17 +294,12 @@ const HeroSlider = () => {
                     ${currentSlideData.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </div>
                 </div>
-                <button 
-                  onClick={handleAddToCart}
-                  disabled={isLoading}
-                  className={`${
-                    success 
-                      ? 'bg-sage hover:bg-sage-light' 
-                      : currentTheme.button
-                  } text-white px-8 py-3 vida-shape-soft font-heading font-semibold tracking-wide transition-colors`}
+                <Link 
+                  to={getProductUrl(currentSlideData)}
+                  className={`${currentTheme.button} text-white px-8 py-3 vida-shape-soft font-heading font-semibold tracking-wide transition-colors`}
                 >
-                  {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Invierte en tu bienestar'}
-                </button>
+                  Ver producto
+                </Link>
               </div>
             </motion.div>
             
@@ -183,13 +310,9 @@ const HeroSlider = () => {
               transition={{ duration: 0.5 }}
               className="relative w-full md:w-1/2 flex justify-end"
             >
+              {/* Mobile gradient overlay */}
               <div className={`absolute inset-0 bg-gradient-to-r ${currentTheme.bg}/80 via-transparent to-transparent md:hidden`} />
-              <img 
-                src="/images/perks.png" 
-                alt="Perks"
-                className="absolute bottom-20 right-[20%] w-32 h-auto object-contain z-20 mix-blend-screen"
-                style={{ transform: 'scale(0.75)' }}
-              />
+              
               <motion.div
                 className="w-full h-[600px] relative overflow-hidden"
                 initial={{ opacity: 0 }}
@@ -214,22 +337,22 @@ const HeroSlider = () => {
             </motion.div>
           </div>
         </AnimatePresence>
-
-        <div className="flex justify-center gap-2 pb-4">
+        
+        <div className="flex justify-center space-x-2 pb-6">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide 
-                  ? `${slides[index].theme.button} bg-opacity-100` 
-                  : `${slides[index].theme.button} bg-opacity-30`
+                  ? 'bg-white scale-125' 
+                  : 'bg-white/30 hover:bg-white/50'
               }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
       </div>
-      <div className="vida-divider-wave w-full"></div>
     </section>
   );
 };

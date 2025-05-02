@@ -40,35 +40,38 @@ const Footer = () => {
           <motion.div variants={itemVariants}>
             <h3 className="text-xl mb-4">
               <div className="vida-logo">
-                <span className="vida-logo-silla text-white">Silla</span>
-                <span className="vida-logo-vida text-beige">Vida</span>
+                <span className="vida-logo-silla text-[#E8DED1]">Silla</span>
+                <span className="vida-logo-vida text-[#F5F0E8]">Vida</span>
               </div>
             </h3>
-            <p className="text-beige-light text-sm md:text-base font-body">
-              Comodidad y estilo para tu espacio de trabajo y gaming.
-            </p>
+            {/* Tagline removed as requested */}
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <h4 className="font-heading font-semibold mb-4" id="footer-links">Enlaces</h4>
+            <h4 className="font-heading font-semibold mb-4 text-[#E8DED1]" id="footer-links">Enlaces</h4>
             <ul className="space-y-3" aria-labelledby="footer-links">
               <motion.li variants={itemVariants}>
-                <Link to="/tienda" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                <Link to="/tienda" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Tienda
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/oficina" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
-                  Sillas de Oficina
+                <Link to="/category/sillavida-esencial" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                  SillaVida Esencial
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/gamer" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
-                  Sillas Gamer
+                <Link to="/category/sillavida-confort" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                  SillaVida Confort
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/nosotros" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                <Link to="/category/sillavida-zen" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                  SillaVida Zen
+                </Link>
+              </motion.li>
+              <motion.li variants={itemVariants}>
+                <Link to="/nosotros" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Nosotros
                 </Link>
               </motion.li>
@@ -76,25 +79,25 @@ const Footer = () => {
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <h4 className="font-heading font-semibold mb-4" id="footer-help">Ayuda</h4>
+            <h4 className="font-heading font-semibold mb-4 text-[#E8DED1]" id="footer-help">Ayuda</h4>
             <ul className="space-y-3" aria-labelledby="footer-help">
               <motion.li variants={itemVariants}>
-                <Link to="/faq" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                <Link to="/faq" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Preguntas Frecuentes
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/envios" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                <Link to="/envios" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Envíos
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/garantia" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                <Link to="/garantia" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Garantía
                 </Link>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <Link to="/contacto" className="text-beige-light hover:text-beige transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
+                <Link to="/contacto" className="text-[#F5F0E8] hover:text-white transition-colors duration-300 text-sm md:text-base inline-flex items-center font-body">
                   Contacto
                 </Link>
               </motion.li>
@@ -102,14 +105,14 @@ const Footer = () => {
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <h4 className="font-heading font-semibold mb-4" id="footer-social">Síguenos</h4>
+            <h4 className="font-heading font-semibold mb-4 text-[#E8DED1]" id="footer-social">Síguenos</h4>
             <div className="flex space-x-6" aria-labelledby="footer-social">
               <motion.a 
                 href="https://facebook.com" 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Síguenos en Facebook"
-                className="text-beige-light"
+                className="text-[#F5F0E8]"
                 variants={iconVariants}
                 whileHover="hover"
                 transition={{ type: "spring", stiffness: 300 }}
@@ -121,7 +124,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Síguenos en Instagram"
-                className="text-beige-light"
+                className="text-[#F5F0E8]"
                 variants={iconVariants}
                 whileHover="hover"
                 transition={{ type: "spring", stiffness: 300 }}
@@ -131,7 +134,7 @@ const Footer = () => {
               <motion.a 
                 href="mailto:info@sillavida.com" 
                 aria-label="Contáctanos por correo"
-                className="text-beige-light"
+                className="text-[#F5F0E8]"
                 variants={iconVariants}
                 whileHover="hover"
                 transition={{ type: "spring", stiffness: 300 }}
@@ -151,8 +154,8 @@ const Footer = () => {
         >
           <p className="text-sm font-body footer-text">&copy; {new Date().getFullYear()} 
             <span className="vida-logo mx-1">
-              <span className="vida-logo-silla text-white">Silla</span>
-              <span className="vida-logo-vida text-beige">Vida</span>
+              <span className="vida-logo-silla text-[#E8DED1]">Silla</span>
+              <span className="vida-logo-vida text-[#F5F0E8]">Vida</span>
             </span>
             Todos los derechos reservados.
           </p>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import './ErgonomicEducationalSectionCondensed.css';
+import RandomProductImage from './RandomProductImage';
 
 const ErgonomicEducationalSectionCondensed: React.FC = () => {
   return (
@@ -69,15 +70,11 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
           </div>
           
           <div className="image-content">
-            <img 
-              src="/images/ergonomica.png" 
-              alt="Beneficios de sillas ergonómicas" 
+            <RandomProductImage 
               className="main-image"
+              alt="Beneficios de sillas ergonómicas" 
+              interval={7000}
             />
-            <div className="statistic-overlay">
-              <div className="statistic-value">80%</div>
-              <div className="statistic-label">de los adultos experimentan dolor de espalda</div>
-            </div>
           </div>
         </div>
       </div>

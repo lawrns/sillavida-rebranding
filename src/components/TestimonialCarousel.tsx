@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, BadgeCheck } from 'lucide-react';
-import { Testimonial, getCategoryIcon, getCategoryLabel } from '../data/testimonials';
+import { BadgeCheck } from 'lucide-react';
+import { Testimonial } from '../data/testimonials';
+import { getFeaturedProducts } from '../lib/shopify';
+import type { ShopifyProduct } from '../types/shopify';
 
 interface TestimonialCarouselProps {
   testimonials: Testimonial[];
@@ -20,6 +22,9 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<number | null>(null);
+  const [productImages, setProductImages] = useState<string[]>([]);
+  const [productNames, setProductNames] = useState<string[]>([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
 
   // Handle auto-rotation
   useEffect(() => {
@@ -36,22 +41,6 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
       }
     };
   }, [autoRotate, isPaused, testimonials.length, rotationInterval]);
-
-  // Navigate to previous testimonial
-  const prevTestimonial = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    setDirection(-1);
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1));
-    if (autoRotate) resetTimer();
-  };
-
-  // Navigate to next testimonial
-  const nextTestimonial = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    setDirection(1);
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-    if (autoRotate) resetTimer();
-  };
 
   // Reset the auto-rotation timer
   const resetTimer = () => {
@@ -74,12 +63,43 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
     if (autoRotate) resetTimer();
   };
 
+  // Fetch Shopify product images on component mount
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      try {
+        setIsLoadingImages(true);
+        // Fetch best-selling products to use their images
+        const products = await getFeaturedProducts({
+          collectionHandle: 'mas-vendidos',
+          limit: testimonials.length
+        });
+        
+        // Extract image URLs from products
+        const images = products.map(product => 
+          product.images.edges[0]?.node.url || '/images/placeholder.png'
+        );
+        
+        // Extract product names from products
+        const names = products.map(product => product.title);
+        
+        setProductImages(images);
+        setProductNames(names);
+        console.log('Fetched product images for testimonials:', images);
+      } catch (error) {
+        console.error('Error fetching product images:', error);
+        // Use mock images as fallback
+        setProductImages(testimonials.map(t => t.photo));
+      } finally {
+        setIsLoadingImages(false);
+      }
+    };
+
+    fetchProductImages();
+  }, [testimonials.length]);
+
   // Get current testimonial
   const currentTestimonial = testimonials[currentIndex];
   
-  // Get category icon
-  const CategoryIcon = getCategoryIcon(currentTestimonial.category);
-
   // Animation variants
   const variants = {
     enter: (direction: number) => ({
@@ -98,28 +118,13 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
 
   return (
     <div 
-      className={`relative overflow-hidden bg-beige rounded-lg shadow-md ${className}`}
+      className={`relative overflow-hidden bg-beige-light rounded-lg shadow-md ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       aria-label="Historias de Vida - Testimonios de clientes"
     >
-      <div className="absolute top-4 right-4 z-20 flex space-x-2">
-        <button
-          onClick={prevTestimonial}
-          className="p-2 rounded-full bg-beige text-sage hover:bg-beige-dark transition-colors focus:outline-none focus:ring-2 focus:ring-sage-light border-2 border-sage/30 shadow-md"
-          aria-label="Testimonio anterior"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <button
-          onClick={nextTestimonial}
-          className="p-2 rounded-full bg-beige text-sage hover:bg-beige-dark transition-colors focus:outline-none focus:ring-2 focus:ring-sage-light border-2 border-sage/30 shadow-md"
-          aria-label="Testimonio siguiente"
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
-
+      {/* Navigation buttons removed as requested - testimonials will auto-rotate */}
+      
       <div className="relative h-full">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -135,33 +140,29 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
             }}
             className="w-full"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 h-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 h-full bg-beige-light">
               {/* Photo Section */}
-              <div className="relative bg-teal-dark flex items-center justify-center p-6 md:p-0">
-                <div className="absolute top-4 left-4 z-10 flex items-center space-x-2">
-                  <div className={`
-                    p-2 rounded-full 
-                    ${currentTestimonial.category === 'health' ? 'bg-terracotta-extralight text-terracotta' : 
-                      currentTestimonial.category === 'productivity' ? 'bg-sage-extralight text-sage-dark' : 
-                      'bg-teal-extralight text-teal'}
-                  `}>
-                    <CategoryIcon size={20} />
-                  </div>
-                  <span className="text-sm font-medium bg-beige-light px-2 py-1 rounded-full shadow-sm">
-                    {getCategoryLabel(currentTestimonial.category)}
-                  </span>
-                </div>
-                <img
-                  src={currentTestimonial.photo}
-                  alt={`${currentTestimonial.name}, ${currentTestimonial.profession}`}
-                  className="object-cover w-full h-full max-h-[300px] md:max-h-none"
-                />
+              <div className="relative bg-teal-dark flex items-center justify-center p-4 md:p-0">
+                {/* Category icons and labels removed as requested */}
+                {isLoadingImages ? (
+                  <img
+                    src={currentTestimonial.photo}
+                    alt={`${currentTestimonial.name}, ${currentTestimonial.profession}`}
+                    className="object-cover w-full h-full max-h-[300px] md:max-h-[400px]"
+                  />
+                ) : (
+                  <img
+                    src={productImages[currentIndex]}
+                    alt={`${currentTestimonial.name}, ${currentTestimonial.profession}`}
+                    className="object-cover w-full h-full max-h-[300px] md:max-h-[400px]"
+                  />
+                )}
               </div>
 
               {/* Content Section */}
-              <div className="p-6 md:p-8 flex flex-col justify-between bg-beige-light">
+              <div className="p-4 md:p-6 flex flex-col justify-between bg-beige-light max-h-[300px] md:max-h-[400px] overflow-y-auto">
                 <div>
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between mb-2">
                     <div>
                       <h3 className="text-xl font-heading font-bold text-teal-dark">
                         {currentTestimonial.name}
@@ -170,7 +171,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                         {currentTestimonial.profession}, {currentTestimonial.location}
                       </p>
                       <p className="text-sm text-sage-dark font-medium mt-1">
-                        {currentTestimonial.chairModel}
+                        {isLoadingImages ? currentTestimonial.chairModel : productNames[currentIndex] || currentTestimonial.chairModel}
                       </p>
                     </div>
                     {currentTestimonial.verified && (
@@ -180,11 +181,11 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                     )}
                   </div>
 
-                  <blockquote className="mb-6">
-                    <p className="text-xl font-heading font-bold text-teal italic mb-4">
+                  <blockquote className="mb-4">
+                    <p className="text-lg font-heading font-bold text-teal italic mb-2">
                       "{currentTestimonial.quote}"
                     </p>
-                    <div className="space-y-4 text-gray-700 font-body">
+                    <div className="space-y-2 text-gray-700 font-body text-sm">
                       <p>{currentTestimonial.context}</p>
                       <p>{currentTestimonial.transformation}</p>
                       <p className="font-medium">{currentTestimonial.conclusion}</p>
@@ -201,15 +202,16 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                       <button
                         key={index}
                         onClick={() => {
+                          setDirection(index > currentIndex ? 1 : -1);
                           setCurrentIndex(index);
-                          if (timerRef.current) clearInterval(timerRef.current);
                           if (autoRotate) resetTimer();
                         }}
-                        className={`w-2 h-2 rounded-full ${
-                          index === currentIndex ? 'bg-sage' : 'bg-beige-dark'
+                        className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                          index === currentIndex
+                            ? 'bg-teal'
+                            : 'bg-teal/30 hover:bg-teal/50'
                         }`}
-                        aria-label={`Ir al testimonio ${index + 1}`}
-                        aria-current={index === currentIndex ? 'true' : 'false'}
+                        aria-label={`Ver testimonio ${index + 1}`}
                       />
                     ))}
                   </div>
