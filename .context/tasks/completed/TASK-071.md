@@ -1,9 +1,9 @@
 ---
 title: Fix Hero Slider Data Fetching and Button Link
 type: task
-status: planned
+status: active
 created: 2025-05-02T20:27:46
-updated: 2025-05-02T20:27:46
+updated: 2025-05-05T16:10:53
 id: TASK-071
 priority: high
 memory_types: [procedural, semantic]
@@ -81,4 +81,3 @@ The hero slider component is currently displaying an error ("No se pudieron carg
 ## Next Steps
 - Locate the `HeroSlider` component and the associated GraphQL query in the codebase.
 - Begin verifying the GraphQL query against the expected Metaobject structure and Storefront API response.
-
