@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowRight, Truck, CreditCard, Shield, Star, ChevronRight, Tag, Lock, FileCheck, HeadphonesIcon, Users } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Truck, CreditCard, Shield, ChevronRight, Tag, Lock, FileCheck, HeadphonesIcon, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
 import { chairs } from '../data/chairs';
 import ProductCard from '../components/ProductCard';
-import PromoBanner from '../components/PromoBanner';
-import ShopifyPromoBanner from '../components/ShopifyPromoBanner';
 import ShopifyProductCard from '../components/ShopifyProductCard';
 import HeroSlider from '../components/HeroSlider';
 import PersonalizedBanner from '../components/PersonalizedBanner';
@@ -180,59 +178,59 @@ const HomePage = () => {
       {/* Personalized Banner for logged-in users */}
       <PersonalizedBanner />
 
-      {/* Trust Bar - Optimized for mobile with horizontal scrolling */}
-      <section className="bg-white py-8 sm:py-12 overflow-hidden">
+      {/* Why Choose SillaVida Section */}
+      <section className="bg-gray-50 py-12 overflow-hidden border-t border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex overflow-x-auto pb-4 sm:pb-0 sm:grid sm:grid-cols-4 gap-6 hide-scrollbar">
-            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <Truck className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
-              <div>
-                <h3 className="font-heading font-semibold text-base">Envío a Todo México</h3>
-                <p className="text-gray-600 font-body text-sm">Entrega rápida y segura</p>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-heading font-bold text-[#111827] mb-2">Por Qué Elegir SillaVida</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">Nos comprometemos a ofrecerte la mejor experiencia en cada aspecto</p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <Truck className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Envío a Todo México</h3>
+              <p className="text-gray-600 text-sm">Entrega rápida y segura a cualquier parte del país.</p>
             </div>
-            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <CreditCard className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
-              <div>
-                <h3 className="font-heading font-semibold text-base">Pagos Seguros</h3>
-                <p className="text-gray-600 font-body text-sm">Múltiples métodos de pago</p>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <CreditCard className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Pagos Seguros</h3>
+              <p className="text-gray-600 text-sm">Múltiples métodos de pago con seguridad garantizada.</p>
             </div>
-            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
-              <div>
-                <h3 className="font-heading font-semibold text-base">Garantía de Calidad</h3>
-                <p className="text-gray-600 font-body text-sm">12 meses de garantía</p>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Garantía de Calidad</h3>
+              <p className="text-gray-600 text-sm">12 meses de garantía en todos nuestros productos.</p>
             </div>
-            <div className="flex items-center justify-center flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <HeadphonesIcon className="h-7 w-7 sm:h-8 sm:w-8 text-teal mr-3 sm:mr-4 flex-shrink-0" />
-              <div>
-                <h3 className="font-heading font-semibold text-base">Atención al Cliente</h3>
-                <p className="text-gray-600 font-body text-sm">Soporte 24/7</p>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <HeadphonesIcon className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Atención al Cliente</h3>
+              <p className="text-gray-600 text-sm">Soporte personalizado para resolver todas tus dudas.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Best Sellers */}
-      <section className="py-16 bg-[#7D9D8C]">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-1/4">
-              <div className="bg-white p-8 rounded-lg shadow-sm">
-                <h2 className="text-3xl font-heading font-bold text-[#1E5959] mb-4">Selección de los Más Vendidos</h2>
-                <p className="text-[#7D9D8C] mb-6 font-body">¡Aprovecha las ofertas y compre!</p>
-                <Link 
-                  to="/category/mas-vendidos"
-                  className="inline-flex items-center text-[#A66240] hover:text-beige-dark transition-colors"
-                >
-                  Ver Todos <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
-              </div>
+          <div className="flex flex-col gap-8">
+            <div className="w-full text-center mb-4">
+              <h2 className="text-3xl font-heading font-bold text-black mb-4">Nuestros Más Vendidos</h2>
+              <p className="text-gray-600 mb-6 font-body max-w-2xl mx-auto">Descubre por qué nuestros clientes eligen estas sillas. Combinan ergonomía, calidad y estilo para mejorar tu experiencia de trabajo o juego.</p>
             </div>
-            <div className="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {isLoading && !dataFetched ? (
                 // Loading skeleton - only show when loading and data hasn't been fetched yet
                 Array(6).fill(0).map((_, index) => (
@@ -268,7 +266,8 @@ const HomePage = () => {
       {/* Featured Categories */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-heading font-bold text-center mb-12 text-teal-dark">Nuestras Categorías</h2>
+          <h2 className="text-3xl font-heading font-bold text-center mb-4 text-black">Encuentra tu silla ideal</h2>
+          <p className="text-gray-600 text-center max-w-3xl mx-auto mb-12">Descubre nuestra colección de sillas ergonómicas diseñadas para mejorar tu postura, productividad y bienestar durante largas jornadas de trabajo.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {collections.length > 0 ? (
               // Map through Shopify collections that start with "Silla"
@@ -312,11 +311,11 @@ const HomePage = () => {
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                        <div className="text-beige">
-                          <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">{collection.title}</h3>
-                          <p className="mb-4 font-body text-base home-category-description">{description}</p>
-                          <span className="flex items-center text-base home-category-link">
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                        <div>
+                          <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">{collection.title}</h3>
+                          {/* Description removed as requested */}
+                          <span className="flex items-center text-[#d8dce5] home-category-link">
                             Ver colección <ChevronRight className="ml-2" />
                           </span>
                         </div>
@@ -335,11 +334,11 @@ const HomePage = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                    <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Ejecutivas</h3>
-                      <p className="mb-4 font-body text-base home-category-description">Elegancia y confort para ejecutivos</p>
-                      <span className="flex items-center text-base home-category-link">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">Sillas Ejecutivas</h3>
+                      {/* Description removed as requested */}
+                      <span className="flex items-center text-[#d8dce5] home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -353,11 +352,11 @@ const HomePage = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                    <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Ergonómicas</h3>
-                      <p className="mb-4 font-body text-base home-category-description">Diseñadas para tu bienestar</p>
-                      <span className="flex items-center text-base home-category-link">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">Sillas Ergonómicas</h3>
+                      {/* Description removed as requested */}
+                      <span className="flex items-center text-[#d8dce5] home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -371,11 +370,11 @@ const HomePage = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                    <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Gamer</h3>
-                      <p className="mb-4 font-body text-base home-category-description">Para sesiones épicas de juego</p>
-                      <span className="flex items-center text-base home-category-link">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">Sillas Gamer</h3>
+                      {/* Description removed as requested */}
+                      <span className="flex items-center text-[#d8dce5] home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -389,11 +388,11 @@ const HomePage = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                    <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas Secretariales</h3>
-                      <p className="mb-4 font-body text-base home-category-description">Funcionalidad y comodidad</p>
-                      <span className="flex items-center text-base home-category-link">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">Sillas Secretariales</h3>
+                      {/* Description removed as requested */}
+                      <span className="flex items-center text-[#d8dce5] home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -407,11 +406,11 @@ const HomePage = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                    <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Sillas de Visita</h3>
-                      <p className="mb-4 font-body text-base home-category-description">Para espacios de recepción</p>
-                      <span className="flex items-center text-base home-category-link">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">Sillas de Visita</h3>
+                      {/* Description removed as requested */}
+                      <span className="flex items-center text-[#d8dce5] home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -425,11 +424,11 @@ const HomePage = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-dark/80 to-transparent flex items-end p-6 sm:p-8">
-                    <div className="text-beige">
-                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 home-category-heading">Accesorios</h3>
-                      <p className="mb-4 font-body text-base home-category-description">Complementos para tu silla</p>
-                      <span className="flex items-center text-base home-category-link">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">Accesorios</h3>
+                      {/* Description removed as requested */}
+                      <span className="flex items-center text-[#d8dce5] home-category-link">
                         Ver colección <ChevronRight className="ml-2" />
                       </span>
                     </div>
@@ -448,22 +447,22 @@ const HomePage = () => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-heading font-bold text-teal-dark mb-4">Historias de Vida</h2>
+            <h2 className="text-3xl font-heading font-bold text-black mb-4">Historias de Vida</h2>
             <p className="text-gray-600 max-w-2xl mx-auto font-body">
               Descubre cómo nuestras sillas han transformado la vida de nuestros clientes, mejorando su salud, productividad y bienestar.
             </p>
           </div>
           <div className="flex items-center justify-center mb-8">
-            <div className="flex items-center space-x-2 px-4 py-2 bg-teal/10 rounded-full">
-              <Users className="h-5 w-5 text-teal" />
-              <span className="text-sm font-medium text-teal">Experiencias reales de nuestros clientes</span>
+            <div className="flex items-center space-x-2 px-4 py-2 bg-[#21303f]/10 rounded-full">
+              <Users className="h-5 w-5 text-[#21303f]" />
+              <span className="text-sm font-medium text-[#21303f]">Experiencias reales de nuestros clientes</span>
             </div>
           </div>
           <TestimonialCarousel testimonials={getFeaturedTestimonials()} className="max-w-4xl mx-auto" />
           <div className="text-center mt-8">
             <Link 
               to="/testimonios"
-              className="inline-flex items-center text-teal hover:text-teal-light transition-colors"
+              className="inline-flex items-center text-[#21303f] hover:text-[#111827] transition-colors"
             >
               Ver más historias <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
@@ -472,57 +471,65 @@ const HomePage = () => {
       </section>
 
 
-      {/* Promotional Banner - Optimized for mobile with horizontal scrolling */}
-      <section className="bg-[#E8DED1] py-4 overflow-hidden">
+      {/* Why Choose SillaVida Section */}
+      <section className="bg-gray-50 py-12 overflow-hidden border-t border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex overflow-x-auto pb-4 sm:pb-0 sm:grid sm:grid-cols-4 gap-6 hide-scrollbar">
-            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <Tag className="h-6 w-6 flex-shrink-0" />
-              <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">HASTA 12% DE DESCUENTO*</h4>
-                <p className="text-xs sm:text-sm font-body text-[#C87D55]">en Pix o Boleto. 1x en Tarjeta 5%</p>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-heading font-bold text-[#111827] mb-2">Por Qué Elegir SillaVida</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">Nos comprometemos a ofrecerte la mejor experiencia en cada aspecto</p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <Truck className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Envío a Todo México</h3>
+              <p className="text-gray-600 text-sm">Entrega rápida y segura a cualquier parte del país.</p>
             </div>
-            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <CreditCard className="h-6 w-6 flex-shrink-0" />
-              <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">PAGO FÁCIL</h4>
-                <p className="text-xs sm:text-sm font-body text-[#C87D55]">Hasta 10x sin Intereses</p>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <CreditCard className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Pagos Seguros</h3>
+              <p className="text-gray-600 text-sm">Múltiples métodos de pago con seguridad garantizada.</p>
             </div>
-            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <Lock className="h-6 w-6 flex-shrink-0" />
-              <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">COMPRA SEGURA</h4>
-                <p className="text-xs sm:text-sm font-body text-[#C87D55]">Ambiente seguro y certificado</p>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Garantía de Calidad</h3>
+              <p className="text-gray-600 text-sm">12 meses de garantía en todos nuestros productos.</p>
             </div>
-            <div className="flex items-center gap-3 p-4 flex-shrink-0 min-w-[250px] sm:min-w-0">
-              <FileCheck className="h-6 w-6 flex-shrink-0" />
-              <div>
-                <h4 className="font-heading font-bold text-[#7D9D8C] text-sm sm:text-base">NF Y GARANTÍA</h4>
-                <p className="text-xs sm:text-sm font-body text-[#C87D55]">En todos los productos</p>
+            
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col items-start">
+              <div className="bg-green-50 p-3 rounded-full mb-4 flex items-center justify-center">
+                <HeadphonesIcon className="h-6 w-6 text-[#425e99]" />
               </div>
+              <h3 className="font-heading font-bold text-[#111827] text-lg mb-2">Atención al Cliente</h3>
+              <p className="text-gray-600 text-sm">Soporte personalizado para resolver todas tus dudas.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Newsletter - Optimized for mobile */}
-      <section className="bg-[#7D9D8C] py-12 sm:py-16">
+      <section className="bg-[#111827] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#E8DED1] mb-3 sm:mb-4">¡No te pierdas nuestras ofertas!</h2>
-          <p className="text-[#E8DED1]/80 mb-6 sm:mb-8 font-body text-base">Suscríbete para recibir novedades y descuentos exclusivos</p>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3 sm:mb-4">¡No te pierdas nuestras ofertas!</h2>
+          <p className="text-white/80 mb-6 sm:mb-8 font-body text-base">Suscríbete para recibir novedades y descuentos exclusivos</p>
           <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
-            <input
-              type="email"
-              placeholder="Tu correo electrónico"
-              className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8DED1] text-base"
+            <input 
+              type="email" 
+              placeholder="Tu correo electrónico" 
+              className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent text-base"
               aria-label="Correo electrónico para suscripción"
             />
-            <button
+            <button 
               type="submit"
-              className="bg-[#E8DED1] text-[#7D9D8C] px-6 py-3 rounded-lg font-heading font-semibold hover:bg-[#E8DED1]/90 transition-colors text-base"
+              className="bg-[#628de5] text-white px-6 py-3 rounded-lg font-heading font-semibold hover:bg-[#628de5]/90 transition-colors text-base"
               aria-label="Suscribirse al boletín"
             >
               Suscribirse

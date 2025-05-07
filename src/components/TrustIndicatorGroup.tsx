@@ -48,7 +48,7 @@ const TrustIndicatorGroup: React.FC<TrustIndicatorGroupProps> = ({
             size={size}
             layout={layout === 'horizontal' ? 'horizontal' : 'vertical'}
             showDescription={showDescription}
-            className={layout === 'vertical' ? 'p-4 border border-gray-200 rounded-lg bg-soft-cream' : ''}
+            className={layout === 'vertical' ? 'p-4 border border-gray-100 rounded-lg bg-white shadow-sm' : ''}
           />
         ))}
       </div>

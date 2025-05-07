@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
 import type { ShopifyProduct } from '../types/shopify';
@@ -15,7 +14,7 @@ interface ShopifyProductCardProps {
   hideDescription?: boolean;
 }
 
-const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDescription = false }) => {
+const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
   const { addItem } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -50,9 +49,6 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDe
   const discountPercentage = hasCompareAtPrice ? 
     Math.round((1 - (price / compareAtPrice)) * 100) : 0;
 
-  // Default rating for now (could be fetched from Shopify metafields in the future)
-  const rating = 4.5;
-  
   // Track product impression when component mounts
   useEffect(() => {
     trackEvent('product_impression', {
@@ -191,12 +187,12 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDe
   const buttonVariants = {
     hover: { scale: 1.05 },
     tap: { scale: 0.98 },
-    success: { backgroundColor: "#7D9D8C" } // Sage color
+    success: { backgroundColor: "#EB281B" } // Red accent color
   };
 
   return (
     <motion.div 
-      className="bg-white vida-shape-organic vida-bg-pattern-leaf shadow-md overflow-hidden"
+      className="bg-white border border-neutral-100 rounded-md shadow-sm hover:shadow-md transition-shadow h-full flex flex-col"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -207,7 +203,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDe
       }}
     >
       <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-        <div className="relative w-full h-48 overflow-hidden">
+        <div className="relative w-full h-72 overflow-hidden">
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
               <span className="text-gray-400">Cargando...</span>
@@ -221,7 +217,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDe
           <img 
             src={product.images.edges[0]?.node.url}
             alt={product.images.edges[0]?.node.altText || product.title} 
-            className={`w-full h-48 object-cover object-center ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
+            className={`w-full h-72 object-cover object-center ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
             loading="lazy"
             onLoad={() => {
               setImageLoaded(true);
@@ -236,75 +232,30 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product, hideDe
           />
         </div>
       </Link>
-      <div className="p-4">
-        <div className="flex items-center mb-2">
-          {[...Array(5)].map((_, i) => (
-            <Star 
-              key={i} 
-              className={`h-4 w-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-            />
-          ))}
-          <span className="ml-2 text-sm text-gray-600 font-body">{rating}</span>
-        </div>
+      <div className="p-3">
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-          <h3 className="font-heading font-semibold mb-2 hover:text-teal transition-colors product-title">{product.title}</h3>
+          <h3 className="font-heading font-medium text-sm mb-1 text-[#21303f] hover:text-black transition-colors product-title">{product.title}</h3>
         </Link>
         
-        {/* Feature highlights with Vida theme styling */}
-        {!hideDescription && (
-          <ul className="vida-feature-list text-sm text-gray-700 mb-3">
-            {product.description
-              .split('.')
-              .filter(sentence => sentence.trim().length > 0)
-              .slice(0, 2)
-              .map((feature, index) => (
-                <li key={index} className="font-body">{feature.trim()}</li>
-              ))}
-          </ul>
-        )}
-        <div className="flex items-center gap-2 mb-1">
-          <p className="text-xl font-heading font-bold text-teal product-price">
-            {formattedPrice}
-          </p>
-          {hasCompareAtPrice && (
-            <p className="text-sm text-gray-500 line-through font-heading">
-              {formattedCompareAtPrice}
+        <div className="flex flex-col mb-2 mt-1">
+          <div className="flex items-baseline gap-2">
+            <p className="text-base font-heading font-bold text-black product-price">
+              {formattedPrice}
             </p>
-          )}
+            {hasCompareAtPrice && (
+              <p className="text-xs text-gray-500 line-through font-heading">
+                {formattedCompareAtPrice}
+              </p>
+            )}
+          </div>
+          {/* Discount percentage removed as requested */}
         </div>
-        {hasCompareAtPrice && discountPercentage > 0 && (
-          <p className="text-sm font-heading font-semibold text-green-600 mb-2">
-            ¡{discountPercentage}% de descuento!
-          </p>
-        )}
+
         {error && (
-          <div className="text-red-500 text-sm mt-2 mb-2 font-body">{error}</div>
+          <div className="text-red-500 text-xs mt-1 mb-1 font-body">{error}</div>
         )}
-        <motion.button 
-          onClick={handleAddToCart}
-          disabled={isLoading}
-          aria-label={`Agregar ${product.title} al carrito`}
-          className={`w-full mt-4 py-3 vida-shape-soft text-white font-heading font-semibold tracking-wide ${
-            success 
-              ? 'bg-sage' 
-              : 'bg-teal'
-          }`}
-          variants={buttonVariants}
-          whileHover="hover"
-          whileTap="tap"
-          animate={success ? "success" : ""}
-        >
-          {isLoading ? (
-            <span className="flex items-center justify-center">
-              <motion.div
-                className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              />
-              Agregando...
-            </span>
-          ) : success ? '¡Agregado!' : 'Invierte en tu bienestar'}
-        </motion.button>
+
+        {/* Buttons removed as requested */}
       </div>
     </motion.div>
   );

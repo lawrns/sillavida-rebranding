@@ -12,7 +12,7 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
   threshold = 10000, 
   currencyCode = 'MXN' 
 }) => {
-  const { cart, cartItems, cartTotal, isLoading, cartCount } = useCart();
+  const { cart, cartItems, cartTotal, cartCount } = useCart();
   const [subtotal, setSubtotal] = useState(0);
   
   // Update subtotal when cart changes
@@ -56,32 +56,36 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
   // Don't show if cart is empty
   if (cartItems.length === 0) {
     return (
-      <div className="bg-teal text-white py-2 px-4 text-center vida-bg-pattern-wave">
-        <div className="container mx-auto flex items-center justify-center">
-          <Truck className="h-5 w-5 mr-2 vida-hover-breathing" />
-          <p className="text-sm font-heading font-medium">
-            ¡Envío GRATIS en compras superiores a {formatCurrency(threshold)}! 
-            <Link to="/promociones" className="underline ml-2 text-white">Ver detalles</Link>
-          </p>
+      <div className="bg-[#1a2b3c] text-white py-2 px-4 text-center">
+        <div className="container mx-auto">
+          <div className="inline-flex items-center">
+            <Truck className="h-5 w-5 mr-2 text-accent flex-shrink-0" />
+            <span className="text-sm font-heading font-medium">
+              ¡Envío GRATIS en compras superiores a {formatCurrency(threshold)}! 
+              <Link to="/promociones" className="underline ml-2 text-accent hover:text-white transition-colors duration-200">Ver detalles</Link>
+            </span>
+          </div>
         </div>
       </div>
     );
   }
   
   return (
-    <div className={hasQualifiedForFreeShipping ? "bg-sage text-white py-2 px-4 text-center vida-bg-pattern-wave" : "bg-teal text-white py-2 px-4 text-center vida-bg-pattern-wave"}>
-      <div className="container mx-auto flex items-center justify-center">
-        <Truck className="h-5 w-5 mr-2 vida-hover-breathing" />
-        {hasQualifiedForFreeShipping ? (
-          <p className="text-sm font-heading font-medium">
-            ¡Felicidades! Tu pedido califica para envío GRATIS
-          </p>
-        ) : (
-          <p className="text-sm font-heading font-medium">
-            ¡Te faltan {formatCurrency(amountToFreeShipping)} para obtener envío GRATIS!
-            <Link to="/promociones" className="underline ml-2 text-white">Ver detalles</Link>
-          </p>
-        )}
+    <div className="bg-[#1a2b3c] text-white py-2 px-4 text-center">
+      <div className="container mx-auto">
+        <div className="inline-flex items-center">
+          <Truck className="h-5 w-5 mr-2 text-accent flex-shrink-0" />
+          {hasQualifiedForFreeShipping ? (
+            <span className="text-sm font-heading font-medium">
+              ¡<span className="text-accent">Felicidades!</span> Tu pedido califica para envío GRATIS
+            </span>
+          ) : (
+            <span className="text-sm font-heading font-medium">
+              ¡Te faltan <span className="text-accent font-semibold">{formatCurrency(amountToFreeShipping)}</span> para obtener envío GRATIS!
+              <Link to="/promociones" className="underline ml-2 text-accent hover:text-white transition-colors duration-200">Ver detalles</Link>
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

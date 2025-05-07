@@ -118,7 +118,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
 
   return (
     <div 
-      className={`relative overflow-hidden bg-beige-light rounded-lg shadow-md ${className}`}
+      className={`relative overflow-hidden bg-white rounded-lg shadow-md ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       aria-label="Historias de Vida - Testimonios de clientes"
@@ -140,9 +140,9 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
             }}
             className="w-full"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 h-full bg-beige-light">
+            <div className="grid grid-cols-1 md:grid-cols-2 h-full bg-white">
               {/* Photo Section */}
-              <div className="relative bg-teal-dark flex items-center justify-center p-4 md:p-0">
+              <div className="relative bg-black flex items-center justify-center p-4 md:p-0">
                 {/* Category icons and labels removed as requested */}
                 {isLoadingImages ? (
                   <img
@@ -160,29 +160,29 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
               </div>
 
               {/* Content Section */}
-              <div className="p-4 md:p-6 flex flex-col justify-between bg-beige-light max-h-[300px] md:max-h-[400px] overflow-y-auto">
+              <div className="p-4 md:p-6 flex flex-col justify-between bg-[#f3f4f6] max-h-[300px] md:max-h-[400px] overflow-y-auto">
                 <div>
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h3 className="text-xl font-heading font-bold text-teal-dark">
+                      <h3 className="text-xl font-heading font-bold text-black">
                         {currentTestimonial.name}
                       </h3>
                       <p className="text-gray-700 font-body">
                         {currentTestimonial.profession}, {currentTestimonial.location}
                       </p>
-                      <p className="text-sm text-sage-dark font-medium mt-1">
+                      <p className="text-sm text-[#21303f] font-medium mt-1">
                         {isLoadingImages ? currentTestimonial.chairModel : productNames[currentIndex] || currentTestimonial.chairModel}
                       </p>
                     </div>
                     {currentTestimonial.verified && (
-                      <div className="text-sage">
+                      <div className="text-[#21303f]">
                         <BadgeCheck size={20} />
                       </div>
                     )}
                   </div>
 
                   <blockquote className="mb-4">
-                    <p className="text-lg font-heading font-bold text-teal italic mb-2">
+                    <p className="text-lg font-heading font-bold text-[#111827] italic mb-2">
                       "{currentTestimonial.quote}"
                     </p>
                     <div className="space-y-2 text-gray-700 font-body text-sm">
@@ -206,12 +206,10 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                           setCurrentIndex(index);
                           if (autoRotate) resetTimer();
                         }}
-                        className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                          index === currentIndex
-                            ? 'bg-teal'
-                            : 'bg-teal/30 hover:bg-teal/50'
-                        }`}
-                        aria-label={`Ver testimonio ${index + 1}`}
+                        className={`w-2 h-2 rounded-full ${
+                          index === currentIndex ? 'bg-[#111827]' : 'bg-neutral-300'
+                        } focus:outline-none`}
+                        aria-label={`Go to testimonial ${index + 1}`}
                       />
                     ))}
                   </div>

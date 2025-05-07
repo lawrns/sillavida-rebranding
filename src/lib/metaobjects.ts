@@ -161,11 +161,11 @@ export async function getHeroSlides(): Promise<HeroSlideMetaobject[]> {
 export function getSlideTheme(themeColor: string) {
   const themes: Record<string, any> = {
     teal: {
-      bg: "from-teal-dark via-teal to-teal-dark",
-      accent: "bg-teal-light/20",
-      text: "text-beige-light",
-      button: "bg-teal hover:bg-teal-light",
-      gradient: "from-white via-white to-beige-extralight"
+      bg: "from-secondary via-primary to-secondary",
+      accent: "bg-primary/20",
+      text: "text-primary-foreground",
+      button: "bg-primary hover:bg-primary/90",
+      gradient: "from-white via-white to-neutral-offwhite"
     },
     sage: {
       bg: "from-sage-dark via-sage to-sage-dark",

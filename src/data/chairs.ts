@@ -4,6 +4,7 @@ export interface Chair {
   description: string;
   extendedDescription?: string;
   price: number;
+  compareAtPrice?: number; // Optional original price for showing discounts
   image: string;
   category: 'office' | 'gaming';
   lifeCategory: 'Vida Profesional' | 'Vida Activa' | 'Vida Saludable' | 'Vida Productiva' | 'Vida Social' | 'Complementos para tu Vida';

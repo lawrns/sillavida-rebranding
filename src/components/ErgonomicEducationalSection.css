@@ -316,8 +316,7 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  background-color: #7D9D8C !important; /* Sage green */
-  color: #E8DED1 !important; /* Warm beige */
+  /* Removed hardcoded colors with !important flags */
 }
 
 .call-to-action-text {

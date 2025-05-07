@@ -24,25 +24,25 @@ const BenefitTabs: React.FC<BenefitTabsProps> = ({ content, className = '' }) =>
       id: 'bienestar', 
       label: 'Bienestar', 
       icon: <Heart className="h-5 w-5" />,
-      color: 'text-[#C87D55]' // Terracotta
+      color: 'text-primary' 
     },
     { 
       id: 'productividad', 
       label: 'Productividad', 
       icon: <Brain className="h-5 w-5" />,
-      color: 'text-[#7D9D8C]' // Sage
+      color: 'text-primary' 
     },
     { 
       id: 'durabilidad', 
       label: 'Durabilidad', 
       icon: <Clock className="h-5 w-5" />,
-      color: 'text-teal' // Teal
+      color: 'text-primary' 
     },
     { 
       id: 'especificaciones', 
       label: 'Especificaciones', 
       icon: <FileText className="h-5 w-5" />,
-      color: 'text-gray-600' // Gray
+      color: 'text-primary' 
     }
   ];
 
@@ -56,7 +56,7 @@ const BenefitTabs: React.FC<BenefitTabsProps> = ({ content, className = '' }) =>
   return (
     <div className={`mt-8 ${className}`}>
       {/* Tab Navigation */}
-      <div className="flex flex-wrap border-b border-gray-200 mb-6">
+      <div className="flex flex-wrap border-b border-neutral-200 mb-6">
         {tabs.map((tab) => (
           <motion.button
             key={tab.id}
@@ -64,9 +64,9 @@ const BenefitTabs: React.FC<BenefitTabsProps> = ({ content, className = '' }) =>
             className={`flex items-center py-3 px-4 font-heading font-medium text-sm sm:text-base transition-colors relative ${
               activeTab === tab.id
                 ? `${tab.color} font-semibold`
-                : 'text-gray-500 hover:text-gray-700'
+                : 'text-neutral-600 hover:text-neutral-800'
             }`}
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -1 }}
             whileTap={{ y: 0 }}
           >
             <span className="mr-2">{tab.icon}</span>
@@ -75,11 +75,11 @@ const BenefitTabs: React.FC<BenefitTabsProps> = ({ content, className = '' }) =>
             {/* Active Indicator */}
             {activeTab === tab.id && (
               <motion.div
-                className={`absolute bottom-0 left-0 right-0 h-0.5 ${tab.color.replace('text-', 'bg-')}`}
+                className="absolute bottom-0 left-0 right-0 h-1 bg-primary"
                 layoutId="activeTabIndicator"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
               />
             )}
           </motion.button>
@@ -96,7 +96,7 @@ const BenefitTabs: React.FC<BenefitTabsProps> = ({ content, className = '' }) =>
             exit="exit"
             variants={tabVariants}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-lg"
+            className="bg-white rounded-md p-4 border border-neutral-100"
           >
             {content[activeTab]}
           </motion.div>

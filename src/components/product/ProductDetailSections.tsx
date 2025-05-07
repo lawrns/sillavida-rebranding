@@ -102,9 +102,6 @@ const ProductDetailSections: React.FC<ProductDetailSectionsProps> = ({ product }
                       src={image.node.url} 
                       alt={title}
                     />
-                    <div className="zoom-indicator">
-                      <span>🔍</span>
-                    </div>
                   </div>
                   <div className="spec-card-content">
                     <h3 className="spec-card-title">{title}</h3>
@@ -117,7 +114,7 @@ const ProductDetailSections: React.FC<ProductDetailSectionsProps> = ({ product }
         </section>
       )}
 
-      {/* Features Section - Larger Image/Caption Layout */}
+      {/* Features Section - Updated Card Layout */}
       {featureImages.length > 0 && (
         <section className="features-detail-section">
           <h2 className="section-title">Características</h2>
@@ -126,22 +123,19 @@ const ProductDetailSections: React.FC<ProductDetailSectionsProps> = ({ product }
               const { title, description } = parseAltText(image.node.altText);
               
               return (
-                <div key={`feature-${index}`} className="feature-item">
+                <div key={`feature-${index}`} className="feature-card">
                   <div 
-                    className="feature-item-image"
+                    className="feature-card-image"
                     onClick={() => handleImageClick(image.node.url, title)}
                   >
                     <img 
                       src={image.node.url} 
                       alt={title}
                     />
-                    <div className="zoom-indicator">
-                      <span>🔍</span>
-                    </div>
                   </div>
-                  <div className="feature-item-content">
-                    <h3 className="feature-item-title">{title}</h3>
-                    {description && <p className="feature-item-description">{description}</p>}
+                  <div className="feature-card-content">
+                    <h3 className="feature-card-title">{title}</h3>
+                    {description && <p className="feature-card-description">{description}</p>}
                   </div>
                 </div>
               );

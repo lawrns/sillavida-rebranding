@@ -29,7 +29,7 @@ const ChairFeaturesComponent: React.FC<ChairFeaturesComponentProps> = ({ feature
 
   return (
     <div className="chair-features">
-      <div className="relative flex justify-center items-center mb-8 bg-gray-50 rounded-lg p-6">
+      <div className="relative flex justify-center items-center mb-6 bg-neutral-50 rounded-md p-6 border border-neutral-100">
         <img src={mainImage} alt="Chair features" className="max-w-full h-auto max-h-[400px] object-contain" />
         
         {/* Feature callouts removed as requested */}
@@ -37,9 +37,9 @@ const ChairFeaturesComponent: React.FC<ChairFeaturesComponentProps> = ({ feature
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {displayFeatures.map(feature => (
-          <div key={feature.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="font-heading font-semibold text-lg mb-2 text-teal">{feature.title}</h3>
-            <p className="font-body text-gray-700">{feature.description}</p>
+          <div key={feature.id} className="bg-white p-4 rounded-md border border-neutral-100 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="font-heading font-semibold text-lg mb-2 text-primary">{feature.title}</h3>
+            <p className="font-body text-neutral-700">{feature.description}</p>
           </div>
         ))}
       </div>

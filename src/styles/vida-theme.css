@@ -52,7 +52,7 @@
 .vida-logo-vida {
   font-weight: var(--vida-logo-vida-weight);
   opacity: var(--vida-logo-vida-opacity);
-  color: var(--color-teal);
+  color: #8fa4ff;
 }
 
 .dark .vida-logo-silla {

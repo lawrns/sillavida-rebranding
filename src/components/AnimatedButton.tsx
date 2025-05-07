@@ -34,13 +34,13 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
     lg: 'px-6 py-3 text-lg'
   };
   
-  // Variant styles
+  // Variant styles - Updated to use semantic color classes
   const variantStyles = {
-    primary: 'bg-teal text-white hover:bg-teal-light shadow-button hover:shadow-button-hover',
-    secondary: 'bg-sage text-white hover:bg-sage-light shadow-button hover:shadow-button-hover',
-    accent: 'bg-terracotta text-white hover:bg-terracotta-light shadow-button hover:shadow-button-hover',
-    outline: 'bg-transparent border-2 border-teal text-teal hover:bg-teal-extralight',
-    ghost: 'bg-transparent text-teal hover:bg-teal-extralight'
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-button hover:shadow-button-hover',
+    secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-button hover:shadow-button-hover',
+    accent: 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-button hover:shadow-button-hover',
+    outline: 'bg-transparent border-2 border-primary text-primary hover:bg-primary/10',
+    ghost: 'bg-transparent text-primary hover:bg-primary/10'
   };
   
   // Width styles

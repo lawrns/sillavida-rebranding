@@ -6,93 +6,235 @@
 @import './styles/interactions.css';
 @import './styles/vida-theme.css';
 @import './styles/sillavida-enhanced-theme.css';
-@import './styles/sillavida-original-theme.css';
-@import './styles/theme-switcher.css';
+/* Removing original theme as part of redesign */
+/* @import './styles/sillavida-original-theme.css'; */
+/* Removing theme switcher as dark mode is not needed */
+/* @import './styles/theme-switcher.css'; */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global styles that use our color variables */
 @layer base {
+  :root {
+    /* Base colors updated to Hbada design system */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 0%; /* #000000 */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 0 0% 0%; /* #000000 */
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 0 0% 0%; /* #000000 */
+    
+    /* Black as primary */
+    --primary: 240 10% 15%; /* #222429 - Hbada Black */
+    --primary-rgb: 34, 36, 41;
+    --primary-foreground: 0 0% 100%; /* White text on black */
+    
+    /* Blue as accent */
+    --accent: 210 50% 49%; /* #4b7cae - Blue */
+    --accent-rgb: 75, 124, 174;
+    --accent-foreground: 0 0% 100%; /* White text on blue */
+    
+    /* Secondary as white/light gray */
+    --secondary: 0 0% 100%; /* #FFFFFF - White */
+    --secondary-foreground: 240 10% 15%; /* #222429 - Black text on white */
+    
+    /* Neutral grays */
+    --muted: 0 0% 90%; /* #E6E6E6 */
+    --muted-foreground: 0 0% 60%; /* #9A9A9A */
+    
+    /* Error/destructive still uses red */
+    --destructive: 356 75% 45%; /* #d71920 */
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders, inputs, and rings */
+    --border: 0 0% 90%; /* #E6E6E6 */
+    --input: 0 0% 90%; /* #E6E6E6 */
+    --ring: 210 50% 49%; /* #4b7cae - accent blue for focus rings */
+    
+    /* Spacing system */
+    --space-3xs: 0.25rem; /* 4px */
+    --space-2xs: 0.5rem; /* 8px */
+    --space-xs: 0.75rem; /* 12px */
+    --space-sm: 1rem; /* 16px */
+    --space-md: 1.5rem; /* 24px */
+    --space-lg: 2rem; /* 32px */
+    --space-xl: 3rem; /* 48px */
+    --space-2xl: 4rem; /* 64px */
+    
+    /* Border radius */
+    --radius-none: 0;
+    --radius-sm: 0.125rem; /* 2px */
+    --radius-md: 0.25rem; /* 4px */
+    --radius-lg: 0.5rem; /* 8px */
+    --radius-xl: 1rem; /* 16px */
+    
+    /* Shadows */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Typography */
+    --body-font: 'Inter', system-ui, sans-serif;
+    --heading-font: 'Inter', system-ui, sans-serif;
+    
+    /* Transitions */
+    --transition-fast: 150ms;
+    --transition-normal: 300ms;
+    --transition-slow: 500ms;
+    --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
   body {
-    color: var(--color-black);
-    background-color: var(--color-white);
+    @apply bg-background text-foreground;
+    font-family: var(--body-font);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
   }
-
-  a {
-    color: var(--color-teal);
-    transition: color 0.2s ease-in-out;
-  }
-
-  a:hover {
-    color: var(--color-teal-light);
-  }
-
+  
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-black);
+    font-family: var(--heading-font);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    line-height: 1.2;
+    color: hsl(var(--foreground));
+    margin-bottom: 1rem;
   }
-
-  button, .btn {
-    transition: all 0.2s ease-in-out;
+  
+  h1 {
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700;
   }
-
-  /* Primary button styles */
+  
+  h2 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 600;
+  }
+  
+  h3 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 600;
+  }
+  
+  h4 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+  }
+  
+  h5 {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+  }
+  
+  h6 {
+    font-size: 1rem; /* 16px */
+    font-weight: 600;
+  }
+  
+  p {
+    font-family: var(--body-font);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  
+  a {
+    color: hsl(var(--primary));
+    transition: color var(--transition-fast) var(--ease-default);
+  }
+  
+  a:hover {
+    color: hsl(var(--secondary));
+  }
+  
+  /* Button styles updated to match Hbada black/white/red scheme */
   .btn-primary {
-    background-color: var(--color-button-primary);
-    color: var(--color-button-primary-text);
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast) var(--ease-default);
   }
 
   .btn-primary:hover {
-    background-color: var(--color-button-primary-hover);
+    background-color: #000000; /* Even darker on hover */
   }
 
   .btn-primary:active {
-    background-color: var(--color-button-primary-active);
+    background-color: hsl(var(--primary));
   }
 
   .btn-primary:disabled {
-    background-color: var(--color-button-primary-disabled);
-    color: var(--color-button-primary-disabled-text);
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
   }
 
-  /* Secondary button styles */
+  /* Secondary button styles - white with black text */
   .btn-secondary {
-    background-color: var(--color-button-secondary);
-    color: var(--color-button-secondary-text);
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast) var(--ease-default);
   }
 
   .btn-secondary:hover {
-    background-color: var(--color-button-secondary-hover);
+    background-color: hsl(var(--muted));
   }
 
   .btn-secondary:active {
-    background-color: var(--color-button-secondary-active);
+    background-color: hsl(var(--secondary));
   }
 
   .btn-secondary:disabled {
-    background-color: var(--color-button-secondary-disabled);
-    color: var(--color-button-secondary-disabled-text);
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
   }
 
-  /* Tertiary button styles */
+  /* Tertiary button styles - accent red */
   .btn-tertiary {
     background-color: transparent;
-    border: 1px solid var(--color-button-tertiary-border);
-    color: var(--color-button-tertiary-text);
+    border: 1px solid hsl(var(--accent));
+    color: hsl(var(--accent));
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast) var(--ease-default);
   }
 
   .btn-tertiary:hover {
-    background-color: var(--color-button-tertiary-hover);
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
   }
 
   .btn-tertiary:active {
-    background-color: var(--color-button-tertiary-active-bg);
-    color: var(--color-button-tertiary-active-text);
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
   }
 
   .btn-tertiary:disabled {
-    border-color: var(--color-button-tertiary-disabled);
-    color: var(--color-button-tertiary-disabled);
+    border-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+  }
+  
+  /* Form element styles */
+  input, select, textarea {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-sm);
+    padding: var(--space-xs);
+    transition: border-color var(--transition-fast) var(--ease-default);
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsla(var(--primary-rgb), 0.1);
   }
 }

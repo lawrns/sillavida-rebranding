@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion
+import { motion } from 'framer-motion';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
 import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import { useCart } from '../context/CartContext';
 import { getFeaturedProducts } from '../lib/shopify';
-import type { ShopifyProduct } from '../types/shopify'; // Import product type
-import ProductCard from '../components/ProductCard'; // Import ProductCard
-import { Chair } from '../data/chairs'; // Import Chair type for mapping
+import type { ShopifyProduct } from '../types/shopify';
+import ProductCard from '../components/ProductCard';
+import { Chair } from '../data/chairs';
 import { Helmet } from 'react-helmet';
 
 const CartPage: React.FC = () => {
@@ -89,11 +89,11 @@ const CartPage: React.FC = () => {
       </Helmet>
       
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Carrito de Compras</h1>
+        <h1 className="text-3xl font-bold mb-8 text-black">Carrito de Compras</h1>
         
         {cartCount === 0 ? (
           <motion.div 
-            className="bg-white rounded-lg shadow-md p-6 sm:p-8 text-center"
+            className="bg-white rounded-md shadow-md p-6 sm:p-8 text-center border border-neutral-100"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -109,10 +109,10 @@ const CartPage: React.FC = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
               >
-                <ShoppingBag className="h-16 w-16 sm:h-24 sm:w-24 text-gray-300" />
+                <ShoppingBag className="h-16 w-16 sm:h-24 sm:w-24 text-neutral-300" />
               </motion.div>
               <motion.p 
-                className="mt-6 text-gray-700 text-lg sm:text-xl font-medium"
+                className="mt-6 text-black text-lg sm:text-xl font-medium"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -120,7 +120,7 @@ const CartPage: React.FC = () => {
                 Tu carrito está vacío
               </motion.p>
               <motion.p 
-                className="mt-2 text-gray-500 max-w-md mx-auto"
+                className="mt-2 text-neutral-500 max-w-md mx-auto"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -136,7 +136,7 @@ const CartPage: React.FC = () => {
               >
                 <Link
                   to="/"
-                  className="mt-8 bg-teal text-white py-3 px-6 rounded-md hover:bg-teal-light inline-flex items-center font-medium shadow-sm"
+                  className="mt-8 bg-[#222429] text-white py-3 px-6 rounded-md hover:bg-black inline-flex items-center font-medium shadow-sm"
                   aria-label="Continuar comprando"
                 >
                   <ArrowLeft className="h-5 w-5 mr-2" />
@@ -153,7 +153,7 @@ const CartPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
               >
-                <h2 className="text-2xl font-semibold mb-6 text-center">Productos Recomendados</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-center text-black">Productos Recomendados</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                   {recommendedProducts.map((product, index) => {
                      const chairData = mapProductToChair(product);
@@ -177,7 +177,7 @@ const CartPage: React.FC = () => {
                 animate={{ opacity: 1 }}
               >
                 <motion.div 
-                  className="w-10 h-10 border-4 border-gray-200 border-t-teal rounded-full"
+                  className="w-10 h-10 border-4 border-neutral-200 border-t-accent rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
@@ -193,12 +193,12 @@ const CartPage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-semibold">Productos ({cartCount})</h2>
+              <div className="bg-white rounded-md shadow-md overflow-hidden border border-neutral-100">
+                <div className="p-6 border-b border-neutral-200">
+                  <h2 className="text-xl font-semibold text-black">Productos ({cartCount})</h2>
                 </div>
                 
-                <ul className="divide-y divide-gray-200">
+                <ul className="divide-y divide-neutral-200">
                   {cartItems.map((item) => {
                     const price = parseFloat(item.price.amount);
                     const formattedPrice = price.toLocaleString('es-MX', {
@@ -212,7 +212,7 @@ const CartPage: React.FC = () => {
                     
                     return (
                       <li key={item.id} className="p-6 flex flex-col sm:flex-row">
-                        <div className="flex-shrink-0 w-full sm:w-32 h-32 bg-gray-100 rounded-md overflow-hidden mb-4 sm:mb-0">
+                        <div className="flex-shrink-0 w-full sm:w-32 h-32 bg-neutral-50 rounded-md overflow-hidden mb-4 sm:mb-0 border border-neutral-100">
                           {/* Display product image with fallback to placeholder */}
                           {item.imageUrl ? (
                             <div className="w-full h-full relative">
@@ -227,7 +227,7 @@ const CartPage: React.FC = () => {
                                 }}
                               />
                               <div className="w-full h-full flex items-center justify-center absolute inset-0 hidden">
-                                <ShoppingBag className="h-12 w-12 text-gray-400" />
+                                <ShoppingBag className="h-12 w-12 text-neutral-400" />
                               </div>
                             </div>
                           ) : (
@@ -244,7 +244,7 @@ const CartPage: React.FC = () => {
                                 }}
                               />
                               <div className="w-full h-full flex items-center justify-center absolute inset-0 hidden">
-                                <ShoppingBag className="h-12 w-12 text-gray-400" />
+                                <ShoppingBag className="h-12 w-12 text-neutral-400" />
                               </div>
                             </div>
                           )}
@@ -253,35 +253,35 @@ const CartPage: React.FC = () => {
                         <div className="sm:ml-6 flex-1 flex flex-col">
                           <div>
                             <div className="flex justify-between">
-                              <h3 className="text-lg font-medium text-gray-900">
+                              <h3 className="text-lg font-medium text-black">
                                 {item.productTitle || item.title}
                               </h3>
-                              <p className="ml-4 text-lg font-medium text-gray-900">{itemTotal}</p>
+                              <p className="ml-4 text-lg font-medium text-accent">{itemTotal}</p>
                             </div>
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-1 text-sm text-neutral-500">
                               {item.title !== item.productTitle ? item.title : ''}
                             </p>
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-1 text-sm text-neutral-500">
                               Precio unitario: {formattedPrice}
                             </p>
                           </div>
                           
                           <div className="mt-4 flex justify-between items-center">
-                            <div className="flex items-center border border-gray-300 rounded">
+                            <div className="flex items-center border border-neutral-200 rounded-md">
                               <button 
                                 onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isLoading}
-                                className="p-2 text-gray-600 hover:text-gray-900"
+                                className="p-2 text-neutral-600 hover:text-accent transition-colors"
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
-                              <span className="px-4 py-2 min-w-[40px] text-center">
+                              <span className="px-4 py-2 min-w-[40px] text-center text-black">
                                 {item.quantity}
                               </span>
                               <button 
                                 onClick={() => updateItem(item.id, item.quantity + 1)}
                                 disabled={isLoading}
-                                className="p-2 text-gray-600 hover:text-gray-900"
+                                className="p-2 text-neutral-600 hover:text-accent transition-colors"
                               >
                                 <Plus className="h-4 w-4" />
                               </button>
@@ -289,7 +289,7 @@ const CartPage: React.FC = () => {
 
                             <button
                               type="button"
-                              className="font-medium text-teal hover:text-teal-light flex items-center"
+                              className="font-medium text-accent hover:text-accent/80 flex items-center transition-colors"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
                             >
@@ -303,10 +303,10 @@ const CartPage: React.FC = () => {
                   })}
                 </ul>
                 
-                <div className="p-6 border-t border-gray-200">
+                <div className="p-6 border-t border-neutral-200">
                   <Link
                     to="/"
-                    className="text-teal hover:text-teal-light flex items-center"
+                    className="text-accent hover:text-accent/80 flex items-center transition-colors"
                   >
                     <ArrowLeft className="h-5 w-5 mr-2" />
                     Continuar Comprando
@@ -322,33 +322,33 @@ const CartPage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
-                <h2 className="text-xl font-semibold mb-6">Resumen de la Orden</h2>
+              <div className="bg-white rounded-md shadow-md p-6 sticky top-6 border border-neutral-100">
+                <h2 className="text-xl font-semibold mb-6 text-black">Resumen de la Orden</h2>
                 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
-                    <p className="text-gray-600">Subtotal</p>
-                    <p className="font-medium">{cartTotal}</p>
+                    <p className="text-neutral-600">Subtotal</p>
+                    <p className="font-medium text-accent">{cartTotal}</p>
                   </div>
                   
                   {/* Free shipping threshold section */}
                   {cartItems.length > 0 && (
                     <div className="py-2">
                       {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
-                        <div className="bg-green-100 text-green-800 p-3 rounded-md flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mr-2 text-green-600">
+                        <div className="bg-neutral-50 text-accent p-3 rounded-md flex items-center border border-neutral-100">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mr-2 text-accent">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
                           <div>
                             <span className="font-medium">¡Calificado para envío gratis!</span>
-                            <p className="text-sm">Tu pedido califica para envío gratuito en todo México.</p>
+                            <p className="text-sm text-neutral-600">Tu pedido califica para envío gratuito en todo México.</p>
                           </div>
                         </div>
                       ) : (
                         <div>
                           <div className="flex justify-between text-sm mb-1">
-                            <span>Progreso hacia envío gratis</span>
-                            <span className="font-medium">
+                            <span className="text-neutral-600">Progreso hacia envío gratis</span>
+                            <span className="font-medium text-black">
                               {(() => {
                                 try {
                                   return Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100).toFixed(0) + '%';
@@ -359,9 +359,9 @@ const CartPage: React.FC = () => {
                               })()}
                             </span>
                           </div>
-                          <div className="bg-gray-100 rounded-full h-2.5 mb-2">
+                          <div className="bg-neutral-100 rounded-full h-2.5 mb-2">
                             <div 
-                              className="bg-teal h-2.5 rounded-full" 
+                              className="bg-accent h-2.5 rounded-full" 
                               style={{ 
                                 width: (() => {
                                   try {
@@ -374,9 +374,9 @@ const CartPage: React.FC = () => {
                               }}
                             />
                           </div>
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm text-neutral-600">
                             <span>Añade </span>
-                            <span className="font-medium text-teal">
+                            <span className="font-medium text-accent">
                               {(() => {
                                 try {
                                   return (10000 - parseFloat(cartTotal.replace(/[^\d.-]/g, ''))).toLocaleString('es-MX', {
@@ -389,7 +389,7 @@ const CartPage: React.FC = () => {
                                 }
                               })()}
                             </span> más para obtener envío gratis
-                            <Link to="/promociones" className="ml-1 text-teal underline">Ver detalles</Link>
+                            <Link to="/promociones" className="ml-1 text-accent underline hover:text-accent/80 transition-colors">Ver detalles</Link>
                           </div>
                         </div>
                       )}
@@ -397,25 +397,25 @@ const CartPage: React.FC = () => {
                   )}
                   
                   <div className="flex justify-between">
-                    <p className="text-gray-600">Envío</p>
+                    <p className="text-neutral-600">Envío</p>
                     {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
-                      <p className="font-medium text-green-600">Gratis</p>
+                      <p className="font-medium text-accent">Gratis</p>
                     ) : (
-                      <p className="font-medium">Calculado al finalizar</p>
+                      <p className="font-medium text-black">Calculado al finalizar</p>
                     )}
                   </div>
                   <div className="flex justify-between">
-                    <p className="text-gray-600">Impuestos</p>
-                    <p className="font-medium">Calculado al finalizar</p>
+                    <p className="text-neutral-600">Impuestos</p>
+                    <p className="font-medium text-black">Calculado al finalizar</p>
                   </div>
                 </div>
                 
-                <div className="border-t border-gray-200 pt-4 mb-6">
+                <div className="border-t border-neutral-200 pt-4 mb-6">
                   <div className="flex justify-between text-lg font-semibold">
-                    <p>Total</p>
-                    <p>{cartTotal}</p>
+                    <p className="text-black">Total</p>
+                    <p className="text-accent">{cartTotal}</p>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-neutral-500 mt-1">
                     Impuestos incluidos. El envío se calcula en el siguiente paso.
                   </p>
                 </div>
@@ -423,10 +423,10 @@ const CartPage: React.FC = () => {
                 <motion.button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal hover:bg-teal-light ${
+                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-accent hover:bg-accent/90 ${
                     isLoading ? 'opacity-75 cursor-not-allowed' : ''
                   }`}
-                  whileHover={{ scale: 1.03 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.2 }}
                 >

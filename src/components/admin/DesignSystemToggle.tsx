@@ -54,7 +54,7 @@ const DesignSystemToggle: React.FC<DesignSystemToggleProps> = ({ className = '' 
           className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
             isActive 
               ? 'bg-red-500 hover:bg-red-600 text-white' 
-              : 'bg-teal hover:bg-teal-light text-white'
+              : 'bg-primary hover:bg-primary/90 text-primary-foreground'
           }`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -70,7 +70,7 @@ const DesignSystemToggle: React.FC<DesignSystemToggleProps> = ({ className = '' 
             type="checkbox"
             checked={preserveOriginal}
             onChange={(e) => setPreserveOriginal(e.target.checked)}
-            className="form-checkbox h-5 w-5 text-teal rounded"
+            className="form-checkbox h-5 w-5 text-primary rounded"
           />
           <span className="ml-2 text-sm">Preserve original styles (recommended)</span>
         </label>

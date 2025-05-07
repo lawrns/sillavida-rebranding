@@ -114,7 +114,7 @@ const ConsentManager: React.FC<ConsentManagerProps> = ({ className = '' }) => {
                 </button>
                 <button
                   onClick={handleAcceptAll}
-                  className="px-4 py-2 bg-teal text-white rounded-md text-sm font-medium hover:bg-teal-dark transition-colors"
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors"
                 >
                   Aceptar Todas
                 </button>

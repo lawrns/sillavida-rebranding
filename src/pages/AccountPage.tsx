@@ -171,7 +171,7 @@ const AccountPage: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -226,7 +226,7 @@ const AccountPage: React.FC = () => {
           <button
             className={`py-4 px-6 font-medium text-sm border-b-2 ${
               activeTab === 'profile'
-                ? 'border-teal text-teal'
+                ? 'border-primary text-primary'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
             onClick={() => setActiveTab('profile')}
@@ -237,7 +237,7 @@ const AccountPage: React.FC = () => {
           <button
             className={`py-4 px-6 font-medium text-sm border-b-2 ${
               activeTab === 'orders'
-                ? 'border-teal text-teal'
+                ? 'border-primary text-primary'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
             onClick={() => setActiveTab('orders')}
@@ -340,7 +340,7 @@ const AccountPage: React.FC = () => {
                 <div className="flex space-x-4">
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-teal text-white rounded-md hover:bg-teal-light focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2"
+                    className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   >
                     Guardar Cambios
                   </button>
@@ -420,7 +420,7 @@ const AccountPage: React.FC = () => {
                   {orders.map((order) => (
                     <tr key={order.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-teal">#{order.orderNumber}</div>
+                        <div className="text-sm font-medium text-primary">#{order.orderNumber}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
