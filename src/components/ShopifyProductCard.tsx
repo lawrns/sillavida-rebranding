@@ -234,7 +234,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
       </Link>
       <div className="p-3">
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-          <h3 className="font-heading font-medium text-sm mb-1 text-[#21303f] hover:text-black transition-colors product-title">{product.title}</h3>
+          <h3 className="font-heading font-medium text-sm mb-1 text-[#111827] hover:text-black transition-colors product-title">{product.title}</h3>
         </Link>
         
         <div className="flex flex-col mb-2 mt-1">

@@ -183,3 +183,12 @@ Before executing any command:
 3. Validate file permissions
 4. Verify README.md files exist and are accessible
 5. Follow README.md hierarchy for operations
+
+# General Rules
+
+## Agent Rules
+
+1. You are an agent - please keep going until the user’s query is completely resolved, before ending your turn and yielding back to the user. Only terminate your turn when you are sure that the request is solved.
+2. If you are not sure about file content or codebase structure pertaining to the user’s request, use your tools to read files and gather the relevant information: do NOT guess or make up an answer. If after using your tools you are still unsure, ask the user for clarification.
+3. If you are not sure about the user’s request, ask the user for clarification.
+4. Do not make any unrequested additions on top of the user's request/task or changes not requested by the user without the user's permission. Suggest them at the end of the user's request/task once the request/task is completed.

@@ -5,7 +5,7 @@ import RandomProductImage from './RandomProductImage';
 
 const ErgonomicEducationalSectionCondensed: React.FC = () => {
   return (
-    <div className="bg-[#1a2b3c] py-16">
+    <div className="bg-[#111827] py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row gap-12 items-center justify-between">
           <div className="md:max-w-[50%] w-full">
@@ -13,7 +13,7 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
             <p className="text-xl text-white/90 mb-8 font-body">Una inversión en tu bienestar que se amortiza día tras día</p>
             
             <div className="grid gap-6 mb-8">
-              <div className="flex items-center gap-4 bg-[#21303f] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 bg-[#1e293b] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
                 <div className="w-14 h-14 flex items-center justify-center bg-neutral-800 rounded-full flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -29,7 +29,7 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex items-center gap-4 bg-[#21303f] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 bg-[#1e293b] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
                 <div className="w-14 h-14 flex items-center justify-center bg-neutral-800 rounded-full flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -46,7 +46,7 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex items-center gap-4 bg-[#21303f] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 bg-[#1e293b] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
                 <div className="w-14 h-14 flex items-center justify-center bg-neutral-800 rounded-full flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

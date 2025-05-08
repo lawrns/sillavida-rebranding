@@ -1,9 +1,9 @@
 ---
 title: Shopify Integration Regression Tests & Monitoring
 type: task
-status: planned
+status: active
 created: 2025-05-06T14:03:22-06:00
-updated: 2025-05-06T14:03:22-06:00
+updated: 2025-05-07T11:40:20-06:00
 id: TASK-105
 priority: medium
 memory_types: [procedural, semantic]

@@ -170,12 +170,12 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                       <p className="text-gray-700 font-body">
                         {currentTestimonial.profession}, {currentTestimonial.location}
                       </p>
-                      <p className="text-sm text-[#21303f] font-medium mt-1">
+                      <p className="text-sm text-[#111827] font-medium mt-1">
                         {isLoadingImages ? currentTestimonial.chairModel : productNames[currentIndex] || currentTestimonial.chairModel}
                       </p>
                     </div>
                     {currentTestimonial.verified && (
-                      <div className="text-[#21303f]">
+                      <div className="text-[#111827]">
                         <BadgeCheck size={20} />
                       </div>
                     )}

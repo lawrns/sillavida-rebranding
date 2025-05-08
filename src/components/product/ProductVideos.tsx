@@ -309,6 +309,7 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
             width="100%" 
             height="auto"
             title={title}
+            style={{ display: 'block', margin: 0, padding: 0 }}
           >
             <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
@@ -423,12 +424,10 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
           
           return (
             <div key={`video-${index}`} className="video-item">
-              <div className="video-container">
-                {renderVideoEmbed(item)}
-              </div>
               <div className="video-content">
                 <h3 className="video-title">{title}</h3>
               </div>
+              {renderVideoEmbed(item)}
             </div>
           );
         })}

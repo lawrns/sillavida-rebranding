@@ -118,12 +118,12 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
   return (
     <div className="flex flex-wrap gap-10 mb-10 p-5 max-w-7xl mx-auto bg-white">
       <div className="flex-1 basis-3/5 min-w-[300px]">
-        <div className="mb-4 border border-neutral-200 rounded overflow-hidden relative bg-white">
+        <div className="mb-4 border border-neutral-200 rounded overflow-hidden relative bg-white max-h-[500px] flex items-center justify-center">
           {displayMainImage && (
             <img 
               src={displayMainImage} 
               alt={product.title} 
-              className="w-full h-auto block object-contain p-2.5"
+              className="w-full h-auto max-h-[480px] block object-contain p-2.5"
             />
           )}
           {discount > 0 && (

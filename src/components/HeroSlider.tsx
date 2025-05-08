@@ -239,99 +239,116 @@ const HeroSlider = () => {
         </div>
       )}
       
-      {/* Full width background image with gradient overlay */}
-      <div className="absolute inset-0 w-full h-full">
-        <img
-          src={currentSlideData.image}
-          alt={currentSlideData.title}
-          className="w-full h-full object-contain md:object-cover object-center"
-          style={{ maxHeight: '100%' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/40 to-transparent z-0"></div>
+      {/* Image container with improved background handling */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#ede8e7]">
+        {/* Background with uniform color */}
+        <div className="absolute inset-0 bg-[#ede8e7] opacity-100"></div>
+        
+        {/* Soft white gradient on the right side */}
+        <div className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-7/12 h-full overflow-hidden" 
+             style={{
+               background: 'linear-gradient(110deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.8) 100%)'
+             }}>
+        </div>
+        
+        {/* Product image - aligned to right with proper padding */}
+        <div className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-7/12 h-full overflow-hidden flex justify-end items-center pr-0 md:pr-4 lg:pr-8">
+          <img
+            src={currentSlideData.image}
+            alt={currentSlideData.title}
+            className="h-full w-auto object-contain object-right"
+            style={{ maxHeight: '100%' }}
+          />
+        </div>
+        
+        {/* Text readability gradient - reverted to white gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent z-0" data-component-name="HeroSlider"></div>
       </div>
       
       <div className="max-w-7xl mx-auto px-4 h-full relative z-10">
         <AnimatePresence mode="wait">
-          <div key={currentSlide} className="flex flex-col md:flex-row items-center h-full justify-between py-8 md:pl-12">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.5 }}
-              className="text-black max-w-xl mb-8 md:mb-0 relative z-10"
-            >
-              <h1 className={`text-4xl md:text-5xl font-heading font-bold mb-4 text-black tracking-tight`}>
-                {currentSlideData.title}
-              </h1>
-              <p className="text-xl mb-4 text-black font-body">
-                {currentSlideData.description}
-              </p>
-              <div className="flex flex-wrap gap-4 mb-8">
-                {currentSlideData.features ? (
-                  currentSlideData.features.map((feature: string, index: number) => (
-                    <span key={index} className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
-                      {index === 0 && <Shield className="h-4 w-4 mr-2" />}
-                      {index === 1 && <Star className="h-4 w-4 mr-2" />}
-                      {index === 2 && <Package className="h-4 w-4 mr-2" />}
-                      {index === 3 && <CreditCard className="h-4 w-4 mr-2" />}
-                      {feature}
-                    </span>
-                  ))
-                ) : (
-                  <>
-                    <span className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
-                      <Shield className="h-4 w-4 mr-2" />
-                      Comodidad
-                    </span>
-                    <span className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
-                      <Star className="h-4 w-4 mr-2" />
-                      Durabilidad
-                    </span>
-                    <span className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
-                      <CreditCard className="h-4 w-4 mr-2" />
-                      12 MSI
-                    </span>
-                  </>
-                )}
-              </div>
-              <div className="flex flex-col mb-6">
-                <div className="flex items-baseline gap-2">
-                  <div className="text-4xl font-heading font-bold text-black">
-                    ${currentSlideData.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-base line-through text-gray-500 font-heading">
-                    ${currentSlideData.originalPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
-                  </span>
-                  <span className="text-sm font-semibold text-red-500">
-                    Ahorra {Math.round(100 - (currentSlideData.price / currentSlideData.originalPrice) * 100)}%
-                  </span>
-                </div>
-                <div className="flex mt-4 gap-3">
-                  <button 
-                    className="bg-black hover:bg-black/90 text-white px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
-                    onClick={() => {
-                      // Would typically call the addToCart function here
-                      console.log('Add to cart:', currentSlideData.title);
-                    }}
-                  >
-                    Comprar Ahora
-                  </button>
-                  <Link 
-                    to={getProductUrl(currentSlideData)}
-                    className="bg-white border border-black hover:bg-gray-50 text-black px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
-                  >
-                    Ver Detalles
-                  </Link>
-                </div>
-                <p className="text-sm text-gray-500 mt-3 flex items-center gap-1">
-                  <Shield className="h-3 w-3" /> Garantía de 5 años · Envío gratis · 30 días de prueba
+          <div key={currentSlide} className="flex flex-col md:flex-row items-center h-full justify-between py-8">
+            <div className="md:w-1/2 h-full flex items-center justify-start pl-0 md:pl-0 lg:pl-2">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.5 }}
+                className="text-black max-w-xl mb-8 md:mb-0 relative z-10"
+              >
+                <h1 className={`text-5xl md:text-6xl font-heading font-bold mb-4 text-black tracking-tight`} data-component-name="HeroSlider">
+                  {currentSlideData.title}
+                </h1>
+                <p className="text-xl mb-4 text-black font-body">
+                  {currentSlideData.description}
                 </p>
-              </div>
-            </motion.div>
+                <div className="flex flex-wrap gap-4 mb-8">
+                  {currentSlideData.features ? (
+                    currentSlideData.features.map((feature: string, index: number) => (
+                      <span key={index} className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
+                        {index === 0 && <Shield className="h-4 w-4 mr-2" />}
+                        {index === 1 && <Star className="h-4 w-4 mr-2" />}
+                        {index === 2 && <Package className="h-4 w-4 mr-2" />}
+                        {index === 3 && <CreditCard className="h-4 w-4 mr-2" />}
+                        {feature}
+                      </span>
+                    ))
+                  ) : (
+                    <>
+                      <span className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
+                        <Shield className="h-4 w-4 mr-2" />
+                        Comodidad
+                      </span>
+                      <span className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
+                        <Star className="h-4 w-4 mr-2" />
+                        Durabilidad
+                      </span>
+                      <span className={`bg-black/10 px-4 py-2 rounded-full text-black flex items-center font-body`}>
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        12 MSI
+                      </span>
+                    </>
+                  )}
+                </div>
+                <div className="flex flex-col mb-6">
+                  <div className="flex items-baseline gap-2">
+                    <div className="text-4xl font-heading font-bold text-black">
+                      ${currentSlideData.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base line-through text-gray-500 font-heading">
+                      ${currentSlideData.originalPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+                    </span>
+                    <span className="text-sm font-semibold text-red-500">
+                      Ahorra {Math.round(100 - (currentSlideData.price / currentSlideData.originalPrice) * 100)}%
+                    </span>
+                  </div>
+                  <div className="flex mt-4 gap-3">
+                    <button 
+                      className="bg-black hover:bg-black/90 text-white px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
+                      onClick={() => {
+                        // Would typically call the addToCart function here
+                        console.log('Add to cart:', currentSlideData.title);
+                      }}
+                    >
+                      Comprar Ahora
+                    </button>
+                    <Link 
+                      to={getProductUrl(currentSlideData)}
+                      className="bg-white border border-black hover:bg-gray-50 text-black px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
+                    >
+                      Ver Detalles
+                    </Link>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-3 flex items-center gap-1">
+                    <Shield className="h-3 w-3" /> Garantía de 5 años · Envío gratis · 30 días de prueba
+                  </p>
+                </div>
+              </motion.div>
+            </div>
             
-            {/* We don't need a separate image container since we're using the image as background */}
+            {/* Image section takes up the right half */}
             <div className="md:w-1/2"></div>
           </div>
         </AnimatePresence>
