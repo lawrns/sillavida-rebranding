@@ -6,6 +6,7 @@ interface RelatedProduct {
   title: string;
   image: string;
   price: number;
+  compareAtPrice?: number;
   vidaScore?: number;
 }
 
@@ -55,7 +56,19 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ products }) => {
                 )}
               </div>
               <div className="mt-auto pt-2">
-                <p className="text-teal font-bold">${product.price.toFixed(2)}</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-base font-heading font-bold text-black">${product.price.toFixed(2)} MXN</p>
+                  {product.compareAtPrice && product.compareAtPrice > product.price && (
+                    <p className="text-xs text-red-500 line-through font-heading">
+                      ${product.compareAtPrice.toFixed(2)} MXN
+                    </p>
+                  )}
+                </div>
+                {product.compareAtPrice && product.compareAtPrice > product.price && (
+                  <p className="text-xs font-heading font-semibold text-red-500">
+                    Ahorra {Math.round(100 - (product.price / product.compareAtPrice) * 100)}%
+                  </p>
+                )}
               </div>
             </div>
           </div>

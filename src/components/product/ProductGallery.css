@@ -8,14 +8,17 @@
   position: relative;
   width: 100%;
   height: 400px;
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
-  background-color: var(--sv-color-secondary-light);
+  background-color: white;
+  border: 1px solid var(--color-neutral-100);
 }
 
 .main-product-image {
   width: 100%;
   height: 100%;
+  padding: 10px;
+  object-fit: contain;
 }
 
 /* Gallery action buttons */
@@ -32,30 +35,31 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 4px;
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--sv-color-primary);
+  color: var(--color-neutral-800);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .gallery-action-btn:hover {
   background-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .view-360-btn {
-  background-color: var(--sv-color-primary);
+  background-color: var(--color-primary);
   color: white;
 }
 
 .view-360-btn:hover {
-  background-color: var(--sv-color-primary-light);
+  background-color: var(--color-primary-dark);
 }
 
 .fullscreen-btn {
@@ -75,7 +79,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,13 +89,14 @@
 .modal-content {
   position: relative;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 4px;
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .view-360-modal {
@@ -107,27 +112,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--sv-color-text);
+  color: var(--color-neutral-800);
   cursor: pointer;
   z-index: 10;
   padding: 4px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .modal-close-btn:hover {
   background-color: white;
+  transform: scale(1.1);
 }
 
 .modal-header {
   padding: 16px;
-  border-bottom: 1px solid var(--sv-color-border);
+  border-bottom: 1px solid var(--color-neutral-100);
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
-  color: var(--sv-color-primary);
+  color: var(--color-neutral-900);
+  font-family: var(--font-heading);
 }
 
 .modal-body {
@@ -146,7 +154,7 @@
 
 /* Fullscreen Gallery */
 .fullscreen-gallery {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.95);
 }
 
 .fullscreen-controls {
@@ -174,10 +182,12 @@
   padding: 8px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
 }
 
 .fullscreen-close-btn:hover {
   background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
 }
 
 .fullscreen-image-container {
@@ -209,11 +219,12 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .fullscreen-nav-btn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--color-primary);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .prev-btn {
@@ -242,7 +253,7 @@
   padding: 0;
   background: none;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .fullscreen-thumbnail img {
@@ -252,11 +263,12 @@
 }
 
 .fullscreen-thumbnail.active {
-  border-color: var(--sv-color-accent);
+  border-color: var(--color-primary);
 }
 
 .fullscreen-thumbnail:hover {
   border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
 }
 
 /* Responsive adjustments */
@@ -264,7 +276,7 @@
   .gallery-controls {
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   
   .fullscreen-image-container {

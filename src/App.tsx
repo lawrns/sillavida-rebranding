@@ -22,6 +22,7 @@ import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
 import themeSwitcher from './utils/theme-switcher';
+import HbadaStylesDemo from './components/HbadaStylesDemo';
 
 // Component to handle animated routes
 function AnimatedRoutes() {
@@ -38,6 +39,9 @@ function AnimatedRoutes() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
         <Route path="/checkout-demo" element={<CheckoutDemoPage />} />
+        
+        {/* Design System Demo */}
+        <Route path="/design-system" element={<HbadaStylesDemo />} />
         
         {/* Account Routes */}
         <Route path="/account" element={<AccountPage />} />

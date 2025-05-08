@@ -8,6 +8,7 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: white;
 }
 
 /* Product Gallery */
@@ -18,10 +19,11 @@
 
 .main-image-container {
   margin-bottom: 15px;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
   overflow: hidden;
   position: relative;
+  background-color: white;
 }
 
 .main-image {
@@ -29,13 +31,14 @@
   height: auto;
   display: block;
   object-fit: contain;
+  padding: 10px;
 }
 
 .discount-badge {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #1E5959; /* SillaVida teal */
+  background-color: var(--color-primary); /* Updated to primary red */
   color: white;
   padding: 5px 10px;
   border-radius: 4px;
@@ -53,11 +56,12 @@
   width: 80px;
   height: 80px;
   cursor: pointer;
-  border: 1px solid #ddd;
+  border: 1px solid #eaeaea;
   border-radius: 4px;
   opacity: 0.7;
   transition: opacity 0.2s, border-color 0.2s;
   overflow: hidden;
+  padding: 4px;
 }
 
 .thumbnail img {
@@ -67,7 +71,7 @@
 }
 
 .thumbnail.active {
-  border: 2px solid #1E5959; /* SillaVida teal */
+  border: 2px solid var(--color-primary); /* Updated to primary red */
   opacity: 1;
 }
 
@@ -78,32 +82,36 @@
 }
 
 .product-title {
-  font-size: 2.2em;
+  font-size: 2rem;
   margin: 0 0 10px 0;
   font-weight: 600;
-  color: #333;
+  color: var(--color-neutral-900);
+  font-family: var(--font-heading);
+  line-height: 1.2;
 }
 
 .product-subtitle {
-  font-size: 1.1em;
+  font-size: 1.1rem;
   margin: 0 0 20px 0;
-  color: #555;
+  color: var(--color-neutral-700);
+  font-family: var(--font-body);
 }
 
 .product-price {
-  font-size: 1.8em;
+  font-size: 1.8rem;
   margin: 0 0 20px 0;
-  color: #1E5959; /* SillaVida teal */
+  color: var(--color-primary); /* Updated to primary red */
   font-weight: bold;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  font-family: var(--font-heading);
 }
 
 .original-price {
   font-size: 0.7em;
   text-decoration: line-through;
-  color: #999;
+  color: var(--color-neutral-500);
   margin-left: 10px;
 }
 
@@ -111,14 +119,15 @@
   font-size: 0.8em;
   margin-left: 15px;
   font-weight: 500;
+  font-family: var(--font-body);
 }
 
 .available {
-  color: green;
+  color: #2da850;
 }
 
 .unavailable {
-  color: red;
+  color: var(--color-primary); /* Updated to primary red */
 }
 
 .variant-selector {
@@ -129,6 +138,8 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
+  color: var(--color-neutral-800);
+  font-family: var(--font-heading);
 }
 
 .variant-options {
@@ -139,16 +150,19 @@
 
 .variant-option {
   padding: 8px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #eaeaea;
   border-radius: 4px;
   background: white;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: var(--font-body);
+  color: var(--color-neutral-800);
 }
 
 .variant-option.selected {
-  border-color: #1E5959; /* SillaVida teal */
-  background-color: rgba(30, 89, 89, 0.1);
+  border-color: var(--color-primary); /* Updated to primary red */
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--color-primary);
 }
 
 .variant-option:disabled {
@@ -175,6 +189,8 @@
   width: auto;
   margin-right: 10px;
   font-weight: 500;
+  color: var(--color-neutral-800);
+  font-family: var(--font-heading);
 }
 
 .quantity-controls {
@@ -190,8 +206,8 @@
   width: 32px;
   height: 32px;
   background: white;
-  border: 1px solid #e0e0e0;
-  color: #1E5959; /* SillaVida teal */
+  border: 1px solid #eaeaea;
+  color: var(--color-primary); /* Updated to primary red */
   font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
@@ -199,11 +215,11 @@
 }
 
 .quantity-btn:hover {
-  background-color: rgba(30, 89, 89, 0.1);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
 }
 
 .quantity-btn:disabled {
-  color: #ccc;
+  color: var(--color-neutral-300);
   cursor: not-allowed;
 }
 
@@ -211,7 +227,7 @@
   width: 32px;
   height: 32px;
   text-align: center;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #eaeaea;
   border-left: none;
   border-right: none;
   margin: 0;
@@ -220,6 +236,7 @@
   -moz-appearance: textfield; /* Firefox */
   appearance: textfield; /* Standard */
   background: white;
+  color: var(--color-neutral-900);
 }
 
 /* Remove spinner arrows */
@@ -238,96 +255,88 @@
   display: flex;
   gap: 15px;
   margin-bottom: 25px;
+  width: 100%;
 }
 
 .add-to-cart-button {
   padding: 12px 25px;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   font-weight: bold;
-  background: #1E5959; /* SillaVida teal */
-  color: #fff;
+  background: var(--color-primary); /* Updated to primary red */
+  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s, transform 0.1s;
+  font-family: var(--font-heading);
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .add-to-cart-button:hover {
-  background-color: #2A7A7A; /* Slightly lighter teal */
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
 }
 
-.add-to-cart-button.disabled {
-  background: #ccc;
+.add-to-cart-button:active {
+  transform: translateY(0);
+}
+
+.add-to-cart-button.disabled, 
+.add-to-cart-button:disabled {
+  background-color: var(--color-neutral-300);
   cursor: not-allowed;
-}
-
-.add-to-cart-button.loading {
-  opacity: 0.8;
-  cursor: wait;
 }
 
 .cart-success {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #e6f7f2;
-  color: #1E5959;
-  padding: 12px;
-  border-radius: 4px;
   margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #f1f9f1;
+  border: 1px solid #c3e6c3;
+  border-radius: 4px;
+  color: #2da850;
 }
 
 .product-description {
-  margin-top: 20px;
-  line-height: 1.5;
-  color: #444;
-  font-size: 0.9rem; /* Smaller font size */
-  max-height: none; /* Remove any height restrictions */
-  overflow: visible; /* Ensure content is not cut off */
+  color: var(--color-neutral-700);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-family: var(--font-body);
 }
 
 .product-description p {
   margin-bottom: 15px;
-  display: -webkit-box;
-  -webkit-line-clamp: initial; /* Remove line clamping */
-  line-clamp: initial; /* Standard property for compatibility */
-  -webkit-box-orient: vertical;
-  overflow: visible;
-  text-overflow: initial;
 }
 
-.product-description::after {
-  content: "";
-  display: block;
-  min-height: 0;
+.product-description ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
 }
 
-/* Responsive adjustments */
+.product-description li {
+  margin-bottom: 5px;
+}
+
 @media (max-width: 768px) {
   .product-hero-showcase {
     padding: 15px;
+    gap: 30px;
   }
   
   .product-title {
-    font-size: 1.8em;
+    font-size: 1.6rem;
   }
   
   .product-price {
-    font-size: 1.5em;
-  }
-}
-
-@media (max-width: 480px) {
-  .thumbnail {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .product-actions {
-    flex-direction: column;
+    font-size: 1.5rem;
   }
   
   .add-to-cart-button {
-    width: 100%;
+    padding: 10px 20px;
   }
 }

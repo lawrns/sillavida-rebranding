@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingBag, Trash2, Plus, Minus, AlertCircle, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { X, ShoppingBag, Trash2, Plus, Minus, ChevronRight } from 'lucide-react';
 import TrustIndicator from './TrustIndicator';
 import { useCart } from '../context/CartContext';
 
@@ -130,7 +130,7 @@ const MiniCart: React.FC = () => {
     <div className="fixed inset-0 z-50 isolate">
       {/* Background overlay */}
       <motion.div 
-        className="fixed inset-0 bg-gray-500 bg-opacity-75 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/75 backdrop-blur-sm"
         onClick={closeCart}
         variants={backdropVariants}
         initial="hidden"
@@ -150,11 +150,11 @@ const MiniCart: React.FC = () => {
         >
           <div className="flex flex-col h-full min-h-[500px] bg-white" style={{ borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 bg-white" style={{ borderTopLeftRadius: '0.5rem' }}>
+            <div className="p-4 border-b border-neutral-200 bg-[#222429] text-white" style={{ borderTopLeftRadius: '0.5rem' }}>
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-heading font-bold">Tu Carrito</h2>
                 <button 
-                  className="p-2 rounded-full hover:bg-gray-100"
+                  className="p-2 rounded-full hover:bg-black/30 text-white"
                   onClick={closeCart}
                   aria-label="Cerrar carrito"
                 >
@@ -167,15 +167,15 @@ const MiniCart: React.FC = () => {
             <div className="flex-1 overflow-auto p-4 bg-white flex items-center justify-center min-h-[300px]">
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal"></div>
-                  <p className="mt-4 text-gray-500 text-lg font-body">Cargando carrito...</p>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+                  <p className="mt-4 text-neutral-500 text-lg font-body">Cargando carrito...</p>
                 </div>
               ) : cartItems.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-8 px-4 max-w-xs mx-auto">
-                  <ShoppingBag className="h-16 w-16 text-gray-300" />
-                  <p className="mt-4 text-gray-500 text-lg font-body text-center">Tu carrito está vacío</p>
+                  <ShoppingBag className="h-16 w-16 text-neutral-300" />
+                  <p className="mt-4 text-neutral-500 text-lg font-body text-center">Tu carrito está vacío</p>
                   <button
-                    className="mt-6 bg-teal text-white py-3 px-6 rounded hover:bg-teal-light font-heading font-semibold tracking-wide text-base"
+                    className="mt-6 bg-[#222429] hover:bg-black text-white py-3 px-6 rounded font-heading font-semibold tracking-wide text-base"
                     onClick={closeCart}
                     aria-label="Continuar comprando"
                   >
@@ -183,7 +183,7 @@ const MiniCart: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <ul className="divide-y divide-gray-200">
+                <ul className="divide-y divide-neutral-200">
                   {cartItems.map((item) => {
                     const price = parseFloat(item.price.amount);
                     const formattedPrice = price.toLocaleString('es-MX', {
@@ -193,7 +193,7 @@ const MiniCart: React.FC = () => {
                     
                     return (
                       <li key={item.id} className="py-4 flex">
-                        <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
+                        <div className="flex-shrink-0 w-24 h-24 border border-neutral-200 rounded-md overflow-hidden">
                           {item.imageUrl ? (
                             <img 
                               src={item.imageUrl} 
@@ -206,15 +206,15 @@ const MiniCart: React.FC = () => {
                                 const parent = target.parentElement;
                                 if (parent) {
                                   const placeholder = document.createElement('div');
-                                  placeholder.className = 'w-full h-full bg-gray-100 flex items-center justify-center';
-                                  placeholder.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-gray-400"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>';
+                                  placeholder.className = 'w-full h-full bg-neutral-100 flex items-center justify-center';
+                                  placeholder.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-neutral-400"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>';
                                   parent.appendChild(placeholder);
                                 }
                               }}
                             />
                           ) : (
-                            <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                              <ShoppingBag className="h-8 w-8 text-gray-400" />
+                            <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+                              <ShoppingBag className="h-8 w-8 text-neutral-400" />
                             </div>
                           )}
                         </div>
@@ -224,19 +224,19 @@ const MiniCart: React.FC = () => {
                             <h3 className="text-base font-heading font-medium">
                               {item.productTitle || item.title}
                             </h3>
-                            <p className="ml-4 font-heading font-semibold">{formattedPrice}</p>
+                            <p className="ml-4 font-heading font-semibold text-accent">{formattedPrice}</p>
                           </div>
                           
-                          <p className="mt-1 text-sm text-gray-500 font-body">
+                          <p className="mt-1 text-sm text-neutral-500 font-body">
                             {item.title !== item.productTitle ? item.title : ''}
                           </p>
                           
                           <div className="mt-2 flex justify-between">
-                            <div className="flex items-center border border-gray-200 rounded-md">
+                            <div className="flex items-center border border-neutral-200 rounded-md">
                               <button 
                                 onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isLoading}
-                                className="p-2 sm:p-1 text-gray-600 hover:text-teal"
+                                className="p-2 sm:p-1 text-neutral-600 hover:text-accent"
                                 aria-label="Disminuir cantidad"
                               >
                                 <Minus className="h-5 w-5 sm:h-4 sm:w-4" />
@@ -247,7 +247,7 @@ const MiniCart: React.FC = () => {
                               <button 
                                 onClick={() => updateItem(item.id, item.quantity + 1)}
                                 disabled={isLoading}
-                                className="p-2 sm:p-1 text-gray-600 hover:text-teal"
+                                className="p-2 sm:p-1 text-neutral-600 hover:text-accent"
                                 aria-label="Aumentar cantidad"
                               >
                                 <Plus className="h-5 w-5 sm:h-4 sm:w-4" />
@@ -255,7 +255,7 @@ const MiniCart: React.FC = () => {
                             </div>
 
                             <button
-                              className="text-teal hover:text-teal-dark text-base sm:text-sm font-heading font-medium flex items-center px-2 py-1"
+                              className="text-accent hover:text-accent/80 text-base sm:text-sm font-heading font-medium flex items-center px-2 py-1"
                               onClick={() => removeItem(item.id)}
                               disabled={isLoading}
                               aria-label={`Eliminar ${item.title} del carrito`}
@@ -274,10 +274,10 @@ const MiniCart: React.FC = () => {
 
             {/* Footer with totals and checkout button */}
             {cartItems.length > 0 && (
-              <div className="border-t border-gray-200 p-4 bg-white" style={{ borderBottomLeftRadius: '0.5rem' }}>
+              <div className="border-t border-neutral-200 p-4 bg-white" style={{ borderBottomLeftRadius: '0.5rem' }}>
                 <div className="flex justify-between font-heading font-medium text-base mb-1">
                   <p>Subtotal</p>
-                  <p>{cartTotal}</p>
+                  <p className="text-accent">{cartTotal}</p>
                 </div>
                 
                 {/* Free shipping threshold section */}
@@ -286,8 +286,8 @@ const MiniCart: React.FC = () => {
                     <>
                       {(cart?.cost?.subtotalAmount?.amount && parseFloat(cart.cost.subtotalAmount.amount) >= 10000) || 
                        (cartTotal && parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000) ? (
-                      <div className="bg-sage-extralight text-sage-dark p-2 rounded-md flex items-center">
-                        <div className="mr-2 text-sage">
+                      <div className="bg-accent/10 text-black p-2 rounded-md flex items-center">
+                        <div className="mr-2 text-accent">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
@@ -296,16 +296,16 @@ const MiniCart: React.FC = () => {
                       </div>
                       ) : (
                         <div>
-                          <div className="bg-gray-100 rounded-full h-2 mb-2">
+                          <div className="bg-neutral-100 rounded-full h-2 mb-2">
                             <div 
-                              className="bg-teal h-2 rounded-full" 
+                              className="bg-accent h-2 rounded-full" 
                               style={{ 
                                 width: `${Math.min(100, calculateProgressPercentage())}%` 
                               }}
                             />
                           </div>
-                          <div className="text-sm text-gray-600 font-body">
-                            Te faltan <span className="font-heading font-medium text-teal">
+                          <div className="text-sm text-neutral-600 font-body">
+                            Te faltan <span className="font-heading font-medium text-accent">
                               {formatRemainingAmount()}
                             </span> para obtener envío gratis
                           </div>
@@ -315,14 +315,14 @@ const MiniCart: React.FC = () => {
                   )}
                 </div>
                 
-                <p className="text-sm text-gray-500 mb-4 font-body">
+                <p className="text-sm text-neutral-500 mb-4 font-body">
                   Envío e impuestos calculados al finalizar la compra.
                 </p>
                 
                 <button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className="w-full bg-teal text-white py-4 sm:py-3 rounded font-heading font-semibold tracking-wide hover:bg-teal-light flex items-center justify-center text-base"
+                  className="w-full bg-accent text-white py-4 sm:py-3 rounded font-heading font-semibold tracking-wide hover:bg-accent/90 flex items-center justify-center text-base"
                   aria-label="Finalizar compra"
                 >
                   {isLoading ? (
@@ -339,12 +339,12 @@ const MiniCart: React.FC = () => {
                 </button>
                 
                 <div className="mt-4 text-center">
-                  <p className="text-base sm:text-sm text-gray-500 font-body">
+                  <p className="text-base sm:text-sm text-neutral-500 font-body">
                     o{' '}
                     <Link
                       to="/cart"
                       onClick={closeCart}
-                      className="text-teal font-heading font-medium hover:text-teal-dark px-2 py-1 inline-block"
+                      className="text-accent font-heading font-medium hover:text-accent/80 px-2 py-1 inline-block"
                       aria-label="Ver carrito completo"
                     >
                       Ver Carrito Completo
@@ -352,7 +352,7 @@ const MiniCart: React.FC = () => {
                   </p>
                 </div>
                 
-                <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="mt-4 pt-4 border-t border-neutral-100">
                   <div className="flex justify-center space-x-6">
                     <TrustIndicator 
                       type="warranty" 
@@ -367,7 +367,7 @@ const MiniCart: React.FC = () => {
                       showDescription={false} 
                     />
                   </div>
-                  <p className="text-xs text-center text-gray-500 mt-2 font-body">
+                  <p className="text-xs text-center text-neutral-500 mt-2 font-body">
                     Garantía de Bienestar en todos nuestros productos
                   </p>
                 </div>

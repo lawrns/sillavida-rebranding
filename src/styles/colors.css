@@ -1,116 +1,127 @@
-/* SillaVida Color System CSS Variables */
+/* SillaVida Color System CSS Variables - Hbada Theme */
 
 :root {
-  /* Primary Colors */
-  --color-teal: #1E5959;
-  --color-teal-light: #2A7A7A;
-  --color-teal-dark: #184747;
-  --color-teal-extralight: #E5EDED;
+  /* Primary Colors - Hbada Black/White Palette */
+  --color-primary: #222429; /* Hbada Black as primary */
+  --color-primary-light: #4A4A4A; /* Medium Gray */
+  --color-primary-dark: #000000; /* Darker Black */
+  --color-primary-extralight: #F4F4F5; /* Very Light Gray */
 
-  --color-beige: #E8DED1;
-  --color-beige-light: #F5F0E8;
-  --color-beige-dark: #D6C9B7;
-  --color-beige-extralight: #FAF7F3;
+  /* Accent Color - Hbada Red */
+  --color-accent: #4b7cae; /* Blue */
+  --color-accent-light: #6b9cce; /* Lighter Blue */
+  --color-accent-dark: #3b6188; /* Darker Blue */
+  --color-accent-extralight: #e6f0f9; /* Very Light Blue */
 
-  /* Accent Colors */
-  --color-sage: #7D9D8C;
-  --color-sage-light: #9CBCAB;
-  --color-sage-dark: #5E7A6A;
-  --color-sage-extralight: #EDF3F0;
+  /* Legacy variable mapping - Remapping to new black/white/red scheme */
+  /* This maintains existing references but redirects to Hbada palette */
+  --color-teal: #222429; /* Mapped to Hbada Black */
+  --color-teal-light: #4A4A4A; /* Mapped to Medium Gray */
+  --color-teal-dark: #000000; /* Mapped to Black */
+  --color-teal-extralight: #F4F4F5; /* Mapped to Very Light Gray */
 
-  --color-terracotta: #C87D55;
-  --color-terracotta-light: #D69A7A;
-  --color-terracotta-dark: #A66240;
-  --color-terracotta-extralight: #F7EDE7;
+  --color-beige: #F4F4F5; /* Mapped to Hbada Light Gray */
+  --color-beige-light: #FFFFFF; /* Mapped to White */
+  --color-beige-dark: #E6E6E6; /* Mapped to Medium Light Gray */
+  --color-beige-extralight: #FFFFFF; /* Mapped to White */
+
+  --color-sage: #222429; /* Mapped to Hbada Dark Gray */
+  --color-sage-light: #4A4A4A; /* Mapped to Medium Gray */
+  --color-sage-dark: #000000; /* Mapped to Black */
+  --color-sage-extralight: #F4F4F5; /* Mapped to Very Light Gray */
+
+  --color-terracotta: #d71920; /* Mapped to Hbada Red (accent) */
+  --color-terracotta-light: #FF5A5F; /* Mapped to Lighter Red */
+  --color-terracotta-dark: #B71419; /* Mapped to Darker Red */
+  --color-terracotta-extralight: #FFEBEE; /* Mapped to Very Light Red */
 
   /* Neutral Colors */
-  --color-black: #212529;
-  --color-gray-dark: #495057;
-  --color-gray-medium: #6C757D;
-  --color-gray-light: #ADB5BD;
-  --color-gray-extralight: #E9ECEF;
-  --color-white: #FFFFFF;
-  --color-off-white: #F8F9FA;
+  --color-black: #000000; /* Pure Black */
+  --color-gray-dark: #222429; /* Hbada Dark Gray */
+  --color-gray-medium: #9A9A9A; /* Medium Gray */
+  --color-gray-light: #E6E6E6; /* Light Gray */
+  --color-gray-extralight: #F4F4F5; /* Very Light Gray */
+  --color-white: #FFFFFF; /* Pure White */
+  --color-off-white: #F4F4F5; /* Off-White/Light Gray */
 
   /* Functional Colors */
-  --color-success: #2E7D32;
+  --color-success: #2E7D32; /* Keep existing */
   --color-success-light: #4CAF50;
   --color-success-dark: #1B5E20;
   --color-success-extralight: #E8F5E9;
 
-  --color-warning: #F9A825;
+  --color-warning: #F9A825; /* Keep existing */
   --color-warning-light: #FBC02D;
   --color-warning-dark: #F57F17;
   --color-warning-extralight: #FFF8E1;
 
-  --color-error: #C62828;
-  --color-error-light: #E53935;
-  --color-error-dark: #B71C1C;
+  --color-error: #d71920; /* Use Hbada Red for errors */
+  --color-error-light: #FF5A5F;
+  --color-error-dark: #B71419;
   --color-error-extralight: #FFEBEE;
 
-  --color-info: #0277BD;
+  --color-info: #0277BD; /* Keep existing */
   --color-info-light: #039BE5;
   --color-info-dark: #01579B;
   --color-info-extralight: #E1F5FE;
-
+  
   /* Component-Specific Colors */
   
   /* Buttons */
-  --color-button-primary: var(--color-teal);
-  --color-button-primary-hover: var(--color-teal-light);
-  --color-button-primary-active: var(--color-teal-dark);
+  --color-button-primary: var(--color-primary);
+  --color-button-primary-hover: var(--color-primary-light);
+  --color-button-primary-active: var(--color-primary-dark);
   --color-button-primary-text: var(--color-white);
-  --color-button-primary-disabled: var(--color-teal-extralight);
+  --color-button-primary-disabled: var(--color-gray-light);
   --color-button-primary-disabled-text: var(--color-gray-medium);
 
-  --color-button-secondary: var(--color-sage);
-  --color-button-secondary-hover: var(--color-sage-light);
-  --color-button-secondary-active: var(--color-sage-dark);
-  --color-button-secondary-text: var(--color-white);
-  --color-button-secondary-disabled: var(--color-sage-extralight);
+  --color-button-secondary: var(--color-white);
+  --color-button-secondary-hover: var(--color-gray-extralight);
+  --color-button-secondary-active: var(--color-gray-light);
+  --color-button-secondary-text: var(--color-primary);
+  --color-button-secondary-disabled: var(--color-gray-extralight);
   --color-button-secondary-disabled-text: var(--color-gray-medium);
 
-  --color-button-tertiary-border: var(--color-teal);
-  --color-button-tertiary-text: var(--color-teal);
-  --color-button-tertiary-hover: var(--color-teal-extralight);
-  --color-button-tertiary-active-bg: var(--color-teal-light);
+  --color-button-tertiary-border: var(--color-accent);
+  --color-button-tertiary-text: var(--color-accent);
+  --color-button-tertiary-hover: var(--color-accent-extralight);
+  --color-button-tertiary-active-bg: var(--color-accent);
   --color-button-tertiary-active-text: var(--color-white);
   --color-button-tertiary-disabled: var(--color-gray-light);
 
   /* Navigation */
   --color-nav-bg: var(--color-white);
-  --color-nav-active: var(--color-teal);
-  --color-nav-hover: var(--color-teal-extralight);
+  --color-nav-active: var(--color-accent);
+  --color-nav-hover: var(--color-gray-extralight);
   --color-nav-text: var(--color-black);
-  --color-nav-active-text: var(--color-teal);
+  --color-nav-active-text: var(--color-accent);
 
   /* Cards */
   --color-card-bg: var(--color-white);
-  --color-card-bg-alt: var(--color-beige);
   --color-card-border: var(--color-gray-light);
-  --color-card-border-alt: var(--color-beige-dark);
-  --color-card-shadow: rgba(33, 37, 41, 0.1);
-  --color-card-shadow-hover: rgba(33, 37, 41, 0.15);
+  --color-card-heading: var(--color-primary);
+  --color-card-text: var(--color-black);
 
   /* Forms */
   --color-form-border: var(--color-gray-light);
-  --color-form-focus: var(--color-teal);
+  --color-form-focus: var(--color-accent);
   --color-form-bg: var(--color-white);
   --color-form-placeholder: var(--color-gray-medium);
   --color-form-error: var(--color-error);
-
-  /* Shadows */
-  --shadow-card: 0 2px 8px var(--color-card-shadow);
-  --shadow-card-hover: 0 4px 12px var(--color-card-shadow-hover);
-  --shadow-dropdown: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --color-form-success: var(--color-success);
+  --color-form-text: var(--color-black);
+  --color-form-label: var(--color-gray-dark);
+  --color-form-required: var(--color-accent);
+  --color-form-disabled-bg: var(--color-gray-extralight);
+  --color-form-disabled-text: var(--color-gray-medium);
 }
 
 /* Legacy color variable for backward compatibility */
 :root {
-  --color-primary: var(--color-teal);
-  --color-primary-light: var(--color-teal-light);
-  --color-primary-dark: var(--color-teal-dark);
-  --color-accent: var(--color-sage);
-  --color-highlight: var(--color-terracotta);
+  /* Redefine primary as black, highlight/accent as red */
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-accent: var(--color-accent);
+  --color-highlight: var(--color-accent);
 }

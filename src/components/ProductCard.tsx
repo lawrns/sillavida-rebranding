@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Chair } from '../data/chairs';
@@ -99,83 +98,55 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
       className="block" // Apply block display to the motion div
     >
       <Link to={`/product/${chair.id}`} className="block"> {/* Link remains block inside motion div */}
-        <div className="bg-beige-light vida-shape-organic vida-hover-growth vida-bg-pattern-leaf shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col"> {/* Updated to beige-light background */}
+        <div className="bg-white border border-neutral-100 rounded-md shadow-sm hover:shadow-md transition-shadow h-full flex flex-col"> {/* Updated to match Hbada aesthetic */}
           <LazyImage
             src={chair.image}
             alt={chair.name}
-            className="w-full h-48"
+            className="w-full h-48 object-contain p-2"
             quality={85}
           />
-        <div className="p-4">
-          <div className="flex items-center mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`h-5 w-5 sm:h-4 sm:w-4 ${i < Math.floor(chair.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-              />
-            ))}
-            <span className="ml-2 text-base sm:text-sm text-gray-600 font-body">{chair.rating}</span>
-          </div>
-          {/* Life Category Badge */}
-          <div className="mb-2">
-            <span className="inline-block px-2 py-1 text-sm sm:text-xs font-medium bg-teal-light/20 text-teal-dark rounded-full font-body">
-              {chair.lifeCategory}
-            </span>
-          </div>
+        <div className="p-3">
+          <h3 className="font-heading font-medium text-sm mb-1 hover:text-black transition-colors product-title">{chair.name}</h3>
           
-          <h3 className="font-heading font-semibold mb-1 text-lg sm:text-base product-title">{chair.name}</h3>
-          
-          {/* Primary Benefit Statement */}
-          <p className="text-teal font-medium mb-2 text-base sm:text-sm font-heading">
-            {chair.primaryBenefit}
-          </p>
-          
-          <p className="text-gray-600 mb-3 line-clamp-2 flex-grow font-body text-base sm:text-sm product-description">
-            {chair.extendedDescription || chair.description}
-          </p>
-          
-          {/* Benefit Categories */}
-          {chair.benefitCategories && (
-            <div className="mb-3">
-              <ul className="vida-feature-list text-base sm:text-sm text-gray-700">
-                {chair.benefitCategories.health && chair.benefitCategories.health.length > 0 && (
-                  <li className="font-body text-sm sm:text-xs flex items-start mb-1">
-                    <span className="inline-block w-3 h-3 sm:w-2 sm:h-2 rounded-full bg-sage mt-1 mr-2"></span>
-                    <span className="line-clamp-1">{chair.benefitCategories.health[0]}</span>
-                  </li>
-                )}
-                {chair.benefitCategories.productivity && chair.benefitCategories.productivity.length > 0 && (
-                  <li className="font-body text-sm sm:text-xs flex items-start mb-1">
-                    <span className="inline-block w-3 h-3 sm:w-2 sm:h-2 rounded-full bg-teal mt-1 mr-2"></span>
-                    <span className="line-clamp-1">{chair.benefitCategories.productivity[0]}</span>
-                  </li>
-                )}
-              </ul>
+          <div className="flex flex-col mb-2 mt-1">
+            <div className="flex items-baseline gap-2">
+              <p className="text-base font-heading font-bold text-black product-price">
+                ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+              </p>
+              {chair.compareAtPrice && chair.compareAtPrice > chair.price && (
+                <p className="text-xs text-gray-500 line-through font-heading">
+                  ${chair.compareAtPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+                </p>
+              )}
             </div>
-          )}
-          
-          {/* Feature highlights with Vida theme styling */}
-          <ul className="vida-feature-list text-base sm:text-sm text-gray-700 mb-3">
-            {chair.features.slice(0, 2).map((feature, index) => (
-              <li key={index} className="font-body">{feature}</li>
-            ))}
-          </ul>
-          <div className="mt-auto pt-2"> {/* Push button to bottom, added padding top */}
-            <p className="text-xl font-heading font-bold text-teal product-price">
-              ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
-            </p>
+            {chair.compareAtPrice && chair.compareAtPrice > chair.price && (
+              <p className="text-xs font-heading font-semibold text-red-500">
+                Ahorra {Math.round(100 - (chair.price / chair.compareAtPrice) * 100)}%
+              </p>
+            )}
+          </div>
+
+          <div className="flex gap-2 mt-2">
             <button
               onClick={handleAddToCart}
               disabled={isLoading}
-              className={`w-full mt-4 py-3 sm:py-2 text-base sm:text-sm vida-shape-soft transition-colors font-heading font-semibold tracking-wide ${
+              className={`flex-1 py-2 px-3 rounded-sm text-white text-xs font-heading font-semibold tracking-wide ${
                 success 
-                  ? 'bg-sage hover:bg-sage-light text-white' 
-                  : 'bg-teal hover:bg-teal-light text-white'
+                  ? 'bg-black/80 hover:bg-black/70' 
+                  : 'bg-black hover:bg-black/90'
                 }`}
               aria-label={isLoading ? 'Agregando al carrito' : success ? 'Agregado al carrito' : `Agregar ${chair.name} al carrito`}
             >
-              {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Invierte en tu bienestar'}
+              {isLoading ? 'Añadir...' : success ? 'Añadido' : 'Comprar'}
             </button>
+            
+            <Link 
+              to={`/product/${chair.id}`}
+              className="py-2 px-3 border border-black rounded-sm text-xs font-heading font-semibold text-black text-center"
+              onClick={(e) => e.stopPropagation()} // Prevent the main card's Link from activating
+            >
+              Ver
+            </Link>
           </div>
         </div> {/* This is the closing div for p-4 */}
       </div> {/* This is the closing div for bg-white */}

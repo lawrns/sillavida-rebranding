@@ -1,5 +1,6 @@
 import React from 'react';
 import './ErgonomicEducationalSection.css';
+import { Activity, Brain, Briefcase, Clock, DollarSign, HeartPulse, Lightbulb, Shield, Sparkles, Target } from 'lucide-react';
 
 // Types for component props
 interface ErgonomicEducationalSectionProps {
@@ -60,12 +61,15 @@ interface StatisticProps {
 
 interface VisualElementProps {
   type: 'image' | 'icon' | 'chart' | 'diagram';
-  source: string;
+  source?: string;
+  icon?: React.ReactNode;
   caption?: string;
-  altText: string;
+  altText?: string;
   width?: string;
   height?: string;
   captionColor?: string;
+  iconSize?: number;
+  iconColor?: string;
 }
 
 interface CallToActionProps {
@@ -186,24 +190,29 @@ const Statistic: React.FC<StatisticProps> = ({
 const VisualElement: React.FC<VisualElementProps> = ({
   type,
   source,
+  icon,
   caption,
   altText,
   width,
   height,
   captionColor,
+  iconSize = 64,
+  iconColor = '#4a7098',
 }) => {
   return (
     <div className={`visual-element ${type}`}>
-      {type === 'image' && (
-        <img src={source} alt={altText} width={width} height={height} />
+      {type === 'image' && source && (
+        <img src={source} alt={altText || ''} width={width} height={height} />
       )}
-      {type === 'icon' && (
-        <div className="icon" dangerouslySetInnerHTML={{ __html: source }} />
+      {type === 'icon' && icon && (
+        <div className="icon" style={{ color: iconColor, width: iconSize, height: iconSize }}>
+          {icon}
+        </div>
       )}
-      {type === 'chart' && (
+      {type === 'chart' && source && (
         <div className="chart" dangerouslySetInnerHTML={{ __html: source }} />
       )}
-      {type === 'diagram' && (
+      {type === 'diagram' && source && (
         <div className="diagram" dangerouslySetInnerHTML={{ __html: source }} />
       )}
       {caption && (
@@ -252,10 +261,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Mejora de la Postura',
       visualElement: {
-        type: 'image' as 'image',
-        source: '/images/ergonomic-posture.svg',
-        altText: 'Comparación de postura correcta e incorrecta',
+        type: 'icon',
+        icon: <Activity size={64} strokeWidth={1.5} />,
         caption: 'Una postura correcta reduce la presión en los discos lumbares hasta en un 30%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -283,10 +292,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Prevención y Alivio del Dolor',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-pain-relief.svg',
-        altText: 'Ilustración de alivio del dolor',
+        type: 'icon',
+        icon: <HeartPulse size={64} strokeWidth={1.5} />,
         caption: 'El soporte lumbar adecuado puede reducir el dolor lumbar hasta en un 34%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -314,10 +323,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Circulación y Movimiento',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-circulation.svg',
-        altText: 'Ilustración de circulación mejorada',
+        type: 'icon',
+        icon: <Activity size={64} strokeWidth={1.5} />,
         caption: 'Los cambios de posición frecuentes mejoran la circulación hasta en un 20%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -348,10 +357,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Conexión entre Comodidad y Concentración',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-focus.svg',
-        altText: 'Ilustración de concentración mejorada',
+        type: 'icon',
+        icon: <Brain size={64} strokeWidth={1.5} />,
         caption: 'La incomodidad física causa una disminución del 15% en la concentración',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -410,10 +419,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Reducción de Distracciones',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-distractions.svg',
-        altText: 'Ilustración de reducción de distracciones',
+        type: 'icon',
+        icon: <Target size={64} strokeWidth={1.5} />,
         caption: 'Los empleados con sillas ergonómicas toman 17% menos descansos debido a la incomodidad',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -444,10 +453,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Inversión en Salud',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-investment.svg',
-        altText: 'Ilustración de inversión en salud',
+        type: 'icon',
+        icon: <DollarSign size={64} strokeWidth={1.5} />,
         caption: 'La prevención a través de muebles ergonómicos cuesta 8-10 veces menos que el tratamiento',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -478,10 +487,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Durabilidad y Calidad',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-durability.svg',
-        altText: 'Ilustración de durabilidad y calidad',
+        type: 'icon',
+        icon: <Shield size={64} strokeWidth={1.5} />,
         caption: 'Las sillas ergonómicas de calidad tienen una vida útil promedio de 7-10 años',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -509,10 +518,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Adaptabilidad y Personalización',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-adaptability.svg',
-        altText: 'Ilustración de adaptabilidad y personalización',
+        type: 'icon',
+        icon: <Sparkles size={64} strokeWidth={1.5} />,
         caption: 'El soporte lumbar ajustable se adapta al 95% de los tipos de cuerpo',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -546,10 +555,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Soporte Lumbar',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-lumbar.svg',
-        altText: 'Ilustración de soporte lumbar',
+        type: 'icon',
+        icon: <Activity size={64} strokeWidth={1.5} />,
         caption: 'El soporte lumbar reduce la presión en los discos lumbares hasta en un 30%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -568,10 +577,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Reposabrazos Ajustables',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-armrests.svg',
-        altText: 'Ilustración de reposabrazos ajustables',
+        type: 'icon',
+        icon: <Briefcase size={64} strokeWidth={1.5} />,
         caption: 'Los reposabrazos adecuados disminuyen la tensión del cuello en un 21%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -590,10 +599,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Altura y Profundidad del Asiento',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-seat-height.svg',
-        altText: 'Ilustración de altura y profundidad del asiento',
+        type: 'icon',
+        icon: <Lightbulb size={64} strokeWidth={1.5} />,
         caption: 'La altura adecuada del asiento mejora la circulación hasta en un 45%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -612,10 +621,10 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
     {
       title: 'Reclinación del Respaldo',
       visualElement: {
-        type: 'image',
-        source: '/images/ergonomic-recline.svg',
-        altText: 'Ilustración de reclinación del respaldo',
+        type: 'icon',
+        icon: <Clock size={64} strokeWidth={1.5} />,
         caption: 'Reclinarse a 110-130 grados reduce la presión espinal hasta en un 40%',
+        iconColor: '#4a7098',
       },
       content: (
         <>
@@ -711,9 +720,9 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
           buttonText="Explorar Sillas Ergonómicas"
           buttonLink="/category/tienda"
           buttonVariant="primary"
-          backgroundColor="var(--color-primary-light)"
-          textColor="var(--color-text)"
-          buttonColor="var(--color-primary)"
+          backgroundColor="#111827"
+          textColor="white"
+          buttonColor="#4b7cae"
         />
       </div>
     </section>

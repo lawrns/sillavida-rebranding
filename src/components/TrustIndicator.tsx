@@ -107,13 +107,13 @@ const TrustIndicator: React.FC<TrustIndicatorProps> = ({
         aria-label={content.ariaLabel}
       >
         <div className="relative">
-          <Icon className={`${styles.icon} text-teal`} />
+          <Icon className={`${styles.icon} text-black`} />
           <div className="absolute top-0 right-0">
-            <Leaf className={`${styles.leafIcon} text-sage`} />
+            <Leaf className={`${styles.leafIcon} text-accent`} />
           </div>
         </div>
         <div>
-          <h4 className={`${styles.title} font-heading text-gray-800`}>{content.title}</h4>
+          <h4 className={`${styles.title} font-heading text-black`}>{content.title}</h4>
           {showDescription && (
             <p className={`${styles.description} text-gray-600 font-body`}>{content.description}</p>
           )}
@@ -131,12 +131,12 @@ const TrustIndicator: React.FC<TrustIndicatorProps> = ({
       aria-label={content.ariaLabel}
     >
       <div className="relative">
-        <Icon className={`${styles.icon} text-teal`} />
+        <Icon className={`${styles.icon} text-black`} />
         <div className="absolute top-0 right-0">
-          <Leaf className={`${styles.leafIcon} text-sage`} />
+          <Leaf className={`${styles.leafIcon} text-accent`} />
         </div>
       </div>
-      <h4 className={`${styles.title} font-heading text-gray-800`}>{content.title}</h4>
+      <h4 className={`${styles.title} font-heading text-black`}>{content.title}</h4>
       {showDescription && (
         <p className={`${styles.description} text-gray-600 font-body`}>{content.description}</p>
       )}
