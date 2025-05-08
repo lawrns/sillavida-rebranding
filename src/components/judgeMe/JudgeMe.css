@@ -1,0 +1,98 @@
+/**
+ * Judge.me Components Styling
+ * 
+ * Custom styling for Judge.me widgets to match SillaVida's design system.
+ * Using the standardized colors: #111827 for backgrounds and #4b7cae for interactive elements.
+ */
+
+/* Judge.me Star Rating Styles */
+.judge-me-stars-container {
+  display: flex;
+  align-items: center;
+}
+
+.judge-me-stars-container .jdgm-star {
+  color: #4b7cae !important;
+}
+
+.judge-me-stars-container .jdgm-prev-badge__text {
+  color: inherit !important;
+  font-family: inherit !important;
+  margin-left: 0.5rem;
+}
+
+/* Judge.me Reviews Widget Styles */
+.judge-me-reviews-container {
+  width: 100%;
+  color: #fff;
+}
+
+.judge-me-reviews-container .jdgm-rev-widg {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.judge-me-reviews-container .jdgm-rev__header {
+  border-color: rgba(75, 124, 174, 0.3) !important;
+}
+
+.judge-me-reviews-container .jdgm-rev__author {
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+
+.judge-me-reviews-container .jdgm-rev__timestamp {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.judge-me-reviews-container .jdgm-rev__body {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.judge-me-reviews-container .jdgm-write-rev-link {
+  color: #4b7cae !important;
+  font-weight: 500 !important;
+  transition: color 0.2s ease;
+}
+
+.judge-me-reviews-container .jdgm-write-rev-link:hover {
+  color: rgba(75, 124, 174, 0.8) !important;
+  text-decoration: none !important;
+}
+
+.judge-me-reviews-container .jdgm-rev__buyer-badge {
+  background-color: #4b7cae !important;
+}
+
+/* Judge.me Loading States */
+.judge-me-loading {
+  padding: 0.75rem 0;
+}
+
+/* Judge.me Empty States */
+.judge-me-empty {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.judge-me-empty p {
+  margin-bottom: 0.5rem;
+}
+
+.judge-me-empty .write-review-btn {
+  background-color: #4b7cae;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.judge-me-empty .write-review-btn:hover {
+  background-color: rgba(75, 124, 174, 0.9);
+}

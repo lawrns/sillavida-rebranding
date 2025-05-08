@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { ReviewStars } from '../judgeMe';
 
 interface ProductHeroShowcaseProps {
   product: any;
@@ -152,6 +153,15 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
       
       <div className="flex-1 basis-2/5 min-w-[300px]">
         <h1 className="text-3xl m-0 mb-2.5 font-semibold text-black font-heading leading-tight">{product.title}</h1>
+        
+        {/* Display Judge.me star ratings */}
+        <div className="mb-2.5">
+          <ReviewStars
+            productId={product.id}
+            containerClassName="flex items-center"
+            showLoadingState={false}
+          />
+        </div>
         
         <div className="text-lg mb-5 text-neutral-700 font-body">
           {product.description?.split('.')[0] || 'Invierte en tu bienestar'}

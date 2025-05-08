@@ -31,7 +31,8 @@ Ensure design changes do not impact Shopify Hydrogen + Storefront API functional
 6. Run tests in CI.
 
 ## Progress
-- No progress yet
+- Started work on Shopify Integration Regression Tests (2025-05-08T01:07:10-06:00)
+- Identifying critical API interactions and planning test strategy
 
 ## Dependencies
 - TASK-102
