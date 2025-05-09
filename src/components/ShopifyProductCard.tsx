@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
 import type { ShopifyProduct } from '../types/shopify';
 import { useCart } from '../context/CartContext';
+import { PreviewBadge } from './judgeMe';
 
 // Analytics tracking function (same as in HomePage)
 const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
@@ -236,6 +237,11 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
           <h3 className="font-heading font-medium text-sm mb-1 text-[#111827] hover:text-black transition-colors product-title">{product.title}</h3>
         </Link>
+        
+        <PreviewBadge 
+          productId={product.id.split('/').pop() || ''}
+          containerClassName="mt-1 mb-2"
+        />
         
         <div className="flex flex-col mb-2 mt-1">
           <div className="flex items-baseline gap-2">

@@ -7,13 +7,18 @@ import './styles/animations.css';
 import './styles/product-page.css';
 import * as serviceWorkerRegistration from './services/serviceWorkerRegistration';
 import setupDesignSystem from './styles/tokens/initializeDesignSystem';
+import { JudgeMeProvider } from './context/JudgeMeContext';
 
 // Initialize the design system
 setupDesignSystem();
 
+// Initialize Judge.me at the application root level
+// This ensures the script loads early and is available throughout the app
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <JudgeMeProvider autoInitialize={true}>
+      <App />
+    </JudgeMeProvider>
   </StrictMode>
 );
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Chair } from '../data/chairs';
 import { useCart } from '../context/CartContext';
 import LazyImage from './LazyImage';
+import { PreviewBadge } from './judgeMe';
 
 // Generate a stable Shopify-compatible mock variant ID from the chair ID
 // For demonstration purposes - generates a consistent test ID
@@ -107,6 +108,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
           />
         <div className="p-3">
           <h3 className="font-heading font-medium text-sm mb-1 hover:text-black transition-colors product-title">{chair.name}</h3>
+          
+          <PreviewBadge 
+            productId={generateVariantId(chair.id).replace('mock-variant-', '')}
+            containerClassName="mt-1 mb-1"
+          />
           
           <div className="flex flex-col mb-2 mt-1">
             <div className="flex items-baseline gap-2">
