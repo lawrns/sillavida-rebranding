@@ -146,21 +146,7 @@ const ProductDetailSections: React.FC<ProductDetailSectionsProps> = ({ product }
         </section>
       )}
 
-      {/* Reviews Section */}
-      <section className="reviews-detail-section">
-        <h2 className="section-title">Opiniones de clientes</h2>
-        <div className="reviews-container bg-[#111827] text-white p-6 rounded-lg shadow-md">
-          <div className="reviews-header border-b border-[#4b7cae]/30 pb-4 mb-4">
-            <p className="text-lg font-medium">¿Qué dicen nuestros clientes sobre este producto?</p>
-          </div>
-          <ReviewWidget
-            productId={product.id}
-            containerClassName="w-full"
-            className="text-[#4b7cae] hover:text-[#4b7cae]/80 transition-colors"
-            showIfEmpty={false}
-          />
-        </div>
-      </section>
+      {/* Reviews Section removed to avoid duplication with the one at the top of the page */}
 
       {/* Image Zoom Modal */}
       {zoomImage && (

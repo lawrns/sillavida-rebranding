@@ -90,7 +90,7 @@ const ProductPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 my-12">
         <div className="bg-white text-black p-6 rounded-lg shadow-md">
           <div className="mb-6 border-b border-[#4b7cae]/30 pb-4">
-            <h2 className="text-2xl font-semibold font-heading text-black">Customer Reviews</h2>
+            <h2 className="text-2xl font-semibold font-heading text-black">Opiniones de Nuestros Clientes</h2>
             <p className="text-sm mt-2 text-black/70">Lee lo que nuestros clientes opinan sobre este producto</p>
           </div>
           <ReviewWidget
@@ -110,6 +110,11 @@ const ProductPage: React.FC = () => {
 
       {/* Dynamic Product Videos Section */}
       <ProductVideos product={product} />
+
+      {/* UGC Media Grid Widget */}
+      <div className="max-w-7xl mx-auto px-4 my-12">
+        <div className="jdgm-ugc-media-wrapper"></div>
+      </div>
 
       {/* Related Products Section */}
       <RelatedProducts currentProductId={product.id} limit={4} />

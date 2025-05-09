@@ -117,8 +117,8 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
   const displayMainImage = mainImage || '/images/placeholder.jpg';
 
   return (
-    <div className="flex flex-wrap gap-10 mb-10 p-5 max-w-7xl mx-auto bg-white">
-      <div className="flex-1 basis-3/5 min-w-[300px]">
+    <div className="grid md:grid-cols-2 gap-8 mb-10 p-5 max-w-7xl mx-auto bg-white">
+      <div className="w-full">
         <div className="mb-4 border border-neutral-200 rounded overflow-hidden relative bg-white max-h-[500px] flex items-center justify-center">
           {displayMainImage && (
             <img 
@@ -155,7 +155,7 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
         <h1 className="text-3xl m-0 mb-2.5 font-semibold text-black font-heading leading-tight">{product.title}</h1>
         
         {/* Display Judge.me star ratings */}
-        <div className="mb-2.5">
+        <div className="mb-4">
           <ReviewStars
             productId={product.id}
             containerClassName="flex items-center"
@@ -163,47 +163,64 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
           />
         </div>
         
-        <div className="text-lg mb-5 text-neutral-700 font-body">
-          {product.description?.split('.')[0] || 'Invierte en tu bienestar'}
-        </div>
-        
-        <div className="text-2xl mb-5 text-accent font-bold flex items-center flex-wrap font-heading">
-          {formatPrice(price)}
-          {compareAtPrice && compareAtPrice > price && (
-            <span className="text-sm line-through text-neutral-500 ml-2.5">{formatPrice(compareAtPrice)}</span>
-          )}
-          <span className={`text-sm ml-4 font-medium font-body ${isAvailable ? 'text-green-600' : 'text-accent'}`}>
-            {isAvailable ? 'En stock' : 'Agotado'}
-          </span>
+        {/* Price section styled like the screenshot */}
+        <div className="mb-5">
+          <div className="flex items-baseline gap-2 mb-2">
+            <span className="text-2xl font-bold text-black font-heading">{formatPrice(price)}</span>
+            {compareAtPrice && compareAtPrice > price && (
+              <span className="text-base line-through text-neutral-500">{formatPrice(compareAtPrice)}</span>
+            )}
+            {discount > 0 && (
+              <span className="text-sm font-medium bg-red-100 text-red-700 px-2 py-0.5 rounded">Ahorra {formatPrice(compareAtPrice - price)}</span>
+            )}
+          </div>
+          
+          {/* Klarna/payment options example */}
+          <div className="mb-4 flex items-center gap-2 bg-gray-50 py-2 px-3 rounded text-sm">
+            <span className="font-medium">Desde {(price / 4).toFixed(2)}/mes</span>
+            <span>o 4 pagos sin intereses</span>
+            <a href="#" className="text-blue-600 hover:underline text-xs">Más información</a>
+          </div>
+          
+          <div className="mb-1">
+            <span className={`text-sm font-medium ${isAvailable ? 'text-green-600' : 'text-accent'}`}>
+              {isAvailable ? '✓ En stock' : 'Agotado'}
+            </span>
+          </div>
         </div>
         
         {product.variants?.edges.length > 1 && (
           <div className="mb-5">
-            <label className="block mb-2 font-medium text-black font-heading">Variante:</label>
-            <div className="flex flex-wrap gap-2.5">
+            <div className="mb-2">
+              <span className="block text-sm text-neutral-600 mb-1">Color: {selectedVariant?.title}</span>
+            </div>
+            <div className="flex flex-wrap gap-2.5 mb-6">
               {product.variants.edges.map((variant: any) => (
                 <button
                   key={variant.node.id}
-                  className={`py-2 px-4 border ${selectedVariant?.id === variant.node.id 
-                    ? 'border-accent bg-accent/10 text-accent' 
-                    : 'border-neutral-200 bg-white text-neutral-800'} 
-                    rounded transition-all font-body ${!variant.node.availableForSale ? 'opacity-50 cursor-not-allowed line-through' : 'hover:border-accent'}`}
+                  className={`relative py-2 px-3 min-w-[70px] border ${selectedVariant?.id === variant.node.id 
+                    ? 'border-black' 
+                    : 'border-neutral-300 bg-white'} 
+                    rounded-full transition-all font-body ${!variant.node.availableForSale ? 'opacity-50 cursor-not-allowed' : 'hover:border-black'}`}
                   onClick={() => handleVariantChange(variant.node.id)}
                   disabled={!variant.node.availableForSale}
                 >
                   {variant.node.title}
+                  {selectedVariant?.id === variant.node.id && (
+                    <span className="absolute inset-0 border-2 border-black rounded-full pointer-events-none"></span>
+                  )}
                 </button>
               ))}
             </div>
           </div>
         )}
         
-        <div className="flex flex-col items-start w-full mb-6">
-          <div className="flex items-center mb-4">
-            <label className="mr-2.5 font-medium text-black font-heading">Cantidad:</label>
-            <div className="flex items-center rounded">
+        <div className="flex flex-col items-start w-full mb-8">
+          <div className="w-full mb-5">
+            <span className="block text-sm text-neutral-600 mb-1">Cantidad:</span>
+            <div className="flex items-center rounded border border-neutral-300 w-32">
               <button 
-                className="flex items-center justify-center w-8 h-8 bg-white border border-neutral-200 text-accent text-xl font-medium cursor-pointer transition-colors hover:bg-accent/10 disabled:text-neutral-300 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-10 h-10 bg-white text-neutral-800 text-xl font-medium cursor-pointer transition-colors hover:bg-neutral-100 disabled:text-neutral-300 disabled:cursor-not-allowed"
                 onClick={() => handleQuantityChange(quantity - 1)}
                 disabled={quantity <= 1}
                 aria-label="Disminuir cantidad"
@@ -215,11 +232,11 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
                 min="1"
                 value={quantity}
                 onChange={(e) => handleQuantityChange(parseInt(e.target.value))}
-                className="w-8 h-8 text-center border-y border-neutral-200 m-0 p-0 text-sm appearance-none bg-white text-black focus:outline-none"
+                className="w-12 h-10 text-center border-x border-neutral-300 m-0 p-0 text-sm appearance-none bg-white text-black focus:outline-none"
                 aria-label="Cantidad"
               />
               <button 
-                className="flex items-center justify-center w-8 h-8 bg-white border border-neutral-200 text-accent text-xl font-medium cursor-pointer transition-colors hover:bg-accent/10"
+                className="flex items-center justify-center w-10 h-10 bg-white text-neutral-800 text-xl font-medium cursor-pointer transition-colors hover:bg-neutral-100"
                 onClick={() => handleQuantityChange(quantity + 1)}
                 aria-label="Aumentar cantidad"
               >
@@ -230,14 +247,40 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
           
           <div className="flex gap-4 mb-6 w-full">
             <button
-              className={`py-3 px-6 text-lg font-bold bg-accent text-white border-none rounded cursor-pointer transition-all uppercase tracking-wider w-full font-heading
-                ${!isAvailable || addingToCart ? 'bg-neutral-300 cursor-not-allowed' : 'hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0'}`}
+              className={`py-3 px-6 text-base font-medium bg-[#111827] text-white border-none rounded cursor-pointer transition-all w-full
+                ${!isAvailable || addingToCart ? 'bg-neutral-300 cursor-not-allowed' : 'hover:bg-[#1c2a40]'}`}
               onClick={handleAddToCart}
               disabled={!isAvailable || addingToCart}
             >
               {addingToCart ? 'Agregando...' : cartSuccess ? '¡Agregado!' : 'Agregar al carrito'}
             </button>
           </div>
+
+          {/* Payment methods */}
+          <div className="w-full mb-6 flex justify-center">
+            <div className="flex flex-wrap gap-3 justify-center text-xs text-neutral-500">
+              <span className="px-2 py-1 border border-neutral-200 rounded">PayPal</span>
+              <span className="px-2 py-1 border border-neutral-200 rounded">Visa</span>
+              <span className="px-2 py-1 border border-neutral-200 rounded">Mastercard</span>
+              <span className="px-2 py-1 border border-neutral-200 rounded">American Express</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Shipping & Returns section */}
+        <div className="border-t border-neutral-200 pt-4 mb-6">
+          <h3 className="flex items-center text-base font-medium mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Envío, Devoluciones y Garantía
+          </h3>
+          <ul className="pl-5 list-disc text-sm space-y-1 text-neutral-700">
+            <li>Envío gratuito y entrega en 2 días hábiles</li>
+            <li>Devolución de 30 días para problemas no relacionados con el cliente</li>
+            <li>Garantía de 3 años (solo reemplazo de piezas, no reparaciones)</li>
+          </ul>
         </div>
         
         {cartSuccess && (
