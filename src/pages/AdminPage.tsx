@@ -4,6 +4,7 @@ import FeatureFlagToggle from '../components/admin/FeatureFlagToggle';
 import DesignSystemToggle from '../components/admin/DesignSystemToggle';
 import StyleGuide from '../components/admin/StyleGuide';
 import AnalyticsDashboard from '../components/admin/AnalyticsDashboard';
+import JudgeMeWidgetTester from '../components/admin/JudgeMeWidgetTester';
 import ThemePreviewPage from './ThemePreviewPage';
 import ThemeTestPage from './ThemeTestPage';
 import ShopifyApiTester from '../components/ShopifyApiTester';
@@ -17,7 +18,7 @@ import ProductCardDemo from './ProductCardDemo';
  * feature flag toggles, theme previews, API testing, and UI demos.
  */
 const AdminPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'features' | 'design-system' | 'themes' | 'theme-test' | 'api-test' | 'ui-demos' | 'product-cards' | 'style-guide' | 'analytics'>('features');
+  const [activeTab, setActiveTab] = useState<'features' | 'design-system' | 'themes' | 'theme-test' | 'api-test' | 'ui-demos' | 'product-cards' | 'style-guide' | 'analytics' | 'judge-me'>('features');
 
   // Page transition variants
   const pageVariants = {
@@ -134,7 +135,17 @@ const AdminPage: React.FC = () => {
             }`}
             onClick={() => setActiveTab('analytics')}
           >
-            Panel de Análisis
+            Analítica
+          </button>
+          <button
+            className={`py-4 px-6 font-medium text-sm border-b-2 ${
+              activeTab === 'judge-me'
+                ? 'border-teal text-teal'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+            onClick={() => setActiveTab('judge-me')}
+          >
+            Judge.me Widgets
           </button>
         </nav>
       </div>
@@ -241,9 +252,14 @@ const AdminPage: React.FC = () => {
 
       {/* Analytics Tab */}
       {activeTab === 'analytics' && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow p-6 mb-8">
           <AnalyticsDashboard />
         </div>
+      )}
+
+      {/* Judge.me Widget Tester */}
+      {activeTab === 'judge-me' && (
+        <JudgeMeWidgetTester />
       )}
     </motion.div>
   );

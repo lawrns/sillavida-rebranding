@@ -6,7 +6,7 @@ import { chairs } from '../data/chairs';
 import ProductCard from '../components/ProductCard';
 import ShopifyProductCard from '../components/ShopifyProductCard';
 import HeroSlider from '../components/HeroSlider';
-import { ReviewsCarousel, VerifiedBadge } from '../components/judgeMe';
+import { ReviewsCarousel, VerifiedBadge, JudgeMeLoader } from '../components/judgeMe';
 import PersonalizedBanner from '../components/PersonalizedBanner';
 import ErgonomicEducationalSectionCondensed from '../components/ErgonomicEducationalSectionCondensed';
 import TestimonialCarousel from '../components/TestimonialCarousel';
@@ -177,12 +177,14 @@ const HomePage = () => {
       <HeroSlider />
       
       {/* Reviews Carousel for featuring customer reviews */}
-      <ReviewsCarousel 
-        title="Opiniones de Nuestros Clientes"
-        containerClassName=""
-        showAllReviewsLink={true}
-      />
-      
+      <JudgeMeLoader>
+        <ReviewsCarousel 
+          title="Opiniones de Nuestros Clientes"
+          containerClassName=""
+          showAllReviewsLink={true}
+        />
+      </JudgeMeLoader>
+
       {/* Personalized Banner for logged-in users */}
       <PersonalizedBanner />
 
@@ -466,7 +468,7 @@ const HomePage = () => {
               <span className="text-sm font-medium text-[#21303f]">Experiencias reales de nuestros clientes</span>
             </div>
           </div>
-          <TestimonialCarousel testimonials={getFeaturedTestimonials()} className="max-w-4xl mx-auto" />
+          <TestimonialCarousel testimonials={getFeaturedTestimonials()} />
           <div className="text-center mt-8">
             <Link 
               to="/testimonios"

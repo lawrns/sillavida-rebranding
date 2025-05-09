@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'; // Import AnimatePresence
 import Navbar from './components/Navbar';
@@ -21,7 +21,9 @@ import TestimonialsPage from './pages/TestimonialsPage';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import { CartProvider } from './context/CartContext';
+// Judge.me is now loaded directly via the script in index.html
 import themeSwitcher from './utils/theme-switcher';
+import { initializeJudgeMe } from './lib/judgeMe';
 import HbadaStylesDemo from './components/HbadaStylesDemo';
 
 // Component to handle animated routes
@@ -74,6 +76,8 @@ function App() {
     
     // Apply the enhanced theme class to the root element by default
     document.documentElement.classList.add('enhanced-theme');
+    
+    // No need to initialize Judge.me here since we're using the JudgeMeScriptTag component
   }, []);
 
   return (
@@ -83,7 +87,7 @@ function App() {
           <ShippingPromoBanner threshold={10000} />
           <Navbar />
           <main className="flex-grow">
-            <AnimatedRoutes /> {/* Use the animated routes component */}
+            <AnimatedRoutes />
           </main>
           <Footer />
           <WhatsAppButton />

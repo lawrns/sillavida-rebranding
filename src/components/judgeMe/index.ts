@@ -12,6 +12,9 @@ import ReviewWidget from './ReviewWidget';
 import ReviewsCarousel from './ReviewsCarousel';
 import PreviewBadge from './PreviewBadge';
 import VerifiedBadge from './VerifiedBadge';
+import ReactSafeJudgeMeWidget from './ReactSafeJudgeMeWidget';
+import JudgeMeScriptTag from './JudgeMeScriptTag';
+import JudgeMeLoader from './JudgeMeLoader';
 
 export {
   JudgeMeContainer,
@@ -19,5 +22,8 @@ export {
   ReviewWidget,
   ReviewsCarousel,
   PreviewBadge,
+  ReactSafeJudgeMeWidget,
+  JudgeMeScriptTag,
+  JudgeMeLoader,
   VerifiedBadge
 };

@@ -7,6 +7,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useJudgeMeContext } from '../../context/JudgeMeContext';
+import { useJudgeMeWidgetInitialization } from '../../hooks/useJudgeMeWidgetInitialization';
 import JudgeMeContainer from './JudgeMeContainer';
 
 interface ReviewWidgetProps {
@@ -38,7 +39,15 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
   const [localError, setLocalError] = useState<Error | null>(null);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
-  // Load review data and initialize widget
+  // Use our custom hook for reliable widget initialization 
+  const { initialized } = useJudgeMeWidgetInitialization({
+    productId,
+    container: containerRef,
+    delay: 300,
+    retryCount: 3
+  });
+
+  // Load review data and manage component state
   useEffect(() => {
     let isMounted = true;
     
@@ -61,9 +70,10 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
             return;
           }
           
-          // Initialize Judge.me review widget
+          // Initialize widget container for Judge.me to find
           if (containerRef.current && !hasInitialized) {
-            // Create widget container
+            // Create widget container without manual rendering
+            // Our useJudgeMeWidgetInitialization hook will handle the rendering
             const widgetContainer = document.createElement('div');
             widgetContainer.setAttribute('data-judge-me-widget', widgetType + '-widget');
             widgetContainer.setAttribute('data-id', productId.toString());
@@ -77,13 +87,7 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
             // Clear any existing content and append new widget container
             containerRef.current.innerHTML = '';
             containerRef.current.appendChild(widgetContainer);
-            
-            // Trigger Judge.me to render the widget
-            const jdgm = (window as any).jdgm;
-            if (jdgm && typeof jdgm.renderWidget === 'function') {
-              jdgm.renderWidget(containerRef.current.querySelector('[data-judge-me-widget]'));
-              setHasInitialized(true);
-            }
+            setHasInitialized(true);
           }
           
           setLocalLoading(false);
