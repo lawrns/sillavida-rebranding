@@ -117,61 +117,113 @@
   font-family: var(--font-body);
 }
 
-/* Features Section - Vertical Card Layout */
+/* Features Section - Zigzag Layout */
 .features-detail-section {
   margin-bottom: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
-
-.feature-card {
+.feature-zigzag {
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
+  gap: 3rem;
+  padding: 1rem;
 }
 
-.feature-card-image {
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* Even items (image right, text left) */
+.feature-right {
+  flex-direction: row;
+}
+
+/* Odd items (image left, text right) */
+.feature-left {
+  flex-direction: row-reverse;
+}
+
+.feature-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.feature-image {
+  flex: 1;
+  max-width: 45%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  width: 100%;
-  overflow: hidden;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.feature-card-image img {
+.feature-image img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease;
 }
 
-.feature-card:hover .feature-card-image img {
+.feature-image:hover img {
   transform: scale(1.03);
 }
 
-.feature-card-content {
-  padding: 1.5rem;
-}
-
-.feature-card-title {
-  font-size: 1.4rem;
+.feature-title {
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 0.8rem;
-  color: var(--color-neutral-900);
+  margin-bottom: 1rem;
+  color: #111827;
   font-family: var(--font-heading);
+  position: relative;
+  padding-bottom: 0.5rem;
 }
 
-.feature-card-description {
-  color: var(--color-neutral-700);
-  font-size: 1.1rem;
+.feature-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #4672a1;
+}
+
+.feature-description {
+  color: #4b5563;
+  font-size: 1rem;
   line-height: 1.6;
   font-family: var(--font-body);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .feature-item {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .feature-left, .feature-right {
+    flex-direction: column;
+  }
+  
+  .feature-image {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .feature-content {
+    padding: 0;
+  }
 }
 
 /* Image Zoom Modal */

@@ -233,7 +233,7 @@ const LoginPage: React.FC = () => {
             
             <button
               type="submit"
-              className="w-full mt-6 px-4 py-2 bg-[#5a81d3] text-white rounded-md hover:bg-[#6b92e4] focus:outline-none focus:ring-2 focus:ring-[#5a81d3] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-6 px-4 py-2 bg-[#4672a1] text-white rounded-md hover:bg-[#5a81d3] focus:outline-none focus:ring-2 focus:ring-[#4672a1] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={submitting}
               data-component-name="LoginPage"
             >

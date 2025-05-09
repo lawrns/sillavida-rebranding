@@ -115,28 +115,29 @@ const ProductDetailSections: React.FC<ProductDetailSectionsProps> = ({ product }
         </section>
       )}
 
-      {/* Features Section - Updated Card Layout */}
+      {/* Features Section - Zigzag Layout */}
       {featureImages.length > 0 && (
         <section className="features-detail-section">
           <h2 className="section-title">Características</h2>
-          <div className="feature-grid">
+          <div className="feature-zigzag">
             {featureImages.map((image: any, index: number) => {
               const { title, description } = parseAltText(image.node.altText);
+              const isEven = index % 2 === 0;
               
               return (
-                <div key={`feature-${index}`} className="feature-card">
+                <div key={`feature-${index}`} className={`feature-item ${isEven ? 'feature-right' : 'feature-left'}`}>
+                  <div className="feature-content">
+                    <h3 className="feature-title">{title}</h3>
+                    {description && <p className="feature-description">{description}</p>}
+                  </div>
                   <div 
-                    className="feature-card-image"
+                    className="feature-image"
                     onClick={() => handleImageClick(image.node.url, title)}
                   >
                     <img 
                       src={image.node.url} 
                       alt={title}
                     />
-                  </div>
-                  <div className="feature-card-content">
-                    <h3 className="feature-card-title">{title}</h3>
-                    {description && <p className="feature-card-description">{description}</p>}
                   </div>
                 </div>
               );

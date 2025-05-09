@@ -12,6 +12,9 @@ interface JudgeMeContainerProps {
   children: React.ReactNode;
   isLoading?: boolean;
   error?: Error | null;
+  isEmpty?: boolean;
+  showIfEmpty?: boolean;
+  emptyComponent?: React.ReactNode;
   className?: string;
   showLoadingState?: boolean;
   showErrorState?: boolean;
@@ -21,6 +24,9 @@ const JudgeMeContainer: React.FC<JudgeMeContainerProps> = ({
   children,
   isLoading,
   error,
+  isEmpty = false,
+  showIfEmpty = true,
+  emptyComponent,
   className = '',
   showLoadingState = true,
   showErrorState = false,
@@ -47,6 +53,19 @@ const JudgeMeContainer: React.FC<JudgeMeContainerProps> = ({
     return (
       <div className={`judge-me-error text-red-500 text-sm ${className}`}>
         {errorState.message || 'Error loading reviews'}
+      </div>
+    );
+  }
+  
+  // Handle empty state
+  if (isEmpty && !showIfEmpty) {
+    return null;
+  }
+  
+  if (isEmpty && emptyComponent) {
+    return (
+      <div className={`judge-me-empty ${className}`}>
+        {emptyComponent}
       </div>
     );
   }

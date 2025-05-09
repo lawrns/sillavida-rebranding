@@ -11,27 +11,32 @@ import JudgeMeContainer from './JudgeMeContainer';
 
 interface ReviewWidgetProps {
   productId: string | number;
+  productTitle?: string;
   className?: string;
   containerClassName?: string;
   showIfEmpty?: boolean;
   showLoadingState?: boolean;
   showErrorState?: boolean;
+  widgetType?: 'inline' | 'carousel' | 'featured';
 }
 
 const ReviewWidget: React.FC<ReviewWidgetProps> = ({
   productId,
+  productTitle,
   className = '',
   containerClassName = '',
   showIfEmpty = true,
   showLoadingState = true,
   showErrorState = false,
+  widgetType = 'inline',
 }) => {
-  const { ready, loading, error, getProductReviewCount } = useJudgeMeContext();
+  const { ready, loading, error, getProductReviewCount, judgeMe } = useJudgeMeContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const [reviewCount, setReviewCount] = useState<number>(0);
   const [hasInitialized, setHasInitialized] = useState<boolean>(false);
   const [localLoading, setLocalLoading] = useState<boolean>(true);
   const [localError, setLocalError] = useState<Error | null>(null);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   // Load review data and initialize widget
   useEffect(() => {
@@ -48,6 +53,7 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
         
         if (isMounted) {
           setReviewCount(count);
+          setIsEmpty(count === 0);
           
           // If no reviews and showIfEmpty is false, we don't display
           if (count === 0 && !showIfEmpty) {
@@ -59,9 +65,14 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
           if (containerRef.current && !hasInitialized) {
             // Create widget container
             const widgetContainer = document.createElement('div');
-            widgetContainer.setAttribute('data-judge-me-widget', 'review-widget');
+            widgetContainer.setAttribute('data-judge-me-widget', widgetType + '-widget');
             widgetContainer.setAttribute('data-id', productId.toString());
-            widgetContainer.className = className || '';
+            
+            if (productTitle) {
+              widgetContainer.setAttribute('data-product-title', productTitle);
+            }
+            
+            widgetContainer.className = `jdgm-widget jdgm-review-widget jdgm-${widgetType}-widget ${className}`;
             
             // Clear any existing content and append new widget container
             containerRef.current.innerHTML = '';
@@ -91,15 +102,31 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [ready, productId, showIfEmpty, getProductReviewCount]);
+  }, [ready, productId, productTitle, widgetType, showIfEmpty, getProductReviewCount]);
+
+  // Create empty state component with write review button
+  const emptyComponent = (
+    <div className="text-center py-4">
+      <p className="mb-2 text-white/80">¡Sé el primero en opinar sobre este producto!</p>
+      <button 
+        className="bg-[#4b7cae] hover:bg-[#4b7cae]/90 text-white py-2 px-4 rounded transition-colors"
+        onClick={() => judgeMe?.openReviewDrawer(productId.toString())}
+      >
+        Escribir una reseña
+      </button>
+    </div>
+  );
 
   return (
     <JudgeMeContainer
       isLoading={loading || localLoading}
       error={error || localError}
+      isEmpty={isEmpty}
+      showIfEmpty={showIfEmpty}
       className={`judge-me-reviews ${containerClassName}`}
       showLoadingState={showLoadingState}
       showErrorState={showErrorState}
+      emptyComponent={emptyComponent}
     >
       <div 
         ref={containerRef} 

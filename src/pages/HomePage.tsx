@@ -6,6 +6,7 @@ import { chairs } from '../data/chairs';
 import ProductCard from '../components/ProductCard';
 import ShopifyProductCard from '../components/ShopifyProductCard';
 import HeroSlider from '../components/HeroSlider';
+import { ReviewsCarousel, VerifiedBadge } from '../components/judgeMe';
 import PersonalizedBanner from '../components/PersonalizedBanner';
 import ErgonomicEducationalSectionCondensed from '../components/ErgonomicEducationalSectionCondensed';
 import TestimonialCarousel from '../components/TestimonialCarousel';
@@ -174,6 +175,13 @@ const HomePage = () => {
       className="flex flex-col"
     >
       <HeroSlider />
+      
+      {/* Reviews Carousel for featuring customer reviews */}
+      <ReviewsCarousel 
+        title="Opiniones de Nuestros Clientes"
+        containerClassName=""
+        showAllReviewsLink={true}
+      />
       
       {/* Personalized Banner for logged-in users */}
       <PersonalizedBanner />
@@ -525,6 +533,12 @@ const HomePage = () => {
                 DESCUENTOS EXCLUSIVOS
               </div>
               
+              <VerifiedBadge 
+                showText={true}
+                containerClassName="mb-4"
+                className="flex justify-center lg:justify-start"
+              />
+              
               <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-3">
                 Recibe ofertas especiales y novedades
               </h2>
@@ -569,10 +583,12 @@ const HomePage = () => {
             <div className="lg:w-2/5">
               <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
                 {/* Placeholder for Judge.me widgets */}
-                <div className="bg-[#1e293b] p-4 rounded-lg flex items-start">
-                  <div className="text-yellow-400 flex-shrink-0 mr-3 flex">
-                    {/* This will be replaced with Judge.me widget */}
-                    <div className="text-yellow-400">★★★★★</div>
+                <div className="bg-[#111827] p-4 rounded-lg flex items-start">
+                  <div className="flex-shrink-0 mr-3 flex">
+                    <VerifiedBadge 
+                      showText={false}
+                      containerClassName="m-0"
+                    />
                   </div>
                   <div className="text-left">
                     <p className="text-white text-sm">Gracias a la newsletter conseguí mi silla con un 15% de descuento.</p>
@@ -580,10 +596,12 @@ const HomePage = () => {
                   </div>
                 </div>
                 
-                <div className="bg-[#1e293b] p-4 rounded-lg flex items-start">
-                  <div className="text-yellow-400 flex-shrink-0 mr-3 flex">
-                    {/* This will be replaced with Judge.me widget */}
-                    <div className="text-yellow-400">★★★★★</div>
+                <div className="bg-[#111827] p-4 rounded-lg flex items-start">
+                  <div className="flex-shrink-0 mr-3 flex">
+                    <VerifiedBadge 
+                      showText={false}
+                      containerClassName="m-0"
+                    />
                   </div>
                   <div className="text-left">
                     <p className="text-white text-sm">Siempre recibo las mejores ofertas antes que nadie.</p>

@@ -150,9 +150,9 @@ const MiniCart: React.FC = () => {
         >
           <div className="flex flex-col h-full min-h-[500px] bg-white" style={{ borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
             {/* Header */}
-            <div className="p-4 border-b border-neutral-200 bg-[#222429] text-white" style={{ borderTopLeftRadius: '0.5rem' }}>
+            <div className="p-4 border-b border-neutral-200 bg-[#111827] text-white" style={{ borderTopLeftRadius: '0.5rem' }}>
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-heading font-bold">Tu Carrito</h2>
+                <h2 className="text-xl font-heading font-bold text-white">Tu Carrito</h2>
                 <button 
                   className="p-2 rounded-full hover:bg-black/30 text-white"
                   onClick={closeCart}
@@ -175,7 +175,7 @@ const MiniCart: React.FC = () => {
                   <ShoppingBag className="h-16 w-16 text-neutral-300" />
                   <p className="mt-4 text-neutral-500 text-lg font-body text-center">Tu carrito está vacío</p>
                   <button
-                    className="mt-6 bg-[#222429] hover:bg-black text-white py-3 px-6 rounded font-heading font-semibold tracking-wide text-base"
+                    className="mt-6 bg-[#4672a1] hover:bg-[#5a81d3] text-white py-3 px-6 rounded font-heading font-semibold tracking-wide text-base"
                     onClick={closeCart}
                     aria-label="Continuar comprando"
                   >
