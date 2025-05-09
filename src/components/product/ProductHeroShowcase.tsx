@@ -175,12 +175,7 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product, useC
             )}
           </div>
           
-          {/* Klarna/payment options example */}
-          <div className="mb-4 flex items-center gap-2 bg-gray-50 py-2 px-3 rounded text-sm">
-            <span className="font-medium">Desde {(price / 4).toFixed(2)}/mes</span>
-            <span>o 4 pagos sin intereses</span>
-            <a href="#" className="text-blue-600 hover:underline text-xs">Más información</a>
-          </div>
+          {/* Payment information removed as requested */}
           
           <div className="mb-1">
             <span className={`text-sm font-medium ${isAvailable ? 'text-green-600' : 'text-accent'}`}>

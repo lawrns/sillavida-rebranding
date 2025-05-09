@@ -5,7 +5,7 @@
  * This component is designed to be placed below the HeroSlider on the homepage.
  */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import JudgeMeContainer from './JudgeMeContainer';
 import { useJudgeMe } from '../../hooks/useJudgeMe';
 
@@ -23,17 +23,29 @@ const ReviewsCarousel: React.FC<ReviewsCarouselProps> = ({
   showAllReviewsLink = true
 }) => {
   const { loading, error } = useJudgeMe();
+  const carouselRef = useRef<HTMLDivElement>(null);
   
+  useEffect(() => {
+    // Ensure widgets are rendered when the component mounts
+    if (!loading && !error && window.jdgm && typeof window.jdgm.renderWidgets === 'function') {
+      console.log('Initializing Judge.me carousel');
+      window.jdgm.renderWidgets();
+    }
+  }, [loading, error]);
+
   const renderCarousel = () => {
     return (
-      <div className={`jdgm-carousel-wrapper ${className}`}>
-        <h2 className="jdgm-carousel-title text-2xl font-bold text-[#111827] mb-6 font-heading">{title}</h2>
-        {showAllReviewsLink && (
-          <a href="/reviews" className="jdgm-all-reviews-rating-wrapper flex items-center mb-4 text-[#4b7cae] hover:text-[#3a6b9d] transition-colors">
-            <div data-score="" className="jdgm-all-reviews-rating"></div>
-            <span className="ml-2">from <span className="jdgm-all-reviews-count"></span> reviews</span>
-          </a>
-        )}
+      <div ref={carouselRef}>
+        {/* Using the exact Judge.me Reviews Carousel code */}
+        <div className="jdgm-carousel-wrapper" data-number-of-reviews="8" data-auto-rotate="5000"> 
+          <h2 className="jdgm-carousel-title">{title}</h2> 
+          {showAllReviewsLink && (
+            <a href="/reviews" className="jdgm-all-reviews-rating-wrapper"> 
+              <div data-score="" className="jdgm-all-reviews-rating"></div> 
+              <span className="jdgm-text-español">Ver todas las <span className="jdgm-all-reviews-count"></span> opiniones</span>
+            </a>
+          )}
+        </div>
       </div>
     );
   };

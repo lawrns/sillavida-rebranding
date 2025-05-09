@@ -84,8 +84,8 @@ interface SlideData {
 }
 
 const HeroSlider = () => {
-  // Import context but comment out unused variable to fix lint warning
-  const { /* addItem */ } = useCart();
+  // Import context to use cart functionality
+  const { addItem } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoadingSlides, setIsLoadingSlides] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -201,15 +201,26 @@ const HeroSlider = () => {
     return `/product/${slideData.title.toLowerCase().replace(/\s+/g, '-')}`;
   };
 
-  // Note: This function is kept for potential future use if "Add to Cart" functionality is restored
-  // but is not currently used in the component
-  /* 
+  // Handle adding product to cart
   const handleAddToCart = (slideData: SlideData) => {
     if (slideData.variantId) {
+      // If we have a specific variant ID, use that
       addItem(slideData.variantId, 1);
+      console.log('Adding to cart by variantId:', slideData.variantId);
+    } else if (slideData.handle) {
+      // If we have a product handle but no variant ID, use the handle
+      // This assumes the first variant will be selected
+      addItem(slideData.handle, 1);
+      console.log('Adding to cart by handle:', slideData.handle);
+    } else {
+      // Fallback if neither variantId nor handle is available
+      console.error('Cannot add to cart: No variantId or handle available for', slideData.title);
+      // Show error message
+      setErrorMessage('No se pudo agregar al carrito. Por favor, intente desde la página del producto.');
+      // Clear error message after 3 seconds
+      setTimeout(() => setErrorMessage(null), 3000);
     }
   };
-  */
 
   if (isLoadingSlides) {
     return (
@@ -327,10 +338,8 @@ const HeroSlider = () => {
                   <div className="flex mt-4 gap-3">
                     <button 
                       className="bg-black hover:bg-black/90 text-white px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
-                      onClick={() => {
-                        // Would typically call the addToCart function here
-                        console.log('Add to cart:', currentSlideData.title);
-                      }}
+                      onClick={() => handleAddToCart(currentSlideData)}
+                      data-component-name="HeroSlider"
                     >
                       Comprar Ahora
                     </button>

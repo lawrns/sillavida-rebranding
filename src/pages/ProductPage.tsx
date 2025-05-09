@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { useCart } from '../context/CartContext';
 import { ProductHeroShowcase, ProductDetailSections, RelatedProducts, ProductVideos } from '../components/product';
-import { ReviewWidget } from '../components/judgeMe';
+import { ReactSafeJudgeMeWidget, JudgeMeLoader } from '../components/judgeMe';
 import { getProduct } from '../lib/shopify';
 import './ProductPage.css';
 
@@ -14,6 +14,12 @@ const ProductPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const cartContext = useCart();
+  
+  // References for widget containers
+  const reviewContainerRef = useRef<HTMLDivElement>(null);
+  const ugcGridRef = useRef<HTMLDivElement>(null);
+
+  // We'll use our ReactSafeJudgeMeWidget component instead of the hook-based approach
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,6 +43,8 @@ const ProductPage: React.FC = () => {
 
     fetchProduct();
   }, [handle]);
+  
+  // No need for manual reinitialization, our ReactSafeJudgeMeWidget handles this
 
   if (loading) {
     return (
@@ -71,7 +79,8 @@ const ProductPage: React.FC = () => {
   }
 
   return (
-    <div className="sillavida-product-page">
+    <JudgeMeLoader productId={product.id}>
+      <div className="sillavida-product-page">
       {/* SEO metadata */}
       <Helmet>
         <title>{`${product.title} | SillaVida`}</title>
@@ -93,13 +102,13 @@ const ProductPage: React.FC = () => {
             <h2 className="text-2xl font-semibold font-heading text-black">Opiniones de Nuestros Clientes</h2>
             <p className="text-sm mt-2 text-black/70">Lee lo que nuestros clientes opinan sobre este producto</p>
           </div>
-          <ReviewWidget
-            productId={product.id}
-            productTitle={product.title}
-            containerClassName="w-full"
-            showIfEmpty={true}
-            widgetType="inline"
-          />
+          {/* Using the exact Judge.me Review Widget code */}
+          <div 
+            className="jdgm-widget jdgm-review-widget jdgm-outside-widget" 
+            data-id={product.id} 
+            data-product-title={product.title}
+            data-locale="es"
+          ></div>
         </div>
       </div>
 
@@ -113,12 +122,15 @@ const ProductPage: React.FC = () => {
 
       {/* UGC Media Grid Widget */}
       <div className="max-w-7xl mx-auto px-4 my-12">
-        <div className="jdgm-ugc-media-wrapper"></div>
+        <h2 className="text-2xl font-bold mb-6 text-center">Fotos de Nuestros Clientes</h2>
+        {/* Using the exact Judge.me UGC Media Grid code */}
+        <div className="jdgm-ugc-media-wrapper" data-product-id={product.id} data-locale="es"></div>
       </div>
 
       {/* Related Products Section */}
       <RelatedProducts currentProductId={product.id} limit={4} />
     </div>
+    </JudgeMeLoader>
   );
 };
 
