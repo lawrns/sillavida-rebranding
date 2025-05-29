@@ -5,11 +5,11 @@ import DesignSystemToggle from '../components/admin/DesignSystemToggle';
 import StyleGuide from '../components/admin/StyleGuide';
 import AnalyticsDashboard from '../components/admin/AnalyticsDashboard';
 import JudgeMeWidgetTester from '../components/admin/JudgeMeWidgetTester';
-import ThemePreviewPage from './ThemePreviewPage';
-import ThemeTestPage from './ThemeTestPage';
-import ShopifyApiTester from '../components/ShopifyApiTester';
-import AnimationDemoPage from './AnimationDemoPage';
-import ProductCardDemo from './ProductCardDemo';
+import ThemePreviewPage from '../dev/ThemePreviewPage';
+import ThemeTestPage from '../dev/ThemeTestPage';
+import ShopifyApiTester from '../dev/ShopifyApiTester';
+import AnimationDemoPage from '../dev/AnimationDemoPage';
+import ProductCardDemo from '../dev/ProductCardDemo';
 
 /**
  * AdminPage component
