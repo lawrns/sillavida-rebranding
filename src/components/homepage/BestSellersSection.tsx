@@ -90,7 +90,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     image: featuredProduct.images?.edges?.[0]?.node?.url || 
            featuredProduct.featuredImage?.url || 
            featuredProduct.images?.[0]?.url || 
-           '/images/gamer2.png',
+           '/images/placeholder.png',
     handle: featuredProduct.handle,
     variantId: featuredProduct.variants?.[0]?.id
   } : {
@@ -249,7 +249,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
                 loading="lazy"
                 onError={(e) => {
                   console.log('Image failed to load:', productData.image);
-                  e.currentTarget.src = '/images/gamer2.png';
+                  e.currentTarget.src = '/images/placeholder.png';
                 }}
               />
               

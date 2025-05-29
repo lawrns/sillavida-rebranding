@@ -16,36 +16,27 @@ interface CategoriesSectionProps {
  * Maintains product category images while adding modern styling and animations
  */
 const CategoriesSection: React.FC<CategoriesSectionProps> = ({ collections }) => {
-  // Static fallback categories
+  // Static fallback categories - Updated to current SillaVida naming
   const staticCategories = [
-    { title: 'Sillas Ejecutivas', handle: 'sillas-ejecutivas', image: '/images/ejecutiva.png' },
-    { title: 'Sillas Ergonómicas', handle: 'sillas-ergonomicas', image: '/images/ergonomica.png' },
-    { title: 'Sillas Gamer', handle: 'sillas-gamer', image: '/images/gamer.png' },
-    { title: 'Sillas Secretariales', handle: 'sillas-secretariales', image: '/images/secretariales.png' },
-    { title: 'Sillas de Visita', handle: 'sillas-de-visita', image: '/images/visita.png' },
-    { title: 'Accesorios', handle: 'accesorios', image: '/images/accesorio.png' }
+    { title: 'SillaVida Esencial', handle: 'sillavida-esencial', image: '/images/ejecutiva.png' },
+    { title: 'SillaVida Confort', handle: 'sillavida-confort', image: '/images/ergonomica.png' },
+    { title: 'SillaVida Zen', handle: 'sillavida-zen', image: '/images/gamer.png' }
   ];
 
   const imageMap: Record<string, string> = {
-    'Sillas Ejecutivas': '/images/ejecutiva.png',
-    'Sillas Ergonómicas': '/images/ergonomica.png',
-    'Sillas Gamer': '/images/gamer.png',
-    'Sillas Secretariales': '/images/secretariales.png',
-    'Sillas de Visita': '/images/visita.png',
-    'Accesorios': '/images/accesorio.png'
+    'SillaVida Esencial': '/images/ejecutiva.png',
+    'SillaVida Confort': '/images/ergonomica.png',
+    'SillaVida Zen': '/images/gamer.png'
   };
 
   const descriptionMap: Record<string, string> = {
-    'Sillas Ejecutivas': 'Elegancia y confort para ejecutivos',
-    'Sillas Ergonómicas': 'Diseñadas para tu bienestar',
-    'Sillas Gamer': 'Para sesiones épicas de juego',
-    'Sillas Secretariales': 'Funcionalidad y comodidad',
-    'Sillas de Visita': 'Para espacios de recepción',
-    'Accesorios': 'Complementos para tu silla'
+    'SillaVida Esencial': 'Elegancia y confort para ejecutivos',
+    'SillaVida Confort': 'Diseñadas para tu bienestar y productividad',
+    'SillaVida Zen': 'Para sesiones largas de concentración'
   };
 
   const categoriesToShow = collections.length > 0 
-    ? collections.filter(collection => collection.title.startsWith('Silla'))
+    ? collections.filter(collection => collection.title.startsWith('SillaVida'))
     : staticCategories;
 
   return (

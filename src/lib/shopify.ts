@@ -506,7 +506,7 @@ export async function getProductsByCollection(
                   currencyCode
                 }
               }
-              images(first: 1) {
+              images(first: 5) {
                 edges {
                   node {
                     url

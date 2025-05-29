@@ -29,6 +29,8 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
   const [error, setError] = useState<string | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [secondImageLoaded, setSecondImageLoaded] = useState(false);
 
   // Use centralized price formatting
   const priceDisplay = getProductPriceDisplay(
@@ -44,6 +46,11 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
 
   // Parse price for analytics (keep backward compatibility)
   const price = parseFloat(product.priceRange.minVariantPrice.amount);
+
+  // Get primary and hover images
+  const primaryImage = product.images.edges[0]?.node;
+  const hoverImage = product.images.edges[1]?.node;
+  const hasHoverImage = !!hoverImage;
 
 
 
@@ -165,7 +172,11 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
       }}
     >
       <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-        <div className="relative w-full h-72 overflow-hidden">
+        <div 
+          className="relative w-full h-72 overflow-hidden"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
               <span className="text-gray-400">Cargando...</span>
@@ -176,10 +187,14 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
               <span className="text-gray-400">Imagen no disponible</span>
             </div>
           )}
+          
+          {/* Primary Image */}
           <img
-            src={product.images.edges[0]?.node.url}
-            alt={product.images.edges[0]?.node.altText || product.title}
-            className={`w-full h-72 object-cover object-center ${imageLoaded && !imageError ? 'block' : 'hidden'}`}
+            src={primaryImage?.url}
+            alt={primaryImage?.altText || product.title}
+            className={`absolute inset-0 w-full h-72 object-cover object-center transition-opacity duration-300 ${
+              imageLoaded && !imageError ? 'opacity-100' : 'opacity-0'
+            } ${isHovered && hasHoverImage && secondImageLoaded ? 'opacity-0' : 'opacity-100'}`}
             loading="lazy"
             onLoad={() => {
               setImageLoaded(true);
@@ -192,6 +207,26 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
               e.currentTarget.onerror = null;
             }}
           />
+          
+          {/* Hover Image (Second Image) */}
+          {hasHoverImage && (
+            <img
+              src={hoverImage.url}
+              alt={hoverImage.altText || `${product.title} - Vista 2`}
+              className={`absolute inset-0 w-full h-72 object-cover object-center transition-opacity duration-300 ${
+                isHovered && secondImageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              loading="lazy"
+              onLoad={() => {
+                setSecondImageLoaded(true);
+                trackEvent('hover_image_loaded', { product_id: product.id });
+              }}
+              onError={(e) => {
+                console.warn('Hover image failed to load for product:', product.id);
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          )}
         </div>
       </Link>
       <div className="p-3">

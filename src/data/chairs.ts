@@ -22,7 +22,7 @@ export interface Chair {
 export const chairs: Chair[] = [
   {
     id: 'ergopro-elite',
-    name: 'Silla ErgoPro Elite',
+    name: 'SillaVida Esencial',
     description: 'Máximo confort y ergonomía para largas jornadas',
     extendedDescription: 'La Silla ErgoPro Elite transforma tu experiencia diaria, ofreciendo una inversión en tu bienestar que mejora tu salud postural a largo plazo. Su diseño ergonómico avanzado proporciona el soporte necesario para mantener una postura saludable durante largas jornadas de trabajo.',
     price: 4999.90,
@@ -53,7 +53,7 @@ export const chairs: Chair[] = [
   },
   {
     id: 'xgamer-pro',
-    name: 'X-Gamer Pro',
+    name: 'SillaVida Zen',
     description: 'Diseñada para sesiones intensas de gaming',
     extendedDescription: 'La X-Gamer Pro va más allá del gaming, ofreciendo una inversión en tu bienestar que mejora tu experiencia y salud durante largas sesiones. Su diseño ergonómico proporciona el soporte necesario para mantener una postura saludable incluso en los momentos más intensos.',
     price: 5999.90,
@@ -84,7 +84,7 @@ export const chairs: Chair[] = [
   },
   {
     id: 'ergo-mesh',
-    name: 'Ergo Mesh Plus',
+    name: 'SillaVida Confort',
     description: 'Comodidad y frescura todo el día',
     extendedDescription: 'La Ergo Mesh Plus transforma tu espacio de trabajo en un entorno de productividad y bienestar. Su innovador diseño de malla premium permite una circulación de aire óptima, manteniendo la frescura y comodidad durante toda tu jornada laboral.',
     price: 3499.90,
