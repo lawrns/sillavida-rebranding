@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './ProductView360.css';
+import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
 
 interface ProductView360Props {
   images: string[];
@@ -34,7 +35,11 @@ const ProductView360: React.FC<ProductView360Props> = ({
         setImagesLoaded(loadedCount);
       };
       img.onerror = () => {
-        console.error(`Failed to load image at index ${index}`);
+        errorHandler.createError('SYSTEM_ERROR', {
+          severity: ErrorSeverity.LOW,
+          message: `Failed to load image at index ${index}`,
+          userMessage: 'Error al cargar vista 360°'
+        }, { component: 'ProductView360', action: 'loadImage' });
       };
       imageObjects.push(img);
     });

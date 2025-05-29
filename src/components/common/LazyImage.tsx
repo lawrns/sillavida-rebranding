@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
 import { useInView } from 'react-intersection-observer';
 import './LazyImage.css';
 
@@ -46,7 +47,11 @@ const LazyImage: React.FC<LazyImageProps> = ({
   // Handle image error
   const handleError = () => {
     setError(true);
-    console.error(`Failed to load image: ${src}`);
+    errorHandler.createError('SYSTEM_ERROR', {
+      severity: ErrorSeverity.LOW,
+      message: `Failed to load image: ${src}`,
+      userMessage: 'No se pudo cargar la imagen'
+    }, { component: 'LazyImage', action: 'loadImage' });
   };
 
   // Load image when it comes into view

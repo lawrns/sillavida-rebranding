@@ -25,9 +25,6 @@ export function useAnalytics() {
     if (ANALYTICS_CONFIG.enabled) {
       pageView(window.location.pathname + window.location.search);
       
-      if (ANALYTICS_CONFIG.debug) {
-        console.log('📊 Page view:', window.location.pathname + window.location.search);
-      }
     }
   }, [location]);
   
@@ -36,9 +33,6 @@ export function useAnalytics() {
     if (ANALYTICS_CONFIG.enabled) {
       trackEvent(eventName, params);
       
-      if (ANALYTICS_CONFIG.debug) {
-        console.log(`📊 Event: ${eventName}`, params);
-      }
     }
   }, []);
   
@@ -53,9 +47,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.viewItemList(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - View Item List:', params);
-          }
         }
       }, []),
       
@@ -63,9 +54,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.selectItem(item, listName);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Select Item:', { item, listName });
-          }
         }
       }, []),
       
@@ -73,9 +61,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.viewItem(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - View Item:', params);
-          }
         }
       }, []),
       
@@ -83,9 +68,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.addToCart(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Add to Cart:', params);
-          }
         }
       }, []),
       
@@ -93,9 +75,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.removeFromCart(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Remove from Cart:', params);
-          }
         }
       }, []),
       
@@ -103,9 +82,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.beginCheckout(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Begin Checkout:', params);
-          }
         }
       }, []),
       
@@ -113,9 +89,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.addShippingInfo(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Add Shipping Info:', params);
-          }
         }
       }, []),
       
@@ -123,9 +96,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.addPaymentInfo(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Add Payment Info:', params);
-          }
         }
       }, []),
       
@@ -133,9 +103,6 @@ export function useAnalytics() {
         if (ANALYTICS_CONFIG.enabled && ANALYTICS_CONFIG.ecommerceEnabled) {
           ecommerce.purchase(params);
           
-          if (ANALYTICS_CONFIG.debug) {
-            console.log('📊 E-commerce - Purchase:', params);
-          }
         }
       }, []),
     },

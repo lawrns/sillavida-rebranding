@@ -73,15 +73,15 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
           collectionHandle: 'mas-vendidos',
           limit: testimonials.length
         });
-        
+
         // Extract image URLs from products
-        const images = products.map(product => 
+        const images = products.map(product =>
           product.images.edges[0]?.node.url || '/images/placeholder.png'
         );
-        
+
         // Extract product names from products
         const names = products.map(product => product.title);
-        
+
         setProductImages(images);
         setProductNames(names);
         console.log('Fetched product images for testimonials:', images);
@@ -99,7 +99,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
 
   // Get current testimonial
   const currentTestimonial = testimonials[currentIndex];
-  
+
   // Animation variants
   const variants = {
     enter: (direction: number) => ({
@@ -117,14 +117,14 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`relative overflow-hidden bg-white rounded-lg shadow-md ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       aria-label="Historias de Vida - Testimonios de clientes"
     >
       {/* Navigation buttons removed as requested - testimonials will auto-rotate */}
-      
+
       <div className="relative h-full">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -170,19 +170,19 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                       <p className="text-gray-700 font-body">
                         {currentTestimonial.profession}, {currentTestimonial.location}
                       </p>
-                      <p className="text-sm text-[#111827] font-medium mt-1">
+                      <p className="text-sm text-[#000000] font-medium mt-1">
                         {isLoadingImages ? currentTestimonial.chairModel : productNames[currentIndex] || currentTestimonial.chairModel}
                       </p>
                     </div>
                     {currentTestimonial.verified && (
-                      <div className="text-[#111827]">
+                      <div className="text-[#000000]">
                         <BadgeCheck size={20} />
                       </div>
                     )}
                   </div>
 
                   <blockquote className="mb-4">
-                    <p className="text-lg font-heading font-bold text-[#111827] italic mb-2">
+                    <p className="text-lg font-heading font-bold text-[#000000] italic mb-2">
                       "{currentTestimonial.quote}"
                     </p>
                     <div className="space-y-2 text-gray-700 font-body text-sm">
@@ -207,7 +207,7 @@ const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({
                           if (autoRotate) resetTimer();
                         }}
                         className={`w-2 h-2 rounded-full ${
-                          index === currentIndex ? 'bg-[#111827]' : 'bg-neutral-300'
+                          index === currentIndex ? 'bg-[#000000]' : 'bg-neutral-300'
                         } focus:outline-none`}
                         aria-label={`Go to testimonial ${index + 1}`}
                       />

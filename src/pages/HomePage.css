@@ -12,7 +12,7 @@
   --sv-color-sage-light: #b8c9a7;
   --sv-color-sage-dark: #7d8c6c;
   --sv-color-terracotta: #e2725b;
-  --sv-color-terracotta-dark: #c87d55;
+  --sv-color-terracotta-dark: #666666; /* Mapped to monochromatic medium gray */
 }
 
 /* Category heading styles - beige without outline */

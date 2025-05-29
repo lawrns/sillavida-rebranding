@@ -4,7 +4,7 @@
   max-width: 1200px;
   margin: 0 auto 3rem;
   padding: 2rem;
-  background-color: #f9f9f9;
+  background-color: #F5F5F5; /* Light gray instead of #f9f9f9 */
   border-radius: 12px;
 }
 
@@ -56,7 +56,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #4b7cae; /* SillaVida blue accent */
+  background-color: #000000; /* Pure black instead of blue */
   color: white;
   padding: 5px 10px;
   border-radius: 4px;
@@ -74,7 +74,7 @@
 .related-product-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #333;
+  color: #333333; /* Dark gray - consistent with monochromatic system */
   margin: 0 0 0.75rem 0;
   line-height: 1.4;
 }
@@ -82,7 +82,7 @@
 .related-product-price {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #4b7cae; /* SillaVida blue accent */
+  color: #000000; /* Pure black instead of blue */
   margin-top: auto;
   display: flex;
   align-items: center;
@@ -93,14 +93,14 @@
 .related-product-original-price {
   font-size: 0.9rem;
   text-decoration: line-through;
-  color: #999;
+  color: #999999; /* Light gray - consistent with monochromatic system */
   font-weight: normal;
 }
 
 .related-products-loading {
   text-align: center;
   padding: 2rem;
-  color: #777;
+  color: #666666; /* Medium gray - consistent with monochromatic system */
 }
 
 /* Responsive adjustments */
@@ -108,7 +108,7 @@
   .related-products-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  
+
   .related-product-image-container {
     aspect-ratio: 1 / 1;
   }
@@ -118,7 +118,7 @@
   .related-products-section {
     padding: 1.5rem 1rem;
   }
-  
+
   .related-products-grid {
     gap: 1.5rem;
   }

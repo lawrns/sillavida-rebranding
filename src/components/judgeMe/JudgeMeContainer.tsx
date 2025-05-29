@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import { useJudgeMeContext } from '../../context/JudgeMeContext';
 
 interface JudgeMeContainerProps {
   children: React.ReactNode;
@@ -31,11 +30,9 @@ const JudgeMeContainer: React.FC<JudgeMeContainerProps> = ({
   showLoadingState = true,
   showErrorState = false,
 }) => {
-  const judgeMeContext = useJudgeMeContext();
-  
-  // Use provided loading/error state or fallback to context state
-  const loading = isLoading !== undefined ? isLoading : judgeMeContext.loading;
-  const errorState = error || judgeMeContext.error;
+  // Use provided loading/error state (no context dependency)
+  const loading = isLoading || false;
+  const errorState = error;
   
   if (loading && showLoadingState) {
     return (

@@ -17,74 +17,74 @@
 
 /* Hover Effects */
 
-/* Text Hover Effects */
+/* Text Hover Effects - Monochromatic System */
 .hover-text-primary:hover {
-  color: var(--color-teal);
+  color: var(--color-black);
 }
 
 .hover-text-primary-light:hover {
-  color: var(--color-teal-light);
+  color: var(--color-black-dark);
 }
 
 .hover-text-primary-dark:hover {
-  color: var(--color-teal-dark);
+  color: var(--color-black);
 }
 
 .hover-text-secondary:hover {
-  color: var(--color-sage);
+  color: var(--color-black-medium);
 }
 
 .hover-text-secondary-light:hover {
-  color: var(--color-sage-light);
+  color: var(--color-black-light);
 }
 
 .hover-text-accent:hover {
-  color: var(--color-terracotta);
+  color: var(--color-black-dark);
 }
 
 .hover-text-accent-light:hover {
-  color: var(--color-terracotta-light);
+  color: var(--color-black-medium);
 }
 
-/* Background Hover Effects */
+/* Background Hover Effects - Monochromatic System */
 .hover-bg-primary:hover {
-  background-color: var(--color-teal);
+  background-color: var(--color-black);
 }
 
 .hover-bg-primary-light:hover {
-  background-color: var(--color-teal-light);
+  background-color: var(--color-black-dark);
 }
 
 .hover-bg-primary-dark:hover {
-  background-color: var(--color-teal-dark);
+  background-color: var(--color-black);
 }
 
 .hover-bg-primary-extralight:hover {
-  background-color: var(--color-teal-extralight);
+  background-color: var(--color-gray-background);
 }
 
 .hover-bg-secondary:hover {
-  background-color: var(--color-sage);
+  background-color: var(--color-black-medium);
 }
 
 .hover-bg-secondary-light:hover {
-  background-color: var(--color-sage-light);
+  background-color: var(--color-black-light);
 }
 
 .hover-bg-secondary-extralight:hover {
-  background-color: var(--color-sage-extralight);
+  background-color: var(--color-gray-background);
 }
 
 .hover-bg-accent:hover {
-  background-color: var(--color-terracotta);
+  background-color: var(--color-black-dark);
 }
 
 .hover-bg-accent-light:hover {
-  background-color: var(--color-terracotta-light);
+  background-color: var(--color-black-medium);
 }
 
 .hover-bg-accent-extralight:hover {
-  background-color: var(--color-terracotta-extralight);
+  background-color: var(--color-gray-background);
 }
 
 /* Scale Hover Effects */
@@ -131,14 +131,14 @@
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: var(--color-teal);
+  background-color: var(--color-black);
   transform: scaleX(0);
   transform-origin: bottom right;
   transition: transform 0.3s ease-out;
 }
 
 .hover-link:hover {
-  color: var(--color-teal);
+  color: var(--color-black);
 }
 
 .hover-link:hover::after {
@@ -146,19 +146,19 @@
   transform-origin: bottom left;
 }
 
-/* Active/Pressed States */
+/* Active/Pressed States - Monochromatic System */
 .active-primary:active {
-  background-color: var(--color-teal-dark);
+  background-color: var(--color-black);
   transform: translateY(1px);
 }
 
 .active-secondary:active {
-  background-color: var(--color-sage-dark);
+  background-color: var(--color-black-dark);
   transform: translateY(1px);
 }
 
 .active-accent:active {
-  background-color: var(--color-terracotta-dark);
+  background-color: var(--color-black);
   transform: translateY(1px);
 }
 

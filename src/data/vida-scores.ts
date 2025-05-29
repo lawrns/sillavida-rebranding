@@ -20,8 +20,8 @@ import {
 /**
  * Calculate a comfort score based on chair properties
  * 
- * @param chair The chair to calculate the score for
- * @returns A comfort score object
+ * @param {Chair} chair - The chair to calculate the score for
+ * @returns {ComfortScore} A comfort score object
  */
 function calculateComfortScore(chair: Chair): ComfortScore {
   // Base scores on chair features and benefit categories
@@ -108,8 +108,8 @@ function calculatePostureScore(chair: Chair): PostureScore {
 /**
  * Calculate a productivity score based on chair properties
  * 
- * @param chair The chair to calculate the score for
- * @returns A productivity score object
+ * @param {Chair} chair - The chair to calculate the score for
+ * @returns {ProductivityScore} A productivity score object
  */
 function calculateProductivityScore(chair: Chair): ProductivityScore {
   // Base scores on chair features and benefit categories
@@ -151,8 +151,8 @@ function calculateProductivityScore(chair: Chair): ProductivityScore {
 /**
  * Calculate a durability score based on chair properties
  * 
- * @param chair The chair to calculate the score for
- * @returns A durability score object
+ * @param {Chair} chair - The chair to calculate the score for
+ * @returns {DurabilityScore} A durability score object
  */
 function calculateDurabilityScore(chair: Chair): DurabilityScore {
   // Base scores on chair features, price, and benefit categories

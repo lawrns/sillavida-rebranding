@@ -7,6 +7,7 @@
 
 import { getJudgeMeGlobal, JudgeMeWidgetType, JudgeMeWidgetConfig } from './types';
 import { isJudgeMeReady, initializeScript } from './scriptLoader';
+import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
 
 /**
  * Internal function to ensure Judge.me is initialized before attempting to render widgets
@@ -71,7 +72,11 @@ export async function renderReviewWidget(
     
     const targetElement = document.querySelector(elementSelector);
     if (!targetElement) {
-      console.error(`Target element not found: ${elementSelector}`);
+      errorHandler.createError('SYSTEM_ERROR', {
+        severity: ErrorSeverity.LOW,
+        message: `Target element not found: ${elementSelector}`,
+        userMessage: 'No se pudo cargar el componente de reseñas'
+      }, { component: 'JudgeMeWidgets', action: 'renderWidget' });
       return false;
     }
     
@@ -110,7 +115,11 @@ export async function renderStarRating(
     
     const targetElement = document.querySelector(elementSelector);
     if (!targetElement) {
-      console.error(`Target element not found: ${elementSelector}`);
+      errorHandler.createError('SYSTEM_ERROR', {
+        severity: ErrorSeverity.LOW,
+        message: `Target element not found: ${elementSelector}`,
+        userMessage: 'No se pudo cargar el componente de reseñas'
+      }, { component: 'JudgeMeWidgets', action: 'renderWidget' });
       return false;
     }
     
@@ -149,7 +158,11 @@ export async function renderReviewsTab(
     
     const tabContentElement = document.querySelector(tabContentSelector);
     if (!tabContentElement) {
-      console.error(`Target tab content element not found: ${tabContentSelector}`);
+      errorHandler.createError('SYSTEM_ERROR', {
+        severity: ErrorSeverity.LOW,
+        message: `Target tab content element not found: ${tabContentSelector}`,
+        userMessage: 'No se pudo cargar el contenido de reseñas en pestañas'
+      }, { component: 'JudgeMeWidgets', action: 'renderTabWidget' });
       return false;
     }
     

@@ -9,11 +9,12 @@ import type { ShopifyProduct } from '../types/shopify';
 import ProductCard from '../components/ProductCard';
 import { Chair } from '../data/chairs';
 import { Helmet } from 'react-helmet';
+import { logger } from '../utils/logger';
 
 const CartPage: React.FC = () => {
-  const { 
-    cartItems, 
-    cartTotal, 
+  const {
+    cartItems,
+    cartTotal,
     cartCount,
     updateItem,
     removeItem,
@@ -26,7 +27,7 @@ const CartPage: React.FC = () => {
   // Helper function to map Shopify Product to Chair structure (similar to SearchPage)
   const mapProductToChair = (product: ShopifyProduct): Chair => {
     return {
-      id: product.handle, 
+      id: product.handle,
       name: product.title,
       description: product.description || 'No description available.',
       price: parseFloat(product.priceRange.minVariantPrice.amount),
@@ -46,7 +47,7 @@ const CartPage: React.FC = () => {
         setLoadingRecommendations(true);
         try {
           // Fetch e.g., 4 featured products
-          const products = await getFeaturedProducts({ limit: 4 }); 
+          const products = await getFeaturedProducts({ limit: 4 });
           setRecommendedProducts(products);
         } catch (error) {
           console.error("Error fetching recommended products:", error);
@@ -87,18 +88,18 @@ const CartPage: React.FC = () => {
         <title>Carrito de Compras | Silla Vida</title>
         <meta name="description" content="Revisa los productos en tu carrito de compras y procede al pago." />
       </Helmet>
-      
+
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 text-black">Carrito de Compras</h1>
-        
+
         {cartCount === 0 ? (
-          <motion.div 
+          <motion.div
             className="bg-white rounded-md shadow-md p-6 sm:p-8 text-center border border-neutral-100"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <motion.div 
+            <motion.div
               className="flex flex-col items-center justify-center py-8 sm:py-12"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -111,7 +112,7 @@ const CartPage: React.FC = () => {
               >
                 <ShoppingBag className="h-16 w-16 sm:h-24 sm:w-24 text-neutral-300" />
               </motion.div>
-              <motion.p 
+              <motion.p
                 className="mt-6 text-black text-lg sm:text-xl font-medium"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -119,7 +120,7 @@ const CartPage: React.FC = () => {
               >
                 Tu carrito está vacío
               </motion.p>
-              <motion.p 
+              <motion.p
                 className="mt-2 text-neutral-500 max-w-md mx-auto"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -136,7 +137,7 @@ const CartPage: React.FC = () => {
               >
                 <Link
                   to="/"
-                  className="mt-8 bg-[#222429] text-white py-3 px-6 rounded-md hover:bg-black inline-flex items-center font-medium shadow-sm"
+                  className="mt-8 bg-[#000000] text-white py-3 px-6 rounded-md hover:bg-black inline-flex items-center font-medium shadow-sm"
                   aria-label="Continuar comprando"
                 >
                   <ArrowLeft className="h-5 w-5 mr-2" />
@@ -144,10 +145,10 @@ const CartPage: React.FC = () => {
                 </Link>
               </motion.div>
             </motion.div>
-            
+
             {/* Enhanced Recommended Products Section */}
             {recommendedProducts.length > 0 ? (
-              <motion.div 
+              <motion.div
                 className="mt-12"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -171,12 +172,12 @@ const CartPage: React.FC = () => {
                 </div>
               </motion.div>
             ) : loadingRecommendations ? (
-              <motion.div 
+              <motion.div
                 className="mt-12 flex justify-center items-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <motion.div 
+                <motion.div
                   className="w-10 h-10 border-4 border-neutral-200 border-t-accent rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -187,7 +188,7 @@ const CartPage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Cart Items with animations */}
-            <motion.div 
+            <motion.div
               className="lg:col-span-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -197,7 +198,7 @@ const CartPage: React.FC = () => {
                 <div className="p-6 border-b border-neutral-200">
                   <h2 className="text-xl font-semibold text-black">Productos ({cartCount})</h2>
                 </div>
-                
+
                 <ul className="divide-y divide-neutral-200">
                   {cartItems.map((item) => {
                     const price = parseFloat(item.price.amount);
@@ -209,14 +210,14 @@ const CartPage: React.FC = () => {
                       style: 'currency',
                       currency: item.price.currencyCode
                     });
-                    
+
                     return (
                       <li key={item.id} className="p-6 flex flex-col sm:flex-row">
                         <div className="flex-shrink-0 w-full sm:w-32 h-32 bg-neutral-50 rounded-md overflow-hidden mb-4 sm:mb-0 border border-neutral-100">
                           {/* Display product image with fallback to placeholder */}
                           {item.imageUrl ? (
                             <div className="w-full h-full relative">
-                              <img 
+                              <img
                                 src={item.imageUrl}
                                 alt={item.productTitle || item.title}
                                 className="w-full h-full object-cover"
@@ -233,7 +234,7 @@ const CartPage: React.FC = () => {
                           ) : (
                             // Try to load image based on variant ID as fallback
                             <div className="w-full h-full relative">
-                              <img 
+                              <img
                                 src={`https://${import.meta.env.VITE_SHOPIFY_STORE_DOMAIN}/cdn/shop/products/${item.merchandiseId.split('/').pop()}.jpg`}
                                 alt={item.productTitle || item.title}
                                 className="w-full h-full object-cover"
@@ -265,10 +266,10 @@ const CartPage: React.FC = () => {
                               Precio unitario: {formattedPrice}
                             </p>
                           </div>
-                          
+
                           <div className="mt-4 flex justify-between items-center">
                             <div className="flex items-center border border-neutral-200 rounded-md">
-                              <button 
+                              <button
                                 onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isLoading}
                                 className="p-2 text-neutral-600 hover:text-accent transition-colors"
@@ -278,7 +279,7 @@ const CartPage: React.FC = () => {
                               <span className="px-4 py-2 min-w-[40px] text-center text-black">
                                 {item.quantity}
                               </span>
-                              <button 
+                              <button
                                 onClick={() => updateItem(item.id, item.quantity + 1)}
                                 disabled={isLoading}
                                 className="p-2 text-neutral-600 hover:text-accent transition-colors"
@@ -302,7 +303,7 @@ const CartPage: React.FC = () => {
                     );
                   })}
                 </ul>
-                
+
                 <div className="p-6 border-t border-neutral-200">
                   <Link
                     to="/"
@@ -314,9 +315,9 @@ const CartPage: React.FC = () => {
                 </div>
               </div>
             </motion.div>
-            
+
             {/* Order Summary */}
-            <motion.div 
+            <motion.div
               className="lg:col-span-1"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -324,13 +325,13 @@ const CartPage: React.FC = () => {
             >
               <div className="bg-white rounded-md shadow-md p-6 sticky top-6 border border-neutral-100">
                 <h2 className="text-xl font-semibold mb-6 text-black">Resumen de la Orden</h2>
-                
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
                     <p className="text-neutral-600">Subtotal</p>
                     <p className="font-medium text-accent">{cartTotal}</p>
                   </div>
-                  
+
                   {/* Free shipping threshold section */}
                   {cartItems.length > 0 && (
                     <div className="py-2">
@@ -353,21 +354,21 @@ const CartPage: React.FC = () => {
                                 try {
                                   return Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100).toFixed(0) + '%';
                                 } catch (e) {
-                                  console.warn('[CartPage] Error calculating shipping progress percentage:', e);
+                                  logger.warn('Error calculating shipping progress percentage', { component: 'CartPage', action: 'shippingProgress', data: e });
                                   return '0%';
                                 }
                               })()}
                             </span>
                           </div>
                           <div className="bg-neutral-100 rounded-full h-2.5 mb-2">
-                            <div 
-                              className="bg-accent h-2.5 rounded-full" 
-                              style={{ 
+                            <div
+                              className="bg-accent h-2.5 rounded-full"
+                              style={{
                                 width: (() => {
                                   try {
                                     return `${Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100)}%`;
                                   } catch (e) {
-                                    console.warn('[CartPage] Error calculating shipping progress width:', e);
+                                    logger.warn('Error calculating shipping progress width', { component: 'CartPage', action: 'shippingProgress', data: e });
                                     return '0%';
                                   }
                                 })()
@@ -384,7 +385,7 @@ const CartPage: React.FC = () => {
                                     currency: 'MXN'
                                   });
                                 } catch (e) {
-                                  console.warn('[CartPage] Error calculating remaining amount:', e);
+                                  logger.warn('Error calculating remaining amount', { component: 'CartPage', action: 'shippingProgress', data: e });
                                   return '$10,000.00';
                                 }
                               })()}
@@ -395,7 +396,7 @@ const CartPage: React.FC = () => {
                       )}
                     </div>
                   )}
-                  
+
                   <div className="flex justify-between">
                     <p className="text-neutral-600">Envío</p>
                     {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
@@ -409,7 +410,7 @@ const CartPage: React.FC = () => {
                     <p className="font-medium text-black">Calculado al finalizar</p>
                   </div>
                 </div>
-                
+
                 <div className="border-t border-neutral-200 pt-4 mb-6">
                   <div className="flex justify-between text-lg font-semibold">
                     <p className="text-black">Total</p>
@@ -419,7 +420,7 @@ const CartPage: React.FC = () => {
                     Impuestos incluidos. El envío se calcula en el siguiente paso.
                   </p>
                 </div>
-                
+
                 <motion.button
                   onClick={handleCheckout}
                   disabled={isLoading}
@@ -432,7 +433,7 @@ const CartPage: React.FC = () => {
                 >
                   {isLoading ? (
                     <>
-                      <motion.div 
+                      <motion.div
                         className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -443,16 +444,16 @@ const CartPage: React.FC = () => {
                     'Finalizar Compra'
                   )}
                 </motion.button>
-                
+
                 {/* Trust Indicators */}
                 <div className="mt-8">
-                  <TrustIndicatorGroup 
+                  <TrustIndicatorGroup
                     title="Invierte en tu bienestar con confianza"
-                    types={['warranty', 'shipping', 'payment']} 
-                    layout="vertical" 
-                    size="medium" 
+                    types={['warranty', 'shipping', 'payment']}
+                    layout="vertical"
+                    size="medium"
                   />
-                  
+
                   {/* Payment methods logos */}
                   <div className="mt-6 flex justify-center gap-3">
                     <img src="/images/visa.png" alt="Visa" className="h-6" />

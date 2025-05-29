@@ -48,7 +48,7 @@ export class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Dynamic import error:', error, errorInfo);
+    // Dynamic import error caught
   }
 
   render() {

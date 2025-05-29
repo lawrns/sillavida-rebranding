@@ -70,7 +70,6 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
         
         setLoading(false);
       } catch (err) {
-        console.error('Error loading Judge.me script:', err);
         setError(err instanceof Error ? err : new Error(String(err)));
         setLoading(false);
       }
@@ -105,7 +104,6 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
       
       setLoading(false);
     } catch (err) {
-      console.error('Error loading Judge.me script:', err);
       setError(err instanceof Error ? err : new Error(String(err)));
       setLoading(false);
     }
@@ -123,7 +121,6 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
     }
 
     if (!window.jdgm) {
-      console.error('Judge.me is not available');
       return 0;
     }
 
@@ -134,7 +131,6 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
           resolve(count || 0);
         });
       } catch (error) {
-        console.error('Error getting review count:', error);
         resolve(0);
       }
     });
@@ -147,7 +143,6 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
     }
 
     if (!window.jdgm) {
-      console.error('Judge.me is not available');
       return 0;
     }
 
@@ -158,7 +153,6 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
           resolve(rating || 0);
         });
       } catch (error) {
-        console.error('Error getting average rating:', error);
         resolve(0);
       }
     });

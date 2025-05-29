@@ -12,12 +12,12 @@
 
 .form-input:focus {
   outline: none;
-  border-color: var(--color-teal);
-  box-shadow: 0 0 0 3px var(--color-teal-extralight);
+  border-color: var(--color-black);
+  box-shadow: 0 0 0 3px var(--color-gray-background);
 }
 
 .form-input:hover:not(:focus):not(:disabled) {
-  border-color: var(--color-teal-light);
+  border-color: var(--color-black-medium);
 }
 
 .form-input:disabled {
@@ -53,12 +53,12 @@
 
 .form-textarea:focus {
   outline: none;
-  border-color: var(--color-teal);
-  box-shadow: 0 0 0 3px var(--color-teal-extralight);
+  border-color: var(--color-black);
+  box-shadow: 0 0 0 3px var(--color-gray-background);
 }
 
 .form-textarea:hover:not(:focus):not(:disabled) {
-  border-color: var(--color-teal-light);
+  border-color: var(--color-black-medium);
 }
 
 .form-textarea:disabled {
@@ -97,12 +97,12 @@
 
 .form-select:focus {
   outline: none;
-  border-color: var(--color-teal);
-  box-shadow: 0 0 0 3px var(--color-teal-extralight);
+  border-color: var(--color-black);
+  box-shadow: 0 0 0 3px var(--color-gray-background);
 }
 
 .form-select:hover:not(:focus):not(:disabled) {
-  border-color: var(--color-teal-light);
+  border-color: var(--color-black-medium);
 }
 
 .form-select:disabled {
@@ -140,8 +140,8 @@
 }
 
 .form-checkbox:checked {
-  background-color: var(--color-teal);
-  border-color: var(--color-teal);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .form-checkbox:checked::after {
@@ -158,11 +158,11 @@
 
 .form-checkbox:focus {
   outline: none;
-  box-shadow: 0 0 0 3px var(--color-teal-extralight);
+  box-shadow: 0 0 0 3px var(--color-gray-background);
 }
 
 .form-checkbox:hover:not(:checked):not(:disabled) {
-  border-color: var(--color-teal-light);
+  border-color: var(--color-black-medium);
 }
 
 .form-checkbox:disabled {
@@ -172,7 +172,7 @@
 }
 
 .form-checkbox:checked:disabled {
-  background-color: var(--color-teal-extralight);
+  background-color: var(--color-gray-background);
 }
 
 /* Radio Button */
@@ -195,7 +195,7 @@
 }
 
 .form-radio:checked {
-  border-color: var(--color-teal);
+  border-color: var(--color-black);
 }
 
 .form-radio:checked::after {
@@ -206,16 +206,16 @@
   width: 0.6rem;
   height: 0.6rem;
   border-radius: 50%;
-  background-color: var(--color-teal);
+  background-color: var(--color-black);
 }
 
 .form-radio:focus {
   outline: none;
-  box-shadow: 0 0 0 3px var(--color-teal-extralight);
+  box-shadow: 0 0 0 3px var(--color-gray-background);
 }
 
 .form-radio:hover:not(:checked):not(:disabled) {
-  border-color: var(--color-teal-light);
+  border-color: var(--color-black-medium);
 }
 
 .form-radio:disabled {

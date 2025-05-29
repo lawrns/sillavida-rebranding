@@ -8,6 +8,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { loadJudgeMeScript } from '../../lib/judgeMe';
+import { errorHandler } from '../../utils/errorHandler';
 
 interface ReactSafeJudgeMeWidgetProps {
   productId: string | number;
@@ -117,20 +118,25 @@ const ReactSafeJudgeMeWidget: React.FC<ReactSafeJudgeMeWidgetProps> = ({
             }
           }, 0);
         } else {
-          console.warn('Judge.me widget render function not available');
           if (isMounted) {
-            const err = new Error('Judge.me widget render function not available');
+            const err = errorHandler.createError('SYSTEM_ERROR', {
+              message: 'Judge.me widget render function not available',
+              userMessage: 'No se pudo cargar el sistema de reseñas'
+            }, { component: 'ReactSafeJudgeMeWidget', action: 'renderWidget' });
             setError(err);
             if (onError) onError(err);
           }
         }
       } catch (err) {
-        console.error('Error rendering Judge.me widget:', err);
-        if (isMounted) {
-          const error = err instanceof Error ? err : new Error(String(err));
-          setError(error);
-          if (onError) onError(error);
-        }
+        errorHandler.handleError(err as Error, {
+          component: 'ReactSafeJudgeMeWidget',
+          action: 'renderWidget'
+        }).then(handledError => {
+          if (isMounted) {
+            setError(handledError);
+            if (onError) onError(handledError);
+          }
+        });
       }
     };
     

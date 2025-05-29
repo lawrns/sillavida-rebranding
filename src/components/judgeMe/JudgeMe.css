@@ -1,8 +1,11 @@
 /**
- * Judge.me Components Styling
- * 
- * Custom styling for Judge.me widgets to match SillaVida's design system.
- * Using the standardized colors: #111827 for backgrounds and #4b7cae for interactive elements.
+ * Judge.me Components Styling - Monochromatic System
+ *
+ * Custom styling for Judge.me widgets to match SillaVida's monochromatic design system.
+ * Using pure black (#000000) for primary elements and grayscale for secondary elements.
+ *
+ * Migration: Transformed from blue system (#4b7cae, #111827) to monochromatic
+ * Date: 2025-05-27T13:25:00
  */
 
 /* Judge.me Star Rating Styles */
@@ -12,7 +15,7 @@
 }
 
 .judge-me-stars-container .jdgm-star {
-  color: #4b7cae !important;
+  color: #000000 !important; /* Pure black instead of #4b7cae */
 }
 
 .judge-me-stars-container .jdgm-prev-badge__text {
@@ -35,7 +38,7 @@
 }
 
 .judge-me-reviews-container .jdgm-rev__header {
-  border-color: rgba(75, 124, 174, 0.3) !important;
+  border-color: rgba(0, 0, 0, 0.3) !important; /* Black with opacity instead of blue */
 }
 
 .judge-me-reviews-container .jdgm-rev__author {
@@ -52,18 +55,18 @@
 }
 
 .judge-me-reviews-container .jdgm-write-rev-link {
-  color: #4b7cae !important;
+  color: #000000 !important; /* Pure black instead of #4b7cae */
   font-weight: 500 !important;
   transition: color 0.2s ease;
 }
 
 .judge-me-reviews-container .jdgm-write-rev-link:hover {
-  color: rgba(75, 124, 174, 0.8) !important;
+  color: #333333 !important; /* Dark gray instead of blue */
   text-decoration: none !important;
 }
 
 .judge-me-reviews-container .jdgm-rev__buyer-badge {
-  background-color: #4b7cae !important;
+  background-color: #000000 !important; /* Pure black instead of #4b7cae */
 }
 
 /* Judge.me Loading States */
@@ -97,7 +100,7 @@
 }
 
 .judge-me-empty .write-review-btn {
-  background-color: #4b7cae;
+  background-color: #000000; /* Pure black instead of #4b7cae */
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
@@ -106,7 +109,7 @@
 }
 
 .judge-me-empty .write-review-btn:hover {
-  background-color: #3a6b9d;
+  background-color: #333333; /* Dark gray instead of #3a6b9d */
 }
 
 /* Reviews Carousel Styling */
@@ -126,14 +129,14 @@
 }
 
 .jdgm-carousel-title {
-  color: #111827;
+  color: #000000; /* Pure black instead of #111827 */
   text-align: center;
   margin-bottom: 2rem;
   font-family: 'Montserrat', sans-serif;
 }
 
 .jdgm-all-reviews-rating-wrapper {
-  color: #4b7cae;
+  color: #000000; /* Pure black instead of #4b7cae */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,7 +170,7 @@
 }
 
 .judge-me-empty .write-review-btn:hover {
-  background-color: rgba(75, 124, 174, 0.9);
+  background-color: #333333; /* Dark gray instead of blue */
 }
 
 /* Preview Badge Styling */
@@ -184,7 +187,7 @@
 
 .jdgm-prev-badge__stars {
   margin-right: 0.25rem !important;
-  color: #4b7cae !important;
+  color: #000000 !important; /* Pure black instead of #4b7cae */
 }
 
 .jdgm-prev-badge__text {
@@ -225,7 +228,7 @@
 }
 
 .jdgm-review-widget .jdgm-rev__header {
-  border-color: rgba(75, 124, 174, 0.3) !important;
+  border-color: rgba(0, 0, 0, 0.3) !important; /* Black with opacity instead of blue */
 }
 
 .jdgm-review-widget .jdgm-rev__author {
@@ -242,12 +245,12 @@
 }
 
 .jdgm-review-widget .jdgm-write-rev-link {
-  color: #4b7cae !important;
+  color: #000000 !important; /* Pure black instead of #4b7cae */
   font-weight: 500 !important;
   transition: color 0.2s ease;
 }
 
 .jdgm-review-widget .jdgm-write-rev-link:hover {
-  color: rgba(75, 124, 174, 0.8) !important;
+  color: #333333 !important; /* Dark gray instead of blue */
   text-decoration: none !important;
 }

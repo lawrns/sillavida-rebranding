@@ -27,9 +27,9 @@
   line-height: 1.6;
 }
 
-/* Star ratings styling */
+/* Star ratings styling - Monochromatic */
 .jdgm-star {
-  color: var(--sv-color-highlight) !important; /* SillaVida terracotta */
+  color: var(--color-black-pure) !important; /* Pure black instead of terracotta */
 }
 
 .jdgm-star.jdgm-star--empty {
@@ -166,15 +166,15 @@
   .jdgm-rev-widg {
     padding: 1rem;
   }
-  
+
   .jdgm-form-wrapper {
     padding: 1rem;
   }
-  
+
   .experiencias-vida-header h2 {
     font-size: 1.5rem;
   }
-  
+
   .jdgm-form__title {
     font-size: 1.25rem;
   }
@@ -184,16 +184,16 @@
   .experiencias-vida-header h2 {
     font-size: 1.25rem;
   }
-  
+
   .experiencias-vida-header p {
     font-size: 0.9rem;
   }
-  
-  .jdgm-rev__author, 
+
+  .jdgm-rev__author,
   .jdgm-rev__title {
     font-size: 0.9rem;
   }
-  
+
   .jdgm-rev__body {
     font-size: 0.85rem;
   }

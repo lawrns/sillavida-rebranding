@@ -5,6 +5,8 @@
  * Handles script loading, initialization, and data retrieval.
  */
 
+import { errorHandler, ErrorCategory, ErrorSeverity } from '../utils/errorHandler';
+
 // URL for Judge.me script
 const JUDGEME_CDN_URL = 'https://cdn.judge.me/widget_v3/init.js';
 const JUDGEME_ATTRIBUTES = "async data-api-host='https://judge.me'";
@@ -31,6 +33,7 @@ export interface JudgeMeGlobal {
 
 /**
  * Check if Judge.me is already loaded and ready
+ * @returns {boolean} True if Judge.me is loaded and available
  */
 export const isJudgeMeReady = (): boolean => {
   return typeof (window as any).jdgm !== 'undefined' && (window as any).jdgm !== null;
@@ -38,6 +41,10 @@ export const isJudgeMeReady = (): boolean => {
 
 /**
  * Get current script loading status
+ * @returns {Object} Script loading status object
+ * @returns {boolean} returns.loading - Whether script is currently loading
+ * @returns {boolean} returns.loaded - Whether script is loaded
+ * @returns {Error|null} returns.error - Any loading errors
  */
 export const getScriptStatus = () => {
   return { ...scriptStatus };
@@ -45,7 +52,7 @@ export const getScriptStatus = () => {
 
 /**
  * Initialize the Judge.me script
- * @returns Promise that resolves when the script is loaded
+ * @returns {Promise<void>} Promise that resolves when the script is loaded
  */
 export const initializeScript = (): Promise<void> => {
   // If already loaded, resolve immediately
@@ -135,6 +142,8 @@ export const initializeScript = (): Promise<void> => {
 
 /**
  * Get the number of reviews for a product
+ * @param {string|number} productId - The product ID to get review count for
+ * @returns {Promise<number>} Number of reviews for the product
  */
 export const getProductReviewCount = async (productId: string | number): Promise<number> => {
   if (!isJudgeMeReady()) {
@@ -162,13 +171,18 @@ export const getProductReviewCount = async (productId: string | number): Promise
     
     return 0;
   } catch (error) {
-    console.error('Error getting review count:', error);
+    errorHandler.handleError(error as Error, {
+      component: 'JudgeMeService',
+      action: 'getProductReviewCount'
+    });
     return 0;
   }
 };
 
 /**
  * Get the average rating for a product
+ * @param {string|number} productId - The product ID to get rating for
+ * @returns {Promise<number>} Average rating (0-5) for the product
  */
 export const getAverageRating = async (productId: string | number): Promise<number> => {
   if (!isJudgeMeReady()) {
@@ -193,7 +207,10 @@ export const getAverageRating = async (productId: string | number): Promise<numb
     
     return 0;
   } catch (error) {
-    console.error('Error getting average rating:', error);
+    errorHandler.handleError(error as Error, {
+      component: 'JudgeMeService', 
+      action: 'getAverageRating'
+    });
     return 0;
   }
 };

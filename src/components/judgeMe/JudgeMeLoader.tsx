@@ -24,7 +24,8 @@ const JudgeMeLoader: React.FC<JudgeMeLoaderProps> = ({ productId, children }) =>
         console.error = function(msg, ...args) {
           if (
             msg === 'Error getting average rating:' ||
-            msg === 'Error getting review count:'
+            msg === 'Error getting review count:' ||
+            typeof msg === 'string' && msg.includes('Judge.me')
           ) {
             // Suppress these specific errors
             console.log('Judge.me info: No reviews or ratings found, this is normal for new stores');
@@ -42,16 +43,28 @@ const JudgeMeLoader: React.FC<JudgeMeLoaderProps> = ({ productId, children }) =>
         }, 1000);
       } else {
         console.warn('Judge.me global object not found or renderWidgets not available');
+        
+        // Try again in a moment in case script is still loading
+        setTimeout(() => {
+          if (window.jdgm && typeof window.jdgm.renderWidgets === 'function') {
+            console.log('Judge.me became available, rendering widgets now');
+            window.jdgm.renderWidgets();
+          }
+        }, 2000);
       }
     };
     
-    // Render widgets on mount with a slight delay to ensure DOM is ready
-    const timer = setTimeout(() => {
-      renderWidgets();
-    }, 500);
+    // Render widgets on mount with multiple attempts
+    const timer1 = setTimeout(() => renderWidgets(), 500);
+    const timer2 = setTimeout(() => renderWidgets(), 2000);
+    const timer3 = setTimeout(() => renderWidgets(), 5000);
     
     // Clean up
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
   }, [productId]); // Re-trigger when product ID changes
   
   return <>{children}</>;

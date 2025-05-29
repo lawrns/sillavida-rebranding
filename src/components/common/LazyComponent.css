@@ -4,16 +4,16 @@
   justify-content: center;
   min-height: 100px;
   width: 100%;
-  background-color: var(--sv-color-secondary-light, #f5f0e8);
+  background-color: var(--color-gray-background, #F5F5F5); /* Light gray instead of beige */
   border-radius: 4px;
 }
 
 .lazy-component-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(30, 89, 89, 0.1);
+  border: 3px solid rgba(0, 0, 0, 0.1); /* Black with low opacity instead of teal */
   border-radius: 50%;
-  border-top-color: var(--sv-color-primary, #1E5959);
+  border-top-color: var(--color-black, #000000); /* Pure black instead of teal */
   animation: spin 1s ease-in-out infinite;
 }
 

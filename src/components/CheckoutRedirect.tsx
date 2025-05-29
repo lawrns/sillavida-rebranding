@@ -1,10 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion'; // Import framer-motion
+import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { ShoppingBag, ArrowRight, Loader, CheckCircle, User, UserX } from 'lucide-react';
 import TrustIndicatorGroup from './TrustIndicatorGroup';
 import { Helmet } from 'react-helmet';
+
+/**
+ * CheckoutRedirect - A comprehensive checkout flow component that manages the transition 
+ * from cart to Shopify's secure checkout page.
+ * 
+ * Features:
+ * - Checkout method selection (guest vs account)
+ * - Loading states with animated transitions
+ * - Error handling with retry functionality
+ * - Trust indicators and payment method display
+ * - Automatic redirect to Shopify checkout
+ * 
+ * State Management:
+ * - 'loading': Preparing checkout session
+ * - 'checkout-options': User selects checkout method
+ * - 'redirecting': Transitioning to Shopify checkout
+ * - 'error': Handling checkout failures
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <CheckoutRedirect />
+ * ```
+ */
 
 const CheckoutRedirect: React.FC = () => {
   const { getCheckout, cartTotal, cartCount, isGuestCheckout, setGuestCheckout } = useCart();
@@ -13,46 +37,58 @@ const CheckoutRedirect: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [checkoutUrl, setCheckoutUrl] = useState<string>('');
 
-  // Function to proceed with checkout
+  /**
+   * Initiates the checkout process by creating a Shopify checkout session.
+   * Handles return URL configuration and error management.
+   * 
+   * @async
+   * @function
+   * @throws {Error} When checkout URL cannot be obtained
+   */
   const proceedToCheckout = async () => {
     try {
       setStatus('loading');
-      
+
       // Get the base URL for the return URL
       const baseUrl = window.location.origin;
       const returnUrl = `${baseUrl}/order-confirmation`;
-      
+
       // Get checkout URL
       const url = await getCheckout();
-      
+
       if (!url) {
         throw new Error('No se pudo obtener la URL de pago');
       }
-      
+
       // Add return_to parameter to the checkout URL
       const checkoutUrlWithReturn = `${url}&return_to=${encodeURIComponent(returnUrl)}`;
-      
+
       setCheckoutUrl(checkoutUrlWithReturn);
       setStatus('redirecting');
-      
+
       // Short delay before redirecting to show the transition screen
       setTimeout(() => {
         window.location.href = checkoutUrlWithReturn;
       }, 1500);
     } catch (error) {
-      console.error('Error redirecting to checkout:', error);
       setStatus('error');
       setErrorMessage(error instanceof Error ? error.message : 'Error desconocido');
     }
   };
 
-  // Handle guest checkout selection
+  /**
+   * Configures cart for guest checkout and proceeds to checkout.
+   * Sets guest checkout flag in cart context for proper Shopify handling.
+   */
   const handleGuestCheckout = () => {
     setGuestCheckout(true);
     proceedToCheckout();
   };
 
-  // Handle account checkout selection
+  /**
+   * Configures cart for account-based checkout and proceeds to checkout.
+   * Clears guest checkout flag to enable account-based flow.
+   */
   const handleAccountCheckout = () => {
     setGuestCheckout(false);
     proceedToCheckout();
@@ -74,9 +110,9 @@ const CheckoutRedirect: React.FC = () => {
       <Helmet>
         <title>Redirigiendo al Pago | Silla Vida</title>
       </Helmet>
-      
+
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
-        <motion.div 
+        <motion.div
           className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -91,18 +127,18 @@ const CheckoutRedirect: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.div 
+                <motion.div
                   className="flex justify-center mb-6"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
                   <motion.div
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.05, 1],
-                      color: ["#dc2626", "#ef4444", "#dc2626"] 
+                      color: ["#000000", "#333333", "#000000"]
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
@@ -112,7 +148,7 @@ const CheckoutRedirect: React.FC = () => {
                     <ShoppingBag className="h-16 w-16" />
                   </motion.div>
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -122,8 +158,8 @@ const CheckoutRedirect: React.FC = () => {
                   <p className="text-gray-600 mb-2">Total: {cartTotal}</p>
                   <p className="text-gray-600 mb-6">Elige cómo quieres continuar con tu compra</p>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   className="flex flex-col space-y-4 mb-8"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -138,7 +174,7 @@ const CheckoutRedirect: React.FC = () => {
                     <User className="h-5 w-5 mr-2" />
                     <span className="font-medium">Pagar con mi cuenta</span>
                   </motion.button>
-                  
+
                   <motion.button
                     onClick={handleGuestCheckout}
                     className="w-full bg-gray-100 text-gray-800 py-4 px-4 rounded-lg hover:bg-gray-200 flex items-center justify-center"
@@ -149,7 +185,7 @@ const CheckoutRedirect: React.FC = () => {
                     <span className="font-medium">Pagar como invitado</span>
                   </motion.button>
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -164,7 +200,7 @@ const CheckoutRedirect: React.FC = () => {
                 </motion.div>
               </motion.div>
             )}
-            
+
             {status === 'loading' && (
               <motion.div
                 key="loading"
@@ -173,28 +209,28 @@ const CheckoutRedirect: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.div 
+                <motion.div
                   className="flex justify-center mb-6"
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.05, 1],
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600"
                     animate={{ rotate: 360 }}
-                    transition={{ 
-                      duration: 1.5, 
-                      repeat: Infinity, 
-                      ease: "linear" 
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "linear"
                     }}
                   />
                 </motion.div>
-                <motion.h1 
+                <motion.h1
                   className="text-2xl font-bold mb-4"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -202,7 +238,7 @@ const CheckoutRedirect: React.FC = () => {
                 >
                   Preparando tu pedido
                 </motion.h1>
-                <motion.p 
+                <motion.p
                   className="text-gray-600 mb-2"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -210,7 +246,7 @@ const CheckoutRedirect: React.FC = () => {
                 >
                   Estamos preparando tu pedido para el pago.
                 </motion.p>
-                <motion.p 
+                <motion.p
                   className="text-gray-600"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -220,7 +256,7 @@ const CheckoutRedirect: React.FC = () => {
                 </motion.p>
               </motion.div>
             )}
-          
+
             {status === 'redirecting' && (
               <motion.div
                 key="redirecting"
@@ -229,28 +265,28 @@ const CheckoutRedirect: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.div 
+                <motion.div
                   className="flex justify-center mb-6"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
                   <motion.div
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.1, 1],
-                      color: ["#dc2626", "#ef4444", "#dc2626"] 
+                      color: ["#000000", "#333333", "#000000"]
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 2,
                       repeat: Infinity,
                       ease: "easeInOut"
                     }}
-                    className="text-red-600"
+                    className="text-black"
                   >
                     <CheckCircle className="h-16 w-16" />
                   </motion.div>
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -260,8 +296,8 @@ const CheckoutRedirect: React.FC = () => {
                   <p className="text-gray-600 mb-2">Total: {cartTotal}</p>
                   <p className="text-gray-600 mb-6">Redirigiendo a la página de pago seguro...</p>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   className="flex items-center justify-center text-red-600"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -277,22 +313,22 @@ const CheckoutRedirect: React.FC = () => {
                 </motion.div>
 
                 {/* Trust Indicators */}
-                <motion.div 
+                <motion.div
                   className="mt-8 border-t pt-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
                   <p className="text-base font-medium text-gray-800 mb-4">Invierte en tu bienestar con total tranquilidad</p>
-                  
+
                   {/* Trust Indicator Group */}
-                  <TrustIndicatorGroup 
-                    types={['warranty', 'payment']} 
-                    layout="grid" 
-                    size="small" 
+                  <TrustIndicatorGroup
+                    types={['warranty', 'payment']}
+                    layout="grid"
+                    size="small"
                     showDescription={false}
                   />
-                  
+
                   {/* Payment Methods */}
                   <p className="text-sm font-medium text-gray-700 mt-4 mb-3">Métodos de Pago Seguros</p>
                   <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
@@ -317,14 +353,14 @@ const CheckoutRedirect: React.FC = () => {
                       <span className="text-xs font-medium text-red-700">OXXO</span>
                     </div>
                   </div>
-                  
+
                   {/* Compromiso Vida Message */}
                   <p className="text-xs text-center text-gray-600 mt-4">
                     Nuestro Compromiso Vida va más allá de una simple venta. Estamos dedicados a apoyar tu inversión en bienestar.
                   </p>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   className="mt-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -332,9 +368,9 @@ const CheckoutRedirect: React.FC = () => {
                 >
                   <p className="text-sm text-gray-500">
                     Si no eres redirigido automáticamente,{' '}
-                    <motion.a 
-                      href={checkoutUrl} 
-                      className="text-red-600 hover:text-red-700 font-medium"
+                    <motion.a
+                      href={checkoutUrl}
+                      className="text-black hover:text-gray-700 font-medium"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -344,7 +380,7 @@ const CheckoutRedirect: React.FC = () => {
                 </motion.div>
               </motion.div>
             )}
-          
+
             {status === 'error' && (
               <motion.div
                 key="error"
@@ -353,15 +389,15 @@ const CheckoutRedirect: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.div 
+                <motion.div
                   className="flex justify-center mb-6 text-red-600"
                   initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ 
-                    scale: 1, 
-                    opacity: 1, 
-                    rotate: [0, 5, 0, -5, 0] 
+                  animate={{
+                    scale: 1,
+                    opacity: 1,
+                    rotate: [0, 5, 0, -5, 0]
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 0.5,
                     times: [0, 0.25, 0.5, 0.75, 1],
                     delay: 0.2
@@ -371,7 +407,7 @@ const CheckoutRedirect: React.FC = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -380,8 +416,8 @@ const CheckoutRedirect: React.FC = () => {
                   <h1 className="text-2xl font-bold mb-4">Ocurrió un error</h1>
                   <p className="text-gray-600 mb-6">{errorMessage || 'No se pudo procesar tu pedido. Por favor, inténtalo de nuevo.'}</p>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   className="flex flex-col space-y-4"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -396,7 +432,7 @@ const CheckoutRedirect: React.FC = () => {
                     <ArrowRight className="h-5 w-5 mr-2" />
                     Volver al carrito
                   </motion.button>
-                  
+
                   <motion.button
                     onClick={() => window.location.reload()}
                     className="w-full bg-gray-200 text-gray-800 py-3 px-4 rounded-md hover:bg-gray-300 flex items-center justify-center"

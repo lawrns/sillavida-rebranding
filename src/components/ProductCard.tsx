@@ -2,83 +2,78 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Chair } from '../data/chairs';
-import { useCart } from '../context/CartContext';
+import { useAddToCart } from '../hooks/useMinimalCart';
+import { useEventBus, createProductComponent } from '../hooks/useComponentComposition';
 import LazyImage from './LazyImage';
 import { PreviewBadge } from './judgeMe';
+import { handleProductError } from '../utils/errorHandler';
+import { getProductPriceDisplay } from '../utils/business/priceFormatter';
+import { generateVariantId, transformMockProduct } from '../utils/business/productTransformer';
 
-// Generate a stable Shopify-compatible mock variant ID from the chair ID
-// For demonstration purposes - generates a consistent test ID
-const generateVariantId = (chairId: string): string => {
-  // For testing purposes, generate a predictable ID based on the chair ID
-  // In a real implementation, this would be the actual Shopify variant ID
-  
-  // Use a fixed numeric ID based on the number of chairs we have
-  // This avoids errors with trying to reference non-existent Shopify variants
-  let mockId = "";
-  
-  // Map known chair IDs to fixed test variant IDs
-  // In a real implementation, this would come from the actual Shopify data
-  if (chairId === "ergonomic") mockId = "123456789";
-  else if (chairId === "executive") mockId = "234567890";
-  else if (chairId === "gamer") mockId = "345678901";
-  else if (chairId === "visitor") mockId = "456789012";
-  else if (chairId === "secretarial") mockId = "567890123";
-  else if (chairId === "gamer2") mockId = "678901234";
-  else if (chairId === "accessory") mockId = "789012345";
-  else {
-    // Generate a deterministic but consistent ID for any other chairs
-    mockId = chairId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0).toString();
-  }
-  
-  return `mock-variant-${mockId}`;
-};
+// Legacy function replaced by centralized utility
+// Now uses generateVariantId from productTransformer
 
 interface ProductCardProps {
   chair: Chair;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
-  const { addItem } = useCart();
+// Base ProductCard component with decoupled patterns
+const BaseProductCard: React.FC<ProductCardProps> = ({ chair }) => {
+  const { addToCart: addToCartMinimal, isLoading: cartLoading } = useAddToCart();
+  const eventBus = useEventBus();
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  // Combine local and cart loading states
+  const combinedLoading = isLoading || cartLoading;
+
+  // Use centralized price formatting
+  const priceDisplay = getProductPriceDisplay(
+    { amount: chair.price, currencyCode: 'MXN' },
+    chair.compareAtPrice ? { amount: chair.compareAtPrice, currencyCode: 'MXN' } : undefined
+  );
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation to product page
     e.stopPropagation(); // Stop event propagation
     
     setIsLoading(true);
+    
+    // Emit event for product tracking
+    eventBus.emit('product:addToCart:start', {
+      product_id: chair.id,
+      product_name: chair.name,
+      product_price: chair.price,
+      quantity: 1,
+      type: 'mock'
+    });
+    
     try {
-      // Generate a Shopify variant ID from the chair ID
-      const variantId = generateVariantId(chair.id);
+      // Generate a variant ID from the chair ID using centralized utility
+      const variantId = generateVariantId({ id: chair.id });
       
-      console.log(`[Cart] Adding item to cart: ${chair.name} (${chair.id})`);
-      console.log(`[Cart] Using mock variant ID: ${variantId}`);
-      
-      // Add the item to the cart with retry logic
-      let retryCount = 0;
-      const maxRetries = 2;
-      
-      while (retryCount <= maxRetries) {
-        try {
-          await addItem(variantId, 1);
-          console.log(`[Cart] Successfully added item to cart: ${chair.name}`);
-          break; // Success, exit the retry loop
-        } catch (retryError) {
-          retryCount++;
-          if (retryCount > maxRetries) {
-            throw retryError; // Rethrow the error after max retries
-          }
-          console.warn(`[Cart] Retry ${retryCount}/${maxRetries} adding to cart: ${chair.name}`);
-          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Exponential backoff
-        }
-      }
+      // Use the minimal cart interface
+      await addToCartMinimal(variantId, 1);
       
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
+      
+      // Emit success event
+      eventBus.emit('product:addToCart:success', {
+        product_id: chair.id,
+        variant_id: variantId,
+        type: 'mock'
+      });
     } catch (error) {
       console.error('Error adding to cart:', error);
-      // Show error message to user
-      alert(`Failed to add ${chair.name} to cart. Please try again.`);
+      // Use standardized error handling
+      await handleProductError(`Failed to add ${chair.name} to cart`, { component: 'ProductCard', action: 'addToCart' });
+      
+      // Emit error event
+      eventBus.emit('product:addToCart:error', {
+        product_id: chair.id,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        type: 'mock'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -110,24 +105,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
           <h3 className="font-heading font-medium text-sm mb-1 hover:text-black transition-colors product-title">{chair.name}</h3>
           
           <PreviewBadge 
-            productId={generateVariantId(chair.id).replace('mock-variant-', '')}
+            productId={generateVariantId({ id: chair.id }).replace('variant-', '')}
             containerClassName="mt-1 mb-1"
           />
           
           <div className="flex flex-col mb-2 mt-1">
             <div className="flex items-baseline gap-2">
               <p className="text-base font-heading font-bold text-black product-price">
-                ${chair.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+                {priceDisplay.price}
               </p>
-              {chair.compareAtPrice && chair.compareAtPrice > chair.price && (
+              {priceDisplay.isOnSale && priceDisplay.originalPrice && (
                 <p className="text-xs text-gray-500 line-through font-heading">
-                  ${chair.compareAtPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+                  {priceDisplay.originalPrice}
                 </p>
               )}
             </div>
-            {chair.compareAtPrice && chair.compareAtPrice > chair.price && (
+            {priceDisplay.isOnSale && priceDisplay.discount && (
               <p className="text-xs font-heading font-semibold text-red-500">
-                Ahorra {Math.round(100 - (chair.price / chair.compareAtPrice) * 100)}%
+                Ahorra {priceDisplay.discount}
               </p>
             )}
           </div>
@@ -135,15 +130,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
           <div className="flex gap-2 mt-2">
             <button
               onClick={handleAddToCart}
-              disabled={isLoading}
+              disabled={combinedLoading}
               className={`flex-1 py-2 px-3 rounded-sm text-white text-xs font-heading font-semibold tracking-wide ${
                 success 
                   ? 'bg-black/80 hover:bg-black/70' 
                   : 'bg-black hover:bg-black/90'
                 }`}
-              aria-label={isLoading ? 'Agregando al carrito' : success ? 'Agregado al carrito' : `Agregar ${chair.name} al carrito`}
+              aria-label={combinedLoading ? 'Agregando al carrito' : success ? 'Agregado al carrito' : `Agregar ${chair.name} al carrito`}
             >
-              {isLoading ? 'Añadir...' : success ? 'Añadido' : 'Comprar'}
+              {combinedLoading ? 'Añadir...' : success ? 'Añadido' : 'Comprar'}
             </button>
             
             <Link 
@@ -160,5 +155,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ chair }) => {
     </motion.div>
   );
 };
+
+// Create the composed ProductCard with dependency injection
+const ProductCard = createProductComponent(BaseProductCard);
 
 export default ProductCard;

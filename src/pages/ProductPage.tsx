@@ -14,7 +14,7 @@ const ProductPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const cartContext = useCart();
-  
+
   // References for widget containers
   const reviewContainerRef = useRef<HTMLDivElement>(null);
   const ugcGridRef = useRef<HTMLDivElement>(null);
@@ -24,10 +24,10 @@ const ProductPage: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       if (!handle) return;
-      
+
       setLoading(true);
       setError(null);
-      
+
       try {
         const productData = await getProduct(handle);
         console.log('Product data:', productData); // For debugging
@@ -43,7 +43,7 @@ const ProductPage: React.FC = () => {
 
     fetchProduct();
   }, [handle]);
-  
+
   // No need for manual reinitialization, our ReactSafeJudgeMeWidget handles this
 
   if (loading) {
@@ -93,19 +93,19 @@ const ProductPage: React.FC = () => {
       </Helmet>
 
       {/* Product Hero Section */}
-      <ProductHeroShowcase product={product} useCart={cartContext} />
+      <ProductHeroShowcase product={product} />
 
       {/* Judge.me Reviews Section */}
       <div className="max-w-7xl mx-auto px-4 my-12">
         <div className="bg-white text-black p-6 rounded-lg shadow-md">
-          <div className="mb-6 border-b border-[#4b7cae]/30 pb-4">
+          <div className="mb-6 border-b border-[#E5E5E5] pb-4">
             <h2 className="text-2xl font-semibold font-heading text-black">Opiniones de Nuestros Clientes</h2>
             <p className="text-sm mt-2 text-black/70">Lee lo que nuestros clientes opinan sobre este producto</p>
           </div>
           {/* Using the exact Judge.me Review Widget code */}
-          <div 
-            className="jdgm-widget jdgm-review-widget jdgm-outside-widget" 
-            data-id={product.id} 
+          <div
+            className="jdgm-widget jdgm-review-widget jdgm-outside-widget"
+            data-id={product.id}
             data-product-title={product.title}
             data-locale="es"
           ></div>

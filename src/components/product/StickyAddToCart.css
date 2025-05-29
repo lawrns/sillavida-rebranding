@@ -26,7 +26,7 @@
   overflow: hidden;
   margin-right: 12px;
   flex-shrink: 0;
-  background-color: var(--color-beige-extralight);
+  background-color: var(--color-gray-background); /* Light gray instead of beige */
 }
 
 .sticky-product-image img {
@@ -58,7 +58,7 @@
 .sticky-product-price .current-price {
   font-size: 16px;
   font-weight: 700;
-  color: var(--color-terracotta);
+  color: var(--color-black); /* Pure black instead of terracotta */
 }
 
 .sticky-product-price .compare-price {
@@ -112,7 +112,7 @@
 }
 
 .sticky-add-btn {
-  background-color: var(--color-teal);
+  background-color: var(--color-black); /* Pure black instead of teal */
   color: white;
   border: none;
   border-radius: 4px;
@@ -129,7 +129,7 @@
 }
 
 .sticky-add-btn:hover {
-  background-color: var(--color-teal-light);
+  background-color: var(--color-black-dark); /* Dark gray instead of teal */
 }
 
 .sticky-add-btn:disabled {
@@ -141,11 +141,11 @@
 }
 
 .sticky-add-btn.success {
-  background-color: var(--color-sage);
+  background-color: var(--color-black-medium); /* Medium gray instead of sage */
 }
 
 .sticky-add-btn.success:hover {
-  background-color: var(--color-sage-light);
+  background-color: var(--color-black-dark); /* Dark gray instead of sage */
 }
 
 .sticky-add-btn svg {
@@ -203,7 +203,7 @@
   .sticky-product-title {
     max-width: 120px;
   }
-  
+
   .sticky-add-btn {
     min-width: 120px;
     font-size: 13px;

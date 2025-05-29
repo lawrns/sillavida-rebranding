@@ -7,19 +7,19 @@
   --color-teal-light: #3A8A8A;
   --color-teal-dark: #1A6A6A;
   --color-teal-extralight: rgba(42, 122, 122, 0.15);
-  
+
   /* Secondary Colors */
   --color-sage: #8DAD9C; /* Lighter sage for better visibility */
   --color-sage-light: #9DBDAC;
-  --color-sage-dark: #7D9D8C;
+  --color-sage-dark: #666666; /* Mapped to monochromatic medium gray */
   --color-sage-extralight: rgba(141, 173, 156, 0.15);
-  
+
   /* Accent Colors */
   --color-terracotta: #D88D65; /* Lighter terracotta for better visibility */
   --color-terracotta-light: #E89D75;
-  --color-terracotta-dark: #C87D55;
+  --color-terracotta-dark: #999999; /* Mapped to monochromatic light gray */
   --color-terracotta-extralight: rgba(216, 141, 101, 0.15);
-  
+
   /* Neutral Colors */
   --color-black: #F8F9FA; /* Inverted for dark mode */
   --color-white: #121212; /* Inverted for dark mode */
@@ -27,39 +27,39 @@
   --color-gray-light: #3A3A3A;
   --color-gray-medium: #AAAAAA;
   --color-gray-dark: #DDDDDD;
-  
+
   /* Beige Colors */
   --color-beige: #3A3632; /* Darker beige for dark mode */
   --color-beige-light: #4A4642;
   --color-beige-dark: #2A2622;
   --color-beige-extralight: rgba(58, 54, 50, 0.15);
-  
+
   /* Status Colors */
   --color-error: #FF6B6B; /* Brighter for dark mode */
   --color-error-light: #FF8B8B;
   --color-error-dark: #FF4B4B;
   --color-error-extralight: rgba(255, 107, 107, 0.15);
-  
+
   --color-warning: #FFD166; /* Brighter for dark mode */
   --color-warning-light: #FFE186;
   --color-warning-dark: #FFC146;
   --color-warning-extralight: rgba(255, 209, 102, 0.15);
-  
+
   --color-success: #9BE29B; /* Brighter for dark mode */
   --color-success-light: #BBF2BB;
   --color-success-dark: #7BD27B;
   --color-success-extralight: rgba(155, 226, 155, 0.15);
-  
+
   --color-info: #6ECFF6; /* Brighter for dark mode */
   --color-info-light: #8EDFFF;
   --color-info-dark: #4EBFF6;
   --color-info-extralight: rgba(110, 207, 246, 0.15);
-  
+
   /* Component-Specific Colors */
   --color-background: #121212;
   --color-surface: #1E1E1E;
   --color-surface-elevated: #2A2A2A;
-  
+
   /* Shadow Colors */
   --shadow-color-primary: rgba(42, 122, 122, 0.3); /* Teal shadow */
   --shadow-color-secondary: rgba(141, 173, 156, 0.3); /* Sage shadow */
@@ -88,18 +88,18 @@
 }
 
 /* Improved text contrast for dark mode */
-.dark-mode h1, 
-.dark-mode h2, 
-.dark-mode h3, 
-.dark-mode h4, 
-.dark-mode h5, 
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
 .dark-mode h6 {
   color: var(--color-black);
 }
 
-.dark-mode p, 
-.dark-mode span, 
-.dark-mode li, 
+.dark-mode p,
+.dark-mode span,
+.dark-mode li,
 .dark-mode label {
   color: var(--color-gray-dark);
 }
@@ -179,7 +179,7 @@
 }
 
 /* Dark Mode JavaScript */
-/* 
+/*
 // Add this to a JavaScript file to enable dark mode toggle
 document.addEventListener('DOMContentLoaded', () => {
   // Create dark mode toggle button
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleButton.addEventListener('click', () => {
     const isDarkMode = document.documentElement.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', isDarkMode);
-    
+
     // Update icon
     if (isDarkMode) {
       toggleButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';

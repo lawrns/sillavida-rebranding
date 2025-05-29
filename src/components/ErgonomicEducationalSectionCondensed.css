@@ -1,7 +1,7 @@
 /* ErgonomicEducationalSectionCondensed.css */
 
 .ergonomic-educational-section-condensed {
-  background-color: #008080; /* Dark teal background (replacing beige) */
+  background-color: #000000; /* Pure black background instead of teal */
   padding: 4rem 0;
 }
 
@@ -27,13 +27,13 @@
   font-family: var(--font-heading);
   font-size: 2.5rem;
   font-weight: 700;
-  color: #F5F5DC; /* Beige (replacing sage green) */
+  color: #FFFFFF; /* Pure white instead of beige */
   margin-bottom: 1rem;
 }
 
 .ergonomic-educational-section-condensed .subtitle {
   font-size: 1.2rem;
-  color: #F5F5DC; /* Beige (replacing terracotta) */
+  color: #E5E5E5; /* Light gray instead of beige */
   margin-bottom: 2rem;
 }
 
@@ -66,7 +66,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #006666; /* Darker teal for contrast */
+  background-color: #333333; /* Dark gray instead of teal */
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -84,13 +84,13 @@
   font-family: var(--font-heading);
   font-size: 1.2rem;
   font-weight: 600;
-  color: #F5F5DC; /* Beige (replacing sage green) */
+  color: #FFFFFF; /* Pure white instead of beige */
   margin-bottom: 0.5rem;
 }
 
 .ergonomic-educational-section-condensed .benefit-text p {
   font-size: 0.9rem;
-  color: #E6E6C8; /* Lighter beige for better readability */
+  color: #E5E5E5; /* Light gray for better readability */
   line-height: 1.4;
 }
 
@@ -99,7 +99,7 @@
   align-items: center;
   font-family: var(--font-heading);
   font-weight: 600;
-  color: #F5F5DC; /* Changed to match the beige used elsewhere (#F5F5DC) */
+  color: #E5E5E5; /* Light gray instead of beige */
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -142,8 +142,8 @@
   position: absolute;
   bottom: 2rem;
   right: 2rem;
-  background-color: #006666; /* Darker teal for contrast */
-  color: #F5F5DC; /* Beige (replacing warm beige) */
+  background-color: #333333; /* Dark gray instead of teal */
+  color: #FFFFFF; /* Pure white instead of beige */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: var(--shadow-md);
@@ -157,7 +157,7 @@
   font-weight: 700;
   line-height: 1;
   margin-bottom: 0.5rem;
-  color: #F5F5DC; /* Beige color for the 80% text */
+  color: #FFFFFF; /* Pure white for the statistic text */
 }
 
 .ergonomic-educational-section-condensed .statistic-label {
@@ -169,18 +169,18 @@
   .ergonomic-educational-section-condensed .content-wrapper {
     flex-direction: column;
   }
-  
+
   .ergonomic-educational-section-condensed .text-content,
   .ergonomic-educational-section-condensed .image-content {
     width: 100%;
     max-width: 100%;
   }
-  
+
   .ergonomic-educational-section-condensed .image-content {
     height: 350px;
     margin-top: 2rem;
   }
-  
+
   .ergonomic-educational-section-condensed h2 {
     font-size: 2rem;
   }
@@ -190,22 +190,22 @@
   .ergonomic-educational-section-condensed {
     padding: 3rem 0;
   }
-  
+
   .ergonomic-educational-section-condensed h2 {
     font-size: 1.8rem;
   }
-  
+
   .ergonomic-educational-section-condensed .subtitle {
     font-size: 1rem;
   }
-  
+
   .ergonomic-educational-section-condensed .statistic-overlay {
     bottom: 1rem;
     right: 1rem;
     padding: 1rem;
     max-width: 150px;
   }
-  
+
   .ergonomic-educational-section-condensed .statistic-value {
     font-size: 2rem;
   }
@@ -215,36 +215,36 @@
   .ergonomic-educational-section-condensed {
     padding: 2rem 0;
   }
-  
+
   .ergonomic-educational-section-condensed .container {
     padding: 0 1rem;
   }
-  
+
   .ergonomic-educational-section-condensed h2 {
     font-size: 1.5rem;
   }
-  
+
   .ergonomic-educational-section-condensed .benefit-icon {
     width: 50px;
     height: 50px;
   }
-  
+
   .ergonomic-educational-section-condensed .benefit-icon img {
     width: 30px;
     height: 30px;
   }
-  
+
   .ergonomic-educational-section-condensed .statistic-overlay {
     bottom: 0.5rem;
     right: 0.5rem;
     padding: 0.75rem;
     max-width: 120px;
   }
-  
+
   .ergonomic-educational-section-condensed .statistic-value {
     font-size: 1.5rem;
   }
-  
+
   .ergonomic-educational-section-condensed .statistic-label {
     font-size: 0.8rem;
   }

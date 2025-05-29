@@ -4,6 +4,8 @@ import {
 } from '@shopify/hydrogen-react';
 import type { ShopifyProduct, ShopifyCart } from '../types/shopify';
 import apiCache from '../services/apiCache';
+import { calculateSubtotal } from '../utils/business/priceFormatter';
+import { logger } from '../utils/logger';
 
 /**
  * Custom error classes for better error handling
@@ -153,13 +155,11 @@ export const shopifyClient = {
         
         // Exponential backoff
         const delay = RETRY_DELAY * Math.pow(2, attempt);
-        console.warn(`Shopify API request failed, retrying in ${delay}ms (attempt ${attempt + 1}/${retries})`, error);
         await sleep(delay);
       }
     }
     
     // If we got here, all retries failed
-    console.error('Shopify query error after retries:', lastError);
     throw lastError;
   },
   
@@ -259,7 +259,16 @@ export async function getProducts(
     },
   });
 
-  const products = response.data.products.edges.map((edge: any) => edge.node);
+  // Use centralized transformation for consistent product data structure
+  const products = response.data.products.edges.map((edge: any) => {
+    try {
+      const { transformShopifyProduct } = eval('require("../utils/business/productTransformer")');
+      return transformShopifyProduct(edge.node);
+    } catch (error) {
+      logger.warn('Failed to transform product, using original', { component: 'Shopify', action: 'getProducts', data: error });
+      return edge.node;
+    }
+  });
   const pageInfo = response.data.products.pageInfo;
 
   return {
@@ -536,7 +545,16 @@ export async function getProductsByCollection(
     },
   });
 
-  const products = response.data.collection.products.edges.map((edge: any) => edge.node);
+  // Use centralized transformation for consistent product data structure
+  const products = response.data.collection.products.edges.map((edge: any) => {
+    try {
+      const { transformShopifyProduct } = eval('require("../utils/business/productTransformer")');
+      return transformShopifyProduct(edge.node);
+    } catch (error) {
+      logger.warn('Failed to transform collection product, using original', { component: 'Shopify', action: 'getCollectionByHandle', data: error });
+      return edge.node;
+    }
+  });
   const pageInfo = response.data.collection.products.pageInfo;
 
   return {
@@ -637,9 +655,12 @@ function generateMockCartLine(merchandiseId: string, quantity: number) {
 
 // Calculate the total cost of a mock cart
 function calculateMockCartCost(lines: any[]) {
-  const subtotal = lines.reduce((sum, line) => {
-    return sum + (parseFloat(line.merchandise.price.amount) * line.quantity);
-  }, 0);
+  const subtotal = calculateSubtotal(
+    lines.map(line => ({
+      price: { amount: line.merchandise.price.amount, currencyCode: "MXN" },
+      quantity: line.quantity
+    }))
+  );
   
   return {
     subtotalAmount: {
@@ -659,14 +680,12 @@ function calculateMockCartCost(lines: any[]) {
  * @returns Cart data
  */
 export async function createCart(lines: { merchandiseId: string; quantity: number }[] = []) {
-  console.log('[Shopify] Creating cart with lines:', lines);
   
   // Check if all lines are mock variants or if we should force mock implementation
   const allMockVariants = lines.every(line => isMockVariant(line.merchandiseId));
   
   // If lines contain mock variants or if we should force mock implementation, use mock implementation
   if (allMockVariants || FORCE_MOCK_CART) {
-    console.log('[Shopify] Using mock cart implementation for demonstration');
     
     try {
       // Generate a mock cart ID
@@ -690,11 +709,9 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
         checkoutUrl: `/checkout?cart=${cartId}`
       };
       
-      console.log('[Shopify] Mock cart created:', mockCart);
       
       return mockCart;
     } catch (error) {
-      console.error('[Shopify] Error creating mock cart:', error);
       
       throw new ShopifyError(`Unable to create cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
@@ -766,27 +783,22 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
       cache: false
     });
     
-    console.log('[Shopify] Cart creation response:', response);
     
     // Check for user errors
     if (response.data.cartCreate.userErrors && response.data.cartCreate.userErrors.length > 0) {
-      console.error('[Shopify] Cart creation user errors:', response.data.cartCreate.userErrors);
       throw new Error(`Cart creation failed: ${response.data.cartCreate.userErrors[0].message}`);
     }
     
     // Check if cart is null
     if (!response.data.cartCreate.cart) {
-      console.error('[Shopify] Cart creation failed: cart is null');
       throw new Error('Cart creation failed: cart is null');
     }
     
     return response.data.cartCreate.cart;
   } catch (error) {
-    console.error('[Shopify] Error creating cart:', error);
     
     // If we get here and have mock variants, try the mock implementation
     if (lines.some(line => isMockVariant(line.merchandiseId))) {
-      console.warn('[Shopify] Falling back to mock cart implementation');
       return createCart(lines.filter(line => isMockVariant(line.merchandiseId)));
     }
     
@@ -807,7 +819,6 @@ export async function createCart(lines: { merchandiseId: string; quantity: numbe
 export async function getCart(cartId: string): Promise<ShopifyCart> {
   // Check if it's a mock cart
   if (cartId.startsWith('mock-cart-') && mockCart && mockCart.id === cartId) {
-    console.log('[Shopify] Returning mock cart:', mockCart);
     return mockCart;
   }
   
@@ -867,7 +878,6 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
 
     return response.data.cart;
   } catch (error) {
-    console.error('[Shopify] Error getting cart:', error);
     throw new ShopifyError(`Unable to get cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
@@ -879,7 +889,6 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
  * @returns Updated cart
  */
 export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
-  console.log('[Shopify] Adding to cart:', { cartId, lines });
   
   // Check if it's a mock cart or if lines contain mock variants or if we should force mock implementation
   const isMockCartId = cartId.startsWith('mock-cart-');
@@ -887,7 +896,6 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
   
   // If it's a mock cart or contains mock variants or if we should force mock implementation, use mock implementation
   if (isMockCartId || containsMockVariants || FORCE_MOCK_CART) {
-    console.log('[Shopify] Using mock cart implementation for demonstration');
     
     try {
       // If we don't have a mock cart yet, create one
@@ -917,11 +925,9 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
         cost: cost
       };
       
-      console.log('[Shopify] Updated mock cart:', mockCart);
       
       return mockCart;
     } catch (error) {
-      console.error('[Shopify] Error adding to mock cart:', error);
       throw new ShopifyError(`Unable to add item to cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -993,23 +999,19 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
       cache: false
     });
     
-    console.log('[Shopify] Add to cart response:', response);
     
     // Check for user errors
     if (response.data.cartLinesAdd.userErrors && response.data.cartLinesAdd.userErrors.length > 0) {
-      console.error('[Shopify] Add to cart user errors:', response.data.cartLinesAdd.userErrors);
       throw new Error(`Add to cart failed: ${response.data.cartLinesAdd.userErrors[0].message}`);
     }
     
     // Check if cart is null
     if (!response.data.cartLinesAdd.cart) {
-      console.error('[Shopify] Add to cart failed: cart is null');
       throw new Error('Add to cart failed: cart is null');
     }
     
     return response.data.cartLinesAdd.cart;
   } catch (error) {
-    console.error('[Shopify] Error adding to cart:', error);
     
     // Throw a more user-friendly error
     if (error instanceof Error) {
@@ -1029,7 +1031,6 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
 export async function updateCartLines(cartId: string, lines: { id: string; quantity: number }[]) {
   // Check if it's a mock cart
   if (cartId.startsWith('mock-cart-') && mockCart) {
-    console.log('[Shopify] Updating mock cart lines:', lines);
     
     try {
       // Update the mock cart lines
@@ -1058,11 +1059,9 @@ export async function updateCartLines(cartId: string, lines: { id: string; quant
         cost: cost
       };
       
-      console.log('[Shopify] Mock cart updated:', mockCart);
       
       return mockCart;
     } catch (error) {
-      console.error('[Shopify] Error updating mock cart:', error);
       throw new ShopifyError(`Unable to update cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -1141,7 +1140,6 @@ export async function updateCartLines(cartId: string, lines: { id: string; quant
 export async function removeFromCart(cartId: string, lineIds: string[]) {
   // Check if it's a mock cart
   if (cartId.startsWith('mock-cart-') && mockCart) {
-    console.log('[Shopify] Removing items from mock cart:', lineIds);
     
     try {
       // Filter out the lines to remove
@@ -1161,11 +1159,9 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
         cost: cost
       };
       
-      console.log('[Shopify] Mock cart updated after removal:', mockCart);
       
       return mockCart;
     } catch (error) {
-      console.error('[Shopify] Error removing from mock cart:', error);
       throw new ShopifyError(`Unable to remove item from cart: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -1234,13 +1230,11 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
     
     // Check for user errors
     if (response.data.cartLinesRemove.userErrors && response.data.cartLinesRemove.userErrors.length > 0) {
-      console.error('[Shopify] Remove from cart user errors:', response.data.cartLinesRemove.userErrors);
       throw new Error(`Remove from cart failed: ${response.data.cartLinesRemove.userErrors[0].message}`);
     }
     
     return response.data.cartLinesRemove.cart;
   } catch (error) {
-    console.error('[Shopify] Error removing from cart:', error);
     
     // Throw a more user-friendly error
     if (error instanceof Error) {
@@ -1260,7 +1254,6 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
 export async function getCheckoutUrl(cartId: string, isGuestCheckout: boolean = false) {
   // Check if it's a mock cart
   if (cartId.startsWith('mock-cart-') && mockCart) {
-    console.log('[Shopify] Returning mock checkout URL');
     const guestParam = isGuestCheckout ? '&guest=true' : '';
     return `/checkout?cart=${cartId}${guestParam}`;
   }

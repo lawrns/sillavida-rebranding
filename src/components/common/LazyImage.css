@@ -1,7 +1,7 @@
 .lazy-image-container {
   position: relative;
   overflow: hidden;
-  background-color: var(--sv-color-secondary-light, #f5f0e8);
+  background-color: var(--color-gray-background, #F5F5F5); /* Light gray instead of beige */
   width: 100%;
   height: auto;
   display: flex;
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--sv-color-secondary-light, #f5f0e8);
+  background-color: var(--color-gray-background, #F5F5F5); /* Light gray instead of beige */
 }
 
 .placeholder-img {
@@ -48,8 +48,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--sv-color-secondary-light, #f5f0e8);
-  color: var(--sv-color-error, #e53e3e);
+  background-color: var(--color-gray-background, #F5F5F5); /* Light gray instead of beige */
+  color: var(--color-status-error, #e53e3e); /* Keep error color for accessibility */
   font-size: 14px;
   padding: 8px;
   text-align: center;

@@ -66,8 +66,9 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: process.env.NODE_ENV === 'production',
-        drop_debugger: process.env.NODE_ENV === 'production',
+        drop_console: true, // Always strip console statements in builds
+        drop_debugger: true, // Always strip debugger statements
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'], // Remove specific console methods
       },
     },
     rollupOptions: {

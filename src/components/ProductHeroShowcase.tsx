@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
+import { useMinimalCart } from '../hooks/useMinimalCart';
+import { useEventBus } from '../hooks/useComponentComposition';
 
 interface ProductHeroShowcaseProps {
   productTitle: string;
@@ -20,7 +21,11 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
-  const { addItem, openCart } = useCart();
+  const { addToCart, toggleCart, isLoading: cartLoading } = useMinimalCart();
+  const eventBus = useEventBus();
+  
+  // Combine local and cart loading states
+  const combinedLoading = addingToCart || cartLoading;
 
   // Handle quantity change
   const handleQuantityChange = (newQuantity: number) => {
@@ -29,14 +34,39 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({
 
   // Handle add to cart
   const handleAddToCart = async () => {
-    if (!inStock || addingToCart || !variantId) return;
+    if (!inStock || combinedLoading || !variantId) return;
     
     setAddingToCart(true);
+    
+    // Emit event for product tracking
+    eventBus.emit('product:addToCart:start', {
+      product_id: variantId,
+      product_name: productTitle,
+      product_price: price,
+      quantity: quantity,
+      type: 'hero'
+    });
+    
     try {
-      await addItem(variantId, quantity);
-      openCart();
+      await addToCart(variantId, quantity);
+      toggleCart(); // Open cart
+      
+      // Emit success event
+      eventBus.emit('product:addToCart:success', {
+        product_id: variantId,
+        variant_id: variantId,
+        quantity: quantity,
+        type: 'hero'
+      });
     } catch (error) {
       console.error('Error adding to cart:', error);
+      
+      // Emit error event
+      eventBus.emit('product:addToCart:error', {
+        product_id: variantId,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        type: 'hero'
+      });
     } finally {
       setAddingToCart(false);
     }
@@ -127,11 +157,11 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({
       {/* Add to Cart Button */}
       <button 
         className={`py-3 px-6 text-lg font-bold bg-black text-white border-none rounded cursor-pointer transition-all uppercase tracking-wider w-full font-heading
-                hover:bg-black/90 hover:-translate-y-0.5 active:translate-y-0 ${!inStock || addingToCart ? 'opacity-70 cursor-not-allowed' : ''}`}
+                hover:bg-black/90 hover:-translate-y-0.5 active:translate-y-0 ${!inStock || combinedLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
         onClick={handleAddToCart}
-        disabled={!inStock || addingToCart}
+        disabled={!inStock || combinedLoading}
       >
-        {addingToCart ? (
+        {combinedLoading ? (
           <>
             <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
             <span>Agregando...</span>

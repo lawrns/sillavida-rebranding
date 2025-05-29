@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git config:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:judge.me)",
+      "Bash(curl:*)"
+    ],
+    "deny": []
+  },
+  "enableAllProjectMcpServers": false
+}

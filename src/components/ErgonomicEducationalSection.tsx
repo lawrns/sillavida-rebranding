@@ -197,7 +197,7 @@ const VisualElement: React.FC<VisualElementProps> = ({
   height,
   captionColor,
   iconSize = 64,
-  iconColor = '#4a7098',
+  iconColor = '#000000',
 }) => {
   return (
     <div className={`visual-element ${type}`}>
@@ -264,7 +264,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Activity size={64} strokeWidth={1.5} />,
         caption: 'Una postura correcta reduce la presión en los discos lumbares hasta en un 30%',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -295,7 +295,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <HeartPulse size={64} strokeWidth={1.5} />,
         caption: 'El soporte lumbar adecuado puede reducir el dolor lumbar hasta en un 34%',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -326,7 +326,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Activity size={64} strokeWidth={1.5} />,
         caption: 'Los cambios de posición frecuentes mejoran la circulación hasta en un 20%',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -360,7 +360,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Brain size={64} strokeWidth={1.5} />,
         caption: 'La incomodidad física causa una disminución del 15% en la concentración',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -422,7 +422,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Target size={64} strokeWidth={1.5} />,
         caption: 'Los empleados con sillas ergonómicas toman 17% menos descansos debido a la incomodidad',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -456,7 +456,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <DollarSign size={64} strokeWidth={1.5} />,
         caption: 'La prevención a través de muebles ergonómicos cuesta 8-10 veces menos que el tratamiento',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -490,7 +490,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Shield size={64} strokeWidth={1.5} />,
         caption: 'Las sillas ergonómicas de calidad tienen una vida útil promedio de 7-10 años',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -521,7 +521,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Sparkles size={64} strokeWidth={1.5} />,
         caption: 'El soporte lumbar ajustable se adapta al 95% de los tipos de cuerpo',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -558,7 +558,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Activity size={64} strokeWidth={1.5} />,
         caption: 'El soporte lumbar reduce la presión en los discos lumbares hasta en un 30%',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -580,7 +580,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Briefcase size={64} strokeWidth={1.5} />,
         caption: 'Los reposabrazos adecuados disminuyen la tensión del cuello en un 21%',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -624,7 +624,7 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
         type: 'icon',
         icon: <Clock size={64} strokeWidth={1.5} />,
         caption: 'Reclinarse a 110-130 grados reduce la presión espinal hasta en un 40%',
-        iconColor: '#4a7098',
+        iconColor: '#000000',
       },
       content: (
         <>
@@ -720,9 +720,9 @@ const ErgonomicEducationalSection: React.FC<ErgonomicEducationalSectionProps> = 
           buttonText="Explorar Sillas Ergonómicas"
           buttonLink="/category/tienda"
           buttonVariant="primary"
-          backgroundColor="#111827"
+          backgroundColor="#000000"
           textColor="white"
-          buttonColor="#4b7cae"
+          buttonColor="#666666"
         />
       </div>
     </section>

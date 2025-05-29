@@ -14,6 +14,7 @@ import JudgeMeService, {
   getAverageRating
 } from '../services/judgeMe';
 import type { JudgeMeGlobal } from '../services/judgeMe';
+import { errorHandler } from '../utils/errorHandler';
 
 interface UseJudgeMeState {
   ready: boolean;
@@ -62,10 +63,14 @@ export const useJudgeMe = (autoInitialize = true): UseJudgeMeResult => {
         judgeMe
       });
     } catch (error) {
+      const handledError = await errorHandler.handleError(error as Error, {
+        component: 'useJudgeMe',
+        action: 'initialize'
+      });
       setState({
         ready: false,
         loading: false,
-        error: error instanceof Error ? error : new Error(String(error)),
+        error: handledError,
         judgeMe: null
       });
     }
@@ -77,11 +82,13 @@ export const useJudgeMe = (autoInitialize = true): UseJudgeMeResult => {
   const getReviewCount = useCallback(
     async (productId: string | number): Promise<number> => {
       if (!state.ready) {
-        console.warn('Judge.me not ready, initializing...');
         try {
           await initialize();
         } catch (error) {
-          console.error('Failed to initialize Judge.me for review count:', error);
+          errorHandler.handleError(error as Error, {
+            component: 'useJudgeMe',
+            action: 'getReviewCount'
+          });
           return 0;
         }
       }
@@ -97,11 +104,13 @@ export const useJudgeMe = (autoInitialize = true): UseJudgeMeResult => {
   const getAvgRating = useCallback(
     async (productId: string | number): Promise<number> => {
       if (!state.ready) {
-        console.warn('Judge.me not ready, initializing...');
         try {
           await initialize();
         } catch (error) {
-          console.error('Failed to initialize Judge.me for average rating:', error);
+          errorHandler.handleError(error as Error, {
+            component: 'useJudgeMe',
+            action: 'getAverageRating'
+          });
           return 0;
         }
       }

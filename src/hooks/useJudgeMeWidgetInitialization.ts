@@ -57,12 +57,10 @@ export const useJudgeMeWidgetInitialization = (
           try {
             await loadJudgeMeScript();
           } catch (error) {
-            console.error('Failed to load Judge.me script:', error);
             setTimeout(initializeWidgets, retryInterval);
             return;
           }
         } else {
-          console.warn('Judge.me failed to initialize after multiple attempts');
           return;
         }
       }
@@ -100,7 +98,7 @@ export const useJudgeMeWidgetInitialization = (
           
           initialized.current = true;
         } catch (error) {
-          console.error('Error initializing Judge.me widgets:', error);
+          // Error initializing Judge.me widgets
         }
       }, delay);
     };

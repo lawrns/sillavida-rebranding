@@ -7,6 +7,7 @@
  */
 
 import { getFeatureFlag } from '../config/featureFlags';
+import { errorHandler } from '../utils/errorHandler';
 
 // Shopify store domain from environment variables
 const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN;
@@ -167,12 +168,16 @@ export const initCustomerAccountClient = async () => {
     }
     
     // Load the Customer Account API feature
-    await window.Shopify.loadFeatures([
-      {
-        name: 'customer-account-api',
-        version: '1.0',
-      }
-    ]);
+    if (window.Shopify && window.Shopify.loadFeatures) {
+      await window.Shopify.loadFeatures([
+        {
+          name: 'customer-account-api',
+          version: '1.0',
+        }
+      ]);
+    } else {
+      throw new Error('Shopify Customer Account API not available');
+    }
     
     // Initialize the client with our configuration
     customerAccountClient = window.Shopify.customerAccount.initialize({
@@ -336,7 +341,10 @@ export const getCurrentCustomer = async () => {
             return await response.json();
           }
         } catch (error) {
-          console.error('Error fetching customer data from fallback API:', error);
+          errorHandler.handleError(error as Error, {
+            component: 'CustomerAuth',
+            action: 'getCustomerData'
+          });
         }
       }
       return null;
@@ -386,7 +394,10 @@ export const getCustomerOrders = async (first = 5) => {
             return await response.json();
           }
         } catch (error) {
-          console.error('Error fetching customer orders from fallback API:', error);
+          errorHandler.handleError(error as Error, {
+            component: 'CustomerAuth',
+            action: 'getCustomerOrders'
+          });
         }
       }
       return null;
@@ -467,7 +478,10 @@ export const updateCustomer = async (customerInput: {
             return await response.json();
           }
         } catch (error) {
-          console.error('Error updating customer via fallback API:', error);
+          errorHandler.handleError(error as Error, {
+            component: 'CustomerAuth',
+            action: 'updateCustomer'
+          });
         }
       }
       return null;
