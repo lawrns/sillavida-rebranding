@@ -70,15 +70,6 @@ const ReviewsSection: React.FC = () => {
             Miles de personas han transformado su experiencia de trabajo con nuestras sillas ergonómicas
           </p>
           
-          {/* Overall Rating Summary */}
-          <div className="flex items-center justify-center mt-6 space-x-4">
-            <div className="flex items-center space-x-1">
-              {renderStars(5)}
-            </div>
-            <span className="text-2xl font-bold text-black">4.8/5</span>
-            <span className="text-gray-600">•</span>
-            <span className="text-gray-600">+500 reseñas verificadas</span>
-          </div>
         </div>
 
         {/* 3-Card Review Grid */}

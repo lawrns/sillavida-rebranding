@@ -30,29 +30,27 @@ const BenefitsSection: React.FC = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-6">
+    <section className="bg-gray-50 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Horizontal Strip Layout - Ultra Compact */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+        {/* Ultra-Minimalist Strip - Icon | Title | Subtitle (no boxes) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((benefit, index) => {
             const IconComponent = benefit.icon;
             return (
-              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center">
-                <div className="bg-black/5 p-2 rounded-full mb-3 mx-auto w-fit">
-                  <IconComponent className="h-5 w-5 text-black" />
-                </div>
-                <h4 className="font-bold text-black text-sm mb-1">{benefit.title}</h4>
-                <p className="text-gray-600 text-xs">{benefit.description}</p>
+              <div key={index} className="flex items-baseline space-x-3">
+                <IconComponent className="h-5 w-5 text-black translate-y-0.5" />
+                <h4 className="font-semibold text-black text-sm leading-5">{benefit.title}</h4>
+                <p className="text-gray-600 text-xs leading-5">{benefit.description}</p>
               </div>
             );
           })}
         </div>
 
-        {/* Optional Subtitle - Very Compact */}
-        <div className="text-center mt-4">
-          <p className="text-gray-600 text-sm">
-            Más de 50,000 clientes confían en SillaVida
+        {/* Social Proof - Ultra Compact */}
+        <div className="text-center mt-3">
+          <p className="text-gray-500 text-xs">
+            Más de 1,000 clientes confían en SillaVida
           </p>
         </div>
         
