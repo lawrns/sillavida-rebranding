@@ -155,7 +155,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center space-x-6 lg:space-x-8">
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} className={`${isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Tienda</Link>
+              <Link to="/category/tienda" className={`${isActive("/category/tienda") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Tienda</Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
               <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Promociones</Link>
@@ -272,9 +272,9 @@ const Navbar = () => {
           >
             <div className="px-3 pt-3 pb-4 space-y-3">
               <Link
-                to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"}
+                to="/category/tienda"
                 className={`block px-4 py-4 rounded-md nav-item text-base ${
-                  isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda")
+                  isActive("/category/tienda")
                     ? 'text-accent bg-accent/10'
                     : 'text-black'
                 } hover:text-accent hover:bg-accent/10 transition-all duration-200`}

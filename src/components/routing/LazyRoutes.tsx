@@ -36,6 +36,15 @@ export const PromotionsPage = lazy(() => import('../../pages/PromotionsPage'));
 export const ErgonomicEducationPage = lazy(() => import('../../pages/ErgonomicEducationPage'));
 export const TestimonialsPage = lazy(() => import('../../pages/TestimonialsPage'));
 
+// Legal pages - rarely accessed
+export const ContactPage = lazy(() => import('../../pages/ContactPage'));
+export const PrivacyPage = lazy(() => import('../../pages/PrivacyPage'));
+export const TermsPage = lazy(() => import('../../pages/TermsPage'));
+export const CookiesPage = lazy(() => import('../../pages/CookiesPage'));
+export const WarrantyPage = lazy(() => import('../../pages/WarrantyPage'));
+export const ShippingPage = lazy(() => import('../../pages/ShippingPage'));
+export const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'));
+
 /**
  * Route loading fallback component
  */

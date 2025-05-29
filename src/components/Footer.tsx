@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getCollections } from '../lib/shopify';
 import {
   MapPin,
   Mail,
@@ -26,6 +27,26 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [subscriptionMessage, setSubscriptionMessage] = useState('');
+  const [tiendaHandle, setTiendaHandle] = useState<string | null>(null);
+
+  // Fetch collections to get tienda handle (same logic as Navbar)
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const collectionsData = await getCollections();
+        const tiendaCollection = collectionsData.find((c: any) => 
+          c.title.toLowerCase().includes('tienda')
+        );
+        if (tiendaCollection) {
+          setTiendaHandle(tiendaCollection.handle);
+        }
+      } catch (error) {
+        console.error('Footer: Error fetching collections:', error);
+      }
+    };
+
+    fetchCollections();
+  }, []);
 
   // Handle newsletter subscription
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -248,7 +269,7 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
               </li>
               <li>
                 <Link
-                  to="/tienda"
+                  to="/category/tienda"
                   className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   Tienda
