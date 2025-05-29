@@ -50,7 +50,7 @@ const BenefitsSection: React.FC = () => {
         {/* Social Proof - Ultra Compact */}
         <div className="text-center mt-3">
           <p className="text-gray-500 text-xs">
-            Más de 1,000 clientes confían en SillaVida
+            De norte a sur, clientes en todo México eligen SillaVida por su calidad y diseño
           </p>
         </div>
         
