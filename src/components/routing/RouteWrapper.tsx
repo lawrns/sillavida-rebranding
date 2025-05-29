@@ -45,7 +45,6 @@ const RouteWrapper: React.FC = () => {
             
             {/* Product Routes */}
             <Route path="/product/:handle" element={<ProductPage />} />
-            <Route path="/products/:handle" element={<ProductPage />} />
             <Route path="/category/:handle" element={<CategoryPage />} />
             
             {/* Cart & Checkout Routes */}

@@ -15,12 +15,18 @@ SillaVida is a premium ergonomic chair e-commerce website built with modern web 
 - **Deployment**: Netlify
 
 ### Key Commands
-- `npm run dev` - Start development server
+- `npm run dev` - Start development server (User must run this - Claude cannot execute)
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run test` - Run Jest tests
 - `npm run cypress:open` - Open Cypress E2E tests
 - `npm run lint` - Run ESLint
+
+### Development Server Instructions
+**IMPORTANT**: Claude cannot run `npm run dev`. When debugging requires the development server:
+1. Claude will provide specific instructions on what to test
+2. User runs `npm run dev` and follows Claude's testing steps
+3. User reports back findings for Claude to continue debugging
 
 ## Aegis Framework for Project Management
 
