@@ -19,7 +19,7 @@ export const CheckoutPage = lazy(() => import('../../pages/CheckoutPage'));
 export const OrderConfirmationPage = lazy(() => import('../../pages/OrderConfirmationPage'));
 
 // Demo and test pages - development only
-export const CheckoutDemoPage = lazy(() => import('../../pages/CheckoutDemoPage'));
+export const CheckoutDemoPage = lazy(() => import('../../dev/CheckoutDemoPage'));
 export const HbadaStylesDemo = lazy(() => import('../HbadaStylesDemo'));
 
 // Account pages - user-specific
