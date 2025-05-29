@@ -12,7 +12,8 @@
       "Bash(mv:*)",
       "Bash(ls:*)",
       "Bash(cat:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git config:*)"
     ],
     "deny": []
   },
