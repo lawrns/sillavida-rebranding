@@ -31,10 +31,9 @@ const AccountButton: React.FC = () => {
           setCustomer(customerData);
         }
       } catch (error) {
-        errorHandler.handleError(error as Error, {
-          component: 'AccountButton',
-          action: 'checkLoginStatus'
-        });
+        // Silently fail auth errors in development to prevent crashes
+        console.warn('Auth check failed (non-critical):', error);
+        setLoggedIn(false);
       } finally {
         setLoading(false);
       }

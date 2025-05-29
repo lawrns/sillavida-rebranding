@@ -16,7 +16,7 @@ interface JudgeMeScriptTagProps {
 }
 
 const JudgeMeScriptTag: React.FC<JudgeMeScriptTagProps> = ({
-  shopDomain = window.location.hostname,
+  shopDomain = window.location.hostname === 'localhost' ? 'sbz5wk-e9.myshopify.com' : window.location.hostname,
   platformIndependent = true,
   debug = true,
   onLoad,
@@ -43,17 +43,17 @@ const JudgeMeScriptTag: React.FC<JudgeMeScriptTagProps> = ({
     script.dataset.platformIndependent = String(platformIndependent);
     if (debug) script.dataset.debug = 'true';
     
-    // Build the script URL with query parameters
-    const params = new URLSearchParams();
-    params.append('api_host', 'https://judge.me');
-    params.append('platform_independent', String(platformIndependent));
-    if (shopDomain) params.append('shop_domain', shopDomain);
-    params.append('locale', 'es'); // Force Spanish locale for Mexican market
+    // Initialize Judge.me object with Shopify configuration
+    window.jdgm = window.jdgm || {};
+    window.jdgm.SHOP_DOMAIN = 'sbz5wk-e9.myshopify.com';
+    window.jdgm.PLATFORM = 'shopify';
+    window.jdgm.PUBLIC_TOKEN = 'CmgUOrdFZ2WZCDoTpirgmdavI4c';
     
-    script.src = `https://cdn.judge.me/widget_v3/init.js?${params.toString()}`;
+    // Use the exact script URL from Shopify
+    script.src = 'https://cdnwidget.judge.me/widget_preloader.js';
     
-    // Add additional script settings
-    script.dataset.locale = 'es';
+    // Add additional script settings exactly as Shopify provides
+    script.dataset.cfasync = 'false';
     
     // Add event handlers
     script.onload = () => {

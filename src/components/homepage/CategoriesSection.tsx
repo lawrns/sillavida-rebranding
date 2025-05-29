@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { createLazyComponent } from '../common/LazyComponent';
 
 // Lazy load LazyImage component
@@ -11,8 +12,8 @@ interface CategoriesSectionProps {
 }
 
 /**
- * CategoriesSection - Featured product categories
- * Self-contained with fallback static categories
+ * CategoriesSection - Enhanced category display with improved template-inspired design
+ * Maintains product category images while adding modern styling and animations
  */
 const CategoriesSection: React.FC<CategoriesSectionProps> = ({ collections }) => {
   // Static fallback categories
@@ -48,14 +49,22 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ collections }) =>
     : staticCategories;
 
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-heading font-bold text-center mb-4 text-black">Encuentra tu silla ideal</h2>
-        <p className="text-gray-600 text-center max-w-3xl mx-auto mb-12">
-          Descubre nuestra colección de sillas ergonómicas diseñadas para mejorar tu postura, productividad y bienestar durante largas jornadas de trabajo.
-        </p>
+    <section className="py-16 lg:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Enhanced Section Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl lg:text-4xl font-bold text-black mb-4">
+            Encuentra Tu Silla Ideal
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Descubre nuestra colección completa de sillas ergonómicas diseñadas para 
+            mejorar tu postura, productividad y bienestar durante largas jornadas de trabajo.
+          </p>
+        </div>
+        
+        {/* Enhanced Categories Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {categoriesToShow.map((category, index) => {
             const imageSrc = collections.length > 0 
               ? (category.image?.url || imageMap[category.title] || '/images/placeholder.png')
@@ -66,32 +75,72 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ collections }) =>
               : 'Explora nuestra colección';
 
             return (
-              <Link
+              <motion.div
                 key={category.id || index}
-                to={`/category/${category.handle}`}
-                className="group relative overflow-hidden rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
               >
-                <div className="w-full h-[300px]">
-                  <LazyImage
-                    src={imageSrc}
-                    alt={category.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#21303f]/80 to-transparent flex items-end p-6 sm:p-8">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-heading font-bold mb-2 text-[#d8dce5] home-category-heading">
-                      {category.title}
-                    </h3>
-                    <span className="flex items-center text-[#d8dce5] home-category-link">
-                      Ver colección <ChevronRight className="ml-2" />
-                    </span>
+                <Link
+                  to={`/category/${category.handle}`}
+                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 block"
+                >
+                  <div className="w-full h-[320px] lg:h-[350px]">
+                    <LazyImage
+                      src={imageSrc}
+                      alt={category.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
                   </div>
-                </div>
-              </Link>
+                  
+                  {/* Enhanced Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                  
+                  {/* Enhanced Content */}
+                  <div className="absolute inset-0 flex items-end p-6 lg:p-8">
+                    <div className="w-full">
+                      <h3 className="text-2xl lg:text-3xl font-bold mb-2 text-white group-hover:text-gray-100 transition-colors">
+                        {category.title}
+                      </h3>
+                      <p className="text-gray-200 text-sm lg:text-base mb-4 opacity-90">
+                        {description}
+                      </p>
+                      <span className="inline-flex items-center text-white font-semibold text-sm lg:text-base group-hover:translate-x-1 transition-transform duration-200">
+                        Ver colección 
+                        <ChevronRight className="ml-2 w-5 h-5" />
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Hover Effect Border */}
+                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/20 rounded-2xl transition-colors duration-300"></div>
+                </Link>
+              </motion.div>
             );
           })}
         </div>
+        
+        {/* Bottom CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            ¿No estás seguro cuál es la mejor opción para ti? Nuestros especialistas en ergonomía 
+            te ayudan a encontrar la silla perfecta para tus necesidades.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-flex items-center px-6 py-3 border border-black text-black font-semibold rounded-lg hover:bg-black hover:text-white transition-colors duration-200"
+          >
+            Consulta Gratuita con Especialista
+          </Link>
+        </motion.div>
+        
       </div>
     </section>
   );

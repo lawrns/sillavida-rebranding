@@ -10,6 +10,7 @@ import {
   TestimonialsSection,
   EmailSubscriptionSection
 } from '../components/homepage';
+import GuaranteeSection from '../components/homepage/GuaranteeSection';
 import { getProducts, getFeaturedProducts, getCollections, shopifyClient } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
 import { errorHandler } from '../utils/errorHandler';
@@ -144,11 +145,11 @@ const HomePage = () => {
     >
       <HeroSection />
 
+      <BenefitsSection />
+
       <ReviewsSection />
 
       <LazyPersonalizedBanner />
-
-      <BenefitsSection />
 
       <BestSellersSection
         bestSellers={bestSellers}
@@ -160,9 +161,7 @@ const HomePage = () => {
 
       <LazyErgonomicEducationalSectionCondensed />
 
-      <TestimonialsSection />
-
-      <EmailSubscriptionSection />
+      <GuaranteeSection />
 
       {/* Back to Top Button */}
       <div className="fixed bottom-6 right-6 z-50">

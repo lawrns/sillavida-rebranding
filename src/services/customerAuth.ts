@@ -168,12 +168,16 @@ export const initCustomerAccountClient = async () => {
     }
     
     // Load the Customer Account API feature
-    await window.Shopify.loadFeatures([
-      {
-        name: 'customer-account-api',
-        version: '1.0',
-      }
-    ]);
+    if (window.Shopify && window.Shopify.loadFeatures) {
+      await window.Shopify.loadFeatures([
+        {
+          name: 'customer-account-api',
+          version: '1.0',
+        }
+      ]);
+    } else {
+      throw new Error('Shopify Customer Account API not available');
+    }
     
     // Initialize the client with our configuration
     customerAccountClient = window.Shopify.customerAccount.initialize({

@@ -7,7 +7,7 @@
 
 export const JudgeMeConfig = {
   // Shopify store domain (required for Judge.me integration)
-  shopDomain: 'sillavida.myshopify.com',
+  shopDomain: 'sbz5wk-e9.myshopify.com',
   
   // Judge.me CDN URL
   cdnUrl: 'https://cdn.judge.me',

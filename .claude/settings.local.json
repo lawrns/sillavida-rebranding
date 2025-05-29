@@ -13,7 +13,11 @@
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(git add:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:judge.me)",
+      "Bash(curl:*)"
     ],
     "deny": []
   },

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createLazyComponent } from './components/common/LazyComponent';
 import { CartProvider } from './context/CartContext';
+import { JudgeMeProvider } from './context/JudgeMeContext';
 import RouteWrapper from './components/routing/RouteWrapper';
 import themeSwitcher from './utils/theme-switcher';
 
@@ -39,17 +40,19 @@ function App() {
 
   return (
     <CartProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col">
-          <LazyShippingPromoBanner threshold={10000} />
-          <LazyNavbar />
-          <main className="flex-grow">
-            <RouteWrapper />
-          </main>
-          <LazyFooter />
-          <LazyWhatsAppButton />
-        </div>
-      </Router>
+      <JudgeMeProvider>
+        <Router>
+          <div className="min-h-screen flex flex-col">
+            <LazyShippingPromoBanner threshold={10000} />
+            <LazyNavbar />
+            <main className="flex-grow">
+              <RouteWrapper />
+            </main>
+            <LazyFooter />
+            <LazyWhatsAppButton />
+          </div>
+        </Router>
+      </JudgeMeProvider>
     </CartProvider>
   );
 }
