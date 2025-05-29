@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
 
 /**
  * FallbackRegisterForm component
@@ -40,7 +41,11 @@ const FallbackRegisterForm: React.FC = () => {
     
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden');
+      const error = errorHandler.createError('INVALID_INPUT', {
+        severity: ErrorSeverity.LOW,
+        userMessage: 'Las contraseñas no coinciden'
+      }, { component: 'FallbackRegisterForm', action: 'validatePasswords' });
+      setError(error.userMessage);
       return;
     }
     
@@ -64,13 +69,22 @@ const FallbackRegisterForm: React.FC = () => {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.message || 'Error al crear la cuenta');
+        const error = errorHandler.createError('AUTH_FAILED', {
+          severity: ErrorSeverity.MEDIUM,
+          userMessage: data.message || 'No se pudo crear la cuenta. Verifica que el email no esté en uso.'
+        }, { component: 'FallbackRegisterForm', action: 'register' });
+        throw new Error(error.userMessage);
       }
       
       // Redirect based on return_to parameter or to account page
       navigate(getReturnUrl());
     } catch (error: any) {
-      setError(error.message || 'Ocurrió un error durante el registro');
+      errorHandler.handleError(error, {
+        component: 'FallbackRegisterForm',
+        action: 'handleSubmit'
+      }).then(handledError => {
+        setError(handledError.userMessage || 'Ocurrió un error durante el registro');
+      });
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +112,7 @@ const FallbackRegisterForm: React.FC = () => {
               type="text"
               value={formData.firstName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
               required
             />
           </div>
@@ -113,7 +127,7 @@ const FallbackRegisterForm: React.FC = () => {
               type="text"
               value={formData.lastName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
               required
             />
           </div>
@@ -129,7 +143,7 @@ const FallbackRegisterForm: React.FC = () => {
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
             required
           />
         </div>
@@ -144,7 +158,7 @@ const FallbackRegisterForm: React.FC = () => {
             type="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
             required
             minLength={8}
           />
@@ -161,14 +175,14 @@ const FallbackRegisterForm: React.FC = () => {
             type="password"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
             required
           />
         </div>
         
         <button
           type="submit"
-          className="w-full bg-teal-600 text-white py-2 px-4 rounded-md font-medium hover:bg-teal-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+          className="w-full bg-black text-white py-2 px-4 rounded-md font-medium hover:bg-black/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black/50"
           disabled={isLoading}
         >
           {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
@@ -176,7 +190,7 @@ const FallbackRegisterForm: React.FC = () => {
       </form>
       
       <div className="mt-4 text-center">
-        <a href="/account/login" className="text-teal-600 hover:underline">
+        <a href="/account/login" className="text-black hover:underline">
           ¿Ya tienes una cuenta? Inicia sesión
         </a>
       </div>

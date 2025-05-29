@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsByCollection } from '../../lib/shopify';
+import { transformShopifyProduct, getProductPrimaryImage, getProductUrl } from '../../utils/business/productTransformer';
+import { getProductPriceDisplay } from '../../utils/business/priceFormatter';
 import './RelatedProducts.css';
 
 interface RelatedProductsProps {
@@ -90,49 +92,75 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       <h2 className="section-title">Productos relacionados</h2>
       <div className="related-products-grid">
         {products.map((product: any) => {
-          const price = product.priceRange?.minVariantPrice?.amount 
-            ? parseFloat(product.priceRange.minVariantPrice.amount) 
-            : 0;
-          
-          const compareAtPrice = product.compareAtPriceRange?.minVariantPrice?.amount
-            ? parseFloat(product.compareAtPriceRange.minVariantPrice.amount)
-            : null;
-          
-          const discount = compareAtPrice && compareAtPrice > price 
-            ? Math.round((1 - price / compareAtPrice) * 100) 
-            : 0;
-          
-          const featuredImage = product.images?.edges?.[0]?.node?.url || '';
-          
-          return (
-            <Link 
-              to={`/product/${product.handle}`} 
-              key={product.id}
-              className="related-product-card"
-            >
-              <div className="related-product-image-container">
-                <img 
-                  src={featuredImage} 
-                  alt={product.title} 
-                  className="related-product-image"
-                />
-                {discount > 0 && (
-                  <div className="related-product-discount">-{discount}%</div>
+          try {
+            // Use centralized transformation utilities
+            const standardProduct = transformShopifyProduct(product);
+            const primaryImage = getProductPrimaryImage(standardProduct);
+            const productUrl = getProductUrl(standardProduct);
+            const priceDisplay = getProductPriceDisplay(
+              standardProduct.price,
+              standardProduct.compareAtPrice
+            );
+            
+            return (
+              <Link 
+                to={productUrl} 
+                key={standardProduct.id}
+                className="related-product-card"
+              >
+                <div className="related-product-image-container">
+                  <img 
+                    src={primaryImage?.url || '/images/placeholder.png'} 
+                    alt={standardProduct.title} 
+                    className="related-product-image"
+                  />
+                {priceDisplay.discount > 0 && (
+                  <div className="related-product-discount">-{priceDisplay.discount}%</div>
                 )}
               </div>
               <div className="related-product-info">
-                <h3 className="related-product-title">{product.title}</h3>
+                <h3 className="related-product-title">{standardProduct.title}</h3>
                 <div className="related-product-price">
-                  {formatPrice(price)}
-                  {compareAtPrice && compareAtPrice > price && (
+                  {priceDisplay.current}
+                  {priceDisplay.original && (
                     <span className="related-product-original-price">
-                      {formatPrice(compareAtPrice)}
+                      {priceDisplay.original}
                     </span>
                   )}
                 </div>
               </div>
             </Link>
-          );
+            );
+          } catch (error) {
+            console.warn('Product transformation failed for related product:', error);
+            // Fallback to original rendering logic
+            const price = product.priceRange?.minVariantPrice?.amount 
+              ? parseFloat(product.priceRange.minVariantPrice.amount) 
+              : 0;
+            const featuredImage = product.images?.edges?.[0]?.node?.url || '';
+            
+            return (
+              <Link 
+                to={`/product/${product.handle}`} 
+                key={product.id}
+                className="related-product-card"
+              >
+                <div className="related-product-image-container">
+                  <img 
+                    src={featuredImage} 
+                    alt={product.title} 
+                    className="related-product-image"
+                  />
+                </div>
+                <div className="related-product-info">
+                  <h3 className="related-product-title">{product.title}</h3>
+                  <div className="related-product-price">
+                    ${price.toLocaleString()}
+                  </div>
+                </div>
+              </Link>
+            );
+          }
         })}
       </div>
     </section>

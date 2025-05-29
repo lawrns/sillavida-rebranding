@@ -8,13 +8,13 @@ interface ShippingPromoBannerProps {
   currencyCode?: string;
 }
 
-const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({ 
-  threshold = 10000, 
-  currencyCode = 'MXN' 
+const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
+  threshold = 10000,
+  currencyCode = 'MXN'
 }) => {
   const { cart, cartItems, cartTotal, cartCount } = useCart();
   const [subtotal, setSubtotal] = useState(0);
-  
+
   // Update subtotal when cart changes
   useEffect(() => {
     // Calculate subtotal from cartItems if cart.cost is not available
@@ -29,7 +29,7 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
     } else {
       setSubtotal(0);
     }
-    
+
     console.log('[ShippingPromoBanner] Cart updated:', {
       cartCount,
       cartItemsLength: cartItems.length,
@@ -38,11 +38,11 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
       calculatedSubtotal: subtotal
     });
   }, [cart, cartItems, cartTotal, cartCount]);
-  
+
   // Calculate the amount needed to reach free shipping
   const amountToFreeShipping = Math.max(0, threshold - subtotal);
   const hasQualifiedForFreeShipping = subtotal >= threshold;
-  
+
   // Format currency
   const formatCurrency = (amount: number) => {
     return amount.toLocaleString('es-MX', {
@@ -52,16 +52,16 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
       maximumFractionDigits: 2
     });
   };
-  
+
   // Don't show if cart is empty
   if (cartItems.length === 0) {
     return (
-      <div className="bg-[#111827] text-white py-2 px-4 text-center">
+      <div className="bg-[#000000] text-white py-2 px-4 text-center">
         <div className="container mx-auto">
           <div className="inline-flex items-center">
             <Truck className="h-5 w-5 mr-2 text-accent flex-shrink-0" />
             <span className="text-sm font-heading font-medium">
-              ¡Envío GRATIS en compras superiores a {formatCurrency(threshold)}! 
+              ¡Envío GRATIS en compras superiores a {formatCurrency(threshold)}!
               <Link to="/promociones" className="underline ml-2 text-accent hover:text-white transition-colors duration-200">Ver detalles</Link>
             </span>
           </div>
@@ -69,9 +69,9 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
       </div>
     );
   }
-  
+
   return (
-    <div className="bg-[#111827] text-white py-2 px-4 text-center">
+    <div className="bg-[#000000] text-white py-2 px-4 text-center">
       <div className="container mx-auto">
         <div className="inline-flex items-center">
           <Truck className="h-5 w-5 mr-2 text-accent flex-shrink-0" />

@@ -4,8 +4,36 @@ import { Shield, Star, CreditCard, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { getHeroSlides, getSlideTheme, type HeroSlideMetaobject } from '../lib/metaobjects';
+import { errorHandler, ErrorSeverity } from '../utils/errorHandler';
 
-// Fallback slides in case metaobjects aren't available
+/**
+ * HeroSlider - A premium hero section component featuring rotating product slides.
+ *
+ * Integrates with Shopify Metaobjects API to display featured products with:
+ * - Automatic slide rotation (5-second intervals)
+ * - Dynamic pricing and discount calculations
+ * - Product feature highlights with icons
+ * - Direct add-to-cart functionality
+ * - Responsive design with mobile optimization
+ * - Fallback content for offline/error states
+ *
+ * Data Sources:
+ * - Primary: Shopify Metaobjects (hero_slide type)
+ * - Fallback: Static slide data for reliability
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <HeroSlider />
+ * ```
+ */
+
+/**
+ * Fallback slide data used when Shopify Metaobjects are unavailable.
+ * Ensures the hero section always displays content with consistent theming.
+ *
+ * @constant {Array<Object>} fallbackSlides
+ */
 const fallbackSlides = [
   {
     id: 1,
@@ -63,6 +91,12 @@ const fallbackSlides = [
   }
 ];
 
+/**
+ * Interface defining the structure of slide data used throughout the component.
+ * Supports both Shopify Metaobject data and fallback static data.
+ *
+ * @interface SlideData
+ */
 interface SlideData {
   id: string | number;
   title: string;
@@ -91,48 +125,43 @@ const HeroSlider = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [slides, setSlides] = useState<SlideData[]>(fallbackSlides); // Initialize with fallback slides
 
-  // Fetch hero slides from Shopify Metaobjects
+  /**
+   * Fetches hero slides from Shopify Metaobjects API.
+   * Transforms raw Shopify data into component-compatible format.
+   * Handles errors gracefully with fallback content.
+   */
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        console.log('Fetching hero slides...');
         const heroSlides = await getHeroSlides();
-        console.log('Hero slides fetched:', JSON.stringify(heroSlides, null, 2));
-        
+
         if (heroSlides && heroSlides.length > 0) {
           // Transform metaobjects to the format expected by the component
           const formattedSlides = heroSlides.map((slide: HeroSlideMetaobject) => {
             try {
               // Extract product data
-              console.log('Processing slide:', slide.id);
-              console.log('Product data:', JSON.stringify(slide.productToFeature, null, 2));
-              
               if (!slide.productToFeature) {
-                console.error('Missing product data for slide:', slide.id);
                 return null;
               }
-              
+
               // IMPORTANT: metaobjects.ts transforms the Shopify API data structure
               // It changes variants.edges[0].node into variants[0]
-              const variant = Array.isArray(slide.productToFeature.variants) 
-                ? slide.productToFeature.variants[0] 
+              const variant = Array.isArray(slide.productToFeature.variants)
+                ? slide.productToFeature.variants[0]
                 : null;
-                
-              console.log('Extracted variant:', JSON.stringify(variant, null, 2));
-              
+
               if (!variant) {
-                console.error('Missing variant data for slide:', slide.id);
                 return null;
               }
-              
+
               const price = parseFloat(variant.price?.amount || '0');
-              const originalPrice = variant.compareAtPrice 
-                ? parseFloat(variant.compareAtPrice.amount) 
+              const originalPrice = variant.compareAtPrice
+                ? parseFloat(variant.compareAtPrice.amount)
                 : price * 1.3; // Fallback if no compare price
-              
+
               // Extract features from slide details (assuming they're comma-separated)
               const features = slide.slideDetails.split(',').map(f => f.trim()).filter(f => f);
-              
+
               // Create the formatted slide data
               const slideData = {
                 id: slide.id,
@@ -147,33 +176,42 @@ const HeroSlider = () => {
                 variantId: variant.id,
                 handle: slide.productToFeature.handle
               };
-              
-              console.log('Formatted slide data:', slideData);
+
               return slideData;
             } catch (err) {
-              console.error('Error processing slide:', slide.id, err);
+              errorHandler.handleError(err as Error, {
+                component: 'HeroSlider',
+                action: 'formatSlide'
+              });
               return null;
             }
           }).filter(Boolean) as SlideData[];
-          
-          console.log('Total formatted slides:', formattedSlides.length);
-          
+
           if (formattedSlides.length > 0) {
             setSlides(formattedSlides);
             setErrorMessage(null);
           } else {
-            console.warn('No valid slides found after filtering');
             // Keep using fallback slides
-            setErrorMessage('No se pudieron cargar todos los productos destacados. Mostrando contenido alternativo.');
+            const error = errorHandler.createError('PRODUCT_LOAD_FAILED', {
+              severity: ErrorSeverity.LOW,
+              userMessage: 'No se pudieron cargar todos los productos destacados. Mostrando contenido alternativo.'
+            }, { component: 'HeroSlider', action: 'fetchSlides' });
+            setErrorMessage(error.userMessage);
           }
         } else {
-          console.warn('No hero slides returned from API');
           // Keep using fallback slides
-          setErrorMessage('No se pudieron cargar los productos destacados. Mostrando contenido alternativo.');
+          const error = errorHandler.createError('PRODUCT_LOAD_FAILED', {
+            severity: ErrorSeverity.LOW,
+            userMessage: 'No se pudieron cargar los productos destacados. Mostrando contenido alternativo.'
+          }, { component: 'HeroSlider', action: 'fetchSlides' });
+          setErrorMessage(error.userMessage);
         }
       } catch (err) {
-        console.error('Error fetching hero slides:', err);
         // Keep using fallback slides
+        errorHandler.handleError(err as Error, {
+          component: 'HeroSlider',
+          action: 'fetchSlides'
+        });
         setErrorMessage('Error al cargar los productos destacados. Mostrando contenido alternativo.');
       } finally {
         setIsLoadingSlides(false);
@@ -190,33 +228,44 @@ const HeroSlider = () => {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  // Get product handle for navigation
+  /**
+   * Generates the product URL for navigation based on slide data.
+   * Prioritizes Shopify product handles over title-based URLs.
+   *
+   * @param {SlideData} slideData - The slide containing product information
+   * @returns {string} Product page URL path
+   */
   const getProductUrl = (slideData: SlideData) => {
     // If we have a direct handle from the product data, use it
     if (slideData.handle) {
       return `/product/${slideData.handle}`;
     }
-    
+
     // Fallback to a sanitized version of the title
     return `/product/${slideData.title.toLowerCase().replace(/\s+/g, '-')}`;
   };
 
-  // Handle adding product to cart
+  /**
+   * Handles adding the featured product to cart with error handling.
+   * Supports both variant ID and product handle-based cart additions.
+   *
+   * @param {SlideData} slideData - The slide containing product and variant information
+   */
   const handleAddToCart = (slideData: SlideData) => {
     if (slideData.variantId) {
       // If we have a specific variant ID, use that
       addItem(slideData.variantId, 1);
-      console.log('Adding to cart by variantId:', slideData.variantId);
     } else if (slideData.handle) {
       // If we have a product handle but no variant ID, use the handle
       // This assumes the first variant will be selected
       addItem(slideData.handle, 1);
-      console.log('Adding to cart by handle:', slideData.handle);
     } else {
       // Fallback if neither variantId nor handle is available
-      console.error('Cannot add to cart: No variantId or handle available for', slideData.title);
-      // Show error message
-      setErrorMessage('No se pudo agregar al carrito. Por favor, intente desde la página del producto.');
+      const error = errorHandler.createError('CART_UPDATE_FAILED', {
+        severity: ErrorSeverity.MEDIUM,
+        userMessage: 'No se pudo agregar al carrito. Por favor, intente desde la página del producto.'
+      }, { component: 'HeroSlider', action: 'addToCart' });
+      setErrorMessage(error.userMessage);
       // Clear error message after 3 seconds
       setTimeout(() => setErrorMessage(null), 3000);
     }
@@ -243,44 +292,56 @@ const HeroSlider = () => {
   const currentSlideData = slides[currentSlide];
 
   return (
-    <section className="relative overflow-hidden transition-colors duration-500 h-[600px]">
+    <section className="relative overflow-hidden transition-colors duration-500 h-[600px] w-full" style={{ margin: '0', padding: '0' }}>
       {errorMessage && (
         <div className="absolute top-2 right-2 bg-black/80 text-white px-4 py-2 rounded-md text-sm z-50">
           {errorMessage}
         </div>
       )}
-      
+
       {/* Image container with improved background handling */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#ede8e7]">
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-gray-100">
         {/* Background with uniform color */}
-        <div className="absolute inset-0 bg-[#ede8e7] opacity-100"></div>
-        
+        <div className="absolute inset-0 bg-gray-100 opacity-100"></div>
+
         {/* Soft white gradient on the right side */}
-        <div className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-7/12 h-full overflow-hidden" 
+        <div className="absolute top-0 bottom-0 h-full overflow-hidden"
              style={{
+               right: '-1px',
+               width: 'calc(100vw - 50%)',
+               minWidth: '50%',
                background: 'linear-gradient(110deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.8) 100%)'
              }}>
         </div>
-        
-        {/* Product image - aligned to right with proper padding */}
-        <div className="absolute right-0 top-0 bottom-0 w-full md:w-2/3 lg:w-7/12 h-full overflow-hidden flex justify-end items-center pr-0 md:pr-4 lg:pr-8">
+
+        {/* Product image - extends to right edge with no gaps */}
+        <div className="absolute top-0 bottom-0 h-full flex justify-end items-center" style={{
+          right: '-1px',
+          width: 'calc(100vw - 50%)',
+          minWidth: '50%'
+        }}>
           <img
             src={currentSlideData.image}
             alt={currentSlideData.title}
             className="h-full w-auto object-contain object-right"
-            style={{ maxHeight: '100%' }}
+            style={{
+              maxHeight: '100%',
+              marginRight: '0',
+              paddingRight: '0'
+            }}
           />
         </div>
-        
+
         {/* Text readability gradient - reverted to white gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent z-0" data-component-name="HeroSlider"></div>
       </div>
-      
-      <div className="max-w-7xl mx-auto px-4 h-full relative z-10">
+
+      {/* Full-width container without horizontal padding constraints */}
+      <div className="w-full h-full relative z-10">
         <AnimatePresence mode="wait">
-          <div key={currentSlide} className="flex flex-col md:flex-row items-center h-full justify-between py-8">
+          <div key={currentSlide} className="flex flex-col md:flex-row items-center h-full justify-between py-8 px-4 max-w-7xl mx-auto">
             <div className="md:w-1/2 h-full flex items-center justify-start pl-0 md:pl-0 lg:pl-2">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
@@ -331,19 +392,19 @@ const HeroSlider = () => {
                     <span className="text-base line-through text-gray-500 font-heading">
                       ${currentSlideData.originalPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
                     </span>
-                    <span className="text-sm font-semibold text-red-500">
+                    <span className="text-sm font-semibold text-black">
                       Ahorra {Math.round(100 - (currentSlideData.price / currentSlideData.originalPrice) * 100)}%
                     </span>
                   </div>
                   <div className="flex mt-4 gap-3">
-                    <button 
+                    <button
                       className="bg-black hover:bg-black/90 text-white px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
                       onClick={() => handleAddToCart(currentSlideData)}
                       data-component-name="HeroSlider"
                     >
                       Comprar Ahora
                     </button>
-                    <Link 
+                    <Link
                       to={getProductUrl(currentSlideData)}
                       className="bg-white border border-black hover:bg-gray-50 text-black px-6 py-3 rounded-sm font-heading font-semibold tracking-wide transition-colors"
                     >
@@ -356,20 +417,20 @@ const HeroSlider = () => {
                 </div>
               </motion.div>
             </div>
-            
+
             {/* Image section takes up the right half */}
             <div className="md:w-1/2"></div>
           </div>
         </AnimatePresence>
-        
-        <div className="flex justify-center space-x-2 pb-6">
+
+        <div className="flex justify-center space-x-2 pb-6 px-4 max-w-7xl mx-auto">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide 
-                  ? 'bg-black scale-125' 
+                index === currentSlide
+                  ? 'bg-black scale-125'
                   : 'bg-black/30 hover:bg-black/50'
               }`}
               aria-label={`Go to slide ${index + 1}`}

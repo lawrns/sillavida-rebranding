@@ -10,19 +10,19 @@
   --sv-font-size-xl: 1.25rem;
   --sv-font-size-2xl: 1.5rem;
   --sv-font-size-3xl: 1.875rem;
-  
-  /* Colors */
-  --sv-color-teal: #008080;
-  --sv-color-teal-light: #00a0a0;
-  --sv-color-teal-dark: #006666;
-  --sv-color-beige: #f5f5dc;
-  --sv-color-beige-light: #fffff0;
-  --sv-color-beige-dark: #e6e6c8;
-  --sv-color-sage: #9caf88;
-  --sv-color-sage-light: #b8c9a7;
-  --sv-color-sage-dark: #7d8c6c;
-  --sv-color-terracotta: #e2725b;
-  
+
+  /* Colors - Monochromatic System */
+  --sv-color-teal: #000000; /* Pure black instead of #008080 */
+  --sv-color-teal-light: #333333; /* Dark gray instead of #00a0a0 */
+  --sv-color-teal-dark: #000000; /* Pure black instead of #006666 */
+  --sv-color-beige: #F5F5F5; /* Light gray instead of #f5f5dc */
+  --sv-color-beige-light: #FAFAFA; /* Subtle gray instead of #fffff0 */
+  --sv-color-beige-dark: #E5E5E5; /* Border gray instead of #e6e6c8 */
+  --sv-color-sage: #666666; /* Medium gray instead of #9caf88 */
+  --sv-color-sage-light: #999999; /* Light gray instead of #b8c9a7 */
+  --sv-color-sage-dark: #333333; /* Dark gray instead of #7d8c6c */
+  --sv-color-terracotta: #666666; /* Medium gray instead of #e2725b */
+
   /* Spacing */
   --sv-spacing-1: 0.25rem;
   --sv-spacing-2: 0.5rem;
@@ -32,7 +32,7 @@
   --sv-spacing-8: 2rem;
   --sv-spacing-12: 3rem;
   --sv-spacing-16: 4rem;
-  
+
   /* Borders */
   --sv-border-radius-sm: 0.25rem;
   --sv-border-radius: 0.5rem;
@@ -123,11 +123,11 @@
   .product-page {
     padding: var(--sv-spacing-4) var(--sv-spacing-4);
   }
-  
+
   .section-header, .section-content {
     padding: var(--sv-spacing-4);
   }
-  
+
   .product-section {
     margin-bottom: var(--sv-spacing-8);
   }

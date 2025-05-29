@@ -19,17 +19,7 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
 
   // Add debugging effect
   useEffect(() => {
-    console.log('ProductVideos - Product Data:', product);
-    if (product.media?.edges) {
-      console.log('ProductVideos - Media Edges:', product.media.edges);
-    }
-    if (product.images?.edges) {
-      console.log('ProductVideos - Images with video prefix:', 
-        product.images.edges.filter((image: any) => 
-          (image.node.altText || '').startsWith(videoPrefix)
-        )
-      );
-    }
+    // Component is mounted and product data is available
   }, [product]);
 
   // Get videos from media field (preferred) or fall back to images with video prefix
@@ -41,11 +31,9 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
       // First, try to get videos from the media field
       product.media.edges.forEach((media: any) => {
         const node = media.node;
-        console.log('ProductVideos - Processing media node:', node);
         
         // Check for external videos (YouTube, Vimeo)
         if (node.embeddedUrl) {
-          console.log('ProductVideos - Found external video:', node.embeddedUrl);
           const alt = node.alt || '';
           mediaItems.push({
             type: 'external',
@@ -56,7 +44,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
         }
         // Check for native videos
         else if (node.sources && node.sources.length > 0) {
-          console.log('ProductVideos - Found native video:', node.sources[0].url);
           const alt = node.alt || '';
           mediaItems.push({
             type: 'native',
@@ -68,7 +55,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
         else if (node.image) {
           const altText = node.image.altText || '';
           if (altText.startsWith(videoPrefix)) {
-            console.log('ProductVideos - Found image with video prefix in media:', altText);
             mediaItems.push({
               type: 'image',
               url: node.image.url,
@@ -81,14 +67,11 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
     
     // If no videos found in media, fall back to images with video prefix in alt text
     if (mediaItems.length === 0) {
-      console.log('ProductVideos - No videos found in media, checking images');
       // Filter images with video prefix in alt text
       const videoImages = (product.images?.edges || []).filter((image: any) => {
         const altText = image.node.altText || '';
         return altText.startsWith(videoPrefix);
       });
-      
-      console.log('ProductVideos - Found images with video prefix:', videoImages);
       
       // Add these to our media items
       videoImages.forEach((image: any) => {
@@ -102,8 +85,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
     
     // If we still don't have any videos, check if we have any media items that might be videos
     if (mediaItems.length === 0 && product.media?.edges) {
-      console.log('ProductVideos - No videos found with prefix, checking all media items');
-      
       // Look for any media items that might be videos
       product.media.edges.forEach((media: any) => {
         const node = media.node;
@@ -112,7 +93,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
         if (node.__typename === 'Video' || 
             (node.sources && node.sources.length > 0) || 
             (node.mediaContentType === 'VIDEO')) {
-          console.log('ProductVideos - Found video by type:', node);
           mediaItems.push({
             type: 'native',
             url: node.sources?.[0]?.url || '',
@@ -122,7 +102,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
       });
     }
     
-    console.log('ProductVideos - Final media items:', mediaItems);
     return mediaItems;
   };
 
@@ -140,8 +119,7 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
       return { title: altText || 'Video', videoUrl: defaultUrl };
     }
 
-    // Debug the alt text parsing
-    console.log('Parsing alt text:', altText);
+    // Parse the alt text
 
     const content = altText.substring(videoPrefix.length);
     
@@ -151,12 +129,10 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
     if (content.includes('—')) {
       const parts = content.split('—');
       const title = parts[0].trim();
-      console.log('Parsed using em dash format:', { title, videoUrl: defaultUrl });
       return { title, videoUrl: defaultUrl };
     } else if (content.includes(':')) {
       // Format should be: video-Title:Description:VideoURL
       const parts = content.split(':');
-      console.log('Parsed using colon format:', parts);
       
       if (parts.length >= 3) {
         return {
@@ -172,7 +148,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
     }
     
     // Default fallback
-    console.log('Using default parsing for:', content);
     return {
       title: content.trim(),
       videoUrl: defaultUrl
@@ -203,13 +178,11 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
 
   // Function to render the appropriate video embed based on URL and type
   const renderVideoEmbed = (item: MediaItem): JSX.Element => {
-    console.log('ProductVideos - Rendering video item:', item);
     
     // For external videos from Shopify media field
     if (item.type === 'external') {
       if (item.host === 'YOUTUBE') {
         const youtubeId = getYouTubeVideoId(item.url);
-        console.log('ProductVideos - Rendering YouTube video with ID:', youtubeId);
         return (
           <iframe 
             width="560" 
@@ -224,7 +197,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
         );
       } else if (item.host === 'VIMEO') {
         const vimeoId = getVimeoVideoId(item.url);
-        console.log('ProductVideos - Rendering Vimeo video with ID:', vimeoId);
         return (
           <iframe 
             src={`https://player.vimeo.com/video/${vimeoId}`} 
@@ -241,8 +213,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
     
     // For native videos from Shopify media field
     if (item.type === 'native') {
-      console.log('ProductVideos - Rendering native video:', item.url);
-      
       // Check if URL is empty, show debug info
       if (!item.url) {
         return (
@@ -268,13 +238,11 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
     // For videos from image alt text
     if (item.type === 'image') {
       const { title, videoUrl } = parseVideoAltText(item.altText, item.url);
-      console.log('ProductVideos - Parsed video from image:', { title, videoUrl });
       
       const youtubeId = getYouTubeVideoId(videoUrl);
       const vimeoId = getVimeoVideoId(videoUrl);
       
       if (youtubeId) {
-        console.log('ProductVideos - Rendering YouTube video from alt text with ID:', youtubeId);
         return (
           <iframe 
             width="560" 
@@ -288,7 +256,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
           ></iframe>
         );
       } else if (vimeoId) {
-        console.log('ProductVideos - Rendering Vimeo video from alt text with ID:', vimeoId);
         return (
           <iframe 
             src={`https://player.vimeo.com/video/${vimeoId}`} 
@@ -302,7 +269,6 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
         );
       } else if (videoUrl) {
         // Direct video file
-        console.log('ProductVideos - Rendering direct video file from alt text:', videoUrl);
         return (
           <video 
             controls 
@@ -318,17 +284,11 @@ const ProductVideos: React.FC<ProductVideosProps> = ({ product }) => {
       }
     }
     
-    // General debug placeholder
-    console.log('ProductVideos - No suitable video format found, showing debug placeholder');
-    return (
-      <div className="video-placeholder" style={{ padding: '20px', border: '1px solid red', background: '#fff', color: '#333' }}>
-        <p>Debug: No suitable video format found for this product</p>
-      </div>
-    );
+    // No suitable video format found
+    return null;
   };
 
   if (videoItems.length === 0) {
-    console.log('ProductVideos - No video items found, not rendering component');
     
     // For debugging only - show debug info when no videos are found
     // Always show debug in development (Vite sets import.meta.env.DEV to true in development)

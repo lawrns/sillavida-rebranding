@@ -1,6 +1,6 @@
 /**
  * Analytics Dashboard Component
- * 
+ *
  * This component displays analytics data in the admin panel, including
  * sales, traffic, and user behavior metrics.
  */
@@ -71,8 +71,8 @@ const mockData = {
   },
 };
 
-// Colors for charts
-const COLORS = ['#1E5959', '#2A7A7A', '#3D9999', '#50B8B8', '#7CCECE', '#A5DEDE'];
+// Colors for charts - Monochromatic System
+const COLORS = ['#000000', '#333333', '#666666', '#999999', '#CCCCCC', '#E5E5E5'];
 
 // Time range options
 type TimeRange = '7d' | '30d' | '90d' | '1y';
@@ -84,7 +84,7 @@ interface AnalyticsDashboardProps {
 const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' }) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('30d');
   const [salesData, setSalesData] = useState(mockData.salesOverview.daily);
-  
+
   // Update sales data when time range changes
   useEffect(() => {
     switch (timeRange) {
@@ -102,7 +102,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
         setSalesData(mockData.salesOverview.daily);
     }
   }, [timeRange]);
-  
+
   // Format currency
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('es-MX', {
@@ -111,18 +111,18 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
       minimumFractionDigits: 0,
     }).format(value);
   };
-  
+
   return (
     <div className={`analytics-dashboard bg-white rounded-lg shadow-md p-6 ${className}`}>
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-semibold text-gray-800">Panel de Análisis</h2>
-        
+
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-500">Periodo:</span>
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value as TimeRange)}
-            className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+            className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
           >
             <option value="7d">Últimos 7 días</option>
             <option value="30d">Últimos 30 días</option>
@@ -131,7 +131,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
           </select>
         </div>
       </div>
-      
+
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <KpiCard
@@ -163,7 +163,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
           icon={<Eye size={20} />}
         />
       </div>
-      
+
       {/* Sales Overview Chart */}
       <div className="bg-gray-50 rounded-lg p-4 mb-8">
         <h3 className="text-lg font-medium text-gray-800 mb-4">Resumen de Ventas</h3>
@@ -172,8 +172,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
             <AreaChart data={salesData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1E5959" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#1E5959" stopOpacity={0.1} />
+                  <stop offset="5%" stopColor="#000000" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#000000" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -186,7 +186,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
               <Area
                 type="monotone"
                 dataKey="sales"
-                stroke="#1E5959"
+                stroke="#000000"
                 fillOpacity={1}
                 fill="url(#colorSales)"
               />
@@ -194,7 +194,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
           </ResponsiveContainer>
         </div>
       </div>
-      
+
       {/* Two Column Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Traffic Sources */}
@@ -222,7 +222,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
             </ResponsiveContainer>
           </div>
         </div>
-        
+
         {/* Conversion Rate */}
         <div className="bg-gray-50 rounded-lg p-4">
           <h3 className="text-lg font-medium text-gray-800 mb-4">Tasa de Conversión</h3>
@@ -239,7 +239,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
                 <Line
                   type="monotone"
                   dataKey="rate"
-                  stroke="#1E5959"
+                  stroke="#000000"
                   strokeWidth={2}
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
@@ -249,7 +249,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className = '' 
           </div>
         </div>
       </div>
-      
+
       {/* Top Products */}
       <div className="bg-gray-50 rounded-lg p-4">
         <h3 className="text-lg font-medium text-gray-800 mb-4">Productos Más Vendidos</h3>
@@ -295,8 +295,8 @@ const KpiCard: React.FC<KpiCardProps> = ({ title, value, change, isPositive, ico
       transition={{ duration: 0.2 }}
     >
       <div className="flex justify-between items-start mb-2">
-        <div className="p-2 rounded-full bg-teal bg-opacity-10">
-          <div className="text-teal">{icon}</div>
+        <div className="p-2 rounded-full bg-gray-100">
+          <div className="text-black">{icon}</div>
         </div>
         <div className={`flex items-center text-sm ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
           <span className="mr-1">{change}%</span>

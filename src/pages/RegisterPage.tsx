@@ -62,7 +62,6 @@ const RegisterPage: React.FC = () => {
         const status = await isLoggedIn();
         setLoggedIn(status);
       } catch (error) {
-        console.error('Error checking login status:', error);
       } finally {
         setLoading(false);
       }
@@ -149,7 +148,6 @@ const RegisterPage: React.FC = () => {
         setUseFallback(true);
       }
     } catch (error) {
-      console.error('Error creating account:', error);
       setGeneralError('Ocurrió un error al crear la cuenta. Por favor, intenta de nuevo.');
       
       // Switch to fallback if registration fails and fallback is enabled

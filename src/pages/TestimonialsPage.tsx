@@ -8,8 +8,8 @@ const TestimonialsPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<TestimonialCategory | 'all'>('all');
 
   // Filter testimonials based on active category
-  const filteredTestimonials = activeCategory === 'all' 
-    ? testimonials 
+  const filteredTestimonials = activeCategory === 'all'
+    ? testimonials
     : testimonials.filter(testimonial => testimonial.category === activeCategory);
 
   // Page transition variants
@@ -42,7 +42,7 @@ const TestimonialsPage: React.FC = () => {
               <Users className="h-8 w-8" />
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-[#E8DED1]">Historias de Vida</h1>
+          <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-[#FFFFFF]">Historias de Vida</h1>
           <p className="text-xl max-w-2xl mx-auto font-body text-[#F5F0E8]">
             Descubre cómo nuestras sillas ergonómicas han transformado la vida de nuestros clientes, mejorando su salud, productividad y bienestar.
           </p>
@@ -61,8 +61,8 @@ const TestimonialsPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('all')}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  activeCategory === 'all' 
-                    ? 'bg-teal text-white' 
+                  activeCategory === 'all'
+                    ? 'bg-teal text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -71,8 +71,8 @@ const TestimonialsPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('health')}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center ${
-                  activeCategory === 'health' 
-                    ? 'bg-red-500 text-white' 
+                  activeCategory === 'health'
+                    ? 'bg-red-500 text-white'
                     : 'bg-red-100 text-red-700 hover:bg-red-200'
                 }`}
               >
@@ -82,8 +82,8 @@ const TestimonialsPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('productivity')}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center ${
-                  activeCategory === 'productivity' 
-                    ? 'bg-blue-500 text-white' 
+                  activeCategory === 'productivity'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                 }`}
               >
@@ -93,8 +93,8 @@ const TestimonialsPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('comfort')}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center ${
-                  activeCategory === 'comfort' 
-                    ? 'bg-green-500 text-white' 
+                  activeCategory === 'comfort'
+                    ? 'bg-green-500 text-white'
                     : 'bg-green-100 text-green-700 hover:bg-green-200'
                 }`}
               >
@@ -112,10 +112,10 @@ const TestimonialsPage: React.FC = () => {
           {filteredTestimonials.length > 0 ? (
             <div className="grid grid-cols-1 gap-12">
               {filteredTestimonials.map((testimonial) => (
-                <TestimonialCarousel 
-                  key={testimonial.id} 
-                  testimonials={[testimonial]} 
-                  autoRotate={false} 
+                <TestimonialCarousel
+                  key={testimonial.id}
+                  testimonials={[testimonial]}
+                  autoRotate={false}
                   className="shadow-lg"
                 />
               ))}

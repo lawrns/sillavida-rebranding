@@ -1,6 +1,6 @@
 /**
  * Vida Score Type Definitions
- * 
+ *
  * This file contains the TypeScript interfaces for the Vida Score product comparison tool.
  * The Vida Score is a wellness-focused rating system that evaluates ergonomic chairs
  * based on how they enhance different aspects of life.
@@ -138,7 +138,7 @@ export interface ProductWithVidaScore {
 
 /**
  * Calculate the overall Vida Score based on category scores and weights
- * 
+ *
  * @param comfort Comfort category score (1-10)
  * @param posture Posture category score (1-10)
  * @param productivity Productivity category score (1-10)
@@ -171,7 +171,7 @@ export function calculateOverallVidaScore(
 
 /**
  * Get a descriptive rating label based on a score
- * 
+ *
  * @param score Score value (1-10)
  * @returns Rating label
  */
@@ -187,8 +187,8 @@ export function getScoreRatingLabel(score: number): string {
  * Color codes for each Vida Score category
  */
 export const VIDA_SCORE_COLORS = {
-  comfort: "#C87D55", // Terracotta
-  posture: "#7D9D8C", // Sage
+  comfort: "#666666", // Medium Gray (monochromatic)
+  posture: "#999999", // Light Gray (monochromatic)
   productivity: "#14B8A6", // Teal
   durability: "#1E3A8A", // Navy
 };

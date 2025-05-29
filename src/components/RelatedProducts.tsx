@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ShopifyProduct } from '../types/shopify';
+import { transformShopifyProduct, getProductPrimaryImage } from '../utils/business/productTransformer';
 
 interface RelatedProduct {
   id: string;
@@ -15,22 +16,37 @@ interface RelatedProductsProps {
 }
 
 const RelatedProducts: React.FC<RelatedProductsProps> = ({ products }) => {
-  // Format products to ensure they match the RelatedProduct interface
+  // Transform products using centralized utilities
   const formattedProducts = products.map(product => {
     // Check if the product is already in RelatedProduct format
     if ('image' in product) {
       return product as RelatedProduct;
     }
     
-    // Otherwise, convert from ShopifyProduct format
-    const shopifyProduct = product as ShopifyProduct;
-    return {
-      id: shopifyProduct.id,
-      title: shopifyProduct.title,
-      image: shopifyProduct.images.edges[0]?.node.url || '/images/placeholder.png',
-      price: parseFloat(shopifyProduct.priceRange.minVariantPrice.amount),
-      vidaScore: 90 // Default score if not provided
-    } as RelatedProduct;
+    // Transform from ShopifyProduct format using centralized utility
+    try {
+      const shopifyProduct = product as ShopifyProduct;
+      const standardProduct = transformShopifyProduct(shopifyProduct);
+      const primaryImage = getProductPrimaryImage(standardProduct);
+      
+      return {
+        id: standardProduct.id,
+        title: standardProduct.title,
+        image: primaryImage?.url || '/images/placeholder.png',
+        price: parseFloat(standardProduct.price.amount),
+        vidaScore: 90 // Default score if not provided
+      } as RelatedProduct;
+    } catch (error) {
+      console.warn('Product transformation failed, using fallback:', error);
+      const shopifyProduct = product as ShopifyProduct;
+      return {
+        id: shopifyProduct.id,
+        title: shopifyProduct.title,
+        image: shopifyProduct.images.edges[0]?.node.url || '/images/placeholder.png',
+        price: parseFloat(shopifyProduct.priceRange.minVariantPrice.amount),
+        vidaScore: 90
+      } as RelatedProduct;
+    }
   });
 
   return (

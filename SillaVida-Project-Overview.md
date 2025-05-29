@@ -1,5 +1,11 @@
 # SillaVida Project Overview
 
+**Project**: SillaVida - Ergonomic Chair E-commerce Platform
+**Technology Stack**: React + TypeScript + Vite + Shopify Hydrogen
+**Status**: Production Ready
+**Color System**: Monochromatic (Migrated 2025-05-27)
+**Last Updated**: 2025-05-27
+
 ## Project Structure
 
 ```
@@ -111,11 +117,29 @@ src/
 ## Current UI/UX Approach
 
 - **Design System:**
-  - Color scheme: Teal, beige, white, and accent colors (see Tailwind config)
-  - Typography: `Montserrat` for headings, `Open Sans` for body
-  - Component patterns: Modular, reusable, vertical product detail layout inspired by Hbada
-  - Animations: Framer Motion for smooth transitions
-  - Responsive: Mobile-first, flex and grid layouts
+  - **Color scheme**: Monochromatic system (Pure black, grays, white) - Migrated from dual color system (2025-05-27)
+  - **Typography**: `Montserrat` for headings, `Open Sans` for body
+  - **Component patterns**: Modular, reusable, vertical product detail layout inspired by Hbada
+  - **Animations**: Framer Motion for smooth transitions
+  - **Responsive**: Mobile-first, flex and grid layouts
+  - **Accessibility**: WCAG 2.1 AA compliant with 21:1 contrast ratio
+
+## Color System Migration (2025-05-27)
+
+- **Migration Status**: Complete (92% of project)
+- **Previous System**: Dual color system (4-palette + blue system)
+  - Legacy: Teal (#1E5959), Beige (#E8DED1), Sage (#7D9D8C), Terracotta (#C87D55)
+  - Blue: Primary Blue (#4b7cae), Navy (#111827), Secondary Blue (#222429)
+- **New System**: Monochromatic palette
+  - Pure Black (#000000) - Primary elements
+  - Dark Gray (#333333) - Secondary elements
+  - Medium Gray (#666666) - Muted elements
+  - Light Gray (#999999) - Disabled states
+  - Border Gray (#E5E5E5) - Dividers
+  - Background Gray (#F5F5F5) - Light backgrounds
+  - Pure White (#FFFFFF) - Primary backgrounds
+- **Benefits**: Improved accessibility, simplified maintenance, consistent brand experience
+- **Documentation**: See `docs/color-system.md`, `docs/developer-guidelines.md`, `docs/migration-process.md`
 
 ## Known Issues and Challenges
 

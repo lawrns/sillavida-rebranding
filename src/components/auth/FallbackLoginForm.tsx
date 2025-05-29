@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
 
 /**
  * FallbackLoginForm component
@@ -39,13 +40,22 @@ const FallbackLoginForm: React.FC = () => {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.message || 'Error al iniciar sesión');
+        const error = errorHandler.createError('AUTH_FAILED', {
+          severity: ErrorSeverity.MEDIUM,
+          userMessage: data.message || 'Credenciales incorrectas. Verifica tu email y contraseña.'
+        }, { component: 'FallbackLoginForm', action: 'login' });
+        throw new Error(error.userMessage);
       }
       
       // Redirect based on return_to parameter or to account page
       navigate(getReturnUrl());
     } catch (error: any) {
-      setError(error.message || 'Ocurrió un error durante el inicio de sesión');
+      errorHandler.handleError(error, {
+        component: 'FallbackLoginForm',
+        action: 'handleSubmit'
+      }).then(handledError => {
+        setError(handledError.userMessage || 'Ocurrió un error durante el inicio de sesión');
+      });
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +81,7 @@ const FallbackLoginForm: React.FC = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
             required
           />
         </div>
@@ -85,14 +95,14 @@ const FallbackLoginForm: React.FC = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black/50"
             required
           />
         </div>
         
         <button
           type="submit"
-          className="w-full bg-teal-600 text-white py-2 px-4 rounded-md font-medium hover:bg-teal-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+          className="w-full bg-black text-white py-2 px-4 rounded-md font-medium hover:bg-black/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black/50"
           disabled={isLoading}
         >
           {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
@@ -100,7 +110,7 @@ const FallbackLoginForm: React.FC = () => {
       </form>
       
       <div className="mt-4 text-center">
-        <a href="/account/register" className="text-teal-600 hover:underline">
+        <a href="/account/register" className="text-black hover:underline">
           Crear cuenta
         </a>
       </div>

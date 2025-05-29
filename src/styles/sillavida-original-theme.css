@@ -1,30 +1,30 @@
-/* 
+/*
  * SillaVida Original Theme CSS
  * This file contains the original color scheme for the SillaVida website
  * to enable reversibility of the enhanced theme.
  */
 
 :root.original-theme {
-  /* Original color palette */
-  --color-teal: #1E5959;
-  --color-teal-light: #2A7A7A;
-  --color-teal-dark: #184747;
-  --color-teal-extralight: #E5EDED;
+  /* Original color palette - Monochromatic System */
+  --color-teal: #000000; /* Pure black instead of #1E5959 */
+  --color-teal-light: #333333; /* Dark gray instead of #2A7A7A */
+  --color-teal-dark: #000000; /* Pure black instead of #184747 */
+  --color-teal-extralight: #F5F5F5; /* Light gray instead of #E5EDED */
 
-  --color-beige: #E8DED1;
-  --color-beige-light: #F5F0E8;
-  --color-beige-dark: #D6C9B7;
-  --color-beige-extralight: #FAF7F3;
+  --color-beige: #F5F5F5; /* Light gray instead of #E8DED1 */
+  --color-beige-light: #FAFAFA; /* Subtle gray instead of #F5F0E8 */
+  --color-beige-dark: #E5E5E5; /* Border gray instead of #D6C9B7 */
+  --color-beige-extralight: #FDFDFD; /* Off white instead of #FAF7F3 */
 
-  --color-sage: #7D9D8C;
-  --color-sage-light: #9CBCAB;
-  --color-sage-dark: #5E7A6A;
-  --color-sage-extralight: #EDF3F0;
+  --color-sage: #666666; /* Medium gray instead of #7D9D8C */
+  --color-sage-light: #999999; /* Light gray instead of #9CBCAB */
+  --color-sage-dark: #333333; /* Dark gray instead of #5E7A6A */
+  --color-sage-extralight: #F5F5F5; /* Light gray instead of #EDF3F0 */
 
-  --color-terracotta: #C87D55;
-  --color-terracotta-light: #D69A7A;
-  --color-terracotta-dark: #A66240;
-  --color-terracotta-extralight: #F7EDE7;
+  --color-terracotta: #666666; /* Medium gray instead of #C87D55 */
+  --color-terracotta-light: #999999; /* Light gray instead of #D69A7A */
+  --color-terracotta-dark: #333333; /* Dark gray instead of #A66240 */
+  --color-terracotta-extralight: #F5F5F5; /* Light gray instead of #F7EDE7 */
 
   /* Neutral Colors */
   --color-black: #212529;
@@ -35,37 +35,37 @@
   --color-white: #FFFFFF;
   --color-off-white: #F8F9FA;
 
-  /* Original background colors */
-  --bg-primary: #FFFDF7; /* Original light yellow */
-  --bg-secondary: #FFFDF7;
-  --bg-accent: #1E5959;
-  --bg-header: #1E5959;
-  --bg-footer: #1E5959;
-  
-  /* Original text colors */
+  /* Original background colors - Monochromatic */
+  --bg-primary: #FFFFFF; /* Pure white instead of light yellow */
+  --bg-secondary: #FFFFFF;
+  --bg-accent: #000000; /* Pure black instead of teal */
+  --bg-header: #000000; /* Pure black instead of teal */
+  --bg-footer: #000000; /* Pure black instead of teal */
+
+  /* Original text colors - Monochromatic */
   --text-primary: #333333;
   --text-secondary: #666666;
-  --text-accent: #1E5959;
+  --text-accent: #000000; /* Pure black instead of teal */
   --text-light: white;
-  --text-price: #1E5959;
-  
-  /* Original border colors */
-  --border-light: #E8DED1;
-  --border-medium: #E8DED1;
-  --border-accent: #7D9D8C;
-  
-  /* Original button colors */
-  --btn-primary-bg: #1E5959;
+  --text-price: #000000; /* Pure black instead of teal */
+
+  /* Original border colors - Monochromatic */
+  --border-light: #E5E5E5; /* Border gray instead of beige */
+  --border-medium: #E5E5E5; /* Border gray instead of beige */
+  --border-accent: #666666; /* Medium gray instead of sage */
+
+  /* Original button colors - Monochromatic */
+  --btn-primary-bg: #000000; /* Pure black instead of teal */
   --btn-primary-text: white;
-  --btn-primary-hover-bg: #1E5959;
+  --btn-primary-hover-bg: #333333; /* Dark gray hover instead of teal */
   --btn-secondary-bg: white;
-  --btn-secondary-text: #1E5959;
-  --btn-secondary-border: #1E5959;
-  --btn-secondary-hover-bg: #1E5959;
+  --btn-secondary-text: #000000; /* Pure black instead of teal */
+  --btn-secondary-border: #000000; /* Pure black instead of teal */
+  --btn-secondary-hover-bg: #000000; /* Pure black instead of teal */
   --btn-secondary-hover-text: white;
 
   /* Component-Specific Colors */
-  
+
   /* Buttons */
   --color-button-primary: var(--color-teal);
   --color-button-primary-hover: var(--color-teal-light);

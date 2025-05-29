@@ -1,30 +1,30 @@
-/* 
+/*
  * SillaVida Enhanced Theme CSS
  * This file contains the enhanced color scheme for the SillaVida website
  * with improved contrast and visual hierarchy.
  */
 
 :root.enhanced-theme {
-  /* Enhanced color palette */
-  --color-teal: #1E5959;
-  --color-teal-light: #2a7a7a;
-  --color-teal-dark: #184747;
-  --color-teal-extralight: #E5EDED;
+  /* Enhanced color palette - Monochromatic System */
+  --color-teal: #000000; /* Pure black instead of #1E5959 */
+  --color-teal-light: #333333; /* Dark gray instead of #2a7a7a */
+  --color-teal-dark: #000000; /* Pure black instead of #184747 */
+  --color-teal-extralight: #F5F5F5; /* Light gray instead of #E5EDED */
 
-  --color-beige: #E8DED1;
-  --color-beige-light: #f5f0e8;
-  --color-beige-dark: #d6c9b5;
-  --color-beige-extralight: #FAF7F3;
+  --color-beige: #F5F5F5; /* Light gray instead of #E8DED1 */
+  --color-beige-light: #FAFAFA; /* Subtle gray instead of #f5f0e8 */
+  --color-beige-dark: #E5E5E5; /* Border gray instead of #d6c9b5 */
+  --color-beige-extralight: #FDFDFD; /* Off white instead of #FAF7F3 */
 
-  --color-sage: #7D9D8C;
-  --color-sage-light: #9ab5a7;
-  --color-sage-dark: #65857a;
-  --color-sage-extralight: #EDF3F0;
+  --color-sage: #666666; /* Medium gray instead of #7D9D8C */
+  --color-sage-light: #999999; /* Light gray instead of #9ab5a7 */
+  --color-sage-dark: #333333; /* Dark gray instead of #65857a */
+  --color-sage-extralight: #F5F5F5; /* Light gray instead of #EDF3F0 */
 
-  --color-terracotta: #C87D55;
-  --color-terracotta-light: #d69a7c;
-  --color-terracotta-dark: #b06642;
-  --color-terracotta-extralight: #F7EDE7;
+  --color-terracotta: #666666; /* Medium gray instead of #C87D55 */
+  --color-terracotta-light: #999999; /* Light gray instead of #d69a7c */
+  --color-terracotta-dark: #333333; /* Dark gray instead of #b06642 */
+  --color-terracotta-extralight: #F5F5F5; /* Light gray instead of #F7EDE7 */
 
   /* Background colors */
   --bg-primary: white;
@@ -32,19 +32,19 @@
   --bg-accent: var(--color-teal);
   --bg-header: var(--color-teal);
   --bg-footer: var(--color-teal-dark);
-  
+
   /* Text colors */
   --text-primary: #333333;
   --text-secondary: #666666;
   --text-accent: var(--color-teal);
   --text-light: white;
   --text-price: var(--color-terracotta);
-  
+
   /* Border colors */
   --border-light: var(--color-beige);
   --border-medium: var(--color-beige-dark);
   --border-accent: var(--color-sage);
-  
+
   /* Button colors */
   --btn-primary-bg: var(--color-teal);
   --btn-primary-text: white;
@@ -56,7 +56,7 @@
   --btn-secondary-hover-text: white;
 
   /* Component-Specific Colors */
-  
+
   /* Buttons */
   --color-button-primary: var(--color-teal);
   --color-button-primary-hover: var(--color-teal-light);

@@ -3,10 +3,11 @@ import { User, LogOut, Settings, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // Import framer-motion
 import { isLoggedIn, login, logout, getCurrentCustomer } from '../services/customerAuth';
+import { errorHandler } from '../utils/errorHandler';
 
 /**
  * AccountButton component
- * 
+ *
  * This component displays a login/logout button and user information
  * when the user is logged in. It also provides a dropdown menu with
  * links to account-related pages.
@@ -24,13 +25,16 @@ const AccountButton: React.FC = () => {
         setLoading(true);
         const status = await isLoggedIn();
         setLoggedIn(status);
-        
+
         if (status) {
           const customerData = await getCurrentCustomer();
           setCustomer(customerData);
         }
       } catch (error) {
-        console.error('Error checking login status:', error);
+        errorHandler.handleError(error as Error, {
+          component: 'AccountButton',
+          action: 'checkLoginStatus'
+        });
       } finally {
         setLoading(false);
       }
@@ -69,7 +73,10 @@ const AccountButton: React.FC = () => {
       // Reload the page to clear any customer-specific state
       window.location.reload();
     } catch (error) {
-      console.error('Error logging out:', error);
+      errorHandler.handleError(error as Error, {
+        component: 'AccountButton',
+        action: 'handleLogout'
+      });
     }
   };
 
@@ -81,23 +88,23 @@ const AccountButton: React.FC = () => {
   // Animation variants
   const dropdownVariants = {
     hidden: { opacity: 0, y: -10, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       scale: 1,
-      transition: { 
+      transition: {
         duration: 0.2,
         ease: "easeOut"
-      } 
+      }
     },
-    exit: { 
-      opacity: 0, 
-      y: -10, 
+    exit: {
+      opacity: 0,
+      y: -10,
       scale: 0.95,
-      transition: { 
+      transition: {
         duration: 0.15,
         ease: "easeIn"
-      } 
+      }
     }
   };
 
@@ -111,7 +118,7 @@ const AccountButton: React.FC = () => {
         duration: 0.2
       }
     }),
-    hover: { 
+    hover: {
       backgroundColor: "rgba(254, 242, 242, 1)", // red-50
       x: 2
     }
@@ -119,8 +126,8 @@ const AccountButton: React.FC = () => {
 
   if (loading) {
     return (
-      <motion.button 
-        className="p-2 flex items-center text-gray-500" 
+      <motion.button
+        className="p-2 flex items-center text-gray-500"
         disabled
         aria-label="Loading account status"
         initial={{ opacity: 0.7 }}
@@ -135,7 +142,7 @@ const AccountButton: React.FC = () => {
   return (
     <div className="relative account-dropdown">
       <motion.button
-        className="p-2 flex items-center text-gray-700 hover:text-[#B02020] transition-colors duration-200"
+        className="p-2 flex items-center text-gray-700 hover:text-black transition-colors duration-200"
         onClick={loggedIn ? toggleDropdown : handleLogin}
         aria-label={loggedIn ? 'Account menu' : 'Login'}
         aria-expanded={dropdownOpen}
@@ -153,7 +160,7 @@ const AccountButton: React.FC = () => {
 
       <AnimatePresence>
         {loggedIn && dropdownOpen && (
-          <motion.div 
+          <motion.div
             className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg z-10 overflow-hidden border border-gray-100"
             variants={dropdownVariants}
             initial="hidden"
@@ -168,7 +175,7 @@ const AccountButton: React.FC = () => {
                 {customer?.email}
               </p>
             </div>
-            
+
             <div className="py-1">
               <motion.div
                 variants={menuItemVariants}
@@ -179,14 +186,14 @@ const AccountButton: React.FC = () => {
               >
                 <Link
                   to="/account"
-                  className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-[#B02020] transition-colors duration-200"
+                  className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-black transition-colors duration-200"
                   onClick={() => setDropdownOpen(false)}
                 >
                   <Settings className="h-4 w-4 mr-2 text-gray-400" />
                   Mi cuenta
                 </Link>
               </motion.div>
-              
+
               <motion.div
                 variants={menuItemVariants}
                 initial="hidden"
@@ -196,7 +203,7 @@ const AccountButton: React.FC = () => {
               >
                 <Link
                   to="/account/orders"
-                  className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-[#B02020] transition-colors duration-200"
+                  className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-black transition-colors duration-200"
                   onClick={() => setDropdownOpen(false)}
                 >
                   <ShoppingBag className="h-4 w-4 mr-2 text-gray-400" />
@@ -204,7 +211,7 @@ const AccountButton: React.FC = () => {
                 </Link>
               </motion.div>
             </div>
-            
+
             <div className="border-t border-gray-100">
               <motion.div
                 variants={menuItemVariants}
@@ -214,7 +221,7 @@ const AccountButton: React.FC = () => {
                 whileHover="hover"
               >
                 <button
-                  className="w-full text-left flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-[#B02020] transition-colors duration-200"
+                  className="w-full text-left flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-black transition-colors duration-200"
                   onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2 text-gray-400" />

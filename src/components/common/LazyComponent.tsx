@@ -10,9 +10,9 @@ interface LazyComponentProps {
 /**
  * LazyComponent - A wrapper for React.lazy that provides a consistent loading experience
  * 
- * @param importFunc - A function that returns a dynamic import (e.g., () => import('./MyComponent'))
- * @param fallback - Optional custom fallback component to show while loading
- * @param props - Props to pass to the loaded component
+ * @param {() => Promise<{ default: ComponentType<any> }>} importFunc - A function that returns a dynamic import (e.g., () => import('./MyComponent'))
+ * @param {React.ReactNode} [fallback] - Optional custom fallback component to show while loading
+ * @param {Record<string, any>} [props] - Props to pass to the loaded component
  */
 const LazyComponent: React.FC<LazyComponentProps> = ({
   importFunc,
@@ -39,8 +39,8 @@ const LazyComponent: React.FC<LazyComponentProps> = ({
 /**
  * createLazyComponent - A utility function to create a lazy-loaded component
  * 
- * @param importFunc - A function that returns a dynamic import
- * @returns A component that will be lazy loaded
+ * @param {() => Promise<{ default: ComponentType<P> }>} importFunc - A function that returns a dynamic import
+ * @returns {React.FC<P>} A component that will be lazy loaded
  * 
  * Example usage:
  * const LazyProductCard = createLazyComponent(() => import('./ProductCard'));

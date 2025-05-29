@@ -12,8 +12,8 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          light: "#6b9cce",
-          dark: "#3b6188",
+          light: "#333333",
+          dark: "#000000",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -39,22 +39,19 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        neutral: {
-          white: "#FFFFFF",
-          offwhite: "#F4F4F5",
-          lightgray: "#E6E6E6",
-          gray: "#9A9A9A",
-          darkgray: "#4A4A4A",
-          darkergray: "#222429",
-          black: "#000000",
+        // Monochromatic color system
+        mono: {
+          black: "#000000",        // Pure black
+          "gray-900": "#333333",   // Dark gray
+          "gray-600": "#666666",   // Medium gray
+          "gray-400": "#999999",   // Light gray
+          "gray-200": "#E5E5E5",   // Border gray
+          "gray-100": "#F5F5F5",   // Background gray
+          "gray-50": "#FAFAFA",    // Subtle gray
+          white: "#FFFFFF",        // Pure white
+          "off-white": "#FDFDFD",  // Off white
         },
-        // Updated brand colors
-        hbada: {
-          blue: "#4b7cae",
-          black: "#222429",
-          lightgray: "#F4F4F5",
-        },
-        accent: "#4b7cae",
+
       },
       fontFamily: {
         // Updated to use Inter as primary font

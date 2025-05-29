@@ -1,4 +1,5 @@
 import { Workbox } from 'workbox-window';
+import { errorHandler, ErrorSeverity } from '../utils/errorHandler';
 
 // This optional code is used to register a service worker.
 // register() is not called by default.
@@ -105,7 +106,10 @@ function registerValidSW(swUrl: string, config?: Config): void {
     // Register the service worker
     wb.register();
   } catch (error) {
-    console.error('Error during service worker registration:', error);
+    errorHandler.handleError(error as Error, {
+      component: 'ServiceWorkerRegistration',
+      action: 'register'
+    });
   }
 }
 
@@ -148,7 +152,11 @@ export function unregister(): void {
         }
       })
       .catch(error => {
-        console.error(error.message);
+        errorHandler.createError('SYSTEM_ERROR', {
+          severity: ErrorSeverity.LOW,
+          message: error.message,
+          userMessage: 'Error de caché del navegador - no afecta la funcionalidad'
+        }, { component: 'ServiceWorkerRegistration', action: 'checkValidServiceWorker' });
       });
   }
 }

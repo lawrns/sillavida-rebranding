@@ -5,16 +5,16 @@ import RandomProductImage from './RandomProductImage';
 
 const ErgonomicEducationalSectionCondensed: React.FC = () => {
   return (
-    <div className="bg-[#111827] py-16">
+    <div className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row gap-12 items-center justify-between">
           <div className="md:max-w-[50%] w-full">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">¿Por qué invertir en una silla ergonómica?</h2>
-            <p className="text-xl text-white/90 mb-8 font-body">Una inversión en tu bienestar que se amortiza día tras día</p>
-            
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-black mb-4">¿Por qué invertir en una silla ergonómica?</h2>
+            <p className="text-xl text-black/80 mb-8 font-body">Una inversión en tu bienestar que se amortiza día tras día</p>
+
             <div className="grid gap-6 mb-8">
-              <div className="flex items-center gap-4 bg-[#1e293b] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
-                <div className="w-14 h-14 flex items-center justify-center bg-neutral-800 rounded-full flex-shrink-0">
+              <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
+                <div className="w-14 h-14 flex items-center justify-center bg-black rounded-full flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M24 16C25.6569 16 27 14.6569 27 13C27 11.3431 25.6569 10 24 10C22.3431 10 21 11.3431 21 13C21 14.6569 22.3431 16 24 16Z" fill="white"/>
@@ -24,13 +24,13 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-heading font-bold text-white mb-1">Mejora de la Postura</h3>
-                  <p className="text-sm text-white/80">Reduce la presión en los discos lumbares hasta en un 30%</p>
+                  <h3 className="text-lg font-heading font-bold text-black mb-1">Mejora de la Postura</h3>
+                  <p className="text-sm text-gray-600">Reduce la presión en los discos lumbares hasta en un 30%</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-4 bg-[#1e293b] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
-                <div className="w-14 h-14 flex items-center justify-center bg-neutral-800 rounded-full flex-shrink-0">
+
+              <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
+                <div className="w-14 h-14 flex items-center justify-center bg-black rounded-full flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M24 14C25.1046 14 26 13.1046 26 12C26 10.8954 25.1046 10 24 10C22.8954 10 22 10.8954 22 12C22 13.1046 22.8954 14 24 14Z" fill="white"/>
@@ -41,13 +41,13 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-heading font-bold text-white mb-1">Mayor Concentración</h3>
-                  <p className="text-sm text-white/80">25% mayor concentración con estaciones de trabajo ergonómicas</p>
+                  <h3 className="text-lg font-heading font-bold text-black mb-1">Mayor Concentración</h3>
+                  <p className="text-sm text-gray-600">25% mayor concentración con estaciones de trabajo ergonómicas</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-4 bg-[#1e293b] p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
-                <div className="w-14 h-14 flex items-center justify-center bg-neutral-800 rounded-full flex-shrink-0">
+
+              <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
+                <div className="w-14 h-14 flex items-center justify-center bg-black rounded-full flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M16 28H32" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -57,22 +57,29 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-heading font-bold text-white mb-1">Inversión en Salud</h3>
-                  <p className="text-sm text-white/80">Retorno de inversión 3:1 durante un período de 5 años</p>
+                  <h3 className="text-lg font-heading font-bold text-black mb-1">Inversión en Salud</h3>
+                  <p className="text-sm text-gray-600">Retorno de inversión 3:1 durante un período de 5 años</p>
                 </div>
               </div>
             </div>
-            
-            <Link to="/educacion/por-que-invertir-en-silla-ergonomica" className="inline-flex items-center text-accent hover:text-white transition-colors font-heading font-semibold">
+
+            <Link to="/educacion/por-que-invertir-en-silla-ergonomica" className="inline-flex items-center text-black hover:text-gray-600 transition-colors font-heading font-semibold group">
               Descubre más <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
-          
+
           <div className="md:max-w-[45%] w-full h-[450px] md:h-[450px] rounded-lg overflow-hidden shadow-md">
-            <RandomProductImage 
+            {/*
+              RandomProductImage configured to use only local ergonomic images
+              - useShopifyImages={false} disables Shopify API integration temporarily
+              - Displays 13 educational ergonomic chair images from /images/Ergonomia/
+              - To re-enable Shopify images: change useShopifyImages to true or remove the prop
+            */}
+            <RandomProductImage
               className="w-full h-full object-cover"
-              alt="Beneficios de sillas ergonómicas" 
+              alt="Beneficios de sillas ergonómicas"
               interval={7000}
+              useShopifyImages={false}
             />
           </div>
         </div>

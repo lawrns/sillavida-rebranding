@@ -58,7 +58,7 @@
 .comparison-header h2 {
   font-size: 18px;
   font-weight: 600;
-  color: var(--color-teal);
+  color: var(--color-black); /* Pure black instead of teal */
   margin: 0;
 }
 
@@ -101,7 +101,7 @@
   position: relative;
   width: 100%;
   padding-bottom: 100%; /* 1:1 Aspect Ratio */
-  background-color: var(--color-beige-extralight);
+  background-color: var(--color-gray-background); /* Light gray instead of beige */
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 12px;
@@ -153,7 +153,7 @@
 .current-price {
   font-size: 16px;
   font-weight: 700;
-  color: var(--color-terracotta);
+  color: var(--color-black); /* Pure black instead of terracotta */
 }
 
 .compare-price {
@@ -168,8 +168,8 @@
   justify-content: center;
   gap: 4px;
   padding: 8px 12px;
-  background-color: var(--color-teal-extralight);
-  color: var(--color-teal);
+  background-color: var(--color-gray-background); /* Light gray instead of teal */
+  color: var(--color-black); /* Pure black instead of teal */
   text-decoration: none;
   border-radius: 4px;
   font-size: 14px;
@@ -178,7 +178,7 @@
 }
 
 .view-product-link:hover {
-  background-color: var(--color-teal-light);
+  background-color: var(--color-black-medium); /* Medium gray instead of teal */
   color: white;
 }
 
@@ -237,7 +237,7 @@
 
 .carousel-nav:hover:not(:disabled) {
   background-color: var(--color-gray-extralight);
-  color: var(--color-teal);
+  color: var(--color-black); /* Pure black instead of teal */
 }
 
 .carousel-nav:disabled {
@@ -274,7 +274,7 @@
   width: 100%;
   height: 80px;
   object-fit: contain;
-  background-color: var(--color-beige-extralight);
+  background-color: var(--color-gray-background); /* Light gray instead of beige */
 }
 
 .carousel-item-details {
@@ -294,14 +294,14 @@
 .carousel-item-details .price {
   font-size: 12px;
   font-weight: 700;
-  color: var(--color-terracotta);
+  color: var(--color-black); /* Pure black instead of terracotta */
 }
 
 .add-to-comparison-btn {
   width: 100%;
   padding: 6px;
-  background-color: var(--color-teal-extralight);
-  color: var(--color-teal);
+  background-color: var(--color-gray-background); /* Light gray instead of teal */
+  color: var(--color-black); /* Pure black instead of teal */
   border: none;
   font-size: 12px;
   font-weight: 500;
@@ -314,7 +314,7 @@
 }
 
 .add-to-comparison-btn:hover {
-  background-color: var(--color-teal-light);
+  background-color: var(--color-black-medium); /* Medium gray instead of teal */
   color: white;
 }
 
@@ -336,7 +336,7 @@
 }
 
 .pagination-dot.active {
-  background-color: var(--color-teal);
+  background-color: var(--color-black); /* Pure black instead of teal */
 }
 
 .no-products-message {
@@ -360,7 +360,7 @@
   font-size: 16px;
   font-weight: 600;
   margin: 0;
-  color: var(--color-teal);
+  color: var(--color-black); /* Pure black instead of teal */
 }
 
 .specs-selector {
@@ -453,22 +453,22 @@
   .comparison-toggle-btn {
     bottom: 70px;
   }
-  
+
   .comparison-modal {
     max-height: 85vh;
   }
-  
+
   .compared-products {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
   }
-  
+
   .spec-name {
     flex: 0 0 120px;
     font-size: 12px;
     padding: 10px;
   }
-  
+
   .spec-value {
     font-size: 12px;
     padding: 10px;
@@ -482,31 +482,31 @@
     padding: 8px 12px;
     font-size: 12px;
   }
-  
+
   .comparison-overlay {
     padding: 10px;
   }
-  
+
   .comparison-header h2 {
     font-size: 16px;
   }
-  
+
   .compared-products {
     grid-template-columns: 1fr;
   }
-  
+
   .specs-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .spec-name {
     flex: 0 0 100px;
     font-size: 11px;
     padding: 8px;
   }
-  
+
   .spec-value {
     font-size: 11px;
     padding: 8px;

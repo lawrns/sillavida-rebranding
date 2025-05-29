@@ -1,10 +1,10 @@
 /* SillaVida Button Styles */
 
-/* Primary Button */
+/* Primary Button - Monochromatic System */
 .btn-primary {
-  background-color: var(--color-teal);
+  background-color: var(--color-black);
   color: var(--color-white);
-  border: 1px solid var(--color-teal);
+  border: 1px solid var(--color-black);
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
@@ -12,27 +12,27 @@
 }
 
 .btn-primary:hover {
-  background-color: var(--color-teal-light);
-  border-color: var(--color-teal-light);
+  background-color: var(--color-black-dark);
+  border-color: var(--color-black-dark);
 }
 
 .btn-primary:active {
-  background-color: var(--color-teal-dark);
-  border-color: var(--color-teal-dark);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .btn-primary:disabled {
-  background-color: var(--color-teal-extralight);
+  background-color: var(--color-gray-background);
   border-color: var(--color-gray-light);
   color: var(--color-gray-medium);
   cursor: not-allowed;
 }
 
-/* Secondary Button */
+/* Secondary Button - Monochromatic System */
 .btn-secondary {
-  background-color: var(--color-sage);
+  background-color: var(--color-black-medium);
   color: var(--color-white);
-  border: 1px solid var(--color-sage);
+  border: 1px solid var(--color-black-medium);
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
@@ -40,27 +40,27 @@
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-sage-light);
-  border-color: var(--color-sage-light);
+  background-color: var(--color-black-dark);
+  border-color: var(--color-black-dark);
 }
 
 .btn-secondary:active {
-  background-color: var(--color-sage-dark);
-  border-color: var(--color-sage-dark);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .btn-secondary:disabled {
-  background-color: var(--color-sage-extralight);
+  background-color: var(--color-gray-background);
   border-color: var(--color-gray-light);
   color: var(--color-gray-medium);
   cursor: not-allowed;
 }
 
-/* Tertiary Button */
+/* Tertiary Button - Monochromatic System */
 .btn-tertiary {
   background-color: transparent;
-  color: var(--color-teal);
-  border: 1px solid var(--color-teal);
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
@@ -68,11 +68,11 @@
 }
 
 .btn-tertiary:hover {
-  background-color: var(--color-teal-extralight);
+  background-color: var(--color-gray-background);
 }
 
 .btn-tertiary:active {
-  background-color: var(--color-teal-light);
+  background-color: var(--color-black-medium);
   color: var(--color-white);
 }
 
@@ -82,11 +82,11 @@
   cursor: not-allowed;
 }
 
-/* Accent Button */
+/* Accent Button - Monochromatic System */
 .btn-accent {
-  background-color: var(--color-terracotta);
+  background-color: var(--color-black-dark);
   color: var(--color-white);
-  border: 1px solid var(--color-terracotta);
+  border: 1px solid var(--color-black-dark);
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
@@ -94,17 +94,17 @@
 }
 
 .btn-accent:hover {
-  background-color: var(--color-terracotta-light);
-  border-color: var(--color-terracotta-light);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .btn-accent:active {
-  background-color: var(--color-terracotta-dark);
-  border-color: var(--color-terracotta-dark);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .btn-accent:disabled {
-  background-color: var(--color-terracotta-extralight);
+  background-color: var(--color-gray-background);
   border-color: var(--color-gray-light);
   color: var(--color-gray-medium);
   cursor: not-allowed;

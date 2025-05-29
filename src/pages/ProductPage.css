@@ -9,20 +9,20 @@
 @import '../components/product/ImageThumbnailSelector.css';
 @import '../components/product/ProductGallery.css';
 
-/* Color palette from the redesign plan */
+/* Monochromatic color palette for ProductPage */
 :root {
-  --sv-color-primary: #1E5959;
-  --sv-color-primary-light: #2a7a7a;
-  --sv-color-primary-dark: #174545;
-  --sv-color-secondary: #E8DED1;
-  --sv-color-secondary-light: #f5efe7;
-  --sv-color-secondary-dark: #d9cbb7;
-  --sv-color-accent: #7D9D8C;
-  --sv-color-accent-light: #9ab5a7;
-  --sv-color-accent-dark: #678577;
-  --sv-color-highlight: #C87D55;
-  --sv-color-highlight-light: #d69573;
-  --sv-color-highlight-dark: #b06642;
+  --sv-color-primary: #000000; /* Pure black instead of teal */
+  --sv-color-primary-light: #333333; /* Dark gray instead of light teal */
+  --sv-color-primary-dark: #000000; /* Pure black instead of dark teal */
+  --sv-color-secondary: #F5F5F5; /* Light gray instead of beige */
+  --sv-color-secondary-light: #FAFAFA; /* Subtle gray instead of light beige */
+  --sv-color-secondary-dark: #E5E5E5; /* Border gray instead of dark beige */
+  --sv-color-accent: #666666; /* Medium gray instead of sage */
+  --sv-color-accent-light: #999999; /* Light gray instead of light sage */
+  --sv-color-accent-dark: #333333; /* Dark gray instead of dark sage */
+  --sv-color-highlight: #000000; /* Pure black instead of terracotta */
+  --sv-color-highlight-light: #333333; /* Dark gray instead of light terracotta */
+  --sv-color-highlight-dark: #000000; /* Pure black instead of dark terracotta */
 }
 
 /* Product Page Container */
@@ -317,9 +317,9 @@
 }
 
 .loading-spinner {
-  border: 4px solid rgba(30, 89, 89, 0.1);
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Black with low opacity instead of teal */
   border-radius: 50%;
-  border-top: 4px solid #1E5959;
+  border-top: 4px solid #000000; /* Pure black instead of teal */
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
@@ -352,7 +352,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  background-color: #1E5959;
+  background-color: #000000; /* Pure black instead of teal */
   color: white;
   border: none;
   border-radius: 4px;
@@ -363,7 +363,7 @@
 }
 
 .retry-button:hover {
-  background-color: #2A7A7A;
+  background-color: #333333; /* Dark gray instead of light teal */
 }
 
 .product-sections-vertical {
@@ -426,15 +426,15 @@
   .product-page {
     padding: 1rem;
   }
-  
+
   .section-header h2 {
     font-size: 1.25rem;
   }
-  
+
   .product-title {
     font-size: 1.25rem;
   }
-  
+
   .current-price {
     font-size: 1.5rem;
   }

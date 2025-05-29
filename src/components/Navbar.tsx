@@ -3,9 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, ChevronDown } from 'lucide-react';
 import { getCollections } from '../lib/shopify';
-import { useCart } from '../context/CartContext';
+import { useMinimalCart } from '../hooks/useMinimalCart';
+import { useEventBus } from '../hooks/useComponentComposition';
 import MiniCart from './MiniCart';
 import AccountButton from './AccountButton';
+import { errorHandler } from '../utils/errorHandler';
 
 interface Collection {
   id: string;
@@ -19,7 +21,8 @@ const Navbar = () => {
   const [error, setError] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const { cartCount, toggleCart } = useCart();
+  const { cartCount, toggleCart } = useMinimalCart();
+  const eventBus = useEventBus();
   const categoriesRef = useRef<HTMLDivElement>(null);
   const [promocionesHandle, setPromocionesHandle] = useState<string | null>(null);
   const [tiendaHandle, setTiendaHandle] = useState<string | null>(null);
@@ -51,8 +54,11 @@ const Navbar = () => {
         if (tiendaCollection) setTiendaHandle(tiendaCollection.handle);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching collections:', err);
-        setError('Failed to load categories');
+        errorHandler.handleError(err as Error, {
+          component: 'Navbar',
+          action: 'fetchCollections'
+        });
+        setError('No se pudieron cargar las categorías');
         setLoading(false);
       }
     };
@@ -100,42 +106,42 @@ const Navbar = () => {
               <div className="relative w-6 h-6 flex justify-center items-center">
                 {/* Animated Hamburger/Close Icon */}
                 <motion.span
-                  animate={{ rotate: mobileMenuOpen ? 45 : 0, y: mobileMenuOpen ? 0 : -3 }} 
+                  animate={{ rotate: mobileMenuOpen ? 45 : 0, y: mobileMenuOpen ? 0 : -3 }}
                   transition={{ duration: 0.2 }}
                   className="absolute block h-0.5 w-6 bg-black"
-                  style={{ top: 'calc(50% - 1px)' }} 
+                  style={{ top: 'calc(50% - 1px)' }}
                 />
                 <motion.span
                   animate={{ opacity: mobileMenuOpen ? 0 : 1 }}
                   transition={{ duration: 0.1 }}
                   className="absolute block h-0.5 w-6 bg-black"
-                   style={{ top: 'calc(50% - 1px)' }} 
+                   style={{ top: 'calc(50% - 1px)' }}
                 />
                 <motion.span
                   animate={{ rotate: mobileMenuOpen ? -45 : 0, y: mobileMenuOpen ? 0 : 3 }}
                   transition={{ duration: 0.2 }}
                   className="absolute block h-0.5 w-6 bg-black"
-                   style={{ top: 'calc(50% - 1px)' }} 
+                   style={{ top: 'calc(50% - 1px)' }}
                 />
               </div>
             </button>
             {/* Logo with "Vida" emphasis */}
             <Link to="/" className="flex items-center md:ml-12">
-              <motion.div 
+              <motion.div
                 className="vida-logo text-2xl text-black"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <span className="vida-logo-silla text-black">Silla</span>
-                <motion.span 
+                <motion.span
                   className="vida-logo-vida"
-                  initial={{ color: "#3b6188" }}
-                  animate={{ 
-                    color: ["#3b6188", "#4b7199", "#3b6188"],
-                    textShadow: ["0 0 0px rgba(59,97,136,0)", "0 0 8px rgba(59,97,136,0.3)", "0 0 0px rgba(59,97,136,0)"]
+                  initial={{ color: "#000000" }}
+                  animate={{
+                    color: ["#000000", "#333333", "#000000"],
+                    textShadow: ["0 0 0px rgba(0,0,0,0)", "0 0 8px rgba(0,0,0,0.3)", "0 0 0px rgba(0,0,0,0)"]
                   }}
-                  transition={{ 
-                    duration: 3, 
+                  transition={{
+                    duration: 3,
                     repeat: Infinity,
                     repeatType: "reverse"
                   }}
@@ -163,17 +169,17 @@ const Navbar = () => {
 
             {/* Categories Dropdown */}
             <div className="relative" ref={categoriesRef}>
-              <motion.button 
-                whileHover={{ y: -2 }} 
+              <motion.button
+                whileHover={{ y: -2 }}
                 className="flex items-center text-black nav-item hover:text-accent py-2 px-1 transition-colors duration-200"
-                onClick={toggleCategories} 
-                aria-expanded={categoriesOpen} 
-                aria-haspopup="true" 
+                onClick={toggleCategories}
+                aria-expanded={categoriesOpen}
+                aria-haspopup="true"
                 id="categories-button"
               >
                 Categorías
-                <motion.div 
-                  animate={{ rotate: categoriesOpen ? 180 : 0 }} 
+                <motion.div
+                  animate={{ rotate: categoriesOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
                   className="ml-1 flex items-center justify-center"
                 >
@@ -201,11 +207,11 @@ const Navbar = () => {
                           {collections
                             .filter(collection => !collection.title.toLowerCase().includes('promociones') && !collection.title.toLowerCase().includes('tienda') && !collection.title.toLowerCase().includes('más vendidos'))
                             .map((collection) => (
-                              <Link 
-                                key={collection.id} 
-                                to={`/category/${collection.handle}`} 
-                                className="block px-3 py-2.5 text-sm font-heading font-medium text-black rounded-md hover:bg-accent/10 hover:text-accent transition-all duration-200" 
-                                role="menuitem" 
+                              <Link
+                                key={collection.id}
+                                to={`/category/${collection.handle}`}
+                                className="block px-3 py-2.5 text-sm font-heading font-medium text-black rounded-md hover:bg-accent/10 hover:text-accent transition-all duration-200"
+                                role="menuitem"
                                 onClick={() => setCategoriesOpen(false)}
                               >
                                 {collection.title}
@@ -223,16 +229,20 @@ const Navbar = () => {
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
             <AccountButton />
-            <motion.button 
+            <motion.button
               className="p-2 relative transition-all duration-200"
-              onClick={toggleCart} 
+              onClick={() => {
+                toggleCart();
+                // Emit event for analytics or other systems
+                eventBus.emit('cart:toggle', { cartCount });
+              }}
               aria-label={`Open cart (${cartCount} items)`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
               <ShoppingCart className="h-5 w-5 text-accent transition-colors duration-200" />
               {cartCount > 0 && (
-                <motion.span 
+                <motion.span
                   className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -257,53 +267,53 @@ const Navbar = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="sm:hidden relative z-50 overflow-hidden bg-white shadow-lg border-t border-neutral-800" 
+            className="sm:hidden relative z-50 overflow-hidden bg-white shadow-lg border-t border-neutral-800"
             id="mobile-menu-content"
           >
             <div className="px-3 pt-3 pb-4 space-y-3">
-              <Link 
-                to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"} 
+              <Link
+                to={tiendaHandle ? `/category/${tiendaHandle}` : "/tienda"}
                 className={`block px-4 py-4 rounded-md nav-item text-base ${
-                  isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda") 
-                    ? 'text-accent bg-accent/10' 
+                  isActive(tiendaHandle ? `/category/${tiendaHandle}` : "/tienda")
+                    ? 'text-accent bg-accent/10'
                     : 'text-black'
-                } hover:text-accent hover:bg-accent/10 transition-all duration-200`} 
+                } hover:text-accent hover:bg-accent/10 transition-all duration-200`}
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Tienda"
               >
                 Tienda
               </Link>
-              <Link 
-                to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} 
+              <Link
+                to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"}
                 className={`block px-4 py-4 rounded-md nav-item text-base ${
-                  isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") 
-                    ? 'text-accent bg-accent/10' 
+                  isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones")
+                    ? 'text-accent bg-accent/10'
                     : 'text-black'
-                } hover:text-accent hover:bg-accent/10 transition-all duration-200`} 
+                } hover:text-accent hover:bg-accent/10 transition-all duration-200`}
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Promociones"
               >
                 Promociones
               </Link>
-              <Link 
-                to="/category/mas-vendidos" 
+              <Link
+                to="/category/mas-vendidos"
                 className={`block px-4 py-4 rounded-md nav-item text-base ${
-                  isActive("/category/mas-vendidos") 
-                    ? 'text-accent bg-accent/10' 
+                  isActive("/category/mas-vendidos")
+                    ? 'text-accent bg-accent/10'
                     : 'text-black'
-                } hover:text-accent hover:bg-accent/10 transition-all duration-200`} 
+                } hover:text-accent hover:bg-accent/10 transition-all duration-200`}
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Más Vendidos"
               >
                 Más Vendidos
               </Link>
-              <Link 
-                to="/educacion/por-que-invertir-en-silla-ergonomica" 
+              <Link
+                to="/educacion/por-que-invertir-en-silla-ergonomica"
                 className={`block px-4 py-4 rounded-md nav-item text-base ${
-                  isActive("/educacion/por-que-invertir-en-silla-ergonomica") 
-                    ? 'text-accent bg-accent/10' 
+                  isActive("/educacion/por-que-invertir-en-silla-ergonomica")
+                    ? 'text-accent bg-accent/10'
                     : 'text-black'
-                } hover:text-accent hover:bg-accent/10 transition-all duration-200`} 
+                } hover:text-accent hover:bg-accent/10 transition-all duration-200`}
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Ergonomía"
               >
@@ -311,15 +321,15 @@ const Navbar = () => {
               </Link>
               {/* Mobile Categories */}
               <div ref={categoriesRef}>
-                <button 
-                  className="flex w-full items-center px-4 py-4 rounded-md nav-item text-base text-black hover:text-accent hover:bg-accent/10 transition-all duration-200" 
+                <button
+                  className="flex w-full items-center px-4 py-4 rounded-md nav-item text-base text-black hover:text-accent hover:bg-accent/10 transition-all duration-200"
                   onClick={toggleCategories}
                   aria-expanded={categoriesOpen}
                   aria-controls="mobile-categories-dropdown"
                 >
                   Categorías
-                  <motion.div 
-                    animate={{ rotate: categoriesOpen ? 180 : 0 }} 
+                  <motion.div
+                    animate={{ rotate: categoriesOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                     className="ml-1 flex items-center justify-center"
                   >
@@ -342,10 +352,10 @@ const Navbar = () => {
                         collections
                           .filter(collection => !collection.title.toLowerCase().includes('promociones') && !collection.title.toLowerCase().includes('tienda') && !collection.title.toLowerCase().includes('más vendidos'))
                           .map((collection) => (
-                            <Link 
-                              key={collection.id} 
-                              to={`/category/${collection.handle}`} 
-                              className="block px-4 py-3.5 text-base font-heading font-medium text-black rounded-md hover:bg-accent/10 hover:text-accent transition-all duration-200" 
+                            <Link
+                              key={collection.id}
+                              to={`/category/${collection.handle}`}
+                              className="block px-4 py-3.5 text-base font-heading font-medium text-black rounded-md hover:bg-accent/10 hover:text-accent transition-all duration-200"
                               onClick={() => setMobileMenuOpen(false)}
                               aria-label={collection.title}
                             >

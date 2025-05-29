@@ -1,217 +1,204 @@
 /**
- * SillaVida Color Tokens
- * 
+ * SillaVida Color Tokens - Monochromatic System
+ *
  * This file defines all color tokens used in the application.
- * Based on the Vida redesign color palette.
+ * Based on the monochromatic white/black/grey design system.
+ *
+ * Migration: Transformed from dual color system (4-palette + blue) to monochromatic
+ * Date: 2025-05-27T13:10:30
  */
 
-// Base color palette
+// Monochromatic color palette
 const palette = {
-  teal: {
-    base: '#1E5959',
-    light: '#2A7A7A',
-    dark: '#184747',
-    extraLight: '#E5EDED',
+  // Primary monochromatic scale
+  black: {
+    pure: '#000000',        // Pure black - primary text, buttons
+    dark: '#333333',        // Dark gray - secondary elements
+    medium: '#666666',      // Medium gray - muted text, borders
+    light: '#999999',       // Light gray - disabled states
   },
-  beige: {
-    base: '#E8DED1',
-    light: '#F5F0E8',
-    dark: '#D6C9B7',
-    extraLight: '#FAF7F3',
+  gray: {
+    border: '#E5E5E5',     // Border gray - dividers, borders
+    background: '#F5F5F5',  // Background gray - light backgrounds
+    subtle: '#FAFAFA',      // Subtle gray - very light backgrounds
   },
-  sage: {
-    base: '#7D9D8C',
-    light: '#9CBCAB',
-    dark: '#5E7A6A',
-    extraLight: '#EDF3F0',
+  white: {
+    pure: '#FFFFFF',        // Pure white - primary backgrounds
+    off: '#FDFDFD',         // Off white - card backgrounds
   },
-  terracotta: {
-    base: '#C87D55',
-    light: '#D69A7A',
-    dark: '#A66240',
-    extraLight: '#F7EDE7',
-  },
-  neutral: {
-    black: '#212529',
-    grayDark: '#495057',
-    grayMedium: '#6C757D',
-    grayLight: '#ADB5BD',
-    grayExtraLight: '#E9ECEF',
-    white: '#FFFFFF',
-    offWhite: '#F8F9FA',
-  },
+
   status: {
     success: {
-      base: '#2E7D32',
-      light: '#4CAF50',
-      dark: '#1B5E20',
-      extraLight: '#E8F5E9',
+      base: '#000000',      // Monochromatic - black for success
+      light: '#333333',
+      dark: '#000000',
+      extraLight: '#F5F5F5',
     },
     warning: {
-      base: '#F9A825',
-      light: '#FBC02D',
-      dark: '#F57F17',
-      extraLight: '#FFF8E1',
+      base: '#666666',      // Monochromatic - medium gray for warning
+      light: '#999999',
+      dark: '#333333',
+      extraLight: '#F5F5F5',
     },
     error: {
-      base: '#C62828',
-      light: '#E53935',
-      dark: '#B71C1C',
-      extraLight: '#FFEBEE',
+      base: '#000000',      // Monochromatic - black for error
+      light: '#333333',
+      dark: '#000000',
+      extraLight: '#F5F5F5',
     },
     info: {
-      base: '#0277BD',
-      light: '#039BE5',
-      dark: '#01579B',
-      extraLight: '#E1F5FE',
+      base: '#666666',      // Monochromatic - medium gray for info
+      light: '#999999',
+      dark: '#333333',
+      extraLight: '#F5F5F5',
     },
   },
 };
 
-// Semantic color assignments
+// Semantic color assignments - Monochromatic System
 export const colors = {
   // Base palette for direct access
   palette,
-  
-  // Semantic color assignments
-  primary: palette.teal.base,
-  primaryLight: palette.teal.light,
-  primaryDark: palette.teal.dark,
-  primaryExtraLight: palette.teal.extraLight,
-  
-  secondary: palette.sage.base,
-  secondaryLight: palette.sage.light,
-  secondaryDark: palette.sage.dark,
-  secondaryExtraLight: palette.sage.extraLight,
-  
-  accent: palette.beige.base,
-  accentLight: palette.beige.light,
-  accentDark: palette.beige.dark,
-  accentExtraLight: palette.beige.extraLight,
-  
-  highlight: palette.terracotta.base,
-  highlightLight: palette.terracotta.light,
-  highlightDark: palette.terracotta.dark,
-  highlightExtraLight: palette.terracotta.extraLight,
-  
+
+  // Primary semantic assignments (monochromatic)
+  primary: palette.black.pure,           // Pure black for primary elements
+  primaryLight: palette.black.dark,      // Dark gray for secondary elements
+  primaryDark: palette.black.pure,       // Pure black for emphasis
+  primaryExtraLight: palette.gray.background, // Light gray for backgrounds
+
+  secondary: palette.black.medium,       // Medium gray for secondary elements
+  secondaryLight: palette.black.light,   // Light gray for muted elements
+  secondaryDark: palette.black.dark,     // Dark gray for contrast
+  secondaryExtraLight: palette.gray.subtle, // Subtle gray for light backgrounds
+
+  accent: palette.gray.background,       // Light gray for accent areas
+  accentLight: palette.gray.subtle,      // Subtle gray for light accents
+  accentDark: palette.black.medium,      // Medium gray for dark accents
+  accentExtraLight: palette.white.off,   // Off white for very light accents
+
+  highlight: palette.black.medium,       // Medium gray for highlights
+  highlightLight: palette.black.light,   // Light gray for subtle highlights
+  highlightDark: palette.black.dark,     // Dark gray for strong highlights
+  highlightExtraLight: palette.gray.background, // Light gray for background highlights
+
   // Text colors
   text: {
-    primary: palette.neutral.black,
-    secondary: palette.neutral.grayDark,
-    tertiary: palette.neutral.grayMedium,
-    light: palette.neutral.white,
-    disabled: palette.neutral.grayLight,
+    primary: palette.black.pure,
+    secondary: palette.black.dark,
+    tertiary: palette.black.medium,
+    light: palette.white.pure,
+    disabled: palette.black.light,
   },
-  
+
   // Background colors
   background: {
-    primary: palette.neutral.white,
-    secondary: palette.neutral.offWhite,
-    tertiary: palette.neutral.grayExtraLight,
-    accent: palette.teal.base,
-    light: palette.beige.light,
+    primary: palette.white.pure,
+    secondary: palette.white.off,
+    tertiary: palette.gray.subtle,
+    accent: palette.black.pure,
+    light: palette.gray.background,
   },
-  
+
   // Border colors
   border: {
-    primary: palette.teal.base,
-    secondary: palette.sage.base,
-    light: palette.neutral.grayLight,
-    medium: palette.neutral.grayMedium,
-    dark: palette.neutral.grayDark,
-    accent: palette.beige.dark,
+    primary: palette.black.pure,
+    secondary: palette.black.medium,
+    light: palette.black.light,
+    medium: palette.black.medium,
+    dark: palette.black.dark,
+    accent: palette.gray.border,
   },
-  
+
   // Status colors
   status: {
     success: palette.status.success.base,
     successLight: palette.status.success.light,
     successDark: palette.status.success.dark,
     successExtraLight: palette.status.success.extraLight,
-    
+
     warning: palette.status.warning.base,
     warningLight: palette.status.warning.light,
     warningDark: palette.status.warning.dark,
     warningExtraLight: palette.status.warning.extraLight,
-    
+
     error: palette.status.error.base,
     errorLight: palette.status.error.light,
     errorDark: palette.status.error.dark,
     errorExtraLight: palette.status.error.extraLight,
-    
+
     info: palette.status.info.base,
     infoLight: palette.status.info.light,
     infoDark: palette.status.info.dark,
     infoExtraLight: palette.status.info.extraLight,
   },
-  
-  // Component-specific colors
+
+  // Component-specific colors - Monochromatic System
   button: {
     primary: {
-      background: palette.teal.base,
-      backgroundHover: palette.teal.light,
-      backgroundActive: palette.teal.dark,
-      text: palette.neutral.white,
-      textDisabled: palette.neutral.grayMedium,
-      backgroundDisabled: palette.teal.extraLight,
-      border: palette.teal.base,
-      borderHover: palette.teal.light,
+      background: palette.black.pure,
+      backgroundHover: palette.black.dark,
+      backgroundActive: palette.black.pure,
+      text: palette.white.pure,
+      textDisabled: palette.black.light,
+      backgroundDisabled: palette.gray.background,
+      border: palette.black.pure,
+      borderHover: palette.black.dark,
     },
     secondary: {
-      background: palette.sage.base,
-      backgroundHover: palette.sage.light,
-      backgroundActive: palette.sage.dark,
-      text: palette.neutral.white,
-      textDisabled: palette.neutral.grayMedium,
-      backgroundDisabled: palette.sage.extraLight,
-      border: palette.sage.base,
-      borderHover: palette.sage.light,
+      background: palette.white.pure,
+      backgroundHover: palette.gray.subtle,
+      backgroundActive: palette.gray.background,
+      text: palette.black.pure,
+      textDisabled: palette.black.light,
+      backgroundDisabled: palette.gray.background,
+      border: palette.black.medium,
+      borderHover: palette.black.dark,
     },
     tertiary: {
       background: 'transparent',
-      backgroundHover: palette.teal.extraLight,
-      backgroundActive: palette.teal.light,
-      text: palette.teal.base,
-      textActive: palette.neutral.white,
-      textDisabled: palette.neutral.grayMedium,
-      border: palette.teal.base,
-      borderDisabled: palette.neutral.grayLight,
+      backgroundHover: palette.gray.subtle,
+      backgroundActive: palette.gray.background,
+      text: palette.black.pure,
+      textActive: palette.white.pure,
+      textDisabled: palette.black.light,
+      border: palette.black.pure,
+      borderDisabled: palette.black.light,
     },
     accent: {
-      background: palette.terracotta.base,
-      backgroundHover: palette.terracotta.light,
-      backgroundActive: palette.terracotta.dark,
-      text: palette.neutral.white,
-      textDisabled: palette.neutral.grayMedium,
-      backgroundDisabled: palette.terracotta.extraLight,
-      border: palette.terracotta.base,
-      borderHover: palette.terracotta.light,
+      background: palette.black.medium,
+      backgroundHover: palette.black.dark,
+      backgroundActive: palette.black.pure,
+      text: palette.white.pure,
+      textDisabled: palette.black.light,
+      backgroundDisabled: palette.gray.background,
+      border: palette.black.medium,
+      borderHover: palette.black.dark,
     },
   },
-  
+
   // Navigation colors
   navigation: {
-    background: palette.neutral.white,
-    active: palette.teal.base,
-    hover: palette.teal.extraLight,
-    text: palette.neutral.black,
-    textActive: palette.teal.base,
+    background: palette.white.pure,
+    active: palette.black.pure,
+    hover: palette.gray.subtle,
+    text: palette.black.pure,
+    textActive: palette.black.pure,
   },
-  
+
   // Card colors
   card: {
-    background: palette.neutral.white,
-    backgroundAlt: palette.beige.base,
-    border: palette.neutral.grayLight,
-    borderAlt: palette.beige.dark,
+    background: palette.white.pure,
+    backgroundAlt: palette.gray.background,
+    border: palette.black.light,
+    borderAlt: palette.gray.border,
   },
-  
+
   // Form colors
   form: {
-    border: palette.neutral.grayLight,
-    focus: palette.teal.base,
-    background: palette.neutral.white,
-    placeholder: palette.neutral.grayMedium,
+    border: palette.black.light,
+    focus: palette.black.pure,
+    background: palette.white.pure,
+    placeholder: palette.black.medium,
     error: palette.status.error.base,
   },
 };

@@ -2,8 +2,8 @@
 title: SillaVida Shopify Implementation
 type: documentation
 status: completed
-created: 2023-05-15
-updated: 2023-05-15
+created: 2025-05-15
+updated: 2025-05-27
 id: SHOPIFY-IMPL-DOC
 priority: reference
 tags: [shopify, e-commerce, integration, headless]

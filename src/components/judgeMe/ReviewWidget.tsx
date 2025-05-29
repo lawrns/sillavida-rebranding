@@ -1,6 +1,6 @@
 /**
  * ReviewWidget Component
- * 
+ *
  * Displays full product reviews using Judge.me's widget.
  * This component handles loading states and proper DOM initialization.
  */
@@ -39,7 +39,7 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
   const [localError, setLocalError] = useState<Error | null>(null);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
-  // Use our custom hook for reliable widget initialization 
+  // Use our custom hook for reliable widget initialization
   const { initialized } = useJudgeMeWidgetInitialization({
     productId,
     container: containerRef,
@@ -50,26 +50,26 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
   // Load review data and manage component state
   useEffect(() => {
     let isMounted = true;
-    
+
     const loadReviewData = async () => {
       if (!ready) return;
-      
+
       try {
         setLocalLoading(true);
-        
+
         // Get review count
         const count = await getProductReviewCount(productId);
-        
+
         if (isMounted) {
           setReviewCount(count);
           setIsEmpty(count === 0);
-          
+
           // If no reviews and showIfEmpty is false, we don't display
           if (count === 0 && !showIfEmpty) {
             setLocalLoading(false);
             return;
           }
-          
+
           // Initialize widget container for Judge.me to find
           if (containerRef.current && !hasInitialized) {
             // Create widget container without manual rendering
@@ -77,19 +77,19 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
             const widgetContainer = document.createElement('div');
             widgetContainer.setAttribute('data-judge-me-widget', widgetType + '-widget');
             widgetContainer.setAttribute('data-id', productId.toString());
-            
+
             if (productTitle) {
               widgetContainer.setAttribute('data-product-title', productTitle);
             }
-            
+
             widgetContainer.className = `jdgm-widget jdgm-review-widget jdgm-${widgetType}-widget ${className}`;
-            
+
             // Clear any existing content and append new widget container
             containerRef.current.innerHTML = '';
             containerRef.current.appendChild(widgetContainer);
             setHasInitialized(true);
           }
-          
+
           setLocalLoading(false);
         }
       } catch (err) {
@@ -100,9 +100,9 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
         }
       }
     };
-    
+
     loadReviewData();
-    
+
     return () => {
       isMounted = false;
     };
@@ -112,8 +112,8 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
   const emptyComponent = (
     <div className="text-center py-4">
       <p className="mb-2 text-white/80">¡Sé el primero en opinar sobre este producto!</p>
-      <button 
-        className="bg-[#4b7cae] hover:bg-[#4b7cae]/90 text-white py-2 px-4 rounded transition-colors"
+      <button
+        className="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded transition-colors"
         onClick={() => judgeMe?.openReviewDrawer(productId.toString())}
       >
         Escribir una reseña
@@ -132,8 +132,8 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
       showErrorState={showErrorState}
       emptyComponent={emptyComponent}
     >
-      <div 
-        ref={containerRef} 
+      <div
+        ref={containerRef}
         className="judge-me-reviews-container"
         aria-label={`Product reviews: ${reviewCount} total reviews`}
       />

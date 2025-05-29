@@ -1,14 +1,14 @@
 ---
 title: Technical Debt Reduction - Hard-coded Values Refactoring
 type: task
-status: planned
+status: superseded
 created: 2025-05-12T11:29:12
-updated: 2025-05-12T11:29:12
+updated: 2025-05-27T11:59:46
 id: TASK-120
 priority: high
 memory_types: [procedural, semantic]
 dependencies: []
-tags: [refactoring, technical-debt, code-quality]
+tags: [refactoring, technical-debt, code-quality, superseded]
 ---
 
 # Technical Debt Reduction - Hard-coded Values Refactoring
@@ -45,13 +45,25 @@ This task involves conducting a systematic audit to identify and refactor hard-c
 - Test Files: None
 
 ## Notes
-From CODEBASE_OVERVIEW.md:
-- "Palette update – swap teal variables for the clone-site red (#d71920) + black/white neutral scheme."
-- "Class audit – search for text-teal, bg-[#1DDBA6], etc.; convert to semantic utilities."
-- "Navbar.tsx (19 kB) - Contains teal utility classes that need palette swap."
-- "Footer.tsx (7 kB) - Colors/links still teal."
-- "HeroSlider.tsx (15 kB) - Background overlay & CTA buttons use teal."
+**SUPERSEDED BY COMPREHENSIVE COLOR MIGRATION TASKS (TASK-134 through TASK-144)**
+
+This task has been superseded by a comprehensive color migration plan that addresses the complete transformation from the current 4-color palette system (teal/beige/sage/terracotta) to a monochromatic white/black/grey scheme.
+
+The comprehensive migration includes:
+- TASK-134: Color System Architecture Analysis and Backup
+- TASK-135: Design Token System Overhaul - Monochromatic Foundation
+- TASK-136: Theme System Consolidation - Monochromatic Themes
+- TASK-137: Analytics Dashboard Color Migration
+- TASK-138: Judge.me Integration Color Migration
+- TASK-139: Core Navigation and UI Components Color Migration
+- TASK-140: Product Components Color Migration
+- TASK-141: Common Components and CSS Files Color Migration
+- TASK-142: CSS Variable Chain Validation and Cleanup
+- TASK-143: Comprehensive Visual Regression Testing
+- TASK-144: Final Validation and Documentation
+
+Original scope from CODEBASE_OVERVIEW.md is now covered by the comprehensive migration plan.
 
 ## Next Steps
-- Create a script to scan the codebase for hard-coded color values
-- Begin with the Navbar.tsx component as it's a high-visibility element
+- This task is superseded - refer to TASK-134 through TASK-144 for complete color migration
+- Begin with TASK-134 (Color System Architecture Analysis and Backup)
