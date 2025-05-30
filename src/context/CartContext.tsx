@@ -90,8 +90,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
     
     try {
-      // Log the raw cart data for debugging
-      
       // Process cart items and filter out any invalid ones
       const validItems: CartItem[] = [];
       
@@ -173,8 +171,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
           setCartId(updatedCart.id);
           localStorage.setItem('cartId', updatedCart.id);
         }
-        
-        
         setCart(updatedCart);
         setIsCartOpen(true); // Open cart when item is added
         

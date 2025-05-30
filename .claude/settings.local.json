@@ -18,7 +18,8 @@
       "Bash(git push:*)",
       "WebFetch(domain:judge.me)",
       "Bash(curl:*)",
-      "Bash(compact)"
+      "Bash(compact)",
+      "Bash(npm run lint:*)"
     ],
     "deny": []
   },

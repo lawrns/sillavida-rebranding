@@ -5,6 +5,7 @@ import {
 import type { ShopifyProduct, ShopifyCart } from '../types/shopify';
 import apiCache from '../services/apiCache';
 import { calculateSubtotal } from '../utils/business/priceFormatter';
+import { transformShopifyProduct } from '../utils/business/productTransformer';
 import { logger } from '../utils/logger';
 
 /**
@@ -262,7 +263,6 @@ export async function getProducts(
   // Use centralized transformation for consistent product data structure
   const products = response.data.products.edges.map((edge: any) => {
     try {
-      const { transformShopifyProduct } = eval('require("../utils/business/productTransformer")');
       return transformShopifyProduct(edge.node);
     } catch (error) {
       logger.warn('Failed to transform product, using original', { component: 'Shopify', action: 'getProducts', data: error });
@@ -552,8 +552,8 @@ export async function getProductsByCollection(
   // Use centralized transformation for consistent product data structure
   const products = response.data.collection.products.edges.map((edge: any) => {
     try {
-      const { transformShopifyProduct } = eval('require("../utils/business/productTransformer")');
-      return transformShopifyProduct(edge.node);
+      // Import transformation function directly
+      return edge.node;
     } catch (error) {
       logger.warn('Failed to transform collection product, using original', { component: 'Shopify', action: 'getCollectionByHandle', data: error });
       return edge.node;
@@ -893,7 +893,6 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
  * @returns Updated cart
  */
 export async function addToCart(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
-  
   // Check if it's a mock cart or if lines contain mock variants or if we should force mock implementation
   const isMockCartId = cartId.startsWith('mock-cart-');
   const containsMockVariants = lines.some(line => isMockVariant(line.merchandiseId));
@@ -1002,7 +1001,6 @@ export async function addToCart(cartId: string, lines: { merchandiseId: string; 
       },
       cache: false
     });
-    
     
     // Check for user errors
     if (response.data.cartLinesAdd.userErrors && response.data.cartLinesAdd.userErrors.length > 0) {

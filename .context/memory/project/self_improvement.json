@@ -1,8 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-05-29T10:10:00",
+  "lastUpdated": "2025-05-29T15:50:00",
   "insights": {
     "process": [
+      {
+        "id": "process-011",
+        "description": "Systematic route auditing approach effectively identifies and resolves navigation inconsistencies across complex applications",
+        "dateIdentified": "2025-05-29T15:50:00",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["ROUTE-CLEANUP-001"]
+      },
       {
         "id": "process-010",
         "description": "Section-by-section redesign approach allows for controlled transformation while maintaining functionality",
@@ -85,6 +93,14 @@
       }
     ],
     "efficiency": [
+      {
+        "id": "efficiency-012",
+        "description": "Creating complete legal page suites during routing cleanup eliminates multiple future development cycles",
+        "dateIdentified": "2025-05-29T15:50:00",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["ROUTE-CLEANUP-001"]
+      },
       {
         "id": "efficiency-011",
         "description": "Template-to-React transformation preserves Shopify functionality while improving conversion optimization",
@@ -175,6 +191,14 @@
       }
     ],
     "pattern": [
+      {
+        "id": "pattern-013",
+        "description": "Smart scroll restoration using pathname-only triggers preserves pagination behavior while improving navigation UX",
+        "dateIdentified": "2025-05-29T15:50:00",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["SCROLL-FIX-001"]
+      },
       {
         "id": "pattern-012",
         "description": "Attention-span optimization through horizontal layouts and single-focus content improves modern UX",
@@ -312,6 +336,30 @@
     ]
   },
   "recommendations": [
+    {
+      "id": "rec-020",
+      "category": "process",
+      "description": "Implement comprehensive route auditing checklist for future projects to catch navigation issues early",
+      "dateCreated": "2025-05-29T15:50:00",
+      "priority": "high",
+      "status": "pending"
+    },
+    {
+      "id": "rec-021",
+      "category": "efficiency",
+      "description": "Create standardized legal page templates for rapid deployment across multiple projects",
+      "dateCreated": "2025-05-29T15:50:00",
+      "priority": "medium",
+      "status": "pending"
+    },
+    {
+      "id": "rec-022",
+      "category": "pattern",
+      "description": "Document the ScrollToTop pattern as a reusable component pattern for all React Router applications",
+      "dateCreated": "2025-05-29T15:50:00",
+      "priority": "medium",
+      "status": "pending"
+    },
     {
       "id": "rec-018",
       "category": "process",
