@@ -32,17 +32,21 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [secondImageLoaded, setSecondImageLoaded] = useState(false);
 
-  // Use centralized price formatting
-  const priceDisplay = getProductPriceDisplay(
-    {
-      amount: product.priceRange.minVariantPrice.amount,
-      currencyCode: product.priceRange.minVariantPrice.currencyCode
-    },
-    product.compareAtPriceRange?.minVariantPrice ? {
-      amount: product.compareAtPriceRange.minVariantPrice.amount,
-      currencyCode: product.compareAtPriceRange.minVariantPrice.currencyCode
-    } : undefined
-  );
+  // Get variant-level pricing (like HeroSlider does)
+  const variant = product.variants?.edges[0]?.node;
+  const currentPrice = {
+    amount: product.priceRange.minVariantPrice.amount,
+    currencyCode: product.priceRange.minVariantPrice.currencyCode
+  };
+  
+  // Use variant compareAtPrice if available (this is where Shopify stores sale prices)
+  const compareAtPrice = variant?.compareAtPrice ? {
+    amount: variant.compareAtPrice.amount,
+    currencyCode: variant.compareAtPrice.currencyCode
+  } : undefined;
+
+  // Use centralized price formatting with variant-level compareAtPrice
+  const priceDisplay = getProductPriceDisplay(currentPrice, compareAtPrice);
 
   // Parse price for analytics (keep backward compatibility)
   const price = parseFloat(product.priceRange.minVariantPrice.amount);
@@ -161,7 +165,7 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
 
   return (
     <motion.div
-      className="bg-white border border-neutral-100 rounded-md shadow-sm hover:shadow-md transition-shadow h-full flex flex-col"
+      className="bg-white border border-neutral-100 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -173,10 +177,17 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
     >
       <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
         <div 
-          className="relative w-full h-72 overflow-hidden"
+          className="relative w-full h-72 overflow-hidden rounded-t-lg"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
+          {/* Sale Badge */}
+          {priceDisplay.isOnSale && (
+            <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
+              SALE
+            </div>
+          )}
+
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
               <span className="text-gray-400">Cargando...</span>
@@ -229,39 +240,71 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
           )}
         </div>
       </Link>
-      <div className="p-3">
+      <div className="p-4">
+        {/* Star Rating with Review Count */}
+        <div className="flex items-center gap-1 mb-2">
+          <div className="flex text-yellow-400">
+            {"★★★★★".split("").map((star, index) => (
+              <span key={index} className="text-sm">{star}</span>
+            ))}
+          </div>
+          <span className="text-sm text-gray-600 ml-1">(127)</span>
+        </div>
+
+        {/* Product Title */}
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-          <h3 className="font-heading font-medium text-sm mb-1 text-[#000000] hover:text-black transition-colors product-title">{product.title}</h3>
+          <h3 className="font-semibold text-lg mb-2 text-gray-900 hover:text-black transition-colors">
+            {product.title}
+          </h3>
         </Link>
 
-        <PreviewBadge
-          productId={product.id.split('/').pop() || ''}
-          containerClassName="mt-1 mb-2"
-        />
+        {/* Product Description */}
+        <p className="text-gray-600 text-sm mb-3 leading-relaxed" style={{
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden'
+        }}>
+          {product.description || "Premium ergonomic design for enhanced comfort and productivity"}
+        </p>
 
-        <div className="flex flex-col mb-2 mt-1">
-          <div className="flex items-baseline gap-2">
-            <p className="text-base font-heading font-bold text-black product-price">
-              {priceDisplay.price}
-            </p>
-            {priceDisplay.isOnSale && priceDisplay.originalPrice && (
-              <p className="text-xs text-gray-500 line-through font-heading">
+        {/* Pricing - Matching Screenshot 14 style */}
+        <div className="flex items-center gap-2 flex-wrap mb-3">
+          <span className="text-xl font-bold text-black">
+            {priceDisplay.price}
+          </span>
+          {priceDisplay.isOnSale && priceDisplay.originalPrice && (
+            <>
+              <span className="text-base text-gray-400 line-through font-normal">
                 {priceDisplay.originalPrice}
-              </p>
-            )}
-          </div>
-          {priceDisplay.isOnSale && priceDisplay.discount && (
-            <p className="text-xs font-heading font-semibold text-red-500">
-              {priceDisplay.discount}
-            </p>
+              </span>
+              {priceDisplay.discount && (
+                <span className="text-sm font-medium text-white bg-red-500 px-2 py-1 rounded">
+                  {priceDisplay.discount}
+                </span>
+              )}
+            </>
           )}
         </div>
 
-        {error && (
-          <div className="text-red-500 text-xs mt-1 mb-1 font-body">{error}</div>
-        )}
+        {/* Add to Cart Button */}
+        <button
+          onClick={handleAddToCart}
+          disabled={combinedLoading}
+          className={`w-full py-2 px-4 text-white font-medium rounded transition-all text-sm ${
+            combinedLoading
+              ? 'bg-gray-300 cursor-not-allowed'
+              : success
+              ? 'bg-green-600 hover:bg-green-700'
+              : 'bg-black hover:bg-gray-800'
+          }`}
+        >
+          {combinedLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al carrito'}
+        </button>
 
-        {/* Buttons removed as requested */}
+        {error && (
+          <div className="text-red-500 text-xs mt-2">{error}</div>
+        )}
       </div>
     </motion.div>
   );

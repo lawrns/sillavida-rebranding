@@ -391,12 +391,6 @@
   font-style: italic;
 }
 
-.product-title {
-  font-family: var(--font-heading);
-  font-size: var(--product-title-size);
-  font-weight: var(--product-title-weight);
-  line-height: var(--product-title-line-height);
-}
 
 .product-price {
   font-family: var(--font-heading);
