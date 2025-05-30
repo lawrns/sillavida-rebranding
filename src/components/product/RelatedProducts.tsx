@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { getProductsByCollection } from '../../lib/shopify';
-import { transformShopifyProduct, getProductPrimaryImage, getProductUrl } from '../../utils/business/productTransformer';
-import { getProductPriceDisplay } from '../../utils/business/priceFormatter';
+import ShopifyProductCard from '../ShopifyProductCard';
+import type { ShopifyProduct } from '../../types/shopify';
 import './RelatedProducts.css';
 
 interface RelatedProductsProps {
@@ -14,7 +14,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
   currentProductId, 
   limit = 4 
 }) => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         const result = await getProductsByCollection('tienda', limit + 4); // Fetch extra to allow for filtering
         
         // Filter out the current product
-        let filteredProducts = result.products.filter((p: any) => p.id !== currentProductId);
+        let filteredProducts = result.products.filter((p: ShopifyProduct) => p.id !== currentProductId);
         
         // Randomize the order of products
         filteredProducts = shuffleArray(filteredProducts);
@@ -44,7 +44,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         // Try fallback to "all" collection if "tienda" fails
         try {
           const fallbackResult = await getProductsByCollection('all', limit + 4);
-          let fallbackProducts = fallbackResult.products.filter((p: any) => p.id !== currentProductId);
+          let fallbackProducts = fallbackResult.products.filter((p: ShopifyProduct) => p.id !== currentProductId);
           fallbackProducts = shuffleArray(fallbackProducts);
           fallbackProducts = fallbackProducts.slice(0, limit);
           setProducts(fallbackProducts);
@@ -61,22 +61,13 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
   }, [currentProductId, limit]);
 
   // Function to shuffle array (Fisher-Yates algorithm)
-  const shuffleArray = (array: any[]) => {
+  const shuffleArray = (array: ShopifyProduct[]) => {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
-  };
-
-  // Format price with currency
-  const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-      minimumFractionDigits: 0,
-    }).format(price);
   };
 
   if (loading) {
@@ -91,77 +82,16 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     <section className="related-products-section">
       <h2 className="section-title">Productos relacionados</h2>
       <div className="related-products-grid">
-        {products.map((product: any) => {
-          try {
-            // Use centralized transformation utilities
-            const standardProduct = transformShopifyProduct(product);
-            const primaryImage = getProductPrimaryImage(standardProduct);
-            const productUrl = getProductUrl(standardProduct);
-            const priceDisplay = getProductPriceDisplay(
-              standardProduct.price,
-              standardProduct.compareAtPrice
-            );
-            
-            return (
-              <Link 
-                to={productUrl} 
-                key={standardProduct.id}
-                className="related-product-card"
-              >
-                <div className="related-product-image-container">
-                  <img 
-                    src={primaryImage?.url || '/images/placeholder.png'} 
-                    alt={standardProduct.title} 
-                    className="related-product-image"
-                  />
-                {priceDisplay.discount > 0 && (
-                  <div className="related-product-discount">-{priceDisplay.discount}%</div>
-                )}
-              </div>
-              <div className="related-product-info">
-                <h3 className="related-product-title">{standardProduct.title}</h3>
-                <div className="related-product-price">
-                  {priceDisplay.current}
-                  {priceDisplay.original && (
-                    <span className="related-product-original-price">
-                      {priceDisplay.original}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </Link>
-            );
-          } catch (error) {
-            console.warn('Product transformation failed for related product:', error);
-            // Fallback to original rendering logic
-            const price = product.priceRange?.minVariantPrice?.amount 
-              ? parseFloat(product.priceRange.minVariantPrice.amount) 
-              : 0;
-            const featuredImage = product.images?.edges?.[0]?.node?.url || '';
-            
-            return (
-              <Link 
-                to={`/product/${product.handle}`} 
-                key={product.id}
-                className="related-product-card"
-              >
-                <div className="related-product-image-container">
-                  <img 
-                    src={featuredImage} 
-                    alt={product.title} 
-                    className="related-product-image"
-                  />
-                </div>
-                <div className="related-product-info">
-                  <h3 className="related-product-title">{product.title}</h3>
-                  <div className="related-product-price">
-                    ${price.toLocaleString()}
-                  </div>
-                </div>
-              </Link>
-            );
-          }
-        })}
+        {products.map((product: ShopifyProduct, index: number) => (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <ShopifyProductCard product={product} />
+          </motion.div>
+        ))}
       </div>
     </section>
   );

@@ -19,6 +19,13 @@ import {
   PromotionsPage,
   ErgonomicEducationPage,
   TestimonialsPage,
+  ContactPage,
+  PrivacyPage,
+  TermsPage,
+  CookiesPage,
+  WarrantyPage,
+  ShippingPage,
+  NotFoundPage,
   RouteLoadingFallback,
   RouteErrorFallback
 } from './LazyRoutes';
@@ -72,6 +79,18 @@ const RouteWrapper: React.FC = () => {
             <Route path="/educacion/por-que-invertir-en-silla-ergonomica" element={<ErgonomicEducationPage />} />
             <Route path="/testimonios" element={<TestimonialsPage />} />
             <Route path="/testimonials" element={<TestimonialsPage />} />
+            
+            {/* Legal & Support Routes */}
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contacto" element={<ContactPage />} />
+            <Route path="/privacidad" element={<PrivacyPage />} />
+            <Route path="/terminos" element={<TermsPage />} />
+            <Route path="/cookies" element={<CookiesPage />} />
+            <Route path="/garantia" element={<WarrantyPage />} />
+            <Route path="/envios" element={<ShippingPage />} />
+            
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AnimatePresence>
       </Suspense>

@@ -523,6 +523,10 @@ export async function getProductsByCollection(
                       amount
                       currencyCode
                     }
+                    compareAtPrice {
+                      amount
+                      currencyCode
+                    }
                     availableForSale
                   }
                 }

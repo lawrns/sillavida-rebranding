@@ -4,6 +4,7 @@ import { createLazyComponent } from './components/common/LazyComponent';
 import { CartProvider } from './context/CartContext';
 import { JudgeMeProvider } from './context/JudgeMeContext';
 import RouteWrapper from './components/routing/RouteWrapper';
+import ScrollToTop from './components/common/ScrollToTop';
 import themeSwitcher from './utils/theme-switcher';
 
 // Lazy load layout components
@@ -42,6 +43,7 @@ function App() {
     <CartProvider>
       <JudgeMeProvider>
         <Router>
+          <ScrollToTop />
           <div className="min-h-screen flex flex-col">
             <LazyShippingPromoBanner threshold={10000} />
             <LazyNavbar />

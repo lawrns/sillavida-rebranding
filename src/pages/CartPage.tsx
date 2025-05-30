@@ -6,8 +6,7 @@ import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import { useCart } from '../context/CartContext';
 import { getFeaturedProducts } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
-import ProductCard from '../components/ProductCard';
-import { Chair } from '../data/chairs';
+import ShopifyProductCard from '../components/ShopifyProductCard';
 import { Helmet } from 'react-helmet';
 import { logger } from '../utils/logger';
 
@@ -24,21 +23,7 @@ const CartPage: React.FC = () => {
   const [recommendedProducts, setRecommendedProducts] = useState<ShopifyProduct[]>([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
-  // Helper function to map Shopify Product to Chair structure (similar to SearchPage)
-  const mapProductToChair = (product: ShopifyProduct): Chair => {
-    return {
-      id: product.handle,
-      name: product.title,
-      description: product.description || 'No description available.',
-      price: parseFloat(product.priceRange.minVariantPrice.amount),
-      image: product.images?.edges[0]?.node?.url || '/images/placeholder.png',
-      category: 'office', // Default category, adjust if possible
-      lifeCategory: 'Vida Profesional', // Default life category
-      primaryBenefit: 'Más bienestar para tu vida', // Default primary benefit
-      features: product.tags || [],
-      rating: 4.5, // Default rating
-    };
-  };
+  // No mapping needed - use ShopifyProductCard directly
 
   useEffect(() => {
     // Fetch recommendations only if the cart is empty
@@ -156,19 +141,16 @@ const CartPage: React.FC = () => {
               >
                 <h2 className="text-2xl font-semibold mb-6 text-center text-black">Productos Recomendados</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                  {recommendedProducts.map((product, index) => {
-                     const chairData = mapProductToChair(product);
-                     return (
-                       <motion.div
-                         key={product.id}
-                         initial={{ opacity: 0, y: 20 }}
-                         animate={{ opacity: 1, y: 0 }}
-                         transition={{ duration: 0.5, delay: 0.8 + (index * 0.1) }}
-                       >
-                         <ProductCard chair={chairData} />
-                       </motion.div>
-                     );
-                  })}
+                  {recommendedProducts.map((product, index) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.8 + (index * 0.1) }}
+                    >
+                      <ShopifyProductCard product={product} />
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
             ) : loadingRecommendations ? (
