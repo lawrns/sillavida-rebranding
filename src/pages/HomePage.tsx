@@ -11,9 +11,11 @@ import {
   EmailSubscriptionSection
 } from '../components/homepage';
 import GuaranteeSection from '../components/homepage/GuaranteeSection';
+import BannerTest from '../components/homepage/BannerTest';
 import { getProducts, getFeaturedProducts, getCollections, shopifyClient } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
 import { errorHandler } from '../utils/errorHandler';
+import { getFeatureFlag } from '../config/featureFlags';
 import './HomePage.css';
 
 // Lazy load additional components
@@ -143,7 +145,12 @@ const HomePage = () => {
       transition={pageTransition}
       className="flex flex-col"
     >
-      <HeroSection />
+      {/* Feature flagged banner test - can be toggled in config/featureFlags.ts */}
+      {getFeatureFlag('homepage.enableBannerTest') ? (
+        <BannerTest />
+      ) : (
+        <HeroSection />
+      )}
 
       <BenefitsSection />
 

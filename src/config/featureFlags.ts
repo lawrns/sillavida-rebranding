@@ -6,6 +6,9 @@
  */
 
 export interface FeatureFlags {
+  homepage: {
+    enableBannerTest: boolean;
+  };
   productPage: {
     enableZoomableImages: boolean;
     enable360View: boolean;
@@ -22,6 +25,9 @@ export interface FeatureFlags {
 
 // Default feature flags configuration
 const featureFlags: FeatureFlags = {
+  homepage: {
+    enableBannerTest: true, // Set to true to test banner, false for original hero slider
+  },
   productPage: {
     enableZoomableImages: true,
     enable360View: true,
@@ -58,6 +64,13 @@ const loadFlags = (): void => {
       const parsedFlags = JSON.parse(localFlags);
       
       // Merge with default flags
+      if (parsedFlags.homepage) {
+        featureFlags.homepage = {
+          ...featureFlags.homepage,
+          ...parsedFlags.homepage
+        };
+      }
+      
       if (parsedFlags.customerAccounts) {
         featureFlags.customerAccounts = {
           ...featureFlags.customerAccounts,

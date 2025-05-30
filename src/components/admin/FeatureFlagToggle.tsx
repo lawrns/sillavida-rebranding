@@ -8,6 +8,9 @@ import { setFeatureFlag, getFeatureFlag } from '../../config/featureFlags';
  * This component should only be accessible to admin users.
  */
 const FeatureFlagToggle: React.FC = () => {
+  const [bannerTestEnabled, setBannerTestEnabled] = useState(
+    getFeatureFlag('homepage.enableBannerTest')
+  );
   const [customerAccountsEnabled, setCustomerAccountsEnabled] = useState(
     getFeatureFlag('customerAccounts.enabled')
   );
@@ -17,6 +20,13 @@ const FeatureFlagToggle: React.FC = () => {
   const [errorReportingEnabled, setErrorReportingEnabled] = useState(
     getFeatureFlag('customerAccounts.enableErrorReporting')
   );
+
+  // Handle toggle for banner test
+  const handleBannerTestToggle = () => {
+    const newValue = !bannerTestEnabled;
+    setBannerTestEnabled(newValue);
+    setFeatureFlag('homepage.enableBannerTest', newValue);
+  };
 
   // Handle toggle for customer accounts
   const handleCustomerAccountsToggle = () => {
@@ -40,12 +50,41 @@ const FeatureFlagToggle: React.FC = () => {
   };
 
   return (
-    <div className="feature-flag-toggle p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
-      <h3 className="text-xl font-semibold mb-6 text-gray-800">Configuración de Autenticación</h3>
-      
-      <div className="space-y-6">
-        {/* Customer Accounts Toggle */}
-        <div className="flex items-center justify-between">
+    <div className="feature-flag-toggle space-y-8">
+      {/* Homepage Section */}
+      <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
+        <h3 className="text-xl font-semibold mb-6 text-gray-800">Configuración de Homepage</h3>
+        
+        <div className="space-y-6">
+          {/* Banner Test Toggle */}
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="font-medium text-gray-700">Banner de Prueba</span>
+              <p className="text-sm text-gray-500">Mostrar banner de prueba en lugar del hero slider</p>
+            </div>
+            <button
+              onClick={handleBannerTestToggle}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                bannerTestEnabled ? 'bg-indigo-600' : 'bg-gray-200'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  bannerTestEnabled ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Authentication Section */}
+      <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
+        <h3 className="text-xl font-semibold mb-6 text-gray-800">Configuración de Autenticación</h3>
+        
+        <div className="space-y-6">
+          {/* Customer Accounts Toggle */}
+          <div className="flex items-center justify-between">
           <div>
             <span className="font-medium text-gray-700">Cuentas de Cliente</span>
             <p className="text-sm text-gray-500">Habilitar API de Cuentas de Cliente de Shopify</p>
@@ -96,7 +135,7 @@ const FeatureFlagToggle: React.FC = () => {
         </div>
       </div>
       
-      <div className="mt-6 pt-4 border-t border-gray-200">
+      <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
         <p className="text-sm text-gray-500">
           Estos ajustes son para fines de prueba y depuración. Los cambios se guardan en localStorage
           y persistirán entre sesiones hasta que se borren los datos del navegador.

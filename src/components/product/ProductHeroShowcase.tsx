@@ -109,7 +109,6 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product }) =>
         setAddingToCart(false);
       }
     } else {
-      console.warn('Attempted to add unavailable variant to cart');
       await handleProductError('Product or variant is not currently available', { component: 'ProductHeroShowcase', action: 'addToCart' });
     }
   };

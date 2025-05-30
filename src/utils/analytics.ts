@@ -6,6 +6,8 @@
  * impressions, clicks, detail views, add to cart, checkout, and purchase events.
  */
 
+import { transformShopifyProduct, transformProductForAnalytics } from './business/productTransformer';
+
 // Type definitions for analytics events
 interface AnalyticsItem {
   item_id: string;
@@ -293,10 +295,7 @@ export const trackEvent = (eventName: string, params?: Record<string, any>): voi
  */
 export const shopifyProductToAnalyticsItem = (product: any, quantity = 1, listName?: string, position?: number): AnalyticsItem => {
   try {
-    // Import centralized transformation utilities
-    const { transformShopifyProduct, transformProductForAnalytics } = require('./business/productTransformer');
-    
-    // Transform to standard format first
+    // Transform to standard format first using imported function
     const standardProduct = transformShopifyProduct(product);
     
     // Transform for analytics using centralized utility

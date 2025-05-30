@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
 import type { ShopifyProduct } from '../types/shopify';
-import { useAddToCart } from '../hooks/useMinimalCart';
+import { useAddToCart, useMinimalCart } from '../hooks/useMinimalCart';
 import { useEventBus } from '../hooks/useComponentComposition';
 import { PreviewBadge } from './judgeMe';
 import { handleProductError } from '../utils/errorHandler';
@@ -11,7 +11,7 @@ import { transformShopifyProduct, generateVariantId } from '../utils/business/pr
 
 // Analytics tracking function (same as in HomePage)
 const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
-  console.log(`[Analytics] ${eventName}:`, eventData);
+  // Analytics events would be sent to tracking service in production
 };
 
 interface ShopifyProductCardProps {
@@ -20,11 +20,9 @@ interface ShopifyProductCardProps {
 }
 
 const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
-  const { addToCart: addToCartMinimal, isLoading: cartLoading } = useAddToCart();
+  const { addToCart: addToCartMinimal, toggleCart } = useMinimalCart();
   const eventBus = useEventBus();
   const [isLoading, setIsLoading] = useState(false);
-  // Combine local and cart loading states
-  const combinedLoading = isLoading || cartLoading;
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -92,14 +90,13 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         throw new Error(`No variant ID found for product: ${product.title}`);
       }
 
-      // Use Shopify variant ID directly - no conversion needed
-      // This eliminates hybrid logic and simplifies cart handling
-
       // Use the minimal cart interface
       await addToCartMinimal(variantId, 1);
-
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
+
+      // Open cart to show the added item
+      toggleCart();
 
       // Emit success event
       eventBus.emit('product:addToCart:success', {
@@ -107,7 +104,6 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         variant_id: variantId
       });
     } catch (error) {
-      console.error('Error adding to cart:', error);
       setError('No se pudo agregar al carrito');
 
       // Use standardized error handling
@@ -233,7 +229,6 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
                 trackEvent('hover_image_loaded', { product_id: product.id });
               }}
               onError={(e) => {
-                console.warn('Hover image failed to load for product:', product.id);
                 e.currentTarget.style.display = 'none';
               }}
             />
@@ -290,16 +285,16 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          disabled={combinedLoading}
+          disabled={isLoading}
           className={`w-full py-2 px-4 text-white font-medium rounded transition-all text-sm ${
-            combinedLoading
+            isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : success
               ? 'bg-green-600 hover:bg-green-700'
               : 'bg-black hover:bg-gray-800'
           }`}
         >
-          {combinedLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al carrito'}
+          {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al carrito'}
         </button>
 
         {error && (
