@@ -1,8 +1,16 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-05-29T15:50:00",
+  "lastUpdated": "2025-05-30T17:48:39",
   "insights": {
     "process": [
+      {
+        "id": "process-012",
+        "description": "Feature flag implementation with admin controls enables safe A/B testing without code removal or deployment risks",
+        "dateIdentified": "2025-05-30T17:48:39",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["BANNER-FEATURE-FLAG-001"]
+      },
       {
         "id": "process-011",
         "description": "Systematic route auditing approach effectively identifies and resolves navigation inconsistencies across complex applications",
@@ -93,6 +101,14 @@
       }
     ],
     "efficiency": [
+      {
+        "id": "efficiency-013",
+        "description": "Systematic debugging code cleanup significantly improves production performance and eliminates console spam",
+        "dateIdentified": "2025-05-30T17:48:39",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["CODE-CLEANUP-001"]
+      },
       {
         "id": "efficiency-012",
         "description": "Creating complete legal page suites during routing cleanup eliminates multiple future development cycles",
@@ -191,6 +207,14 @@
       }
     ],
     "pattern": [
+      {
+        "id": "pattern-014",
+        "description": "localStorage-based feature flag overrides enable flexible testing and QA workflows without code deployment",
+        "dateIdentified": "2025-05-30T17:48:39",
+        "priority": "medium",
+        "status": "active",
+        "relatedTasks": ["BANNER-FEATURE-FLAG-001"]
+      },
       {
         "id": "pattern-013",
         "description": "Smart scroll restoration using pathname-only triggers preserves pagination behavior while improving navigation UX",
@@ -336,6 +360,22 @@
     ]
   },
   "recommendations": [
+    {
+      "id": "rec-023",
+      "category": "process",
+      "description": "Implement systematic debugging cleanup as standard practice before production deployment",
+      "dateCreated": "2025-05-30T17:48:39",
+      "priority": "high",
+      "status": "pending"
+    },
+    {
+      "id": "rec-024",
+      "category": "pattern",
+      "description": "Establish feature flag architecture as standard for A/B testing and safe experimentation",
+      "dateCreated": "2025-05-30T17:48:39",
+      "priority": "medium",
+      "status": "pending"
+    },
     {
       "id": "rec-020",
       "category": "process",
