@@ -255,7 +255,7 @@ export function getProductPrimaryImage(product: StandardProduct): StandardImage 
  * Get product URL for navigation
  */
 export function getProductUrl(product: StandardProduct | { handle: string }): string {
-  return `/products/${product.handle}`;
+  return `/product/${product.handle}`;
 }
 
 /**
@@ -440,4 +440,26 @@ export function validateProduct(product: any): {
     isValid: errors.length === 0,
     errors
   };
+}
+
+/**
+ * Extract numerical ID from Shopify GID format
+ * Converts 'gid://shopify/Product/7599476244689' to '7599476244689'
+ * Required for Judge.me widgets which need numerical ID only
+ */
+export function extractShopifyId(gid: string | number): string {
+  // If it's already a number or just a string of digits, return as string
+  if (typeof gid === 'number' || /^\d+$/.test(String(gid))) {
+    return String(gid);
+  }
+  
+  // Extract numerical part from GID format
+  const match = String(gid).match(/\/(\d+)$/);
+  if (match) {
+    return match[1];
+  }
+  
+  // Fallback: return the original value as string
+  console.warn('Could not extract numerical ID from:', gid);
+  return String(gid);
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import JudgeMeConfig from '../config/judgeme.config';
+import { extractShopifyId } from '../utils/business/productTransformer';
 import './JudgeMeReviews.css';
 
 interface JudgeMeReviewsProps {
@@ -17,6 +18,9 @@ const JudgeMeReviews: React.FC<JudgeMeReviewsProps> = ({
   const scriptLoaded = useRef<boolean>(false);
   const { reviews, reviewForm } = JudgeMeConfig.widgets;
   const translations = JudgeMeConfig.translations[language];
+  
+  // Extract numerical ID for Judge.me compatibility
+  const numericProductId = extractShopifyId(productId);
 
   useEffect(() => {
     // Only load the script once
@@ -56,7 +60,7 @@ const JudgeMeReviews: React.FC<JudgeMeReviewsProps> = ({
       {/* Judge.me review widget */}
       <div 
         className="jdgm-widget jdgm-reviews-widget"
-        data-id={productId}
+        data-id={numericProductId}
         data-auto-install={reviews.autoInstall.toString()}
         data-per-page={reviews.perPage.toString()}
         data-rating-text={reviews.ratingText}
@@ -68,7 +72,7 @@ const JudgeMeReviews: React.FC<JudgeMeReviewsProps> = ({
       {/* Judge.me review form */}
       <div 
         className="jdgm-widget jdgm-review-form"
-        data-id={productId}
+        data-id={numericProductId}
         data-auto-install={reviewForm.autoInstall.toString()}
         data-form-title={reviewForm.formTitle}
         data-submit-text={reviewForm.submitText}

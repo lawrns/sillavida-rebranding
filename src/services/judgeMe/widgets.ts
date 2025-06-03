@@ -8,6 +8,7 @@
 import { getJudgeMeGlobal, JudgeMeWidgetType, JudgeMeWidgetConfig } from './types';
 import { isJudgeMeReady, initializeScript } from './scriptLoader';
 import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
+import { extractShopifyId } from '../../utils/business/productTransformer';
 
 /**
  * Internal function to ensure Judge.me is initialized before attempting to render widgets
@@ -44,7 +45,7 @@ const createWidgetContainer = (
   
   // Set product-specific attributes if provided
   if (config.productId) {
-    container.setAttribute('data-id', config.productId.toString());
+    container.setAttribute('data-id', extractShopifyId(config.productId));
   }
   
   if (config.productHandle) {
