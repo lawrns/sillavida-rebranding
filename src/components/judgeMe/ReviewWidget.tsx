@@ -8,6 +8,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useJudgeMeContext } from '../../context/JudgeMeContext';
 import { useJudgeMeWidgetInitialization } from '../../hooks/useJudgeMeWidgetInitialization';
+import { extractShopifyId } from '../../utils/business/productTransformer';
 import JudgeMeContainer from './JudgeMeContainer';
 
 interface ReviewWidgetProps {
@@ -76,7 +77,7 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
             // Our useJudgeMeWidgetInitialization hook will handle the rendering
             const widgetContainer = document.createElement('div');
             widgetContainer.setAttribute('data-judge-me-widget', widgetType + '-widget');
-            widgetContainer.setAttribute('data-id', productId.toString());
+            widgetContainer.setAttribute('data-id', extractShopifyId(productId));
 
             if (productTitle) {
               widgetContainer.setAttribute('data-product-title', productTitle);
@@ -114,7 +115,7 @@ const ReviewWidget: React.FC<ReviewWidgetProps> = ({
       <p className="mb-2 text-white/80">¡Sé el primero en opinar sobre este producto!</p>
       <button
         className="bg-black hover:bg-gray-800 text-white py-2 px-4 rounded transition-colors"
-        onClick={() => judgeMe?.openReviewDrawer(productId.toString())}
+        onClick={() => judgeMe?.openReviewDrawer(extractShopifyId(productId))}
       >
         Escribir una reseña
       </button>
