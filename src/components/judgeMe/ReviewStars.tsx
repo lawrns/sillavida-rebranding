@@ -7,6 +7,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useJudgeMeContext } from '../../context/JudgeMeContext';
+import { extractShopifyId } from '../../utils/business/productTransformer';
 import JudgeMeContainer from './JudgeMeContainer';
 
 interface ReviewStarsProps {
@@ -65,7 +66,7 @@ const ReviewStars: React.FC<ReviewStarsProps> = ({
             // Create widget container
             const widgetContainer = document.createElement('div');
             widgetContainer.setAttribute('data-judge-me-widget', 'star-rating');
-            widgetContainer.setAttribute('data-id', productId.toString());
+            widgetContainer.setAttribute('data-id', extractShopifyId(productId));
             widgetContainer.className = className || '';
             
             // Clear any existing content and append new widget container

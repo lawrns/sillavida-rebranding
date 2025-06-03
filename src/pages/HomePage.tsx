@@ -6,17 +6,15 @@ import {
   ReviewsSection,
   BenefitsSection,
   BestSellersSection,
-  CategoriesSection,
-  TestimonialsSection,
   EmailSubscriptionSection
 } from '../components/homepage';
+import ProductCarousel from '../components/homepage/ProductCarousel';
 import GuaranteeSection from '../components/homepage/GuaranteeSection';
 import BannerTest from '../components/homepage/BannerTest';
-import { getProducts, getFeaturedProducts, getCollections, shopifyClient } from '../lib/shopify';
+import { getProducts, getFeaturedProducts, shopifyClient } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
 import { errorHandler } from '../utils/errorHandler';
 import { getFeatureFlag } from '../config/featureFlags';
-import './HomePage.css';
 
 // Lazy load additional components
 const LazyPersonalizedBanner = createLazyComponent(() => import('../components/PersonalizedBanner'));
@@ -37,7 +35,7 @@ const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
 const HomePage = () => {
   // State for Shopify data (simplified for composition pattern)
   const [bestSellers, setBestSellers] = useState<ShopifyProduct[]>([]);
-  const [collections, setCollections] = useState<any[]>([]);
+  const [allProducts, setAllProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataFetched, setDataFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,9 +49,9 @@ const HomePage = () => {
       // Track page view
       trackEvent('page_view', { page: 'home' });
 
-      // Fetch Shopify collections
-      const shopifyCollections = await getCollections(20);
-      setCollections(shopifyCollections);
+      // Fetch all products for carousel (limit 20 for performance)
+      const allProductsResult = await getProducts(20, 'CREATED_AT');
+      setAllProducts(allProductsResult.products);
 
       // Fetch products from Mas Vendidos collection
       const masVendidosProducts = await getFeaturedProducts({
@@ -79,7 +77,8 @@ const HomePage = () => {
 
       // Track successful data load with the actual data we just fetched
       trackEvent('data_loaded', {
-        bestSellers: productData.length
+        bestSellers: productData.length,
+        allProducts: allProductsResult.products.length
       });
 
     } catch (error) {
@@ -164,7 +163,7 @@ const HomePage = () => {
         dataFetched={dataFetched}
       />
 
-      <CategoriesSection collections={collections} />
+      <ProductCarousel products={allProducts} isLoading={isLoading} />
 
       <LazyErgonomicEducationalSectionCondensed />
 
@@ -174,7 +173,7 @@ const HomePage = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="bg-teal text-white p-3 rounded-full shadow-lg hover:bg-teal-light transition-colors"
+          className="bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition-colors"
           aria-label="Volver al inicio"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

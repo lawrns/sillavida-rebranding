@@ -234,7 +234,7 @@ export async function getProducts(
                 currencyCode
               }
             }
-            images(first: 1) {
+            images(first: 5) {
               edges {
                 node {
                   url
@@ -327,7 +327,7 @@ export async function getFeaturedProducts({
                   currencyCode
                 }
               }
-              images(first: 1) {
+              images(first: 5) {
                 edges {
                   node {
                     url

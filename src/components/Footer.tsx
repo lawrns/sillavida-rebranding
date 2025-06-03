@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCollections } from '../lib/shopify';
 import {
@@ -12,11 +12,7 @@ import {
   Shield,
   Truck,
   CreditCard,
-  Clock,
-  Send,
-  Users,
-  TrendingUp,
-  CheckCircle2
+  Clock
 } from 'lucide-react';
 
 interface FooterProps {
@@ -24,9 +20,6 @@ interface FooterProps {
 }
 
 const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
-  const [email, setEmail] = useState('');
-  const [isSubscribing, setIsSubscribing] = useState(false);
-  const [subscriptionMessage, setSubscriptionMessage] = useState('');
   const [tiendaHandle, setTiendaHandle] = useState<string | null>(null);
 
   // Fetch collections to get tienda handle (same logic as Navbar)
@@ -48,125 +41,10 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
     fetchCollections();
   }, []);
 
-  // Handle newsletter subscription
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-
-    setIsSubscribing(true);
-    try {
-      // Email marketing service integration
-      console.log('Newsletter subscription:', email);
-      setSubscriptionMessage('¡Gracias por suscribirte!');
-      setEmail('');
-    } catch (error) {
-      setSubscriptionMessage('Error al suscribirse. Intenta de nuevo.');
-    } finally {
-      setIsSubscribing(false);
-      setTimeout(() => setSubscriptionMessage(''), 3000);
-    }
-  };
-
   const currentYear = new Date().getFullYear();
 
   return (
     <>
-      {/* Newsletter Bar Above Footer */}
-      <section className="bg-gray-900 py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            
-            {/* Left Column - Content */}
-            <div className="text-center lg:text-left">
-              <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
-                Únete a la Comunidad SillaVida
-              </h3>
-              <p className="text-gray-300 text-lg mb-6 leading-relaxed">
-                Recibe consejos de ergonomía, ofertas exclusivas y las últimas novedades 
-                directamente en tu correo. Únete a miles de profesionales que ya cuidan su bienestar.
-              </p>
-              
-              {/* Social Proof */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-8 text-sm text-gray-400">
-                <div className="flex items-center space-x-2">
-                  <Users className="w-4 h-4 text-green-500" />
-                  <span>+15,000 suscriptores</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span>97% satisfacción</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-4 h-4 text-green-500" />
-                  <span>Sin spam garantizado</span>
-                </div>
-              </div>
-            </div>
-            
-            {/* Right Column - Newsletter Form */}
-            <div className="relative">
-              <form onSubmit={handleNewsletterSubmit} className="space-y-4">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <div className="flex-1">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="tu@email.com"
-                      required
-                      className="w-full px-4 py-4 rounded-lg border border-gray-600 bg-white/10 backdrop-blur-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isSubscribing}
-                    className="px-8 py-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[140px]"
-                  >
-                    {isSubscribing ? (
-                      <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 mr-2" />
-                        Suscribirse
-                      </>
-                    )}
-                  </button>
-                </div>
-                
-                {/* Success/Error Message */}
-                {subscriptionMessage && (
-                  <div className={`flex items-center space-x-2 text-sm ${subscriptionMessage.includes('Gracias') ? 'text-green-400' : 'text-red-400'}`}>
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>{subscriptionMessage}</span>
-                  </div>
-                )}
-                
-                {/* Benefits */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-400">
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
-                    <span>Consejos de ergonomía semanales</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
-                    <span>Ofertas exclusivas para suscriptores</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
-                    <span>Acceso anticipado a nuevos productos</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
-                    <span>Guías descargables gratuitas</span>
-                  </div>
-                </div>
-              </form>
-            </div>
-            
-          </div>
-        </div>
-      </section>
-
       {/* Main Footer */}
       <footer className={`relative pt-20 pb-10 overflow-hidden bg-black ${className}`}>
         {/* Subtle background elements - monochromatic */}
