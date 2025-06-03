@@ -2,13 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../../App';
 
-// Mock theme switcher
-jest.mock('../../utils/theme-switcher', () => ({
-  default: {
-    init: jest.fn()
-  }
-}));
-
 // Mock CartContext
 jest.mock('../../context/CartContext', () => ({
   CartProvider: ({ children }: any) => <div data-testid="cart-provider">{children}</div>

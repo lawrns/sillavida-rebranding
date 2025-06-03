@@ -19,7 +19,9 @@
       "WebFetch(domain:judge.me)",
       "Bash(curl:*)",
       "Bash(compact)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(git rm:*)",
+      "Bash(node:*)"
     ],
     "deny": []
   },

@@ -14,12 +14,18 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:regression": "jest src/tests/shopify-regression.test.ts src/tests/judgeme-integration.test.ts --verbose",
+    "test:shopify": "jest src/tests/shopify-regression.test.ts --verbose",
+    "test:judgeme": "jest src/tests/judgeme-integration.test.ts --verbose",
+    "test:monitoring": "jest src/tests/monitoring.test.ts --verbose",
     "test:e2e": "cypress run",
     "test:e2e:open": "cypress open",
-    "test:a11y": "cypress run --spec 'cypress/e2e/accessibility.cy.js'"
+    "test:a11y": "cypress run --spec 'cypress/e2e/accessibility.cy.js'",
+    "test:ci": "npm run test:regression && npm run test:coverage",
+    "monitor:start": "node scripts/start-monitoring.js",
+    "monitor:health": "node scripts/health-check.js"
   },
   "dependencies": {
-    "@playwright/test": "^1.52.0",
     "@shopify/hydrogen-react": "^2024.1.1",
     "@types/react-helmet": "^6.1.11",
     "framer-motion": "^11.18.2",
@@ -33,6 +39,7 @@
     "workbox-window": "^7.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
     "@eslint/js": "^9.9.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

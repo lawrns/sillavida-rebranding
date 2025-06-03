@@ -8,13 +8,16 @@ import { logger } from './logger';
 // Error Categories for different types of failures
 export enum ErrorCategory {
   NETWORK = 'network',
-  VALIDATION = 'validation', 
+  VALIDATION = 'validation',
   AUTHENTICATION = 'authentication',
   CART = 'cart',
   PRODUCT = 'product',
   PAYMENT = 'payment',
   SYSTEM = 'system',
-  USER_INPUT = 'user_input'
+  USER_INPUT = 'user_input',
+  JUDGE_ME = 'judge_me',
+  PERFORMANCE = 'performance',
+  MONITORING = 'monitoring'
 }
 
 // Severity levels for error prioritization
@@ -138,12 +141,79 @@ const ERROR_CONFIGS: Record<string, Partial<AppError>> = {
     message: 'System error occurred',
     userMessage: 'Ocurrió un error del sistema. Por favor, recarga la página.',
     recovery: RecoveryAction.REFRESH
+  },
+
+  // Judge.me specific errors
+  'JUDGE_ME_WIDGET_LOAD_FAILED': {
+    category: ErrorCategory.JUDGE_ME,
+    severity: ErrorSeverity.MEDIUM,
+    message: 'Judge.me widget failed to load',
+    userMessage: 'Las reseñas no se pudieron cargar. Inténtalo de nuevo más tarde.',
+    recovery: RecoveryAction.RETRY,
+    maxRetries: 2
+  },
+  'JUDGE_ME_API_TIMEOUT': {
+    category: ErrorCategory.JUDGE_ME,
+    severity: ErrorSeverity.MEDIUM,
+    message: 'Judge.me API request timed out',
+    userMessage: 'La carga de reseñas tardó demasiado. Por favor, inténtalo de nuevo.',
+    recovery: RecoveryAction.RETRY,
+    maxRetries: 3
+  },
+  'JUDGE_ME_SCRIPT_LOAD_FAILED': {
+    category: ErrorCategory.JUDGE_ME,
+    severity: ErrorSeverity.HIGH,
+    message: 'Judge.me script failed to load',
+    userMessage: 'No se pudo cargar el sistema de reseñas. Verifica tu conexión.',
+    recovery: RecoveryAction.FALLBACK
+  },
+  'JUDGE_ME_INVALID_PRODUCT': {
+    category: ErrorCategory.JUDGE_ME,
+    severity: ErrorSeverity.LOW,
+    message: 'Invalid product ID for Judge.me widget',
+    userMessage: 'No se encontraron reseñas para este producto.',
+    recovery: RecoveryAction.NONE
+  },
+
+  // Performance monitoring errors
+  'PERFORMANCE_DEGRADATION': {
+    category: ErrorCategory.PERFORMANCE,
+    severity: ErrorSeverity.MEDIUM,
+    message: 'Performance degradation detected',
+    userMessage: 'La página puede estar cargando más lento de lo normal.',
+    recovery: RecoveryAction.NONE
+  },
+  'PERFORMANCE_CRITICAL': {
+    category: ErrorCategory.PERFORMANCE,
+    severity: ErrorSeverity.HIGH,
+    message: 'Critical performance issue detected',
+    userMessage: 'Experimentamos problemas de rendimiento. Estamos trabajando para solucionarlo.',
+    recovery: RecoveryAction.NONE
+  },
+
+  // Monitoring system errors
+  'MONITORING_ALERT': {
+    category: ErrorCategory.MONITORING,
+    severity: ErrorSeverity.MEDIUM,
+    message: 'Production monitoring alert triggered',
+    userMessage: 'Se detectó un problema en el sistema. Nuestro equipo ha sido notificado.',
+    recovery: RecoveryAction.NONE
   }
 };
 
 class ErrorHandler {
   private errorQueue: AppError[] = [];
   private retryAttempts: Map<string, number> = new Map();
+  private monitoringCallbacks: Array<(error: AppError) => void> = [];
+  private performanceMetrics: {
+    errorCounts: Map<ErrorCategory, number>;
+    lastErrorTime: Map<ErrorCategory, Date>;
+    criticalErrorCount: number;
+  } = {
+    errorCounts: new Map(),
+    lastErrorTime: new Map(),
+    criticalErrorCount: 0
+  };
   
   /**
    * Create a standardized error
@@ -205,10 +275,16 @@ class ErrorHandler {
         details: standardError.details
       }
     });
-    
+
+    // Update performance metrics
+    this.updatePerformanceMetrics(standardError);
+
+    // Notify monitoring callbacks
+    this.notifyMonitoringCallbacks(standardError);
+
     // Handle based on severity
     await this.processError(standardError);
-    
+
     return standardError;
   }
   
@@ -397,6 +473,98 @@ class ErrorHandler {
   getErrorsByCategory(category: ErrorCategory): AppError[] {
     return this.errorQueue.filter(error => error.category === category);
   }
+
+  /**
+   * Register a monitoring callback for production alerts
+   */
+  registerMonitoringCallback(callback: (error: AppError) => void): void {
+    this.monitoringCallbacks.push(callback);
+  }
+
+  /**
+   * Remove a monitoring callback
+   */
+  unregisterMonitoringCallback(callback: (error: AppError) => void): void {
+    const index = this.monitoringCallbacks.indexOf(callback);
+    if (index > -1) {
+      this.monitoringCallbacks.splice(index, 1);
+    }
+  }
+
+  /**
+   * Update performance metrics when an error occurs
+   */
+  private updatePerformanceMetrics(error: AppError): void {
+    // Update error counts by category
+    const currentCount = this.performanceMetrics.errorCounts.get(error.category) || 0;
+    this.performanceMetrics.errorCounts.set(error.category, currentCount + 1);
+
+    // Update last error time
+    this.performanceMetrics.lastErrorTime.set(error.category, error.timestamp);
+
+    // Update critical error count
+    if (error.severity === ErrorSeverity.CRITICAL) {
+      this.performanceMetrics.criticalErrorCount++;
+    }
+  }
+
+  /**
+   * Notify all registered monitoring callbacks
+   */
+  private notifyMonitoringCallbacks(error: AppError): void {
+    this.monitoringCallbacks.forEach(callback => {
+      try {
+        callback(error);
+      } catch (callbackError) {
+        console.error('Error in monitoring callback:', callbackError);
+      }
+    });
+  }
+
+  /**
+   * Get performance metrics for monitoring dashboard
+   */
+  getPerformanceMetrics(): {
+    errorCounts: Map<ErrorCategory, number>;
+    lastErrorTime: Map<ErrorCategory, Date>;
+    criticalErrorCount: number;
+    totalErrors: number;
+  } {
+    return {
+      ...this.performanceMetrics,
+      totalErrors: this.errorQueue.length
+    };
+  }
+
+  /**
+   * Reset performance metrics (useful for testing or periodic resets)
+   */
+  resetPerformanceMetrics(): void {
+    this.performanceMetrics.errorCounts.clear();
+    this.performanceMetrics.lastErrorTime.clear();
+    this.performanceMetrics.criticalErrorCount = 0;
+  }
+
+  /**
+   * Get error rate for a specific category over a time period
+   */
+  getErrorRate(category: ErrorCategory, timeWindowMs: number = 300000): number {
+    const now = Date.now();
+    const recentErrors = this.errorQueue.filter(error =>
+      error.category === category &&
+      (now - error.timestamp.getTime()) <= timeWindowMs
+    );
+
+    // Return errors per minute
+    return (recentErrors.length / (timeWindowMs / 60000));
+  }
+
+  /**
+   * Check if error rate exceeds threshold for alerting
+   */
+  isErrorRateExceeded(category: ErrorCategory, threshold: number, timeWindowMs: number = 300000): boolean {
+    return this.getErrorRate(category, timeWindowMs) > threshold;
+  }
 }
 
 // Export singleton instance
@@ -414,6 +582,23 @@ export const handleProductError = (message: string, context?: { component?: stri
 
 export const handleValidationError = (message: string, userMessage: string, context?: { component?: string; action?: string }) =>
   errorHandler.handleError(errorHandler.createError('INVALID_INPUT', { message, userMessage }), context);
+
+// Judge.me specific error handlers
+export const handleJudgeMeWidgetError = (message: string, context?: { component?: string; action?: string }) =>
+  errorHandler.handleError(errorHandler.createError('JUDGE_ME_WIDGET_LOAD_FAILED', { message }), context);
+
+export const handleJudgeMeApiError = (message: string, context?: { component?: string; action?: string }) =>
+  errorHandler.handleError(errorHandler.createError('JUDGE_ME_API_TIMEOUT', { message }), context);
+
+export const handleJudgeMeScriptError = (message: string, context?: { component?: string; action?: string }) =>
+  errorHandler.handleError(errorHandler.createError('JUDGE_ME_SCRIPT_LOAD_FAILED', { message }), context);
+
+// Performance monitoring error handlers
+export const handlePerformanceDegradation = (message: string, context?: { component?: string; action?: string }) =>
+  errorHandler.handleError(errorHandler.createError('PERFORMANCE_DEGRADATION', { message }), context);
+
+export const handleCriticalPerformanceIssue = (message: string, context?: { component?: string; action?: string }) =>
+  errorHandler.handleError(errorHandler.createError('PERFORMANCE_CRITICAL', { message }), context);
 
 // Type exports
 export type { AppError };

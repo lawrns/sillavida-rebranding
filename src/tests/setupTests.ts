@@ -25,10 +25,12 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {
-  constructor(callback) {
+  callback: any;
+
+  constructor(callback: any) {
     this.callback = callback;
   }
-  
+
   observe = jest.fn();
   unobserve = jest.fn();
   disconnect = jest.fn();
@@ -65,15 +67,31 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 // Mock Google Analytics
-window.gtag = jest.fn();
-window.dataLayer = [];
+(window as any).gtag = jest.fn();
+(window as any).dataLayer = [];
+
+// Mock import.meta.env for Vite environment variables
+Object.defineProperty(globalThis, 'import', {
+  value: {
+    meta: {
+      env: {
+        VITE_SHOPIFY_STORE_DOMAIN: 'test-store.myshopify.com',
+        VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN: 'test-token',
+        DEV: true,
+        PROD: false
+      }
+    }
+  }
+});
 
 // Mock ResizeObserver
 class MockResizeObserver {
-  constructor(callback) {
+  callback: any;
+
+  constructor(callback: any) {
     this.callback = callback;
   }
-  
+
   observe = jest.fn();
   unobserve = jest.fn();
   disconnect = jest.fn();

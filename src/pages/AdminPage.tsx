@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import FeatureFlagToggle from '../components/admin/FeatureFlagToggle';
-import DesignSystemToggle from '../components/admin/DesignSystemToggle';
 import StyleGuide from '../components/admin/StyleGuide';
-import AnalyticsDashboard from '../components/admin/AnalyticsDashboard';
 import JudgeMeWidgetTester from '../components/admin/JudgeMeWidgetTester';
-import ThemePreviewPage from '../dev/ThemePreviewPage';
-import ThemeTestPage from '../dev/ThemeTestPage';
 import ShopifyApiTester from '../dev/ShopifyApiTester';
 import AnimationDemoPage from '../dev/AnimationDemoPage';
 import ProductCardDemo from '../dev/ProductCardDemo';
@@ -18,7 +14,7 @@ import ProductCardDemo from '../dev/ProductCardDemo';
  * feature flag toggles, theme previews, API testing, and UI demos.
  */
 const AdminPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'features' | 'design-system' | 'themes' | 'theme-test' | 'api-test' | 'ui-demos' | 'product-cards' | 'style-guide' | 'analytics' | 'judge-me'>('features');
+  const [activeTab, setActiveTab] = useState<'features' | 'api-test' | 'ui-demos' | 'product-cards' | 'style-guide' | 'judge-me'>('features');
 
   // Page transition variants
   const pageVariants = {
@@ -57,36 +53,7 @@ const AdminPage: React.FC = () => {
           >
             Configuración de Funciones
           </button>
-          <button
-            className={`py-4 px-6 font-medium text-sm border-b-2 ${
-              activeTab === 'design-system'
-                ? 'border-teal text-teal'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab('design-system')}
-          >
-            Sistema de Diseño
-          </button>
-          <button
-            className={`py-4 px-6 font-medium text-sm border-b-2 ${
-              activeTab === 'themes'
-                ? 'border-teal text-teal'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab('themes')}
-          >
-            Vista Previa de Temas
-          </button>
-          <button
-            className={`py-4 px-6 font-medium text-sm border-b-2 ${
-              activeTab === 'theme-test'
-                ? 'border-teal text-teal'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab('theme-test')}
-          >
-            Prueba de Temas
-          </button>
+
           <button
             className={`py-4 px-6 font-medium text-sm border-b-2 ${
               activeTab === 'api-test'
@@ -127,16 +94,7 @@ const AdminPage: React.FC = () => {
           >
             Guía de Estilos
           </button>
-          <button
-            className={`py-4 px-6 font-medium text-sm border-b-2 ${
-              activeTab === 'analytics'
-                ? 'border-teal text-teal'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab('analytics')}
-          >
-            Analítica
-          </button>
+
           <button
             className={`py-4 px-6 font-medium text-sm border-b-2 ${
               activeTab === 'judge-me'
@@ -194,27 +152,6 @@ const AdminPage: React.FC = () => {
           </div>
         </div>
       )}
-      
-      {/* Design System Tab */}
-      {activeTab === 'design-system' && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <DesignSystemToggle />
-        </div>
-      )}
-      
-      {/* Themes Tab */}
-      {activeTab === 'themes' && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <ThemePreviewPage />
-        </div>
-      )}
-
-      {/* Theme Test Tab */}
-      {activeTab === 'theme-test' && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <ThemeTestPage />
-        </div>
-      )}
 
       {/* API Test Tab */}
       {activeTab === 'api-test' && (
@@ -247,13 +184,6 @@ const AdminPage: React.FC = () => {
       {activeTab === 'style-guide' && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <StyleGuide />
-        </div>
-      )}
-
-      {/* Analytics Tab */}
-      {activeTab === 'analytics' && (
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <AnalyticsDashboard />
         </div>
       )}
 

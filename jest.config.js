@@ -12,7 +12,16 @@ export default {
   setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
+      tsconfig: {
+        jsx: 'react-jsx',
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true,
+        moduleResolution: 'node',
+        module: 'ESNext',
+        target: 'ES2020',
+        lib: ['ES2020', 'DOM', 'DOM.Iterable'],
+        types: ['jest', '@testing-library/jest-dom', 'vite/client']
+      },
     }],
   },
   testMatch: [
