@@ -69,10 +69,6 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     }
   }, [isAutoPlaying]);
   
-  // Debug logging
-  console.log('BestSellers featuredProduct:', featuredProduct);
-  console.log('BestSellers isShopifyProduct:', isShopifyProduct);
-  console.log('BestSellers carousel products count:', carouselProducts.length);
   
   // Extract product data with correct Shopify GraphQL structure
   const productData = isShopifyProduct ? {
@@ -104,7 +100,6 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     variantId: null
   };
   
-  console.log('BestSellers productData:', productData);
   
   const discountPercentage = Math.round(((productData.originalPrice - productData.price) / productData.originalPrice) * 100);
   
@@ -112,7 +107,6 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     if (isShopifyProduct && productData.variantId) {
       addItem(productData.variantId, 1);
     } else {
-      console.log('Adding static product to cart:', productData.title);
     }
   };
   
@@ -248,7 +242,6 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
                 onError={(e) => {
-                  console.log('Image failed to load:', productData.image);
                   e.currentTarget.src = '/images/placeholder.png';
                 }}
               />

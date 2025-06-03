@@ -1,86 +1,69 @@
 import React from 'react';
-import { tokens } from '../../styles/tokens';
 
 /**
  * StyleGuide component
- * 
- * A visual representation of the design system tokens.
- * This component displays color swatches, typography examples,
- * spacing, shadows, and other design tokens.
+ *
+ * A visual representation of the current SillaVida monochromatic design system.
+ * This component displays color swatches, typography examples, and design elements
+ * that align with the current monochromatic white/black/grey color scheme.
  */
 const StyleGuide: React.FC = () => {
+  // Current monochromatic color palette
+  const monochromaticColors = {
+    black: {
+      pure: '#000000',
+      dark: '#333333',
+      medium: '#666666',
+      light: '#999999',
+    },
+    gray: {
+      border: '#E5E5E5',
+      background: '#F5F5F5',
+      subtle: '#FAFAFA',
+    },
+    white: {
+      pure: '#FFFFFF',
+      off: '#FDFDFD',
+    }
+  };
+
   return (
     <div className="style-guide">
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Color Palette</h2>
-        
+        <h2 className="text-2xl font-semibold mb-6">Monochromatic Color System</h2>
+        <p className="text-gray-600 mb-8">
+          SillaVida uses a clean monochromatic color palette focused on black, white, and grey tones
+          for a modern, minimalist aesthetic.
+        </p>
+
         <div className="space-y-8">
-          {/* Primary Colors */}
+          {/* Black Scale */}
           <div>
-            <h3 className="text-xl font-medium mb-4">Primary Colors (Teal)</h3>
+            <h3 className="text-xl font-medium mb-4">Black Scale</h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <ColorSwatch color={tokens.colors.palette.teal.base} name="Teal Base" />
-              <ColorSwatch color={tokens.colors.palette.teal.light} name="Teal Light" />
-              <ColorSwatch color={tokens.colors.palette.teal.dark} name="Teal Dark" />
-              <ColorSwatch color={tokens.colors.palette.teal.extraLight} name="Teal Extra Light" />
+              <ColorSwatch color={monochromaticColors.black.pure} name="Pure Black" />
+              <ColorSwatch color={monochromaticColors.black.dark} name="Dark Gray" />
+              <ColorSwatch color={monochromaticColors.black.medium} name="Medium Gray" />
+              <ColorSwatch color={monochromaticColors.black.light} name="Light Gray" />
             </div>
           </div>
-          
-          {/* Secondary Colors */}
+
+          {/* Gray Scale */}
           <div>
-            <h3 className="text-xl font-medium mb-4">Secondary Colors (Sage)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <ColorSwatch color={tokens.colors.palette.sage.base} name="Sage Base" />
-              <ColorSwatch color={tokens.colors.palette.sage.light} name="Sage Light" />
-              <ColorSwatch color={tokens.colors.palette.sage.dark} name="Sage Dark" />
-              <ColorSwatch color={tokens.colors.palette.sage.extraLight} name="Sage Extra Light" />
+            <h3 className="text-xl font-medium mb-4">Gray Scale</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <ColorSwatch color={monochromaticColors.gray.border} name="Border Gray" textColor="#333" />
+              <ColorSwatch color={monochromaticColors.gray.background} name="Background Gray" textColor="#333" />
+              <ColorSwatch color={monochromaticColors.gray.subtle} name="Subtle Gray" textColor="#333" />
             </div>
           </div>
-          
-          {/* Accent Colors */}
+
+          {/* White Scale */}
           <div>
-            <h3 className="text-xl font-medium mb-4">Accent Colors (Beige)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <ColorSwatch color={tokens.colors.palette.beige.base} name="Beige Base" />
-              <ColorSwatch color={tokens.colors.palette.beige.light} name="Beige Light" />
-              <ColorSwatch color={tokens.colors.palette.beige.dark} name="Beige Dark" />
-              <ColorSwatch color={tokens.colors.palette.beige.extraLight} name="Beige Extra Light" />
-            </div>
-          </div>
-          
-          {/* Highlight Colors */}
-          <div>
-            <h3 className="text-xl font-medium mb-4">Highlight Colors (Terracotta)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <ColorSwatch color={tokens.colors.palette.terracotta.base} name="Terracotta Base" />
-              <ColorSwatch color={tokens.colors.palette.terracotta.light} name="Terracotta Light" />
-              <ColorSwatch color={tokens.colors.palette.terracotta.dark} name="Terracotta Dark" />
-              <ColorSwatch color={tokens.colors.palette.terracotta.extraLight} name="Terracotta Extra Light" />
-            </div>
-          </div>
-          
-          {/* Neutral Colors */}
-          <div>
-            <h3 className="text-xl font-medium mb-4">Neutral Colors</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <ColorSwatch color={tokens.colors.palette.neutral.black} name="Black" />
-              <ColorSwatch color={tokens.colors.palette.neutral.grayDark} name="Gray Dark" />
-              <ColorSwatch color={tokens.colors.palette.neutral.grayMedium} name="Gray Medium" />
-              <ColorSwatch color={tokens.colors.palette.neutral.grayLight} name="Gray Light" />
-              <ColorSwatch color={tokens.colors.palette.neutral.grayExtraLight} name="Gray Extra Light" />
-              <ColorSwatch color={tokens.colors.palette.neutral.offWhite} name="Off White" />
-              <ColorSwatch color={tokens.colors.palette.neutral.white} name="White" textColor="#333" />
-            </div>
-          </div>
-          
-          {/* Status Colors */}
-          <div>
-            <h3 className="text-xl font-medium mb-4">Status Colors</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <ColorSwatch color={tokens.colors.status.success} name="Success" />
-              <ColorSwatch color={tokens.colors.status.warning} name="Warning" textColor="#333" />
-              <ColorSwatch color={tokens.colors.status.error} name="Error" />
-              <ColorSwatch color={tokens.colors.status.info} name="Info" />
+            <h3 className="text-xl font-medium mb-4">White Scale</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <ColorSwatch color={monochromaticColors.white.pure} name="Pure White" textColor="#333" />
+              <ColorSwatch color={monochromaticColors.white.off} name="Off White" textColor="#333" />
             </div>
           </div>
         </div>
@@ -88,137 +71,127 @@ const StyleGuide: React.FC = () => {
       
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Typography</h2>
-        
+        <p className="text-gray-600 mb-8">
+          SillaVida uses Montserrat for headings and Open Sans for body text, providing excellent readability
+          and a modern, professional appearance.
+        </p>
+
         <div className="space-y-8">
           {/* Headings */}
           <div>
             <h3 className="text-xl font-medium mb-4">Headings</h3>
             <div className="space-y-4 bg-white p-6 rounded-lg shadow-sm">
               <div>
-                <h1 style={{ 
-                  fontFamily: tokens.typography.fontFamily.heading,
-                  fontSize: tokens.typography.heading.h1.fontSize,
-                  fontWeight: tokens.typography.heading.h1.fontWeight,
-                  lineHeight: tokens.typography.heading.h1.lineHeight,
-                  letterSpacing: tokens.typography.heading.h1.letterSpacing,
+                <h1 style={{
+                  fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
+                  fontSize: '2.25rem',
+                  fontWeight: '700',
+                  lineHeight: '1.2',
+                  color: '#000000'
                 }}>
                   Heading 1 (H1)
                 </h1>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.heading}, 
-                  Size: {tokens.typography.heading.h1.fontSize}, 
-                  Weight: {tokens.typography.heading.h1.fontWeight}
+                  Font: Montserrat, Size: 2.25rem (36px), Weight: 700
                 </div>
               </div>
-              
+
               <div>
-                <h2 style={{ 
-                  fontFamily: tokens.typography.fontFamily.heading,
-                  fontSize: tokens.typography.heading.h2.fontSize,
-                  fontWeight: tokens.typography.heading.h2.fontWeight,
-                  lineHeight: tokens.typography.heading.h2.lineHeight,
-                  letterSpacing: tokens.typography.heading.h2.letterSpacing,
+                <h2 style={{
+                  fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
+                  fontSize: '1.875rem',
+                  fontWeight: '600',
+                  lineHeight: '1.2',
+                  color: '#000000'
                 }}>
                   Heading 2 (H2)
                 </h2>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.heading}, 
-                  Size: {tokens.typography.heading.h2.fontSize}, 
-                  Weight: {tokens.typography.heading.h2.fontWeight}
+                  Font: Montserrat, Size: 1.875rem (30px), Weight: 600
                 </div>
               </div>
-              
+
               <div>
-                <h3 style={{ 
-                  fontFamily: tokens.typography.fontFamily.heading,
-                  fontSize: tokens.typography.heading.h3.fontSize,
-                  fontWeight: tokens.typography.heading.h3.fontWeight,
-                  lineHeight: tokens.typography.heading.h3.lineHeight,
-                  letterSpacing: tokens.typography.heading.h3.letterSpacing,
+                <h3 style={{
+                  fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
+                  fontSize: '1.5rem',
+                  fontWeight: '600',
+                  lineHeight: '1.2',
+                  color: '#000000'
                 }}>
                   Heading 3 (H3)
                 </h3>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.heading}, 
-                  Size: {tokens.typography.heading.h3.fontSize}, 
-                  Weight: {tokens.typography.heading.h3.fontWeight}
+                  Font: Montserrat, Size: 1.5rem (24px), Weight: 600
                 </div>
               </div>
-              
+
               <div>
-                <h4 style={{ 
-                  fontFamily: tokens.typography.fontFamily.heading,
-                  fontSize: tokens.typography.heading.h4.fontSize,
-                  fontWeight: tokens.typography.heading.h4.fontWeight,
-                  lineHeight: tokens.typography.heading.h4.lineHeight,
-                  letterSpacing: tokens.typography.heading.h4.letterSpacing,
+                <h4 style={{
+                  fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
+                  fontSize: '1.25rem',
+                  fontWeight: '500',
+                  lineHeight: '1.2',
+                  color: '#000000'
                 }}>
                   Heading 4 (H4)
                 </h4>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.heading}, 
-                  Size: {tokens.typography.heading.h4.fontSize}, 
-                  Weight: {tokens.typography.heading.h4.fontWeight}
+                  Font: Montserrat, Size: 1.25rem (20px), Weight: 500
                 </div>
               </div>
             </div>
           </div>
-          
+
           {/* Body Text */}
           <div>
             <h3 className="text-xl font-medium mb-4">Body Text</h3>
             <div className="space-y-4 bg-white p-6 rounded-lg shadow-sm">
               <div>
-                <p style={{ 
-                  fontFamily: tokens.typography.fontFamily.body,
-                  fontSize: tokens.typography.body.primary.fontSize,
-                  fontWeight: tokens.typography.body.primary.fontWeight,
-                  lineHeight: tokens.typography.body.primary.lineHeight,
-                  letterSpacing: tokens.typography.body.primary.letterSpacing,
+                <p style={{
+                  fontFamily: 'Open Sans, Arial, Helvetica, sans-serif',
+                  fontSize: '1rem',
+                  fontWeight: '400',
+                  lineHeight: '1.5',
+                  color: '#000000'
                 }}>
-                  Primary Body Text - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. 
+                  Primary Body Text - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
                   Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.
                 </p>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.body}, 
-                  Size: {tokens.typography.body.primary.fontSize}, 
-                  Weight: {tokens.typography.body.primary.fontWeight}
+                  Font: Open Sans, Size: 1rem (16px), Weight: 400
                 </div>
               </div>
-              
+
               <div>
-                <p style={{ 
-                  fontFamily: tokens.typography.fontFamily.body,
-                  fontSize: tokens.typography.body.secondary.fontSize,
-                  fontWeight: tokens.typography.body.secondary.fontWeight,
-                  lineHeight: tokens.typography.body.secondary.lineHeight,
-                  letterSpacing: tokens.typography.body.secondary.letterSpacing,
+                <p style={{
+                  fontFamily: 'Open Sans, Arial, Helvetica, sans-serif',
+                  fontSize: '0.875rem',
+                  fontWeight: '400',
+                  lineHeight: '1.5',
+                  color: '#666666'
                 }}>
-                  Secondary Body Text - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. 
+                  Secondary Body Text - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
                   Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.
                 </p>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.body}, 
-                  Size: {tokens.typography.body.secondary.fontSize}, 
-                  Weight: {tokens.typography.body.secondary.fontWeight}
+                  Font: Open Sans, Size: 0.875rem (14px), Weight: 400
                 </div>
               </div>
-              
+
               <div>
-                <p style={{ 
-                  fontFamily: tokens.typography.fontFamily.special,
-                  fontSize: tokens.typography.special.quote.fontSize,
-                  fontWeight: tokens.typography.special.quote.fontWeight,
-                  lineHeight: tokens.typography.special.quote.lineHeight,
-                  letterSpacing: tokens.typography.special.quote.letterSpacing,
+                <p style={{
+                  fontFamily: 'Playfair Display, Georgia, Times New Roman, serif',
+                  fontSize: '1.125rem',
+                  fontWeight: '400',
+                  lineHeight: '1.6',
                   fontStyle: 'italic',
+                  color: '#333333'
                 }}>
-                  "This is a special quote text using the special font family. It's designed to stand out and create visual interest."
+                  "This is a special quote text using Playfair Display. It's designed to stand out and create visual interest."
                 </p>
                 <div className="text-sm text-gray-500 mt-1">
-                  Font: {tokens.typography.fontFamily.special}, 
-                  Size: {tokens.typography.special.quote.fontSize}, 
-                  Weight: {tokens.typography.special.quote.fontWeight}
+                  Font: Playfair Display, Size: 1.125rem (18px), Weight: 400, Style: Italic
                 </div>
               </div>
             </div>
@@ -228,52 +201,35 @@ const StyleGuide: React.FC = () => {
       
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Spacing</h2>
-        
+        <p className="text-gray-600 mb-8">
+          Consistent spacing creates visual rhythm and hierarchy throughout the interface.
+        </p>
+
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-medium mb-4">Spacing Scale</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-sm">
-              {Object.entries(tokens.spacing)
-                .filter(([key]) => !isNaN(Number(key)) || ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'].includes(key))
-                .map(([key, value]) => (
-                  <div key={key} className="flex items-center">
-                    <div 
-                      className="bg-teal-extraLight mr-4" 
-                      style={{ 
-                        width: typeof value === 'string' ? value : '1rem',
-                        height: '24px',
-                      }}
-                    />
-                    <div>
-                      <div className="font-medium">{key}</div>
-                      <div className="text-sm text-gray-500">{String(value)}</div>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Shadows</h2>
-        
-        <div className="space-y-8">
-          <div>
-            <h3 className="text-xl font-medium mb-4">Shadow Scale</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {['sm', 'md', 'lg', 'xl', '2xl'].map((size) => (
-                <div 
-                  key={size} 
-                  className="bg-white p-6 rounded-lg" 
-                  style={{ 
-                    boxShadow: tokens.shadows[size as keyof typeof tokens.shadows],
-                  }}
-                >
-                  <div className="font-medium">Shadow {size}</div>
-                  <div className="text-sm text-gray-500 mt-1 break-all">
-                    {tokens.shadows[size as keyof typeof tokens.shadows]}
+              {[
+                { key: 'xs', value: '0.25rem', px: '4px' },
+                { key: 'sm', value: '0.5rem', px: '8px' },
+                { key: 'md', value: '1rem', px: '16px' },
+                { key: 'lg', value: '1.5rem', px: '24px' },
+                { key: 'xl', value: '2rem', px: '32px' },
+                { key: '2xl', value: '3rem', px: '48px' },
+                { key: '3xl', value: '4rem', px: '64px' },
+                { key: '4xl', value: '6rem', px: '96px' },
+              ].map(({ key, value, px }) => (
+                <div key={key} className="flex items-center">
+                  <div
+                    className="bg-gray-300 mr-4"
+                    style={{
+                      width: value,
+                      height: '24px',
+                    }}
+                  />
+                  <div>
+                    <div className="font-medium">{key}</div>
+                    <div className="text-sm text-gray-500">{value} ({px})</div>
                   </div>
                 </div>
               ))}
@@ -281,29 +237,72 @@ const StyleGuide: React.FC = () => {
           </div>
         </div>
       </section>
-      
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-6">Shadows</h2>
+        <p className="text-gray-600 mb-8">
+          Subtle shadows add depth and hierarchy to interface elements.
+        </p>
+
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-xl font-medium mb-4">Shadow Scale</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { size: 'sm', shadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' },
+                { size: 'md', shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' },
+                { size: 'lg', shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' },
+                { size: 'xl', shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' },
+                { size: '2xl', shadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' },
+              ].map(({ size, shadow }) => (
+                <div
+                  key={size}
+                  className="bg-white p-6 rounded-lg"
+                  style={{
+                    boxShadow: shadow,
+                  }}
+                >
+                  <div className="font-medium">Shadow {size}</div>
+                  <div className="text-sm text-gray-500 mt-1 break-all">
+                    {shadow}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Border Radius</h2>
-        
+        <p className="text-gray-600 mb-8">
+          Consistent border radius creates a cohesive visual language.
+        </p>
+
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-medium mb-4">Border Radius Scale</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {Object.entries(tokens.borders.radius)
-                .filter(([key]) => key !== 'shorthand')
-                .map(([key, value]) => (
-                  <div key={key} className="flex flex-col items-center">
-                    <div 
-                      className="bg-teal w-24 h-24 mb-2" 
-                      style={{ 
-                        borderRadius: typeof value === 'string' ? value : undefined,
-                      }}
-                    />
-                    <div className="font-medium">{key}</div>
-                    <div className="text-sm text-gray-500">{String(value)}</div>
-                  </div>
-                ))
-              }
+              {[
+                { key: 'none', value: '0px' },
+                { key: 'sm', value: '0.125rem' },
+                { key: 'md', value: '0.375rem' },
+                { key: 'lg', value: '0.5rem' },
+                { key: 'xl', value: '0.75rem' },
+                { key: '2xl', value: '1rem' },
+                { key: 'full', value: '9999px' },
+              ].map(({ key, value }) => (
+                <div key={key} className="flex flex-col items-center">
+                  <div
+                    className="bg-black w-24 h-24 mb-2"
+                    style={{
+                      borderRadius: value,
+                    }}
+                  />
+                  <div className="font-medium">{key}</div>
+                  <div className="text-sm text-gray-500">{value}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -5,7 +5,6 @@ import { CartProvider } from './context/CartContext';
 import { JudgeMeProvider } from './context/JudgeMeContext';
 import RouteWrapper from './components/routing/RouteWrapper';
 import ScrollToTop from './components/common/ScrollToTop';
-import themeSwitcher from './utils/theme-switcher';
 
 // Lazy load layout components
 const LazyNavbar = createLazyComponent(() => import('./components/Navbar'));
@@ -30,12 +29,6 @@ const LazyWhatsAppButton = createLazyComponent(() => import('./components/WhatsA
  */
 function App() {
   useEffect(() => {
-    // Initialize the theme switcher
-    themeSwitcher.init();
-    
-    // Apply the enhanced theme class to the root element by default
-    document.documentElement.classList.add('enhanced-theme');
-    
     // Judge.me is loaded via JudgeMeScriptTag component when needed
   }, []);
 
