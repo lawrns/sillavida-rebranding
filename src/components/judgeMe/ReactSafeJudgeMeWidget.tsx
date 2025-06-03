@@ -9,6 +9,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { loadJudgeMeScript } from '../../lib/judgeMe';
 import { errorHandler } from '../../utils/errorHandler';
+import { extractShopifyId } from '../../utils/business/productTransformer';
 
 interface ReactSafeJudgeMeWidgetProps {
   productId: string | number;
@@ -64,23 +65,26 @@ const ReactSafeJudgeMeWidget: React.FC<ReactSafeJudgeMeWidgetProps> = ({
         // Debug attributes
         widgetEl.setAttribute('data-debug', 'true');
         
+        // Extract numerical ID for Judge.me compatibility
+        const numericProductId = extractShopifyId(productId);
+        
         // Set appropriate class and data attribute based on widget type
         switch (widgetType) {
           case 'review':
             widgetEl.className = `jdgm-widget jdgm-review-widget ${className}`;
-            widgetEl.setAttribute('data-id', String(productId));
+            widgetEl.setAttribute('data-id', numericProductId);
             // Extra attributes for review widget
             widgetEl.setAttribute('data-widget-type', 'review-widget');
             widgetEl.setAttribute('data-show-form-on-load', 'false'); // Don't show review form automatically
             break;
           case 'ugc-media':
             widgetEl.className = `jdgm-widget jdgm-ugc-media-wrapper ${className}`;
-            widgetEl.setAttribute('data-product-id', String(productId));
+            widgetEl.setAttribute('data-product-id', numericProductId);
             widgetEl.setAttribute('data-widget-type', 'ugc-media-grid');
             break;
           case 'preview-badge':
             widgetEl.className = `jdgm-widget jdgm-preview-badge ${className}`;
-            widgetEl.setAttribute('data-id', String(productId));
+            widgetEl.setAttribute('data-id', numericProductId);
             widgetEl.setAttribute('data-widget-type', 'preview-badge');
             break;
           case 'verified-badge':

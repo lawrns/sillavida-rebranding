@@ -8,6 +8,7 @@
 import React from 'react';
 import JudgeMeContainer from './JudgeMeContainer';
 import { useJudgeMe } from '../../hooks/useJudgeMe';
+import { extractShopifyId } from '../../utils/business/productTransformer';
 
 interface PreviewBadgeProps {
   productId: string;
@@ -26,7 +27,7 @@ const PreviewBadge: React.FC<PreviewBadgeProps> = ({
     return (
       <div 
         className={`jdgm-widget jdgm-preview-badge ${className}`}
-        data-id={productId}
+        data-id={extractShopifyId(productId)}
       ></div>
     );
   };

@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext';
 import { ProductHeroShowcase, ProductDetailSections, RelatedProducts, ProductVideos } from '../components/product';
 import { ReactSafeJudgeMeWidget, JudgeMeLoader } from '../components/judgeMe';
 import { getProduct } from '../lib/shopify';
+import { extractShopifyId } from '../utils/business/productTransformer';
 import './ProductPage.css';
 
 const ProductPage: React.FC = () => {
@@ -79,7 +80,7 @@ const ProductPage: React.FC = () => {
   }
 
   return (
-    <JudgeMeLoader productId={product.id}>
+    <JudgeMeLoader productId={extractShopifyId(product.id)}>
       <div className="sillavida-product-page">
       {/* SEO metadata */}
       <Helmet>
@@ -105,7 +106,7 @@ const ProductPage: React.FC = () => {
           {/* Using the exact Judge.me Review Widget code */}
           <div
             className="jdgm-widget jdgm-review-widget jdgm-outside-widget"
-            data-id={product.id}
+            data-id={extractShopifyId(product.id)}
             data-product-title={product.title}
             data-locale="es"
           ></div>
@@ -124,7 +125,7 @@ const ProductPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 my-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Fotos de Nuestros Clientes</h2>
         {/* Using the exact Judge.me UGC Media Grid code */}
-        <div className="jdgm-ugc-media-wrapper" data-product-id={product.id} data-locale="es"></div>
+        <div className="jdgm-ugc-media-wrapper" data-product-id={extractShopifyId(product.id)} data-locale="es"></div>
       </div>
 
       {/* Related Products Section */}
