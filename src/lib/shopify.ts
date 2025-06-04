@@ -222,6 +222,7 @@ export async function getProducts(
             title
             handle
             description
+            tags
             priceRange {
               minVariantPrice {
                 amount
@@ -239,6 +240,23 @@ export async function getProducts(
                 node {
                   url
                   altText
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  title
+                  availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }

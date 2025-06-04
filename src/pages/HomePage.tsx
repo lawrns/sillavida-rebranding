@@ -153,6 +153,8 @@ const HomePage = () => {
 
       <BenefitsSection />
 
+      <ProductCarousel products={allProducts} isLoading={isLoading} />
+
       <ReviewsSection />
 
       <LazyPersonalizedBanner />
@@ -162,8 +164,6 @@ const HomePage = () => {
         isLoading={isLoading}
         dataFetched={dataFetched}
       />
-
-      <ProductCarousel products={allProducts} isLoading={isLoading} />
 
       <LazyErgonomicEducationalSectionCondensed />
 
