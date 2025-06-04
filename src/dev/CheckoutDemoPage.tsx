@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { getProducts, getProduct } from '../lib/shopify';
 
 const CheckoutDemoPage: React.FC = () => {
-  const { addItem, cartCount, cartTotal } = useCart();
+  const { addToCart, cartCount, cartTotal } = useCart();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
@@ -67,7 +67,7 @@ const CheckoutDemoPage: React.FC = () => {
     
     setIsLoading(true);
     try {
-      await addItem(product.id, 1);
+      await addToCart(product.id, 1);
       setIsLoading(false);
     } catch (error) {
       console.error('Error adding item to cart:', error);
