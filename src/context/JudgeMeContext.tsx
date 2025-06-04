@@ -6,7 +6,6 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { loadJudgeMeScript } from '../lib/judgeMe';
 import type { JudgeMeReviewData } from '../types/judgeMe';
 import { useJudgeMe } from '../hooks/useJudgeMe';
 import type { JudgeMeGlobal } from '../services/judgeMe';
@@ -47,77 +46,45 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const loadJudgeMeScriptAndInitialize = async () => {
-      try {
-        setLoading(true);
-        
-        // Check if script is already loaded
-        if (typeof window.jdgm !== 'undefined') {
-          setReady(true);
+    const checkJudgeMeReady = () => {
+      // Since script is loaded in index.html, just check if it's ready
+      if (typeof window.jdgm !== 'undefined') {
+        setReady(true);
+        setLoading(false);
+      } else {
+        // Try again after a short delay in case script is still loading
+        setTimeout(() => {
+          if (typeof window.jdgm !== 'undefined') {
+            setReady(true);
+          } else {
+            setError(new Error('Judge.me script not loaded from index.html'));
+          }
           setLoading(false);
-          return;
-        }
-
-        // Load the script using our utility
-        await loadJudgeMeScript();
-        
-        // Script loaded successfully
-        if (typeof window.jdgm !== 'undefined') {
-          setReady(true);
-        } else {
-          setError(new Error('Judge.me script loaded but global object not available'));
-        }
-        
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error(String(err)));
-        setLoading(false);
+        }, 1000);
       }
     };
 
     if (autoInitialize) {
-      loadJudgeMeScriptAndInitialize();
+      setLoading(true);
+      checkJudgeMeReady();
     }
   }, [autoInitialize]);
 
-  // Function to load script and initialize Judge.me
-  const loadJudgeMeScriptAndInitialize = async () => {
-    try {
-      setLoading(true);
-      
-      // Check if script is already loaded
-      if (typeof window.jdgm !== 'undefined') {
-        setReady(true);
-        setLoading(false);
-        return;
-      }
-
-      // Load the script using our utility
-      await loadJudgeMeScript();
-      
-      // Script loaded successfully
-      if (typeof window.jdgm !== 'undefined') {
-        setReady(true);
-      } else {
-        setError(new Error('Judge.me script loaded but global object not available'));
-      }
-      
+  // Simplified initialization since script is loaded from index.html
+  const initialize = async () => {
+    if (typeof window.jdgm !== 'undefined') {
+      setReady(true);
       setLoading(false);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error(String(err)));
+    } else {
+      setError(new Error('Judge.me script not available'));
       setLoading(false);
     }
-  };
-
-  // Public method to initialize Judge.me
-  const initialize = async () => {
-    await loadJudgeMeScriptAndInitialize();
   };
 
   // Get the review count for a product
   const getProductReviewCount = async (productId: string | number): Promise<number> => {
     if (!ready) {
-      await loadJudgeMeScriptAndInitialize();
+      await initialize();
     }
 
     if (!window.jdgm) {
@@ -139,7 +106,7 @@ export const JudgeMeProvider: React.FC<JudgeMeProviderProps> = ({
   // Get the average rating for a product
   const getAverageRating = async (productId: string | number): Promise<number> => {
     if (!ready) {
-      await loadJudgeMeScriptAndInitialize();
+      await initialize();
     }
 
     if (!window.jdgm) {

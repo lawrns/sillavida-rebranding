@@ -70,7 +70,7 @@ export const useJudgeMeWidgetInitialization = (
         try {
           const containerElement = container?.current || undefined;
           
-          // Initialize widgets using our script loader
+          // Initialize widgets using renderWidgets
           if (typeof (window as any).jdgm !== 'undefined' && 
               typeof (window as any).jdgm.renderWidgets === 'function') {
             (window as any).jdgm.renderWidgets(containerElement);
@@ -126,7 +126,10 @@ export const useJudgeMeWidgetInitialization = (
       initialized.current = false;
       attemptCount.current = 0;
       const containerElement = container?.current || undefined;
-      renderWidgets(containerElement);
+      if (typeof (window as any).jdgm !== 'undefined' && 
+          typeof (window as any).jdgm.renderWidgets === 'function') {
+        (window as any).jdgm.renderWidgets(containerElement);
+      }
     }
   };
 };
