@@ -36,9 +36,6 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
   
   // Helper function to extract features from Shopify metafields
   const extractFeaturesFromMetafields = (product: any): string[] => {
-    console.log('Product metafields:', product.metafields);
-    console.log('Full product object:', product);
-    
     if (!product.metafields || !Array.isArray(product.metafields)) return [];
     
     const features: string[] = [];
@@ -48,13 +45,11 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     
     // Try to get features from custom.caracteristicas_principales metafield
     const customFeatures = validMetafields.find((m: any) => m.key === 'caracteristicas_principales');
-    console.log('Found caracteristicas_principales metafield:', customFeatures);
     
     if (customFeatures && customFeatures.value) {
       try {
         // Features might be stored as JSON array or comma-separated string
         const parsed = JSON.parse(customFeatures.value);
-        console.log('Parsed metafield value:', parsed);
         if (Array.isArray(parsed)) {
           features.push(...parsed.filter(f => f && typeof f === 'string'));
         } else if (typeof parsed === 'string') {
@@ -62,7 +57,6 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
         }
       } catch {
         // If JSON parsing fails, treat as comma-separated string
-        console.log('JSON parsing failed, treating as string:', customFeatures.value);
         if (typeof customFeatures.value === 'string') {
           features.push(...customFeatures.value.split(',').map((f: string) => f.trim()).filter(f => f));
         }
@@ -126,7 +120,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
            featuredProduct.images?.[0]?.url || 
            '/images/placeholder.png',
     handle: featuredProduct.handle,
-    variantId: featuredProduct.variants?.[0]?.id,
+    variantId: featuredProduct.variants?.edges?.[0]?.node?.id,
     features: extractFeaturesFromMetafields(featuredProduct)
   } : {
     id: featuredProduct.id,
