@@ -34,6 +34,44 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
   // Get current featured product
   const featuredProduct = carouselProducts[currentIndex];
   
+  // Helper function to extract features from Shopify metafields
+  const extractFeaturesFromMetafields = (product: any): string[] => {
+    console.log('Product metafields:', product.metafields);
+    console.log('Full product object:', product);
+    
+    if (!product.metafields || !Array.isArray(product.metafields)) return [];
+    
+    const features: string[] = [];
+    
+    // Filter out null/undefined metafields and ensure we have valid objects
+    const validMetafields = product.metafields.filter((m: any) => m && typeof m === 'object' && m.key);
+    
+    // Try to get features from custom.caracteristicas_principales metafield
+    const customFeatures = validMetafields.find((m: any) => m.key === 'caracteristicas_principales');
+    console.log('Found caracteristicas_principales metafield:', customFeatures);
+    
+    if (customFeatures && customFeatures.value) {
+      try {
+        // Features might be stored as JSON array or comma-separated string
+        const parsed = JSON.parse(customFeatures.value);
+        console.log('Parsed metafield value:', parsed);
+        if (Array.isArray(parsed)) {
+          features.push(...parsed.filter(f => f && typeof f === 'string'));
+        } else if (typeof parsed === 'string') {
+          features.push(...parsed.split(',').map((f: string) => f.trim()).filter(f => f));
+        }
+      } catch {
+        // If JSON parsing fails, treat as comma-separated string
+        console.log('JSON parsing failed, treating as string:', customFeatures.value);
+        if (typeof customFeatures.value === 'string') {
+          features.push(...customFeatures.value.split(',').map((f: string) => f.trim()).filter(f => f));
+        }
+      }
+    }
+    
+    return features.filter(f => f && f.length > 0);
+  };
+  
   // Auto-advance carousel
   useEffect(() => {
     if (!isAutoPlaying || carouselProducts.length <= 1) return;
@@ -88,7 +126,8 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
            featuredProduct.images?.[0]?.url || 
            '/images/placeholder.png',
     handle: featuredProduct.handle,
-    variantId: featuredProduct.variants?.[0]?.id
+    variantId: featuredProduct.variants?.[0]?.id,
+    features: extractFeaturesFromMetafields(featuredProduct)
   } : {
     id: featuredProduct.id,
     title: featuredProduct.name,
@@ -97,7 +136,8 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     originalPrice: featuredProduct.compareAtPrice || featuredProduct.price * 1.2,
     image: featuredProduct.image,
     handle: featuredProduct.name.toLowerCase().replace(/\s+/g, '-'),
-    variantId: null
+    variantId: null,
+    features: featuredProduct.features || []
   };
   
   
@@ -178,12 +218,10 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
             {/* Key Features */}
             <div className="space-y-3">
               <h4 className="font-semibold text-black mb-3">Características principales:</h4>
-              {[
-                'Soporte lumbar ajustable',
-                'Reposabrazos ergonómicos 4D', 
-                'Base de aluminio resistente',
-                'Certificación ergonómica'
-              ].map((feature, index) => (
+              {(productData.features && productData.features.length > 0 ? 
+                productData.features.slice(0, 4) : 
+                ['Soporte lumbar ajustable', 'Reposabrazos ergonómicos 4D', 'Base de aluminio resistente', 'Certificación ergonómica']
+              ).map((feature, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
                   <span className="text-gray-700">{feature}</span>

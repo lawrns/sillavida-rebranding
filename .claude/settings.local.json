@@ -21,7 +21,10 @@
       "Bash(compact)",
       "Bash(npm run lint:*)",
       "Bash(git rm:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "WebFetch(domain:sillavida.mx)",
+      "WebFetch(domain:www.sillavida.mx)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   },

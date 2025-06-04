@@ -260,6 +260,12 @@ export async function getProducts(
                 }
               }
             }
+            metafields(identifiers: [
+              {namespace: "custom", key: "caracteristicas_principales"}
+            ]) {
+              key
+              value
+            }
           }
         }
       }
@@ -548,6 +554,12 @@ export async function getProductsByCollection(
                     availableForSale
                   }
                 }
+              }
+              metafields(identifiers: [
+                {namespace: "custom", key: "caracteristicas_principales"}
+              ]) {
+                key
+                value
               }
             }
           }
