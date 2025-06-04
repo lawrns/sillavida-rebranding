@@ -23,7 +23,7 @@ const StickyAddToCart: React.FC<StickyAddToCartProps> = ({
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { addItem } = useCart();
+  const { addToCart } = useCart();
 
   // Show the sticky bar when scrolling down past a certain point
   useEffect(() => {
@@ -48,7 +48,7 @@ const StickyAddToCart: React.FC<StickyAddToCartProps> = ({
     setAddingToCart(true);
     
     try {
-      await addItem(variantId, quantity);
+      await addToCart(variantId, quantity);
       setSuccess(true);
       
       // Reset success message after 3 seconds

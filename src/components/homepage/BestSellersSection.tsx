@@ -21,7 +21,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
   isLoading,
   dataFetched
 }) => {
-  const { addItem } = useCart();
+  const { addToCart } = useCart();
   
   // Carousel state
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -103,10 +103,17 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
   
   const discountPercentage = Math.round(((productData.originalPrice - productData.price) / productData.originalPrice) * 100);
   
-  const handleAddToCart = () => {
-    if (isShopifyProduct && productData.variantId) {
-      addItem(productData.variantId, 1);
-    } else {
+  const handleAddToCart = async () => {
+    try {
+      if (isShopifyProduct && productData.variantId) {
+        await addToCart(productData.variantId, 1);
+        // Could add success feedback here
+      } else {
+        console.warn('No variant ID available for add to cart');
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      // Could add error feedback here
     }
   };
   
