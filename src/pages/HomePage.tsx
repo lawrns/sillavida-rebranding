@@ -153,6 +153,8 @@ const HomePage = () => {
 
       <BenefitsSection />
 
+      <ProductCarousel products={allProducts} isLoading={isLoading} />
+
       <ReviewsSection />
 
       <LazyPersonalizedBanner />
@@ -163,14 +165,12 @@ const HomePage = () => {
         dataFetched={dataFetched}
       />
 
-      <ProductCarousel products={allProducts} isLoading={isLoading} />
-
       <LazyErgonomicEducationalSectionCondensed />
 
       <GuaranteeSection />
 
       {/* Back to Top Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-20 right-6 z-50">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition-colors"

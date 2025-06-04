@@ -52,7 +52,12 @@ export interface ShopifyProduct {
   };
   // --- Custom fields for SillaVida product page integration ---
   totalInventory?: number; // Optional: Shopify total inventory for inStock logic
-  metafields?: {
+  metafields?: Array<{
+    key: string;
+    value: string;
+  }>;
+  // Legacy metafields structure for backward compatibility
+  legacyMetafields?: {
     maxWeight?: string;
     adjustableHeight?: string;
     seatMaterial?: string;

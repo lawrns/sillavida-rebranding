@@ -75,8 +75,8 @@ const ReviewStars: React.FC<ReviewStarsProps> = ({
             
             // Trigger Judge.me to render the widget
             const jdgm = (window as any).jdgm;
-            if (jdgm && typeof jdgm.renderWidget === 'function') {
-              jdgm.renderWidget(containerRef.current.querySelector('[data-judge-me-widget]'));
+            if (jdgm && typeof jdgm.renderWidgets === 'function') {
+              jdgm.renderWidgets();
               setHasInitialized(true);
             }
           }

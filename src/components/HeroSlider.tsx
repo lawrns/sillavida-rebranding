@@ -119,7 +119,7 @@ interface SlideData {
 
 const HeroSlider = () => {
   // Import context to use cart functionality
-  const { addItem } = useCart();
+  const { addToCart } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoadingSlides, setIsLoadingSlides] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -251,14 +251,14 @@ const HeroSlider = () => {
    *
    * @param {SlideData} slideData - The slide containing product and variant information
    */
-  const handleAddToCart = (slideData: SlideData) => {
+  const handleAddToCart = async (slideData: SlideData) => {
     if (slideData.variantId) {
       // If we have a specific variant ID, use that
-      addItem(slideData.variantId, 1);
+      await addToCart(slideData.variantId, 1);
     } else if (slideData.handle) {
       // If we have a product handle but no variant ID, use the handle
       // This assumes the first variant will be selected
-      addItem(slideData.handle, 1);
+      await addToCart(slideData.handle, 1);
     } else {
       // Fallback if neither variantId nor handle is available
       const error = errorHandler.createError('CART_UPDATE_FAILED', {

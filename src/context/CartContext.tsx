@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
-import { createCart, getCart, addToCart, updateCartLines, removeFromCart, getCheckoutUrl } from '../lib/shopify';
+import { createCart, getCart, addToCart as shopifyAddToCart, updateCartLines, removeFromCart, getCheckoutUrl } from '../lib/shopify';
 import type { ShopifyCart } from '../types/shopify';
 import { handleCartError } from '../utils/errorHandler';
 import { formatPrice } from '../utils/business/priceFormatter';
@@ -164,7 +164,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         
         if (cartId) {
           // Add to existing cart
-          updatedCart = await addToCart(cartId, [{ merchandiseId, quantity }]);
+          updatedCart = await shopifyAddToCart(cartId, [{ merchandiseId, quantity }]);
         } else {
           // Create new cart
           updatedCart = await createCart([{ merchandiseId, quantity }]);

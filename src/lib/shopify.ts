@@ -222,6 +222,7 @@ export async function getProducts(
             title
             handle
             description
+            tags
             priceRange {
               minVariantPrice {
                 amount
@@ -241,6 +242,29 @@ export async function getProducts(
                   altText
                 }
               }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  title
+                  availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+            metafields(identifiers: [
+              {namespace: "custom", key: "caracteristicas_principales"}
+            ]) {
+              key
+              value
             }
           }
         }
@@ -530,6 +554,12 @@ export async function getProductsByCollection(
                     availableForSale
                   }
                 }
+              }
+              metafields(identifiers: [
+                {namespace: "custom", key: "caracteristicas_principales"}
+              ]) {
+                key
+                value
               }
             }
           }

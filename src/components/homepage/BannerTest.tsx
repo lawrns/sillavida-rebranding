@@ -7,11 +7,11 @@ import React from 'react';
 const BannerTest: React.FC = () => {
   return (
     <section className="w-full overflow-hidden">
-      <div className="relative w-full">
+      <div className="relative w-full h-[600px]">
         <img
-          src="/images/Banner test/ChatGPT Image May 30, 2025, 05_24_57 PM.png"
+          src="/images/Banner test/Gemini_Generated_Image_q1drcoq1drcoq1dr.png"
           alt="SillaVida Banner Test"
-          className="w-full h-auto object-cover"
+          className="w-full h-full object-cover object-top"
           loading="eager"
           onError={(e) => {
             console.error('Banner image failed to load');

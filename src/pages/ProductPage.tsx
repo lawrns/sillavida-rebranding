@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { useCart } from '../context/CartContext';
 import { ProductHeroShowcase, ProductDetailSections, RelatedProducts, ProductVideos } from '../components/product';
-import { ReactSafeJudgeMeWidget, JudgeMeLoader } from '../components/judgeMe';
 import { getProduct } from '../lib/shopify';
 import { extractShopifyId } from '../utils/business/productTransformer';
 import './ProductPage.css';
@@ -15,12 +14,6 @@ const ProductPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const cartContext = useCart();
-
-  // References for widget containers
-  const reviewContainerRef = useRef<HTMLDivElement>(null);
-  const ugcGridRef = useRef<HTMLDivElement>(null);
-
-  // We'll use our ReactSafeJudgeMeWidget component instead of the hook-based approach
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -45,7 +38,8 @@ const ProductPage: React.FC = () => {
     fetchProduct();
   }, [handle]);
 
-  // No need for manual reinitialization, our ReactSafeJudgeMeWidget handles this
+  // Judge.me widgets should auto-initialize with the modern widget.js approach
+  // No manual initialization needed - the script handles this automatically
 
   if (loading) {
     return (
@@ -80,8 +74,7 @@ const ProductPage: React.FC = () => {
   }
 
   return (
-    <JudgeMeLoader productId={extractShopifyId(product.id)}>
-      <div className="sillavida-product-page">
+    <div className="sillavida-product-page">
       {/* SEO metadata */}
       <Helmet>
         <title>{`${product.title} | SillaVida`}</title>
@@ -103,12 +96,13 @@ const ProductPage: React.FC = () => {
             <h2 className="text-2xl font-semibold font-heading text-black">Opiniones de Nuestros Clientes</h2>
             <p className="text-sm mt-2 text-black/70">Lee lo que nuestros clientes opinan sobre este producto</p>
           </div>
-          {/* Using the exact Judge.me Review Widget code */}
+          {/* Judge.me Review Widget - Current Headless API */}
           <div
-            className="jdgm-widget jdgm-review-widget jdgm-outside-widget"
+            className="judgeme_product_reviews"
             data-id={extractShopifyId(product.id)}
-            data-product-title={product.title}
-            data-locale="es"
+            data-limit="5"
+            data-show-average-rating="true"
+            data-show-product-rating="true"
           ></div>
         </div>
       </div>
@@ -131,7 +125,6 @@ const ProductPage: React.FC = () => {
       {/* Related Products Section */}
       <RelatedProducts currentProductId={product.id} limit={4} />
     </div>
-    </JudgeMeLoader>
   );
 };
 

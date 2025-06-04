@@ -1,8 +1,32 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-05-30T17:48:39",
+  "lastUpdated": "2025-06-03T18:16:18",
   "insights": {
     "process": [
+      {
+        "id": "process-015",
+        "description": "Support team screenshots provide definitive root cause identification for integration issues",
+        "dateIdentified": "2025-06-03T15:34:52",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["Judge.me ID Format Fix"]
+      },
+      {
+        "id": "process-014",
+        "description": "Comprehensive regression testing framework with utilities enables rapid test development and consistent quality assurance",
+        "dateIdentified": "2025-06-02T15:11:12",
+        "priority": "high",
+        "status": "active",
+        "relatedTasks": ["TASK-105"]
+      },
+      {
+        "id": "process-013",
+        "description": "Systematic dead code removal with verification steps ensures safe bundle optimization without breaking functionality",
+        "dateIdentified": "2025-06-02T11:35:33",
+        "priority": "high",
+        "status": "completed",
+        "relatedTasks": ["TASK-146"]
+      },
       {
         "id": "process-012",
         "description": "Feature flag implementation with admin controls enables safe A/B testing without code removal or deployment risks",

@@ -7,9 +7,9 @@
 
 /**
  * URL for Judge.me script
- * Using the exact script URL provided by Shopify Judge.me admin
+ * Using the full widget runtime (not preloader)
  */
-const JUDGEME_CDN_URL = 'https://cdnwidget.judge.me/widget_preloader.js';
+const JUDGEME_CDN_URL = 'https://cdnwidget.judge.me/widget.js';
 
 /**
  * Load the Judge.me script into the document
