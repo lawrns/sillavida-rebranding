@@ -1,5 +1,6 @@
 import React from 'react';
-import { Truck, CreditCard, Shield, HeadphonesIcon } from 'lucide-react';
+import { Truck, WalletCards, ShieldCheck } from 'lucide-react';
+import WhatsAppIcon from '../icons/WhatsAppIcon';
 
 /**
  * BenefitsSection - Ultra-compact horizontal strip layout
@@ -9,50 +10,58 @@ const BenefitsSection: React.FC = () => {
   const benefits = [
     {
       icon: Truck,
-      title: "Envío Gratis",
-      description: "A todo México"
+      title: "Envío Asegurado",
+      description: ""
     },
     {
-      icon: CreditCard,
-      title: "Pagos Seguros",
-      description: "12 MSI disponibles"
+      icon: WalletCards,
+      title: "Pagos en 12 MSI",
+      description: ""
     },
     {
-      icon: Shield,
-      title: "Garantía",
-      description: "5 años extendida"
+      icon: ShieldCheck,
+      title: "Garantía 5 años",
+      description: ""
     },
     {
-      icon: HeadphonesIcon,
-      title: "Soporte",
-      description: "Atención 24/7"
+      icon: WhatsAppIcon,
+      title: "Soporte vía WhatsApp",
+      description: ""
     }
   ];
 
   return (
-    <section className="bg-gray-50 py-4">
+    <section className="py-4" style={{ backgroundColor: '#1A2A3A' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Ultra-Minimalist Strip - Icon | Title | Subtitle (no boxes) */}
+        {/* Enhanced Icon Strip - Professional Visual Hierarchy with SillaVida Brand Colors */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((benefit, index) => {
             const IconComponent = benefit.icon;
             return (
-              <div key={index} className="flex items-baseline space-x-3">
-                <IconComponent className="h-5 w-5 text-black translate-y-0.5" />
-                <h4 className="font-semibold text-black text-sm leading-5">{benefit.title}</h4>
-                <p className="text-gray-600 text-xs leading-5">{benefit.description}</p>
+              <div key={index} className="flex items-center space-x-3 group transition-all duration-200 hover:opacity-80">
+                <div 
+                  className="flex-shrink-0 w-8 h-8 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: 'rgba(92, 184, 92, 0.1)' 
+                  }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(92, 184, 92, 0.2)'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(92, 184, 92, 0.1)'}
+                >
+                  <IconComponent 
+                    className="h-5 w-5 stroke-2" 
+                    style={{ color: '#5CB85C' }}
+                  />
+                </div>
+                <h4 className="font-semibold text-white text-sm leading-tight font-heading">{benefit.title}</h4>
+                {benefit.description && (
+                  <p className="text-gray-300 text-xs leading-5">{benefit.description}</p>
+                )}
               </div>
             );
           })}
         </div>
 
-        {/* Social Proof - Ultra Compact */}
-        <div className="text-center mt-3">
-          <p className="text-gray-500 text-xs">
-            De norte a sur, clientes en todo México eligen SillaVida por su calidad y diseño
-          </p>
-        </div>
         
       </div>
     </section>

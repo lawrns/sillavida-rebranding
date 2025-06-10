@@ -9,3 +9,5 @@ export { default as CartEmptyState } from './CartEmptyState';
 export { default as CartLoadingState } from './CartLoadingState';
 export { default as CartFooter } from './CartFooter';
 export { default as FreeShippingIndicator } from './FreeShippingIndicator';
+export { default as PriceBreakdown } from './PriceBreakdown';
+export { default as PaymentMethods } from './PaymentMethods';

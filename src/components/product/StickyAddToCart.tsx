@@ -111,9 +111,9 @@ const StickyAddToCart: React.FC<StickyAddToCartProps> = ({
             </div>
             
             <motion.button 
-              className={`bg-accent text-white border-0 rounded px-4 h-10 text-sm font-semibold cursor-pointer transition-colors flex items-center justify-center min-w-[140px] 
+              className={`bg-black text-white border-0 rounded px-4 h-10 text-sm font-semibold cursor-pointer transition-colors flex items-center justify-center min-w-[140px] 
                 ${!inStock ? 'bg-neutral-400' : ''} 
-                ${success ? 'bg-green-600 hover:bg-green-700' : 'hover:bg-accent/90'} 
+                ${success ? 'bg-green-600 hover:bg-green-700' : 'hover:bg-gray-800'} 
                 disabled:cursor-not-allowed`}
               onClick={handleAddToCart}
               disabled={!inStock || addingToCart}

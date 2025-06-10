@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import type { ShopifyProduct } from '../../types/shopify';
 import { useMinimalCart } from '../../hooks/useMinimalCart';
+import { LAYOUT, BUSINESS, UI } from '../../constants/layout';
 
 interface ProductCarouselProps {
   products: ShopifyProduct[];
@@ -60,13 +61,26 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
     );
   };
 
-  // Generate random star rating between 3.5 and 5.0
+  // Generate random star rating using constants
   const generateMockRating = (productId: string) => {
     // Use product ID as seed for consistent ratings
     const seed = productId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const random = (seed % 1000) / 1000; // Normalize to 0-1
-    const rating = 3.5 + (random * 1.5); // 3.5 to 5.0
+    const rating = BUSINESS.RATING.MIN + (random * (BUSINESS.RATING.MAX - BUSINESS.RATING.MIN));
     return Math.round(rating * 2) / 2; // Round to nearest 0.5
+  };
+
+  // Get responsive card width based on screen size
+  const getCardWidth = () => {
+    if (typeof window === 'undefined') return LAYOUT.CARD_WIDTH.TABLET;
+    
+    if (window.innerWidth < LAYOUT.BREAKPOINTS.SM) {
+      return LAYOUT.CARD_WIDTH.MOBILE;
+    } else if (window.innerWidth < LAYOUT.BREAKPOINTS.LG) {
+      return LAYOUT.CARD_WIDTH.TABLET;
+    } else {
+      return LAYOUT.CARD_WIDTH.DESKTOP;
+    }
   };
 
   // Render star rating component
@@ -114,7 +128,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
 
     try {
       setAddingToCart(product.id);
-      console.log('Adding to cart - Product:', product.title, 'ID:', product.id);
       
       // Get the actual Shopify variant ID - handle both GraphQL edges structure and transformed array
       let variant;
@@ -130,17 +143,10 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
         variantId = variant?.id;
       }
       
-      console.log('Product variants:', product.variants);
-      console.log('Variant structure type:', Array.isArray(product.variants) ? 'array' : 'graphql-edges');
-      console.log('First variant:', variant);
-      console.log('Variant ID:', variantId);
-      
       if (!variantId) {
         throw new Error(`No variant ID found for product: ${product.title}. Product may not have variants.`);
       }
 
-      console.log('Calling addToCartMinimal...');
-      
       // Add timeout to prevent hanging
       const timeoutPromise = new Promise((_, reject) => 
         setTimeout(() => reject(new Error('Add to cart timeout')), 10000)
@@ -151,8 +157,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
         timeoutPromise
       ]);
       
-      console.log('Successfully added to cart');
-      
       setAddSuccess(product.id);
       
       // Show success state briefly
@@ -162,9 +166,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
       toggleCart();
       
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      console.error('Product data:', product);
-      // Reset the loading state and show an error (you could add error state here)
+      // Show user-friendly error message
       alert(`Error al agregar al carrito: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     } finally {
       setAddingToCart(null);
@@ -174,6 +176,11 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  
+  // Touch/swipe state
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Check scroll position to show/hide arrows
   const checkScrollPosition = () => {
@@ -191,7 +198,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
     if (!scrollContainerRef.current) return;
     
     const container = scrollContainerRef.current;
-    const cardWidth = 320; // Approximate card width + gap
+    const cardWidth = getCardWidth(); // Use responsive card width
     const cardsToScroll = Math.max(1, Math.floor(container.clientWidth / cardWidth));
     const scrollAmount = cardWidth * cardsToScroll;
     
@@ -207,7 +214,84 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
     // Update button states after scroll animation completes
     setTimeout(() => {
       checkScrollPosition();
-    }, 500);
+    }, LAYOUT.CAROUSEL.ANIMATION_DURATION);
+  };
+
+  // Touch event handlers for swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null); // Clear previous touch end
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart || !isDragging) return;
+    
+    const currentX = e.targetTouches[0].clientX;
+    const diffX = Math.abs(currentX - touchStart);
+    
+    // If horizontal movement is significant, prevent vertical scrolling
+    if (diffX > 10) {
+      e.preventDefault();
+    }
+    
+    setTouchEnd(currentX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd || !isDragging) {
+      setIsDragging(false);
+      return;
+    }
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > LAYOUT.CAROUSEL.SCROLL_THRESHOLD;
+    const isRightSwipe = distance < -LAYOUT.CAROUSEL.SCROLL_THRESHOLD;
+
+    // Only trigger swipe if we have sufficient distance
+    if (isLeftSwipe && canScrollRight) {
+      scroll('right');
+    } else if (isRightSwipe && canScrollLeft) {
+      scroll('left');
+    }
+
+    // Reset touch state
+    setTouchStart(null);
+    setTouchEnd(null);
+    setIsDragging(false);
+  };
+
+  // Mouse event handlers for desktop drag support (optional enhancement)
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.clientX);
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!touchStart || !isDragging) return;
+    setTouchEnd(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    if (!touchStart || !touchEnd || !isDragging) {
+      setIsDragging(false);
+      return;
+    }
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > LAYOUT.CAROUSEL.SCROLL_THRESHOLD;
+    const isRightSwipe = distance < -LAYOUT.CAROUSEL.SCROLL_THRESHOLD;
+
+    if (isLeftSwipe && canScrollRight) {
+      scroll('right');
+    } else if (isRightSwipe && canScrollLeft) {
+      scroll('left');
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+    setIsDragging(false);
   };
 
   // Initialize and update scroll position
@@ -277,7 +361,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
       <section className="py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-black mb-4">
-            Encuentra Tu Silla Ideal
+            Dile Adiós al Dolor de Espalda
           </h2>
           <p className="text-gray-600">Error: No se pudieron cargar los productos de Shopify.</p>
         </div>
@@ -289,24 +373,32 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
     <section className="py-16 lg:py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Enhanced Section Header - Same as CategoriesSection */}
-        <div className="text-center mb-16">
+        {/* Section Header with fade-in from bottom */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl lg:text-4xl font-bold text-black mb-4">
-            Encuentra Tu Silla Ideal
+            Dile Adiós al Dolor de Espalda
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Descubre nuestra colección completa de sillas ergonómicas diseñadas para 
-            mejorar tu postura, productividad y bienestar durante largas jornadas de trabajo.
-          </p>
-        </div>
+        </motion.div>
 
-        {/* Navigation Controls */}
-        <div className="flex justify-end mb-8">
+        {/* Navigation Controls with delay */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex justify-end mb-8"
+        >
           <div className="flex items-center space-x-2">
             <button
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
-              className={`p-2 rounded-full transition-all duration-200 ${
+              className={`p-3 rounded-full transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                 canScrollLeft
                   ? 'bg-black text-white hover:bg-gray-800'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -318,7 +410,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
             <button
               onClick={() => scroll('right')}
               disabled={!canScrollRight}
-              className={`p-2 rounded-full transition-all duration-200 ${
+              className={`p-3 rounded-full transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                 canScrollRight
                   ? 'bg-black text-white hover:bg-gray-800'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -328,19 +420,28 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Full-width scrollable container */}
       <div className="relative">
         <div
           ref={scrollContainerRef}
-          className="flex space-x-6 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4"
+          className={`flex space-x-6 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4 ${
+            isDragging ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
             WebkitScrollbar: { display: 'none' }
           }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp} // Handle mouse leaving the container
         >
           {products.map((product, index) => {
             // Handle both transformed StandardProduct and original Shopify GraphQL structures
@@ -379,17 +480,25 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
             return (
               <motion.div
                 key={product.id || index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="flex-shrink-0 w-80"
+                className="flex-shrink-0 w-[280px] sm:w-80 lg:w-[360px]"
               >
                 <div className="group relative">
                   {/* Product Labels */}
                   {renderProductLabels(product.tags)}
                   
-                  <Link to={`/product/${product.handle || 'product'}`}>
+                  <Link 
+                    to={`/product/${product.handle || 'product'}`}
+                    onClick={(e) => {
+                      // Prevent navigation if user was swiping
+                      if (isDragging || Math.abs((touchStart || 0) - (touchEnd || 0)) > 10) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
                     <div className="relative overflow-hidden rounded-xl bg-gray-100 aspect-[4/5]">
                       {/* Primary Image */}
                       <img
@@ -443,7 +552,16 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
                   <div className="mt-4 space-y-2">
                     {/* Product Title and Stars Row */}
                     <div className="flex items-start justify-between gap-2">
-                      <Link to={`/product/${product.handle || 'product'}`} className="flex-1">
+                      <Link 
+                        to={`/product/${product.handle || 'product'}`} 
+                        className="flex-1"
+                        onClick={(e) => {
+                          // Prevent navigation if user was swiping
+                          if (isDragging || Math.abs((touchStart || 0) - (touchEnd || 0)) > 10) {
+                            e.preventDefault();
+                          }
+                        }}
+                      >
                         <h3 className="font-semibold text-gray-900 line-clamp-2 hover:text-gray-700 transition-colors">
                           {product.title || 'Sin título'}
                         </h3>
@@ -454,14 +572,11 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
                         <div className="flex items-center space-x-0.5">
                           {renderStarRating(generateMockRating(product.id))}
                         </div>
-                        <span className="text-xs text-gray-500 ml-1">
-                          ({Math.floor(Math.random() * 50) + 10})
-                        </span>
                       </div>
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-xl font-bold text-black">
+                      <span className="text-xl font-bold" style={{ color: '#D9534F' }}>
                         {productPrice}
                       </span>
                     </div>
@@ -472,6 +587,9 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
           })}
         </div>
 
+        {/* Edge Fade gradients */}
+        <div className="absolute left-0 top-0 bottom-4 w-12 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none" />
       </div>
 
     </section>

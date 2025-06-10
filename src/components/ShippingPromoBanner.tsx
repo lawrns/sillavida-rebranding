@@ -56,13 +56,21 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
   // Don't show if cart is empty
   if (cartItems.length === 0) {
     return (
-      <div className="bg-[#000000] text-white py-2 px-4 text-center">
+      <div className="text-white py-2 px-4 text-center" style={{ backgroundColor: '#1A2A3A' }}>
         <div className="container mx-auto">
           <div className="inline-flex items-center">
-            <Truck className="h-5 w-5 mr-2 text-accent flex-shrink-0" />
+            <Truck className="h-5 w-5 mr-2 flex-shrink-0" style={{ color: '#5CB85C' }} />
             <span className="text-sm font-heading font-medium">
               ¡Envío GRATIS en compras superiores a {formatCurrency(threshold)}!
-              <Link to="/promociones" className="underline ml-2 text-accent hover:text-white transition-colors duration-200">Ver detalles</Link>
+              <Link 
+                to="/promociones" 
+                className="underline ml-2 transition-colors duration-200"
+                style={{ color: '#5CB85C' }}
+                onMouseEnter={(e) => e.target.style.color = '#FFFFFF'}
+                onMouseLeave={(e) => e.target.style.color = '#5CB85C'}
+              >
+                Ver detalles
+              </Link>
             </span>
           </div>
         </div>
@@ -71,18 +79,26 @@ const ShippingPromoBanner: React.FC<ShippingPromoBannerProps> = ({
   }
 
   return (
-    <div className="bg-[#000000] text-white py-2 px-4 text-center">
+    <div className="text-white py-2 px-4 text-center" style={{ backgroundColor: '#1A2A3A' }}>
       <div className="container mx-auto">
         <div className="inline-flex items-center">
-          <Truck className="h-5 w-5 mr-2 text-accent flex-shrink-0" />
+          <Truck className="h-5 w-5 mr-2 flex-shrink-0" style={{ color: '#5CB85C' }} />
           {hasQualifiedForFreeShipping ? (
             <span className="text-sm font-heading font-medium">
-              ¡<span className="text-accent">Felicidades!</span> Tu pedido califica para envío GRATIS
+              ¡<span style={{ color: '#5CB85C' }}>Felicidades!</span> Tu pedido califica para envío GRATIS
             </span>
           ) : (
             <span className="text-sm font-heading font-medium">
-              ¡Te faltan <span className="text-accent font-semibold">{formatCurrency(amountToFreeShipping)}</span> para obtener envío GRATIS!
-              <Link to="/promociones" className="underline ml-2 text-accent hover:text-white transition-colors duration-200">Ver detalles</Link>
+              ¡Te faltan <span className="font-semibold" style={{ color: '#5CB85C' }}>{formatCurrency(amountToFreeShipping)}</span> para obtener envío GRATIS!
+              <Link 
+                to="/promociones" 
+                className="underline ml-2 transition-colors duration-200"
+                style={{ color: '#5CB85C' }}
+                onMouseEnter={(e) => e.target.style.color = '#FFFFFF'}
+                onMouseLeave={(e) => e.target.style.color = '#5CB85C'}
+              >
+                Ver detalles
+              </Link>
             </span>
           )}
         </div>

@@ -6,10 +6,6 @@
 @import './styles/interactions.css';
 @import './styles/vida-theme.css';
 @import './styles/sillavida-enhanced-theme.css';
-/* Removing original theme as part of redesign */
-/* @import './styles/sillavida-original-theme.css'; */
-/* Removing theme switcher as dark mode is not needed */
-/* @import './styles/theme-switcher.css'; */
 
 @tailwind base;
 @tailwind components;

@@ -4,8 +4,10 @@ import { RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { useCart } from '../context/CartContext';
 import { ProductHeroShowcase, ProductDetailSections, RelatedProducts, ProductVideos } from '../components/product';
+import ProductReviewsCarousel from '../components/product/ProductReviewsCarousel';
 import { getProduct } from '../lib/shopify';
 import { extractShopifyId } from '../utils/business/productTransformer';
+import { mapProductHandleToChairModel, hasProductReviews } from '../utils/product-review-mapper';
 import './ProductPage.css';
 
 const ProductPage: React.FC = () => {
@@ -89,23 +91,38 @@ const ProductPage: React.FC = () => {
       {/* Product Hero Section */}
       <ProductHeroShowcase product={product} />
 
-      {/* Judge.me Reviews Section */}
-      <div className="max-w-7xl mx-auto px-4 my-12">
-        <div className="bg-white text-black p-6 rounded-lg shadow-md">
-          <div className="mb-6 border-b border-[#E5E5E5] pb-4">
-            <h2 className="text-2xl font-semibold font-heading text-black">Opiniones de Nuestros Clientes</h2>
-            <p className="text-sm mt-2 text-black/70">Lee lo que nuestros clientes opinan sobre este producto</p>
-          </div>
-          {/* Judge.me Review Widget - Current Headless API */}
-          <div
-            className="judgeme_product_reviews"
-            data-id={extractShopifyId(product.id)}
-            data-limit="5"
-            data-show-average-rating="true"
-            data-show-product-rating="true"
-          ></div>
+      {/* Enhanced Product Reviews Section */}
+      {handle && hasProductReviews(handle) && (
+        <div className="max-w-7xl mx-auto px-4 my-12">
+          <ProductReviewsCarousel
+            productHandle={mapProductHandleToChairModel(handle)!}
+            productName={product.title}
+            showHeader={true}
+            autoScroll={true}
+            className="bg-gray-50 p-6 rounded-2xl"
+          />
         </div>
-      </div>
+      )}
+
+      {/* Fallback Judge.me Reviews Section for products without enhanced reviews */}
+      {handle && !hasProductReviews(handle) && (
+        <div className="max-w-7xl mx-auto px-4 my-12">
+          <div className="bg-white text-black p-6 rounded-lg shadow-md">
+            <div className="mb-6 border-b border-[#E5E5E5] pb-4">
+              <h2 className="text-2xl font-semibold font-heading text-black">Opiniones de Nuestros Clientes</h2>
+              <p className="text-sm mt-2 text-black/70">Lee lo que nuestros clientes opinan sobre este producto</p>
+            </div>
+            {/* Judge.me Review Widget - Current Headless API */}
+            <div
+              className="judgeme_product_reviews"
+              data-id={extractShopifyId(product.id)}
+              data-limit="5"
+              data-show-average-rating="true"
+              data-show-product-rating="true"
+            ></div>
+          </div>
+        </div>
+      )}
 
       {/* Product Detail Sections */}
       <div className="product-sections-vertical">

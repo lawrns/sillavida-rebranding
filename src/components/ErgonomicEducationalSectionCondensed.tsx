@@ -14,7 +14,7 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
 
             <div className="grid gap-6 mb-8">
               <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
-                <div className="w-14 h-14 flex items-center justify-center bg-black rounded-full flex-shrink-0">
+                <div className="w-14 h-14 flex items-center justify-center rounded-full flex-shrink-0" style={{ backgroundColor: '#5CB85C' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M24 16C25.6569 16 27 14.6569 27 13C27 11.3431 25.6569 10 24 10C22.3431 10 21 11.3431 21 13C21 14.6569 22.3431 16 24 16Z" fill="white"/>
@@ -30,7 +30,7 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
-                <div className="w-14 h-14 flex items-center justify-center bg-black rounded-full flex-shrink-0">
+                <div className="w-14 h-14 flex items-center justify-center rounded-full flex-shrink-0" style={{ backgroundColor: '#5CB85C' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M24 14C25.1046 14 26 13.1046 26 12C26 10.8954 25.1046 10 24 10C22.8954 10 22 10.8954 22 12C22 13.1046 22.8954 14 24 14Z" fill="white"/>
@@ -47,7 +47,7 @@ const ErgonomicEducationalSectionCondensed: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-lg hover:translate-y-[-3px] transition-all duration-300 shadow-sm hover:shadow-md">
-                <div className="w-14 h-14 flex items-center justify-center bg-black rounded-full flex-shrink-0">
+                <div className="w-14 h-14 flex items-center justify-center rounded-full flex-shrink-0" style={{ backgroundColor: '#5CB85C' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48" fill="none">
                     <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M16 28H32" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

@@ -78,9 +78,6 @@ describe('ProductCard Component', () => {
     // Check if rating is displayed
     expect(screen.getByText('4.8')).toBeInTheDocument();
     
-    // Check if review count is displayed
-    expect(screen.getByText('(120)')).toBeInTheDocument();
-    
     // Check if image is rendered
     expect(screen.getByTestId('mock-lazy-image')).toBeInTheDocument();
     

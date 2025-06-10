@@ -53,34 +53,81 @@ export default defineConfig({
   // Dependency optimization
   optimizeDeps: {
     exclude: ['lucide-react'],
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+    force: true,
   },
   
   // Build optimization
   build: {
-    target: 'es2015',
+    target: 'es2020',
     outDir: 'dist',
     assetsDir: 'assets',
     cssCodeSplit: true,
     sourcemap: process.env.NODE_ENV !== 'production',
     minify: 'terser',
+    chunkSizeWarningLimit: 1000,
     terserOptions: {
       compress: {
         drop_console: true, // Always strip console statements in builds
         drop_debugger: true, // Always strip debugger statements
         pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'], // Remove specific console methods
+        dead_code: true,
+        unused: true,
+      },
+      mangle: {
+        safari10: true,
       },
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split vendor chunks
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          // UI library chunks
-          ui: ['framer-motion', 'lucide-react'],
-          // Shopify related chunks
-          shopify: ['@shopify/hydrogen-react'],
+        manualChunks: (id) => {
+          // More granular chunking for better caching
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-animation';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('@shopify')) {
+              return 'vendor-shopify';
+            }
+            // Group other node_modules into vendor chunk
+            return 'vendor-libs';
+          }
+          // Split large components into separate chunks
+          if (id.includes('src/pages/')) {
+            return 'pages';
+          }
+          if (id.includes('src/components/product/')) {
+            return 'product-components';
+          }
+          if (id.includes('src/components/homepage/')) {
+            return 'homepage-components';
+          }
+          if (id.includes('src/components/judgeMe/')) {
+            return 'judgeme-components';
+          }
+          if (id.includes('src/components/ugc/')) {
+            return 'ugc-components';
+          }
         },
+        // Optimize asset filenames for better caching
+        assetFileNames: (assetInfo) => {
+          const extType = assetInfo.name.split('.').at(1);
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+            return `assets/images/[name]-[hash][extname]`;
+          }
+          if (/css/i.test(extType)) {
+            return `assets/css/[name]-[hash][extname]`;
+          }
+          return `assets/[name]-[hash][extname]`;
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
       },
     },
   },

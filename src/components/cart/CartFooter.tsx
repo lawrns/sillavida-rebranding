@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { createLazyComponent } from '../common/LazyComponent';
-import FreeShippingIndicator from './FreeShippingIndicator';
-
-// Lazy load TrustIndicator
-const LazyTrustIndicator = createLazyComponent(() => import('../TrustIndicator'));
+import PriceBreakdown from './PriceBreakdown';
+import PaymentMethods from './PaymentMethods';
 
 interface CartFooterProps {
   cartTotal: string;
@@ -30,74 +27,58 @@ const CartFooter: React.FC<CartFooterProps> = ({
 }) => {
   if (cartItems.length === 0) return null;
 
+  // Calculate price breakdown (simplified for now - could be enhanced with real data)
+  const subtotal = cartTotal;
+  const shipping = "$0.00"; // Free shipping
+  const tax = "$0.00"; // Tax calculation would be done server-side
+  const total = cartTotal;
+
   return (
-    <div className="border-t border-neutral-200 p-4 bg-white" style={{ borderBottomLeftRadius: '0.5rem' }}>
-      <div className="flex justify-between font-heading font-medium text-base mb-1">
-        <p>Subtotal</p>
-        <p className="text-accent">{cartTotal}</p>
+    <div className="bg-white" style={{ borderBottomLeftRadius: '0.5rem' }}>
+      {/* Price Breakdown Section */}
+      <div className="px-4">
+        <PriceBreakdown
+          subtotal={subtotal}
+          shipping={shipping}
+          tax={tax}
+          total={total}
+        />
       </div>
 
-      <FreeShippingIndicator 
-        cartItems={cartItems}
-        cart={cart}
-        cartTotal={cartTotal}
-      />
-
-      <p className="text-sm text-neutral-500 mb-4 font-body">
-        Envío e impuestos calculados al finalizar la compra.
-      </p>
-
-      <button
-        onClick={onCheckout}
-        disabled={isLoading}
-        className="w-full bg-accent text-white py-4 sm:py-3 rounded font-heading font-semibold tracking-wide hover:bg-accent/90 flex items-center justify-center text-base"
-        aria-label="Finalizar compra"
-      >
-        {isLoading ? (
-          <>
-            <div className="animate-spin rounded-full h-5 w-5 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2" />
-            <span>Procesando...</span>
-          </>
-        ) : (
-          <>
-            <span>Finalizar Compra</span>
-            <ChevronRight className="ml-1 h-5 w-5" />
-          </>
-        )}
-      </button>
-
-      <div className="mt-4 text-center">
-        <p className="text-base sm:text-sm text-neutral-500 font-body">
-          o{' '}
-          <Link
-            to="/cart"
-            onClick={onCloseCart}
-            className="text-accent font-heading font-medium hover:text-accent/80 px-2 py-1 inline-block"
-            aria-label="Ver carrito completo"
-          >
-            Ver Carrito Completo
-          </Link>
-        </p>
+      {/* Checkout Button */}
+      <div className="px-4 pb-2">
+        <button
+          onClick={onCheckout}
+          disabled={isLoading}
+          className="w-full bg-black text-white py-4 rounded-lg font-semibold text-sm hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Pasar a pago"
+        >
+          {isLoading ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2 inline-block" />
+              <span>Procesando...</span>
+            </>
+          ) : (
+            'PASAR A PAGO'
+          )}
+        </button>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-neutral-100">
-        <div className="flex justify-center space-x-6">
-          <LazyTrustIndicator
-            type="warranty"
-            size="small"
-            layout="horizontal"
-            showDescription={false}
-          />
-          <LazyTrustIndicator
-            type="payment"
-            size="small"
-            layout="horizontal"
-            showDescription={false}
-          />
-        </div>
-        <p className="text-xs text-center text-neutral-500 mt-2 font-body">
-          Garantía de Bienestar en todos nuestros productos
-        </p>
+      {/* View Full Cart Link */}
+      <div className="px-4 pb-4 text-center">
+        <Link
+          to="/cart"
+          onClick={onCloseCart}
+          className="text-xs text-gray-500 hover:text-black transition-colors"
+          aria-label="Ver carrito completo"
+        >
+          Ver Carrito Completo
+        </Link>
+      </div>
+
+      {/* Payment Methods Section */}
+      <div className="px-4 pb-4">
+        <PaymentMethods />
       </div>
     </div>
   );

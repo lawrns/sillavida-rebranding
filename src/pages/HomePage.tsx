@@ -11,10 +11,12 @@ import {
 import ProductCarousel from '../components/homepage/ProductCarousel';
 import GuaranteeSection from '../components/homepage/GuaranteeSection';
 import BannerTest from '../components/homepage/BannerTest';
+import UGCSection from '../components/ugc/UGCSection';
 import { getProducts, getFeaturedProducts, shopifyClient } from '../lib/shopify';
 import type { ShopifyProduct } from '../types/shopify';
 import { errorHandler } from '../utils/errorHandler';
 import { getFeatureFlag } from '../config/featureFlags';
+import { useMinimalCart } from '../hooks/useMinimalCart';
 
 // Lazy load additional components
 const LazyPersonalizedBanner = createLazyComponent(() => import('../components/PersonalizedBanner'));
@@ -33,6 +35,9 @@ const trackEvent = (eventName: string, eventData: Record<string, any> = {}) => {
 };
 
 const HomePage = () => {
+  // Cart state for hiding buttons when cart is open
+  const { isCartOpen } = useMinimalCart();
+  
   // State for Shopify data (simplified for composition pattern)
   const [bestSellers, setBestSellers] = useState<ShopifyProduct[]>([]);
   const [allProducts, setAllProducts] = useState<ShopifyProduct[]>([]);
@@ -135,6 +140,56 @@ const HomePage = () => {
     duration: 0.5
   };
 
+  // Show centralized loading screen while data is being fetched
+  if (isLoading && !dataFetched) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="rounded-full h-16 w-16 border-t-4 border-b-4 border-black mx-auto mb-6"
+            animate={{ rotate: 360 }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.h2
+            className="text-2xl font-bold text-black mb-2"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Cargando Silla Vida
+          </motion.h2>
+          <motion.p
+            className="text-gray-600"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Preparando nuestros productos ergonómicos para ti...
+          </motion.p>
+          {error && (
+            <motion.p
+              className="text-sm text-gray-500 mt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              {error}
+            </motion.p>
+          )}
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial="initial"
@@ -153,15 +208,19 @@ const HomePage = () => {
 
       <BenefitsSection />
 
-      <ProductCarousel products={allProducts} isLoading={isLoading} />
+      {/* Pass isLoading={false} since we handle loading centrally */}
+      <ProductCarousel products={allProducts} isLoading={false} />
+
+      <UGCSection />
 
       <ReviewsSection />
 
       <LazyPersonalizedBanner />
 
+      {/* Pass isLoading={false} since we handle loading centrally */}
       <BestSellersSection
         bestSellers={bestSellers}
-        isLoading={isLoading}
+        isLoading={false}
         dataFetched={dataFetched}
       />
 
@@ -169,18 +228,20 @@ const HomePage = () => {
 
       <GuaranteeSection />
 
-      {/* Back to Top Button */}
-      <div className="fixed bottom-20 right-6 z-50">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition-colors"
-          aria-label="Volver al inicio"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
-        </button>
-      </div>
+      {/* Back to Top Button - Hide when cart is open - Below WhatsApp */}
+      {!isCartOpen && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="bg-black text-white p-2.5 rounded-full shadow-lg hover:bg-gray-800 transition-colors"
+            aria-label="Volver al inicio"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 };

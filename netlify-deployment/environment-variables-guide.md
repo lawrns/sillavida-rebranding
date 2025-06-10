@@ -9,7 +9,7 @@ The following environment variables are required for the Silla Vida application 
 | Variable Name | Description | Example Value |
 |---------------|-------------|---------------|
 | `VITE_SHOPIFY_STORE_DOMAIN` | The domain of your Shopify store | `your-store.myshopify.com` |
-| `VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN` | The Storefront API access token | `shpat_1234567890abcdef1234567890abcdef` |
+| `VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN` | The Storefront API access token | `your_storefront_access_token_here` |
 
 ## Setting Environment Variables in Netlify
 

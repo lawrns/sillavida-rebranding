@@ -47,8 +47,8 @@ const fallbackSlides = [
       bg: "from-white via-white to-white",
       accent: "bg-black/10",
       text: "text-black",
-      button: "bg-black hover:bg-black/90",
-      gradient: "from-black via-black to-neutral-800"
+      button: "hover:bg-green-600",
+      gradient: "from-green-600 via-green-500 to-green-600"
     },
     features: ["Soporte Lumbar", "Ajuste Personalizado", "Materiales Transpirables", "12 MSI"],
     handle: "silla-ergonomica-xperience-helix"
@@ -65,8 +65,8 @@ const fallbackSlides = [
       bg: "from-white via-white to-white",
       accent: "bg-black/10",
       text: "text-black",
-      button: "bg-black hover:bg-black/90",
-      gradient: "from-black via-black to-neutral-800"
+      button: "hover:bg-green-600",
+      gradient: "from-green-600 via-green-500 to-green-600"
     },
     features: ["Ergonomía Certificada", "Reduce Fatiga", "Ajuste 4D", "12 MSI"],
     handle: "silla-ejecutiva-ergocomfort-pro"
@@ -83,8 +83,8 @@ const fallbackSlides = [
       bg: "from-white via-white to-white",
       accent: "bg-black/10",
       text: "text-black",
-      button: "bg-black hover:bg-black/90",
-      gradient: "from-black via-black to-neutral-800"
+      button: "hover:bg-green-600",
+      gradient: "from-green-600 via-green-500 to-green-600"
     },
     features: ["Confort Prolongado", "Diseño Ergonómico", "Durabilidad Premium", "12 MSI"],
     handle: "pack-4x-silla-vida-confort"
@@ -326,11 +326,11 @@ const HeroSlider = () => {
               
               {/* Main Headline */}
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-6xl font-bold text-black leading-tight">
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight" style={{ color: '#1A2A3A' }}>
                   {currentSlideData.title}
                 </h1>
                 
-                <p className="text-xl text-gray-600 leading-relaxed">
+                <p className="text-xl leading-relaxed" style={{ color: '#333333' }}>
                   {currentSlideData.description}
                 </p>
               </div>
@@ -340,8 +340,8 @@ const HeroSlider = () => {
                 {currentSlideData.features ? (
                   currentSlideData.features.map((feature: string, index: number) => (
                     <div key={index} className="flex items-center space-x-3">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700 font-medium">{feature}</span>
+                      <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: '#5CB85C' }} />
+                      <span className="font-medium" style={{ color: '#333333' }}>{feature}</span>
                     </div>
                   ))
                 ) : (
@@ -369,17 +369,17 @@ const HeroSlider = () => {
               {/* Pricing */}
               <div className="space-y-2">
                 <div className="flex items-baseline space-x-3">
-                  <span className="text-3xl font-bold text-black">
+                  <span className="text-3xl font-bold" style={{ color: '#D9534F' }}>
                     ${currentSlideData.price.toLocaleString('es-MX')}
                   </span>
-                  <span className="text-lg text-gray-500 line-through">
+                  <span className="text-lg line-through" style={{ color: '#666666' }}>
                     ${currentSlideData.originalPrice.toLocaleString('es-MX')}
                   </span>
-                  <span className="inline-flex items-center px-2 py-1 rounded-full bg-red-100 text-red-800 text-sm font-medium">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium text-white" style={{ backgroundColor: '#D9534F' }}>
                     -{Math.round(100 - (currentSlideData.price / currentSlideData.originalPrice) * 100)}%
                   </span>
                 </div>
-                <p className="text-sm text-gray-600">12 meses sin intereses disponibles</p>
+                <p className="text-sm" style={{ color: '#666666' }}>12 meses sin intereses disponibles</p>
               </div>
 
               {/* CTA Buttons */}
@@ -387,13 +387,25 @@ const HeroSlider = () => {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => handleAddToCart(currentSlideData)}
-                    className="bg-black text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-black/90 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                    style={{ backgroundColor: '#5CB85C' }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#4A994A'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#5CB85C'}
                   >
                     Agregar al Carrito
                   </button>
                   <Link
                     to={getProductUrl(currentSlideData)}
-                    className="border border-black text-black px-8 py-4 rounded-lg font-semibold text-lg hover:bg-black hover:text-white transition-all duration-200 text-center"
+                    className="px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 text-center border"
+                    style={{ borderColor: '#1A2A3A', color: '#1A2A3A' }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = '#1A2A3A';
+                      e.target.style.color = '#FFFFFF';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = '#1A2A3A';
+                    }}
                   >
                     Ver Detalles
                   </Link>
@@ -401,20 +413,20 @@ const HeroSlider = () => {
                 
                 {/* Value Props Row */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Shield className="w-4 h-4 text-green-600" />
+                  <div className="flex items-center space-x-2 text-sm" style={{ color: '#666666' }}>
+                    <Shield className="w-4 h-4" style={{ color: '#5CB85C' }} />
                     <span>Garantía extendida</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Star className="w-4 h-4 text-green-600" />
+                  <div className="flex items-center space-x-2 text-sm" style={{ color: '#666666' }}>
+                    <Star className="w-4 h-4" style={{ color: '#5CB85C' }} />
                     <span>Calidad premium</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <CreditCard className="w-4 h-4 text-green-600" />
+                  <div className="flex items-center space-x-2 text-sm" style={{ color: '#666666' }}>
+                    <CreditCard className="w-4 h-4" style={{ color: '#5CB85C' }} />
                     <span>12 MSI</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Package className="w-4 h-4 text-green-600" />
+                  <div className="flex items-center space-x-2 text-sm" style={{ color: '#666666' }}>
+                    <Package className="w-4 h-4" style={{ color: '#5CB85C' }} />
                     <span>Envío gratis</span>
                   </div>
                 </div>
@@ -440,7 +452,7 @@ const HeroSlider = () => {
                 {/* Floating Price Badge */}
                 <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-black">
+                    <div className="text-lg font-bold" style={{ color: '#D9534F' }}>
                       ${currentSlideData.price.toLocaleString('es-MX')}
                     </div>
                     <div className="text-xs text-gray-500 line-through">

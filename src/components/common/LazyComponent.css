@@ -2,18 +2,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
+  min-height: 40px;
   width: 100%;
-  background-color: var(--color-gray-background, #F5F5F5); /* Light gray instead of beige */
-  border-radius: 4px;
+  background-color: transparent; /* Remove background to avoid visual noise */
 }
 
 .lazy-component-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(0, 0, 0, 0.1); /* Black with low opacity instead of teal */
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
-  border-top-color: var(--color-black, #000000); /* Pure black instead of teal */
+  border-top-color: var(--color-black, #000000);
   animation: spin 1s ease-in-out infinite;
 }
 

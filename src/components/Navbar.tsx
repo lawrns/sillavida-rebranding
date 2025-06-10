@@ -6,7 +6,6 @@ import { getCollections } from '../lib/shopify';
 import { useMinimalCart } from '../hooks/useMinimalCart';
 import { useEventBus } from '../hooks/useComponentComposition';
 import MiniCart from './MiniCart';
-import AccountButton from './AccountButton';
 import { errorHandler } from '../utils/errorHandler';
 
 interface Collection {
@@ -88,7 +87,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white shadow-md z-50 sticky top-0 transition-all duration-300 font-heading`}
+      className={`shadow-md z-50 sticky top-0 transition-all duration-300 font-heading`}
+      style={{ backgroundColor: '#1A2A3A' }}
       role="navigation"
       aria-label="Main Navigation"
     >
@@ -108,19 +108,19 @@ const Navbar = () => {
                 <motion.span
                   animate={{ rotate: mobileMenuOpen ? 45 : 0, y: mobileMenuOpen ? 0 : -3 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute block h-0.5 w-6 bg-black"
+                  className="absolute block h-0.5 w-6 bg-white"
                   style={{ top: 'calc(50% - 1px)' }}
                 />
                 <motion.span
                   animate={{ opacity: mobileMenuOpen ? 0 : 1 }}
                   transition={{ duration: 0.1 }}
-                  className="absolute block h-0.5 w-6 bg-black"
+                  className="absolute block h-0.5 w-6 bg-white"
                    style={{ top: 'calc(50% - 1px)' }}
                 />
                 <motion.span
                   animate={{ rotate: mobileMenuOpen ? -45 : 0, y: mobileMenuOpen ? 0 : 3 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute block h-0.5 w-6 bg-black"
+                  className="absolute block h-0.5 w-6 bg-white"
                    style={{ top: 'calc(50% - 1px)' }}
                 />
               </div>
@@ -128,17 +128,17 @@ const Navbar = () => {
             {/* Logo with "Vida" emphasis */}
             <Link to="/" className="flex items-center md:ml-12">
               <motion.div
-                className="vida-logo text-2xl text-black"
+                className="vida-logo text-2xl text-white"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <span className="vida-logo-silla text-black">Silla</span>
+                <span className="vida-logo-silla" style={{ color: '#5CB85C' }}>Silla</span>
                 <motion.span
                   className="vida-logo-vida"
-                  initial={{ color: "#000000" }}
+                  initial={{ color: "#FFFFFF" }}
                   animate={{
-                    color: ["#000000", "#333333", "#000000"],
-                    textShadow: ["0 0 0px rgba(0,0,0,0)", "0 0 8px rgba(0,0,0,0.3)", "0 0 0px rgba(0,0,0,0)"]
+                    color: ["#FFFFFF", "#5CB85C", "#FFFFFF"],
+                    textShadow: ["0 0 0px rgba(92,184,92,0)", "0 0 8px rgba(92,184,92,0.3)", "0 0 0px rgba(92,184,92,0)"]
                   }}
                   transition={{
                     duration: 3,
@@ -155,23 +155,70 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center space-x-6 lg:space-x-8">
             <motion.div whileHover={{ y: -2 }}>
-              <Link to="/category/tienda" className={`${isActive("/category/tienda") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Tienda</Link>
+              <Link 
+                to="/category/tienda" 
+                className={`nav-item py-2 px-1 transition-colors duration-200 ${isActive("/category/tienda") ? 'border-b-2' : ''}`}
+                style={{ 
+                  color: isActive("/category/tienda") ? '#5CB85C' : '#FFFFFF',
+                  borderColor: isActive("/category/tienda") ? '#5CB85C' : 'transparent'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#5CB85C'}
+                onMouseLeave={(e) => e.target.style.color = isActive("/category/tienda") ? '#5CB85C' : '#FFFFFF'}
+              >
+                Tienda
+              </Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} className={`${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Promociones</Link>
+              <Link 
+                to={promocionesHandle ? `/category/${promocionesHandle}` : "/promociones"} 
+                className={`nav-item py-2 px-1 transition-colors duration-200 ${isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? 'border-b-2' : ''}`}
+                style={{ 
+                  color: isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? '#5CB85C' : '#FFFFFF',
+                  borderColor: isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? '#5CB85C' : 'transparent'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#5CB85C'}
+                onMouseLeave={(e) => e.target.style.color = isActive(promocionesHandle ? `/category/${promocionesHandle}` : "/promociones") ? '#5CB85C' : '#FFFFFF'}
+              >
+                Promociones
+              </Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to="/category/mas-vendidos" className={`${isActive("/category/mas-vendidos") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Más Vendidos</Link>
+              <Link 
+                to="/category/mas-vendidos" 
+                className={`nav-item py-2 px-1 transition-colors duration-200 ${isActive("/category/mas-vendidos") ? 'border-b-2' : ''}`}
+                style={{ 
+                  color: isActive("/category/mas-vendidos") ? '#5CB85C' : '#FFFFFF',
+                  borderColor: isActive("/category/mas-vendidos") ? '#5CB85C' : 'transparent'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#5CB85C'}
+                onMouseLeave={(e) => e.target.style.color = isActive("/category/mas-vendidos") ? '#5CB85C' : '#FFFFFF'}
+              >
+                Más Vendidos
+              </Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link to="/educacion/por-que-invertir-en-silla-ergonomica" className={`${isActive("/educacion/por-que-invertir-en-silla-ergonomica") ? 'text-accent border-b-2 border-accent' : 'text-black'} nav-item hover:text-accent py-2 px-1 transition-colors duration-200`}>Ergonomía</Link>
+              <Link 
+                to="/educacion/por-que-invertir-en-silla-ergonomica" 
+                className={`nav-item py-2 px-1 transition-colors duration-200 ${isActive("/educacion/por-que-invertir-en-silla-ergonomica") ? 'border-b-2' : ''}`}
+                style={{ 
+                  color: isActive("/educacion/por-que-invertir-en-silla-ergonomica") ? '#5CB85C' : '#FFFFFF',
+                  borderColor: isActive("/educacion/por-que-invertir-en-silla-ergonomica") ? '#5CB85C' : 'transparent'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#5CB85C'}
+                onMouseLeave={(e) => e.target.style.color = isActive("/educacion/por-que-invertir-en-silla-ergonomica") ? '#5CB85C' : '#FFFFFF'}
+              >
+                Ergonomía
+              </Link>
             </motion.div>
 
             {/* Categories Dropdown */}
             <div className="relative" ref={categoriesRef}>
               <motion.button
                 whileHover={{ y: -2 }}
-                className="flex items-center text-black nav-item hover:text-accent py-2 px-1 transition-colors duration-200"
+                className="flex items-center nav-item py-2 px-1 transition-colors duration-200"
+                style={{ color: '#FFFFFF' }}
+                onMouseEnter={(e) => e.target.style.color = '#5CB85C'}
+                onMouseLeave={(e) => e.target.style.color = '#FFFFFF'}
                 onClick={toggleCategories}
                 aria-expanded={categoriesOpen}
                 aria-haspopup="true"
@@ -183,7 +230,7 @@ const Navbar = () => {
                   transition={{ duration: 0.2 }}
                   className="ml-1 flex items-center justify-center"
                 >
-                  <ChevronDown className={`h-4 w-4 text-accent`} />
+                  <ChevronDown className={`h-4 w-4`} style={{ color: '#5CB85C' }} />
                 </motion.div>
               </motion.button>
               <AnimatePresence>
@@ -197,12 +244,12 @@ const Navbar = () => {
                     role="menu" aria-orientation="vertical" aria-labelledby="categories-button"
                   >
                     <div className="border-b border-neutral-100 bg-neutral-50 py-2 px-4">
-                      <h3 className="text-sm font-heading font-semibold text-black">Nuestras Categorías</h3>
+                      <h3 className="text-sm font-heading font-semibold" style={{ color: '#1A2A3A' }}>Nuestras Categorías</h3>
                     </div>
                     <div className="p-4">
-                      {loading ? <div className="text-sm text-black">Loading categories...</div> :
-                       error ? <div className="text-sm text-accent">{error}</div> :
-                       collections.length === 0 ? <div className="text-sm text-black">No categories found</div> : (
+                      {loading ? <div className="text-sm" style={{ color: '#333333' }}>Loading categories...</div> :
+                       error ? <div className="text-sm" style={{ color: '#D9534F' }}>{error}</div> :
+                       collections.length === 0 ? <div className="text-sm" style={{ color: '#333333' }}>No categories found</div> : (
                         <div className="grid grid-cols-1 gap-2">
                           {collections
                             .filter(collection => !collection.title.toLowerCase().includes('promociones') && !collection.title.toLowerCase().includes('tienda') && !collection.title.toLowerCase().includes('más vendidos'))
@@ -210,7 +257,16 @@ const Navbar = () => {
                               <Link
                                 key={collection.id}
                                 to={`/category/${collection.handle}`}
-                                className="block px-3 py-2.5 text-sm font-heading font-medium text-black rounded-md hover:bg-accent/10 hover:text-accent transition-all duration-200"
+                                className="block px-3 py-2.5 text-sm font-heading font-medium rounded-md transition-all duration-200"
+                                style={{ color: '#333333' }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.backgroundColor = 'rgba(92, 184, 92, 0.1)';
+                                  e.target.style.color = '#5CB85C';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.backgroundColor = 'transparent';
+                                  e.target.style.color = '#333333';
+                                }}
                                 role="menuitem"
                                 onClick={() => setCategoriesOpen(false)}
                               >
@@ -228,7 +284,6 @@ const Navbar = () => {
 
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
-            <AccountButton />
             <motion.button
               className="p-2 relative transition-all duration-200"
               onClick={() => {
@@ -240,10 +295,11 @@ const Navbar = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ShoppingCart className="h-5 w-5 text-accent transition-colors duration-200" />
+              <ShoppingCart className="h-5 w-5 transition-colors duration-200" style={{ color: '#5CB85C' }} />
               {cartCount > 0 && (
                 <motion.span
-                  className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  className="absolute -top-1 -right-1 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  style={{ backgroundColor: '#D9534F' }}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 500, damping: 15 }}
@@ -267,17 +323,26 @@ const Navbar = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="sm:hidden relative z-50 overflow-hidden bg-white shadow-lg border-t border-neutral-800"
+            className="sm:hidden relative z-50 overflow-hidden shadow-lg border-t border-neutral-800"
+            style={{ backgroundColor: '#1A2A3A' }}
             id="mobile-menu-content"
           >
             <div className="px-3 pt-3 pb-4 space-y-3">
               <Link
                 to="/category/tienda"
-                className={`block px-4 py-4 rounded-md nav-item text-base ${
-                  isActive("/category/tienda")
-                    ? 'text-accent bg-accent/10'
-                    : 'text-black'
-                } hover:text-accent hover:bg-accent/10 transition-all duration-200`}
+                className={`block px-4 py-4 rounded-md nav-item text-base transition-all duration-200`}
+                style={{ 
+                  color: isActive("/category/tienda") ? '#5CB85C' : '#FFFFFF',
+                  backgroundColor: isActive("/category/tienda") ? 'rgba(92, 184, 92, 0.1)' : 'transparent'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#5CB85C';
+                  e.target.style.backgroundColor = 'rgba(92, 184, 92, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = isActive("/category/tienda") ? '#5CB85C' : '#FFFFFF';
+                  e.target.style.backgroundColor = isActive("/category/tienda") ? 'rgba(92, 184, 92, 0.1)' : 'transparent';
+                }}
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Tienda"
               >
@@ -322,7 +387,16 @@ const Navbar = () => {
               {/* Mobile Categories */}
               <div ref={categoriesRef}>
                 <button
-                  className="flex w-full items-center px-4 py-4 rounded-md nav-item text-base text-black hover:text-accent hover:bg-accent/10 transition-all duration-200"
+                  className="flex w-full items-center px-4 py-4 rounded-md nav-item text-base transition-all duration-200"
+                  style={{ color: '#FFFFFF' }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = '#5CB85C';
+                    e.target.style.backgroundColor = 'rgba(92, 184, 92, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = '#FFFFFF';
+                    e.target.style.backgroundColor = 'transparent';
+                  }}
                   onClick={toggleCategories}
                   aria-expanded={categoriesOpen}
                   aria-controls="mobile-categories-dropdown"
@@ -333,7 +407,7 @@ const Navbar = () => {
                     transition={{ duration: 0.2 }}
                     className="ml-1 flex items-center justify-center"
                   >
-                     <ChevronDown className={`h-5 w-5 text-accent`} />
+                     <ChevronDown className={`h-5 w-5`} style={{ color: '#5CB85C' }} />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -346,16 +420,25 @@ const Navbar = () => {
                       className="pl-4 relative z-50 overflow-hidden"
                       id="mobile-categories-dropdown"
                     >
-                      {loading ? <div className="px-3 py-3 text-base text-black">Loading categories...</div> :
-                       error ? <div className="px-3 py-3 text-base text-accent">{error}</div> :
-                       collections.length === 0 ? <div className="px-3 py-3 text-base text-black">No categories found</div> : (
+                      {loading ? <div className="px-3 py-3 text-base" style={{ color: '#FFFFFF' }}>Loading categories...</div> :
+                       error ? <div className="px-3 py-3 text-base" style={{ color: '#D9534F' }}>{error}</div> :
+                       collections.length === 0 ? <div className="px-3 py-3 text-base" style={{ color: '#FFFFFF' }}>No categories found</div> : (
                         collections
                           .filter(collection => !collection.title.toLowerCase().includes('promociones') && !collection.title.toLowerCase().includes('tienda') && !collection.title.toLowerCase().includes('más vendidos'))
                           .map((collection) => (
                             <Link
                               key={collection.id}
                               to={`/category/${collection.handle}`}
-                              className="block px-4 py-3.5 text-base font-heading font-medium text-black rounded-md hover:bg-accent/10 hover:text-accent transition-all duration-200"
+                              className="block px-4 py-3.5 text-base font-heading font-medium rounded-md transition-all duration-200"
+                              style={{ color: '#FFFFFF' }}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = 'rgba(92, 184, 92, 0.1)';
+                                e.target.style.color = '#5CB85C';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = 'transparent';
+                                e.target.style.color = '#FFFFFF';
+                              }}
                               onClick={() => setMobileMenuOpen(false)}
                               aria-label={collection.title}
                             >

@@ -1,19 +1,25 @@
-import { MessageCircle } from 'lucide-react';
+import { useMinimalCart } from '../hooks/useMinimalCart';
+import WhatsAppColorIcon from './icons/WhatsAppColorIcon';
 
 const WhatsAppButton = () => {
+  const { isCartOpen } = useMinimalCart();
   const phoneNumber = "+526144792338";
   const message = "¡Hola! Me gustaría obtener más información sobre sus sillas.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  // Hide the WhatsApp button when cart is open
+  if (isCartOpen) return null;
 
   return (
     <a
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-colors z-50 flex items-center justify-center"
+      className="fixed bottom-20 right-6 z-50 group"
       aria-label="Contactar por WhatsApp"
+      title="Contactar por WhatsApp"
     >
-      <MessageCircle className="h-6 w-6" />
+      <WhatsAppColorIcon className="h-12 w-12 group-hover:scale-110 transition-transform duration-200 drop-shadow-lg" />
     </a>
   );
 };

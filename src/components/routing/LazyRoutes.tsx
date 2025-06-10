@@ -20,7 +20,6 @@ export const OrderConfirmationPage = lazy(() => import('../../pages/OrderConfirm
 
 // Demo and test pages - development only
 export const CheckoutDemoPage = lazy(() => import('../../dev/CheckoutDemoPage'));
-export const HbadaStylesDemo = lazy(() => import('../HbadaStylesDemo'));
 
 // Account pages - user-specific
 export const AccountPage = lazy(() => import('../../pages/AccountPage'));
@@ -46,12 +45,11 @@ export const ShippingPage = lazy(() => import('../../pages/ShippingPage'));
 export const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'));
 
 /**
- * Route loading fallback component
+ * Route loading fallback component - Minimal and fast
  */
 export const RouteLoadingFallback = () => (
-  <div className="flex items-center justify-center min-h-[400px]">
-    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent"></div>
-    <span className="ml-3 text-gray-600">Cargando página...</span>
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-black"></div>
   </div>
 );
 

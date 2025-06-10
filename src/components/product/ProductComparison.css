@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 80px;
   right: 20px;
-  background-color: var(--color-teal);
+  background-color: #000000;
   color: white;
   border: none;
   border-radius: 50px;
@@ -19,7 +19,7 @@
 }
 
 .comparison-toggle-btn:hover {
-  background-color: var(--color-teal-light);
+  background-color: #333333;
 }
 
 .comparison-overlay {

@@ -11,11 +11,11 @@ interface CartHeaderProps {
  */
 const CartHeader: React.FC<CartHeaderProps> = ({ onClose }) => {
   return (
-    <div className="p-4 border-b border-neutral-200 bg-[#000000] text-white" style={{ borderTopLeftRadius: '0.5rem' }}>
+    <div className="p-4 border-b border-gray-200 bg-white" style={{ borderTopLeftRadius: '0.5rem' }}>
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-heading font-bold text-white">Tu Carrito</h2>
+        <h2 className="text-xl font-semibold text-black">Tu Carrito</h2>
         <button
-          className="p-2 rounded-full hover:bg-black/30 text-white"
+          className="p-2 rounded-full hover:bg-gray-100 text-black"
           onClick={onClose}
           aria-label="Cerrar carrito"
         >

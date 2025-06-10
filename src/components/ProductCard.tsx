@@ -102,7 +102,7 @@ const BaseProductCard: React.FC<ProductCardProps> = ({ chair }) => {
             quality={85}
           />
         <div className="p-3">
-          <h3 className="font-heading font-medium text-sm mb-1 hover:text-black transition-colors product-title">{chair.name}</h3>
+          <h3 className="font-heading font-medium text-sm mb-1 transition-colors product-title" style={{ color: '#1A2A3A' }}>{chair.name}</h3>
           
           <PreviewBadge 
             productId={generateVariantId({ id: chair.id }).replace('variant-', '')}
@@ -111,7 +111,7 @@ const BaseProductCard: React.FC<ProductCardProps> = ({ chair }) => {
           
           <div className="flex flex-col mb-2 mt-1">
             <div className="flex items-baseline gap-2">
-              <p className="text-base font-heading font-bold text-black product-price">
+              <p className="text-base font-heading font-bold product-price" style={{ color: '#D9534F' }}>
                 {priceDisplay.price}
               </p>
               {priceDisplay.isOnSale && priceDisplay.originalPrice && (
@@ -131,11 +131,12 @@ const BaseProductCard: React.FC<ProductCardProps> = ({ chair }) => {
             <button
               onClick={handleAddToCart}
               disabled={combinedLoading}
-              className={`flex-1 py-2 px-3 rounded-sm text-white text-xs font-heading font-semibold tracking-wide ${
-                success 
-                  ? 'bg-black/80 hover:bg-black/70' 
-                  : 'bg-black hover:bg-black/90'
-                }`}
+              className={`flex-1 py-2 px-3 rounded-sm text-white text-xs font-heading font-semibold tracking-wide transition-colors`}
+              style={{ 
+                backgroundColor: success ? '#4A994A' : '#5CB85C'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = success ? '#4A994A' : '#4A994A'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = success ? '#4A994A' : '#5CB85C'}
               aria-label={combinedLoading ? 'Agregando al carrito' : success ? 'Agregado al carrito' : `Agregar ${chair.name} al carrito`}
             >
               {combinedLoading ? 'Añadir...' : success ? 'Añadido' : 'Comprar'}
@@ -143,7 +144,16 @@ const BaseProductCard: React.FC<ProductCardProps> = ({ chair }) => {
             
             <Link 
               to={`/product/${chair.id}`}
-              className="py-2 px-3 border border-black rounded-sm text-xs font-heading font-semibold text-black text-center"
+              className="py-2 px-3 border rounded-sm text-xs font-heading font-semibold text-center transition-colors"
+              style={{ borderColor: '#1A2A3A', color: '#1A2A3A' }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#1A2A3A';
+                e.target.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'transparent';
+                e.target.style.color = '#1A2A3A';
+              }}
               onClick={(e) => e.stopPropagation()} // Prevent the main card's Link from activating
             >
               Ver

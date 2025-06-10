@@ -1,96 +1,100 @@
-/* SillaVida Color System CSS Variables - Monochromatic Theme */
+/* SillaVida Color System CSS Variables - Brand Colors */
 
 :root {
-  /* Primary Colors - Monochromatic Black/White/Gray Palette */
-  --color-primary: #000000; /* Pure Black as primary */
-  --color-primary-light: #333333; /* Dark Gray */
-  --color-primary-dark: #000000; /* Pure Black */
-  --color-primary-extralight: #F5F5F5; /* Light Gray Background */
+  /* SillaVida Brand Colors */
+  --color-primary: #5CB85C; /* Silla Vida Green */
+  --color-primary-light: #6BC46B; /* Lighter Green */
+  --color-primary-dark: #4A994A; /* Darker Green */
+  --color-primary-extralight: #E8F5E8; /* Very Light Green */
 
-  /* Accent Colors - Monochromatic Gray Scale */
-  --color-accent: #666666; /* Medium Gray */
-  --color-accent-light: #999999; /* Light Gray */
-  --color-accent-dark: #333333; /* Dark Gray */
-  --color-accent-extralight: #F5F5F5; /* Very Light Gray */
+  /* Secondary Brand Colors */
+  --color-secondary: #1A2A3A; /* Deep Navy */
+  --color-secondary-light: #2A3F52; /* Lighter Navy */
+  --color-secondary-dark: #0F1A26; /* Darker Navy */
+  --color-secondary-extralight: #E8EAED; /* Very Light Navy */
 
-
+  /* Accent Colors */
+  --color-accent: #D9534F; /* Accent Red */
+  --color-accent-light: #E06A66; /* Lighter Red */
+  --color-accent-dark: #C43C37; /* Darker Red */
+  --color-accent-extralight: #F7E8E7; /* Very Light Red */
 
   /* Neutral Colors */
   --color-black: #000000; /* Pure Black */
-  --color-gray-dark: #333333; /* Monochromatic Dark Gray */
-  --color-gray-medium: #9A9A9A; /* Medium Gray */
-  --color-gray-light: #E6E6E6; /* Light Gray */
-  --color-gray-extralight: #F4F4F5; /* Very Light Gray */
+  --color-gray-dark: #333333; /* Dark Text */
+  --color-gray-medium: #666666; /* Secondary Text */
+  --color-gray-light: #DDDDDD; /* Medium Gray */
+  --color-gray-extralight: #F5F5F5; /* Light Gray */
   --color-white: #FFFFFF; /* Pure White */
-  --color-off-white: #F4F4F5; /* Off-White/Light Gray */
+  --color-off-white: #F5F5F5; /* Off-White/Light Gray */
 
   /* Functional Colors */
-  --color-success: #000000; /* Monochromatic - use black for success */
-  --color-success-light: #333333;
-  --color-success-dark: #000000;
-  --color-success-extralight: #F5F5F5;
+  --color-success: #5CB85C; /* Use brand green for success */
+  --color-success-light: #6BC46B;
+  --color-success-dark: #4A994A;
+  --color-success-extralight: #E8F5E8;
 
-  --color-warning: #666666; /* Monochromatic - use medium gray for warning */
-  --color-warning-light: #999999;
-  --color-warning-dark: #333333;
-  --color-warning-extralight: #F5F5F5;
+  --color-warning: #F0AD4E; /* Warning Orange */
+  --color-warning-light: #F2BD67;
+  --color-warning-dark: #EC971F;
+  --color-warning-extralight: #FCF2E3;
 
-  --color-error: #000000; /* Monochromatic - use black for errors */
-  --color-error-light: #333333;
-  --color-error-dark: #000000;
-  --color-error-extralight: #F5F5F5;
+  --color-error: #D9534F; /* Use accent red for errors */
+  --color-error-light: #E06A66;
+  --color-error-dark: #C43C37;
+  --color-error-extralight: #F7E8E7;
 
-  --color-info: #666666; /* Monochromatic - use medium gray for info */
-  --color-info-light: #999999;
-  --color-info-dark: #333333;
-  --color-info-extralight: #F5F5F5;
+  --color-info: #5BC0DE; /* Info Blue */
+  --color-info-light: #7DD3EA;
+  --color-info-dark: #31B0D5;
+  --color-info-extralight: #E7F6FD;
 
   /* Component-Specific Colors */
 
   /* Buttons */
-  --color-button-primary: var(--color-primary);
-  --color-button-primary-hover: var(--color-primary-light);
+  --color-button-primary: var(--color-primary); /* Green buttons */
+  --color-button-primary-hover: var(--color-primary-dark);
   --color-button-primary-active: var(--color-primary-dark);
   --color-button-primary-text: var(--color-white);
   --color-button-primary-disabled: var(--color-gray-light);
   --color-button-primary-disabled-text: var(--color-gray-medium);
 
-  --color-button-secondary: var(--color-white);
-  --color-button-secondary-hover: var(--color-gray-extralight);
-  --color-button-secondary-active: var(--color-gray-light);
-  --color-button-secondary-text: var(--color-primary);
+  --color-button-secondary: var(--color-secondary); /* Navy buttons */
+  --color-button-secondary-hover: var(--color-secondary-light);
+  --color-button-secondary-active: var(--color-secondary-dark);
+  --color-button-secondary-text: var(--color-white);
   --color-button-secondary-disabled: var(--color-gray-extralight);
   --color-button-secondary-disabled-text: var(--color-gray-medium);
 
-  --color-button-tertiary-border: var(--color-accent);
-  --color-button-tertiary-text: var(--color-accent);
-  --color-button-tertiary-hover: var(--color-accent-extralight);
-  --color-button-tertiary-active-bg: var(--color-accent);
+  --color-button-tertiary-border: var(--color-primary);
+  --color-button-tertiary-text: var(--color-primary);
+  --color-button-tertiary-hover: var(--color-primary-extralight);
+  --color-button-tertiary-active-bg: var(--color-primary);
   --color-button-tertiary-active-text: var(--color-white);
   --color-button-tertiary-disabled: var(--color-gray-light);
 
   /* Navigation */
-  --color-nav-bg: var(--color-white);
-  --color-nav-active: var(--color-accent);
-  --color-nav-hover: var(--color-gray-extralight);
-  --color-nav-text: var(--color-black);
-  --color-nav-active-text: var(--color-accent);
+  --color-nav-bg: var(--color-secondary); /* Navy navigation */
+  --color-nav-active: var(--color-primary);
+  --color-nav-hover: var(--color-secondary-light);
+  --color-nav-text: var(--color-white);
+  --color-nav-active-text: var(--color-primary);
 
   /* Cards */
   --color-card-bg: var(--color-white);
   --color-card-border: var(--color-gray-light);
-  --color-card-heading: var(--color-primary);
-  --color-card-text: var(--color-black);
+  --color-card-heading: var(--color-secondary); /* Navy headings */
+  --color-card-text: var(--color-gray-dark);
 
   /* Forms */
   --color-form-border: var(--color-gray-light);
-  --color-form-focus: var(--color-accent);
+  --color-form-focus: var(--color-primary); /* Green focus */
   --color-form-bg: var(--color-white);
   --color-form-placeholder: var(--color-gray-medium);
   --color-form-error: var(--color-error);
   --color-form-success: var(--color-success);
-  --color-form-text: var(--color-black);
-  --color-form-label: var(--color-gray-dark);
+  --color-form-text: var(--color-gray-dark);
+  --color-form-label: var(--color-secondary);
   --color-form-required: var(--color-accent);
   --color-form-disabled-bg: var(--color-gray-extralight);
   --color-form-disabled-text: var(--color-gray-medium);

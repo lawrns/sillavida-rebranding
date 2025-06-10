@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { errorHandler, ErrorSeverity } from '../../utils/errorHandler';
 import { useInView } from 'react-intersection-observer';
+import { getOptimizedImageUrl } from '../../utils/resourcePreloader';
 import './LazyImage.css';
 
 interface LazyImageProps {
@@ -63,10 +64,24 @@ const LazyImage: React.FC<LazyImageProps> = ({
       if (img.complete) {
         handleLoad();
       } else {
-        img.src = src;
+        // Use optimized image URL with WebP support
+        const optimizedSrc = getOptimizedImageUrl(src, width as number);
+        
+        // Add fade-in transition
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.3s ease';
+        
+        img.src = optimizedSrc;
+        
+        // Ensure onLoad is called for transition
+        const originalOnLoad = img.onload;
+        img.onload = (e) => {
+          img.style.opacity = '1';
+          if (originalOnLoad) originalOnLoad.call(img, e);
+        };
       }
     }
-  }, [inView, src]);
+  }, [inView, src, width]);
 
   // Generate inline style for aspect ratio
   const inlineStyle: React.CSSProperties = {};
@@ -104,12 +119,13 @@ const LazyImage: React.FC<LazyImageProps> = ({
       
       <img
         ref={imageRef}
-        src={inView ? src : ''}
+        src={inView ? getOptimizedImageUrl(src, width as number) : ''}
         alt={alt}
         className={`lazy-image ${isLoaded ? 'loaded' : 'loading'}`}
         onLoad={handleLoad}
         onError={handleError}
         loading="lazy"
+        decoding="async"
       />
     </div>
   );

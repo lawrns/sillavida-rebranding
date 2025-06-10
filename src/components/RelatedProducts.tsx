@@ -68,7 +68,12 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ products }) => {
               <h3 className="font-heading font-semibold text-lg mb-1 line-clamp-2 text-black h-14">{product.title}</h3>
               <div className="flex items-center space-x-1 mb-2">
                 {product.vidaScore && (
-                  <span className="bg-sage text-white px-2 py-1 rounded-full text-xs font-bold">Vida Score: {product.vidaScore}</span>
+                  <span 
+                    className="text-white px-2 py-1 rounded-full text-xs font-bold"
+                    style={{ backgroundColor: '#5CB85C' }}
+                  >
+                    Vida Score: {product.vidaScore}
+                  </span>
                 )}
               </div>
               <div className="mt-auto pt-2">

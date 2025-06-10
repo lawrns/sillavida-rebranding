@@ -66,14 +66,27 @@ const PersonalizedBanner: React.FC = () => {
   }
 
   return (
-    <div className={`bg-gradient-to-r ${isInFallbackMode ? 'from-amber-50 to-amber-100' : 'from-red-50 to-red-100'} p-4 rounded-lg shadow-sm mb-8`}>
+    <div 
+      className="p-4 rounded-lg shadow-sm mb-8"
+      style={{ 
+        background: isInFallbackMode 
+          ? 'linear-gradient(to right, #F5F5F5, #E5E5E5)' 
+          : 'linear-gradient(to right, #F5F5F5, #E8EAED)' 
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className={`text-xl font-medium ${isInFallbackMode ? 'text-amber-800' : 'text-red-800'}`}>
+            <h2 
+              className="text-xl font-medium font-heading"
+              style={{ color: '#1A2A3A' }}
+            >
               ¡Bienvenido de nuevo, {customerName}!
             </h2>
-            <p className={`mt-1 text-sm ${isInFallbackMode ? 'text-amber-600' : 'text-red-600'}`}>
+            <p 
+              className="mt-1 text-sm"
+              style={{ color: '#333333' }}
+            >
               {isInFallbackMode 
                 ? 'Estamos operando en modo limitado. Algunas funciones pueden no estar disponibles.' 
                 : 'Descubre nuestras nuevas ofertas seleccionadas especialmente para ti.'}
@@ -81,11 +94,17 @@ const PersonalizedBanner: React.FC = () => {
           </div>
           <a
             href="/account"
-            className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white ${
-              isInFallbackMode 
-                ? 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-500' 
-                : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
-            } focus:outline-none focus:ring-2 focus:ring-offset-2`}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
+            style={{ 
+              backgroundColor: isInFallbackMode ? '#1A2A3A' : '#5CB85C',
+              focusRingColor: isInFallbackMode ? '#1A2A3A' : '#5CB85C'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = isInFallbackMode ? '#0F1A26' : '#4A994A';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = isInFallbackMode ? '#1A2A3A' : '#5CB85C';
+            }}
           >
             Mi cuenta
           </a>

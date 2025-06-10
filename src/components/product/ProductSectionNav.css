@@ -48,11 +48,11 @@
 }
 
 .section-nav-button:hover {
-  color: var(--color-teal);
+  color: #000000;
 }
 
 .section-nav-list li.active .section-nav-button {
-  color: var(--color-teal);
+  color: #000000;
   font-weight: 600;
 }
 
@@ -62,7 +62,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background-color: var(--color-teal);
+  background-color: #000000;
   border-radius: 3px 3px 0 0;
 }
 

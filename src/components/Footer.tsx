@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCollections } from '../lib/shopify';
+import { getPaymentMethodsDisplayOrder } from '../data/payment-methods';
 import {
   MapPin,
   Mail,
@@ -21,6 +22,7 @@ interface FooterProps {
 
 const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
   const [tiendaHandle, setTiendaHandle] = useState<string | null>(null);
+  const paymentMethods = getPaymentMethodsDisplayOrder();
 
   // Fetch collections to get tienda handle (same logic as Navbar)
   useEffect(() => {
@@ -46,7 +48,7 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
   return (
     <>
       {/* Main Footer */}
-      <footer className={`relative pt-20 pb-10 overflow-hidden bg-black ${className}`}>
+      <footer className={`relative pt-20 pb-10 overflow-hidden ${className}`} style={{ backgroundColor: '#1A2A3A' }}>
         {/* Subtle background elements - monochromatic */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
           <div className="absolute top-0 left-[10%] w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
@@ -60,7 +62,7 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <Link to="/" className="flex items-center group">
-                <div className="h-12 w-12 rounded-lg bg-white flex items-center justify-center text-black font-bold text-xl group-hover:bg-gray-100 transition-colors">
+                <div className="h-12 w-12 rounded-lg flex items-center justify-center font-bold text-xl transition-colors" style={{ backgroundColor: '#5CB85C', color: '#FFFFFF' }}>
                   SV
                 </div>
                 <span className="ml-3 text-2xl font-heading font-bold text-white">SillaVida</span>
@@ -75,19 +77,19 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
             {/* Trust indicators */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="flex items-center text-gray-300 text-sm">
-                <Shield className="h-4 w-4 mr-2 text-gray-400" />
+                <Shield className="h-4 w-4 mr-2" style={{ color: '#5CB85C' }} />
                 <span>5 años garantía</span>
               </div>
               <div className="flex items-center text-gray-300 text-sm">
-                <Truck className="h-4 w-4 mr-2 text-gray-400" />
+                <Truck className="h-4 w-4 mr-2" style={{ color: '#5CB85C' }} />
                 <span>Envío gratis</span>
               </div>
               <div className="flex items-center text-gray-300 text-sm">
-                <CreditCard className="h-4 w-4 mr-2 text-gray-400" />
+                <CreditCard className="h-4 w-4 mr-2" style={{ color: '#5CB85C' }} />
                 <span>12 MSI disponible</span>
               </div>
               <div className="flex items-center text-gray-300 text-sm">
-                <Clock className="h-4 w-4 mr-2 text-gray-400" />
+                <Clock className="h-4 w-4 mr-2" style={{ color: '#5CB85C' }} />
                 <span>30 días prueba</span>
               </div>
             </div>
@@ -257,6 +259,30 @@ const SillaVidaFooter: React.FC<FooterProps> = ({ className = "" }) => {
                 <div>Lun - Vie: 9:00 AM - 7:00 PM</div>
                 <div>Sáb: 10:00 AM - 6:00 PM</div>
                 <div>Dom: 11:00 AM - 4:00 PM</div>
+              </div>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="mt-6">
+              <h4 className="text-white font-medium mb-2 text-sm">Métodos de Pago</h4>
+              <div className="flex flex-wrap items-center gap-1">
+                {paymentMethods.map((method) => (
+                  <div
+                    key={method.id}
+                    className="flex items-center justify-center bg-white rounded p-1 hover:scale-105 transition-transform duration-200"
+                    title={method.alt}
+                  >
+                    <img
+                      src={method.icon}
+                      alt={method.alt}
+                      className="h-4 w-auto max-w-[28px] object-contain"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>

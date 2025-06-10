@@ -77,7 +77,7 @@ const ShopifyPromoBanner: React.FC<ShopifyPromoBannerProps> = ({ product, dark =
             <span className="text-sm line-through text-[#999999] font-heading">
               {formattedOriginalPrice}
             </span>
-            <span className="text-2xl font-heading font-bold text-[#000000] product-price">
+            <span className="text-2xl font-heading font-bold product-price" style={{ color: '#D9534F' }}>
               {formattedPrice}
             </span>
           </div>

@@ -24,7 +24,14 @@
       "Bash(node:*)",
       "WebFetch(domain:sillavida.mx)",
       "WebFetch(domain:www.sillavida.mx)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm test)",
+      "Bash(npm install)",
+      "WebFetch(domain:sihoooffice.com)",
+      "Bash(npm info lucide-react)",
+      "WebFetch(domain:lucide.dev)",
+      "Bash(sed:*)",
+      "Bash(npm run audit:*)"
     ],
     "deny": []
   },

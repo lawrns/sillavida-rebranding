@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Check, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { ReviewStars } from '../judgeMe';
 import { handleProductError } from '../../utils/errorHandler';
 import { transformShopifyProduct, getDefaultVariant, getAvailableVariants } from '../../utils/business/productTransformer';
@@ -39,13 +39,40 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product }) =>
     return !altText.startsWith(featurePrefix) && !altText.startsWith(specPrefix);
   });
 
-  // Define product benefits (these would ideally come from product metafields)
-  const productBenefits = [
-    'Ergonomía certificada para largas jornadas',
-    'Soporte lumbar ajustable personalizado',
-    'Materiales premium transpirables',
-    'Garantía extendida de 3 años'
-  ];
+  // Helper function to extract features from Shopify metafields (same as BestSellersSection)
+  const extractFeaturesFromMetafields = (product: any): string[] => {
+    if (!product.metafields || !Array.isArray(product.metafields)) return [];
+    
+    const features: string[] = [];
+    
+    // Filter out null/undefined metafields and ensure we have valid objects
+    const validMetafields = product.metafields.filter((m: any) => m && typeof m === 'object' && m.key);
+    
+    // Try to get features from custom.caracteristicas_principales metafield
+    const customFeatures = validMetafields.find((m: any) => m.key === 'caracteristicas_principales');
+    
+    if (customFeatures && customFeatures.value) {
+      try {
+        // Features might be stored as JSON array or comma-separated string
+        const parsed = JSON.parse(customFeatures.value);
+        if (Array.isArray(parsed)) {
+          features.push(...parsed.filter(f => f && typeof f === 'string'));
+        } else if (typeof parsed === 'string') {
+          features.push(...parsed.split(',').map((f: string) => f.trim()).filter(f => f));
+        }
+      } catch {
+        // If JSON parsing fails, treat as comma-separated string
+        if (typeof customFeatures.value === 'string') {
+          features.push(...customFeatures.value.split(',').map((f: string) => f.trim()).filter(f => f));
+        }
+      }
+    }
+    
+    return features.filter(f => f && f.length > 0);
+  };
+
+  // Extract features from product metafields
+  const productBenefits = extractFeaturesFromMetafields(product);
 
   // Set initial image index when product loads
   useEffect(() => {
@@ -200,23 +227,22 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product }) =>
               </div>
               <span className="text-sm font-medium text-gray-900 ml-1">4.8</span>
             </div>
-            <span className="text-sm text-gray-600">(1,600+ Total Reviews)</span>
           </div>
 
           {/* Headline with Benefits */}
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-black mb-2 leading-tight">
+            <h1 className="text-2xl lg:text-3xl font-bold mb-2 leading-tight" style={{ color: 'var(--color-secondary)' }}>
               {product.title.toUpperCase()}
             </h1>
-            <p className="text-lg text-gray-700 font-semibold leading-relaxed">
-              Confort superior, diseño ergonómico y soporte profesional para tu bienestar.
+            <p className="text-lg font-semibold leading-relaxed" style={{ color: 'var(--color-gray-dark)' }}>
+              {product.description || 'Confort superior, diseño ergonómico y soporte profesional para tu bienestar.'}
             </p>
           </div>
 
           {/* Pricing */}
           <div className="space-y-2">
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-black">{priceDisplay.price}</span>
+              <span className="text-3xl font-bold" style={{ color: 'var(--color-accent)' }}>{priceDisplay.price}</span>
               {priceDisplay.originalPrice && (
                 <span className="text-xl line-through text-gray-400">{priceDisplay.originalPrice}</span>
               )}
@@ -227,17 +253,32 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product }) =>
             </div>
           </div>
 
-          {/* Benefits List with Checkmarks */}
-          <div className="space-y-3">
-            {productBenefits.map((benefit, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center flex-shrink-0">
-                  <Check className="w-3 h-3 text-white" />
-                </div>
-                <span className="text-gray-800">{benefit}</span>
-              </div>
-            ))}
-          </div>
+          {/* Benefits List with Green Checkmarks - Only show if metafields exist */}
+          {productBenefits.length > 0 && (
+            <div className="space-y-3">
+              {productBenefits.slice(0, 10).map((benefit, index) => {
+                // Split at the first colon to bold everything before it
+                const colonIndex = benefit.indexOf(':');
+                const hasBoldSection = colonIndex !== -1;
+                
+                return (
+                  <div key={index} className="flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--color-primary)' }} />
+                    <span className="text-gray-800">
+                      {hasBoldSection ? (
+                        <>
+                          <span className="font-bold">{benefit.substring(0, colonIndex + 1)}</span>
+                          <span>{benefit.substring(colonIndex + 1)}</span>
+                        </>
+                      ) : (
+                        benefit
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Color & Size Selection */}
           {standardProduct.variants.length > 1 && (
@@ -294,15 +335,26 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product }) =>
               className={`w-full py-4 px-6 text-white font-semibold rounded-lg transition-all ${
                 !isAvailable || isLoading
                   ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-black hover:bg-gray-800'
+                  : ''
               }`}
+              style={{ 
+                backgroundColor: !isAvailable || isLoading 
+                  ? 'var(--color-gray-light)' 
+                  : 'var(--color-primary)'
+              }}
+              onMouseEnter={(e) => {
+                if (!(!isAvailable || isLoading)) {
+                  e.target.style.backgroundColor = 'var(--color-primary-dark)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!(!isAvailable || isLoading)) {
+                  e.target.style.backgroundColor = 'var(--color-primary)';
+                }
+              }}
             >
               {isLoading ? 'AGREGANDO...' : cartSuccess ? '¡AGREGADO!' : 'AGREGAR AL CARRITO'}
             </button>
-            
-            <p className="text-center text-sm text-gray-600">
-              ¡Pruébalo sin riesgo durante 2 años o recupera tu dinero inmediatamente!
-            </p>
           </div>
 
           {/* Expandable Sections */}
@@ -324,7 +376,10 @@ const ProductHeroShowcase: React.FC<ProductHeroShowcaseProps> = ({ product }) =>
               <div key={index} className="border-b border-gray-100">
                 <button
                   onClick={() => toggleSection(section.title)}
-                  className="w-full flex items-center justify-between py-4 text-left text-sm font-medium text-gray-900 hover:text-black transition-colors"
+                  className="w-full flex items-center justify-between py-4 text-left text-sm font-medium transition-colors"
+                  style={{ color: 'var(--color-secondary)' }}
+                  onMouseEnter={(e) => e.target.style.color = 'var(--color-gray-dark)'}
+                  onMouseLeave={(e) => e.target.style.color = 'var(--color-secondary)'}
                 >
                   {section.title}
                   <ChevronDown

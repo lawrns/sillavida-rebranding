@@ -119,6 +119,12 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
            featuredProduct.featuredImage?.url || 
            featuredProduct.images?.[0]?.url || 
            '/images/placeholder.png',
+    hoverImage: featuredProduct.images?.edges?.[1]?.node?.url || 
+                featuredProduct.images?.[1]?.url || 
+                (featuredProduct.images?.edges?.[0]?.node?.url || 
+                 featuredProduct.featuredImage?.url || 
+                 featuredProduct.images?.[0]?.url || 
+                 '/images/placeholder.png'),
     handle: featuredProduct.handle,
     variantId: featuredProduct.variants?.edges?.[0]?.node?.id,
     features: extractFeaturesFromMetafields(featuredProduct)
@@ -129,6 +135,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
     price: featuredProduct.price,
     originalPrice: featuredProduct.compareAtPrice || featuredProduct.price * 1.2,
     image: featuredProduct.image,
+    hoverImage: featuredProduct.image, // Use same image as fallback for static data
     handle: featuredProduct.name.toLowerCase().replace(/\s+/g, '-'),
     variantId: null,
     features: featuredProduct.features || []
@@ -175,9 +182,30 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
         
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-black mb-3">Producto Destacado</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">El favorito de nuestros clientes: diseño, calidad y ergonomía en una silla</p>
+          <h2 className="text-3xl lg:text-4xl font-bold text-black mb-8">Producto Destacado</h2>
         </div>
+
+        {/* Navigation Controls - Only show if multiple products */}
+        {carouselProducts.length > 1 && (
+          <div className="flex justify-end mb-8">
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={goToPrevious}
+                className="p-3 rounded-full transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black text-white hover:bg-gray-800 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                aria-label="Producto anterior"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={goToNext}
+                className="p-3 rounded-full transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black text-white hover:bg-gray-800 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                aria-label="Siguiente producto"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
@@ -226,7 +254,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
             {/* Pricing */}
             <div className="space-y-3">
               <div className="flex items-baseline space-x-3">
-                <span className="text-3xl font-bold text-black">
+                <span className="text-3xl font-bold" style={{ color: '#D9534F' }}>
                   ${productData.price > 0 ? productData.price.toLocaleString('es-MX') : 'N/A'}
                 </span>
                 {productData.originalPrice > productData.price && productData.price > 0 && (
@@ -234,7 +262,7 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
                     <span className="text-lg text-gray-500 line-through">
                       ${productData.originalPrice.toLocaleString('es-MX')}
                     </span>
-                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-red-100 text-red-800 text-sm font-medium">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium text-white" style={{ backgroundColor: '#D9534F' }}>
                       -{discountPercentage}%
                     </span>
                   </>
@@ -274,20 +302,38 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="relative"
               >
-            <div className="aspect-square relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden shadow-xl">
+            <div 
+              className="aspect-square relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden shadow-xl group cursor-pointer"
+            >
+              {/* Primary Image */}
               <img
                 src={productData.image}
                 alt={productData.title}
-                className="w-full h-full object-cover object-center"
+                className={`w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105 ${
+                  productData.hoverImage !== productData.image ? 'group-hover:opacity-0' : ''
+                }`}
                 loading="lazy"
                 onError={(e) => {
                   e.currentTarget.src = '/images/placeholder.png';
                 }}
               />
               
+              {/* Hover Image (if different from primary) */}
+              {productData.hoverImage !== productData.image && (
+                <img
+                  src={productData.hoverImage}
+                  alt={`${productData.title} - Vista 2`}
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/placeholder.png';
+                  }}
+                />
+              )}
+              
               {/* Floating Discount Badge */}
               {productData.originalPrice > productData.price && (
-                <div className="absolute top-6 right-6 bg-red-500 text-white rounded-full px-4 py-2 font-bold text-lg shadow-lg">
+                <div className="absolute top-6 right-6 text-white rounded-full px-4 py-2 font-bold text-lg shadow-lg" style={{ backgroundColor: '#D9534F' }}>
                   -{discountPercentage}%
                 </div>
               )}
@@ -307,17 +353,17 @@ const BestSellersSection: React.FC<BestSellersSectionProps> = ({
           
         </div>
         
-        {/* Carousel Indicators */}
+        {/* Carousel Indicators - More subtle with better spacing */}
         {carouselProducts.length > 1 && (
-          <div className="flex justify-center mt-8 space-x-2">
+          <div className="flex justify-center mt-12 space-x-3">
             {carouselProducts.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${
                   index === currentIndex 
                     ? 'bg-black scale-125' 
-                    : 'bg-gray-300 hover:bg-gray-400'
+                    : 'bg-gray-300 hover:bg-gray-500'
                 }`}
                 aria-label={`Ir al producto ${index + 1}`}
               />

@@ -80,7 +80,7 @@ const GuaranteeSection: React.FC = () => {
               className="text-center group"
             >
               {/* Icon Container */}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-black text-white rounded-full mb-6 group-hover:bg-gray-800 transition-colors duration-200">
+              <div className="inline-flex items-center justify-center w-16 h-16 text-white rounded-full mb-6 transition-colors duration-200" style={{ backgroundColor: '#5CB85C' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#4A994A'} onMouseLeave={(e) => e.target.style.backgroundColor = '#5CB85C'}>
                 {item.icon}
               </div>
               
@@ -93,7 +93,7 @@ const GuaranteeSection: React.FC = () => {
                   {item.description}
                 </p>
                 {item.highlight && (
-                  <div className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                  <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-white" style={{ backgroundColor: '#D9534F' }}>
                     {item.highlight}
                   </div>
                 )}

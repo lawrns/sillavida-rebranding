@@ -12,7 +12,7 @@
   width: 100%;
   height: 100%;
   min-height: 300px;
-  background-color: var(--color-beige-extralight);
+  background-color: #F5F5F5;
   cursor: grab;
   user-select: none;
   touch-action: none;
@@ -36,7 +36,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-beige-light);
+  background-color: #F5F5F5;
   z-index: 10;
 }
 
@@ -44,7 +44,7 @@
   width: 40px;
   height: 40px;
   border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: var(--color-teal);
+  border-left-color: #000000;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
@@ -62,7 +62,7 @@
 .loading-progress {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-teal);
+  color: #000000;
 }
 
 .product-view-360-controls {
@@ -74,7 +74,7 @@
 }
 
 .play-button {
-  background-color: var(--color-teal);
+  background-color: #000000;
   color: white;
   width: 40px;
   height: 40px;
@@ -88,7 +88,7 @@
 }
 
 .play-button:hover {
-  background-color: var(--color-teal-light);
+  background-color: #333333;
 }
 
 .play-button:disabled {
@@ -97,11 +97,11 @@
 }
 
 .play-button.playing {
-  background-color: var(--color-terracotta);
+  background-color: #666666;
 }
 
 .play-button.playing:hover {
-  background-color: var(--color-terracotta-light);
+  background-color: #999999;
 }
 
 .drag-indicator {
@@ -110,7 +110,7 @@
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(255, 255, 255, 0.8);
-  color: var(--color-teal);
+  color: #000000;
   padding: 8px 12px;
   border-radius: 20px;
   font-size: 14px;
@@ -130,7 +130,7 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  background-color: var(--color-teal);
+  background-color: #000000;
   color: white;
   padding: 4px 8px;
   border-radius: 4px;

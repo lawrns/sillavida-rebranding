@@ -101,8 +101,9 @@ const CheckoutRedirect: React.FC = () => {
       return;
     }
 
-    // Show checkout options
-    setStatus('checkout-options');
+    // Automatically proceed with guest checkout (skip account selection)
+    setGuestCheckout(true);
+    proceedToCheckout();
   }, [cartCount, navigate]);
 
   return (
@@ -221,7 +222,7 @@ const CheckoutRedirect: React.FC = () => {
                   }}
                 >
                   <motion.div
-                    className="rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600"
+                    className="rounded-full h-16 w-16 border-t-4 border-b-4 border-black"
                     animate={{ rotate: 360 }}
                     transition={{
                       duration: 1.5,
@@ -298,7 +299,7 @@ const CheckoutRedirect: React.FC = () => {
                 </motion.div>
 
                 <motion.div
-                  className="flex items-center justify-center text-red-600"
+                  className="flex items-center justify-center text-black"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}

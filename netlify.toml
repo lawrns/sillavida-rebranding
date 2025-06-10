@@ -9,7 +9,7 @@
   # Node.js version
   environment = { NODE_VERSION = "18" }
 
-# Redirects for SPA routing
+# SPA routing - only redirects when file doesn't exist
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -23,12 +23,33 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' *.myshopify.com; img-src 'self' data: *.myshopify.com *.shopify.com *.unsplash.com; script-src 'self' 'unsafe-inline' *.myshopify.com; style-src 'self' 'unsafe-inline'; connect-src 'self' *.myshopify.com;"
+    Content-Security-Policy = "default-src 'self' *.myshopify.com; img-src 'self' data: *.myshopify.com *.shopify.com *.unsplash.com; script-src 'self' 'unsafe-inline' *.myshopify.com *.shopify.com cdnwidget.judge.me; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; connect-src 'self' *.myshopify.com cdnwidget.judge.me;"
 
-# Cache control for static assets
+# Cache control and MIME types for static assets
 [[headers]]
   for = "/assets/*"
   [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Explicit MIME types for CSS files
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Content-Type = "text/css; charset=utf-8"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Explicit MIME types for JS files
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Explicit MIME types for module JS files
+[[headers]]
+  for = "/*.mjs"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
     Cache-Control = "public, max-age=31536000, immutable"
 
 # Cache control for HTML and JSON files

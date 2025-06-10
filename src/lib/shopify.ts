@@ -470,6 +470,12 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
             }
           }
         }
+        metafields(identifiers: [
+          {namespace: "custom", key: "caracteristicas_principales"}
+        ]) {
+          key
+          value
+        }
       }
     }
   `;

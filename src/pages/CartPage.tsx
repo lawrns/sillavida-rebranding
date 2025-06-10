@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
+import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, Truck, CreditCard, Shield, HeadphonesIcon } from 'lucide-react';
 import TrustIndicatorGroup from '../components/TrustIndicatorGroup';
 import { useCart } from '../context/CartContext';
 import { getFeaturedProducts } from '../lib/shopify';
@@ -9,6 +9,7 @@ import type { ShopifyProduct } from '../types/shopify';
 import ShopifyProductCard from '../components/ShopifyProductCard';
 import { Helmet } from 'react-helmet';
 import { logger } from '../utils/logger';
+import { BUSINESS } from '../constants/layout';
 
 const CartPage: React.FC = () => {
   const {
@@ -254,7 +255,8 @@ const CartPage: React.FC = () => {
                               <button
                                 onClick={() => updateItem(item.id, Math.max(1, item.quantity - 1))}
                                 disabled={isLoading}
-                                className="p-2 text-neutral-600 hover:text-accent transition-colors"
+                                className="p-3 text-neutral-600 hover:text-accent transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                                aria-label="Decrease quantity"
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
@@ -264,7 +266,8 @@ const CartPage: React.FC = () => {
                               <button
                                 onClick={() => updateItem(item.id, item.quantity + 1)}
                                 disabled={isLoading}
-                                className="p-2 text-neutral-600 hover:text-accent transition-colors"
+                                className="p-3 text-neutral-600 hover:text-accent transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                                aria-label="Increase quantity"
                               >
                                 <Plus className="h-4 w-4" />
                               </button>
@@ -317,7 +320,7 @@ const CartPage: React.FC = () => {
                   {/* Free shipping threshold section */}
                   {cartItems.length > 0 && (
                     <div className="py-2">
-                      {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
+                      {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= BUSINESS.FREE_SHIPPING_THRESHOLD ? (
                         <div className="bg-neutral-50 text-accent p-3 rounded-md flex items-center border border-neutral-100">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 mr-2 text-accent">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -334,7 +337,7 @@ const CartPage: React.FC = () => {
                             <span className="font-medium text-black">
                               {(() => {
                                 try {
-                                  return Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100).toFixed(0) + '%';
+                                  return Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / BUSINESS.FREE_SHIPPING_THRESHOLD) * 100).toFixed(0) + '%';
                                 } catch (e) {
                                   logger.warn('Error calculating shipping progress percentage', { component: 'CartPage', action: 'shippingProgress', data: e });
                                   return '0%';
@@ -344,11 +347,11 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="bg-neutral-100 rounded-full h-2.5 mb-2">
                             <div
-                              className="bg-accent h-2.5 rounded-full"
+                              className="bg-black h-2.5 rounded-full"
                               style={{
                                 width: (() => {
                                   try {
-                                    return `${Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / 10000) * 100)}%`;
+                                    return `${Math.min(100, (parseFloat(cartTotal.replace(/[^\d.-]/g, '')) / BUSINESS.FREE_SHIPPING_THRESHOLD) * 100)}%`;
                                   } catch (e) {
                                     logger.warn('Error calculating shipping progress width', { component: 'CartPage', action: 'shippingProgress', data: e });
                                     return '0%';
@@ -362,9 +365,9 @@ const CartPage: React.FC = () => {
                             <span className="font-medium text-accent">
                               {(() => {
                                 try {
-                                  return (10000 - parseFloat(cartTotal.replace(/[^\d.-]/g, ''))).toLocaleString('es-MX', {
+                                  return (BUSINESS.FREE_SHIPPING_THRESHOLD - parseFloat(cartTotal.replace(/[^\d.-]/g, ''))).toLocaleString(BUSINESS.CURRENCY.LOCALE, {
                                     style: 'currency',
-                                    currency: 'MXN'
+                                    currency: BUSINESS.CURRENCY.CODE
                                   });
                                 } catch (e) {
                                   logger.warn('Error calculating remaining amount', { component: 'CartPage', action: 'shippingProgress', data: e });
@@ -381,7 +384,7 @@ const CartPage: React.FC = () => {
 
                   <div className="flex justify-between">
                     <p className="text-neutral-600">Envío</p>
-                    {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= 10000 ? (
+                    {parseFloat(cartTotal.replace(/[^\d.-]/g, '')) >= BUSINESS.FREE_SHIPPING_THRESHOLD ? (
                       <p className="font-medium text-accent">Gratis</p>
                     ) : (
                       <p className="font-medium text-black">Calculado al finalizar</p>
@@ -406,7 +409,7 @@ const CartPage: React.FC = () => {
                 <motion.button
                   onClick={handleCheckout}
                   disabled={isLoading}
-                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-accent hover:bg-accent/90 ${
+                  className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-black hover:bg-gray-800 ${
                     isLoading ? 'opacity-75 cursor-not-allowed' : ''
                   }`}
                   whileHover={{ scale: 1.02 }}
@@ -427,21 +430,127 @@ const CartPage: React.FC = () => {
                   )}
                 </motion.button>
 
-                {/* Trust Indicators */}
+                {/* Trust Indicators - Matching Homepage Style */}
                 <div className="mt-8">
-                  <TrustIndicatorGroup
-                    title="Invierte en tu bienestar con confianza"
-                    types={['warranty', 'shipping', 'payment']}
-                    layout="vertical"
-                    size="medium"
-                  />
+                  <div className="grid grid-cols-1 gap-4 mb-6">
+                    <div className="flex items-baseline space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <Truck className="h-5 w-5 text-black translate-y-0.5" />
+                      <h4 className="font-semibold text-black text-sm leading-5">Envío Asegurado</h4>
+                      <p className="text-gray-600 text-xs leading-5">A todo México</p>
+                    </div>
+                    <div className="flex items-baseline space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <CreditCard className="h-5 w-5 text-black translate-y-0.5" />
+                      <h4 className="font-semibold text-black text-sm leading-5">Pagos Seguros</h4>
+                      <p className="text-gray-600 text-xs leading-5">12 MSI disponibles</p>
+                    </div>
+                    <div className="flex items-baseline space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <Shield className="h-5 w-5 text-black translate-y-0.5" />
+                      <h4 className="font-semibold text-black text-sm leading-5">Garantía</h4>
+                      <p className="text-gray-600 text-xs leading-5">5 años extendida</p>
+                    </div>
+                    <div className="flex items-baseline space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <HeadphonesIcon className="h-5 w-5 text-black translate-y-0.5" />
+                      <h4 className="font-semibold text-black text-sm leading-5">Soporte</h4>
+                      <p className="text-gray-600 text-xs leading-5">Atención 24/7</p>
+                    </div>
+                  </div>
 
-                  {/* Payment methods logos */}
-                  <div className="mt-6 flex justify-center gap-3">
-                    <img src="/images/visa.png" alt="Visa" className="h-6" />
-                    <img src="/images/mastercard.png" alt="Mastercard" className="h-6" />
-                    <img src="/images/amex.png" alt="American Express" className="h-6" />
-                    <img src="/images/paypal.png" alt="PayPal" className="h-6" />
+                  {/* Payment Methods Icons */}
+                  <div className="text-center">
+                    <p className="text-xs text-gray-600 mb-3">Métodos de pago aceptados:</p>
+                    
+                    {/* First row - Main payment processors */}
+                    <div className="flex items-center justify-center space-x-3 mb-3">
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded-lg px-3 py-2 min-w-[80px] h-10">
+                        <img
+                          src="/images/Metodos de pago/PayPal-1024x271px.svg.png"
+                          alt="PayPal"
+                          className="h-8 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded-lg px-3 py-2 min-w-[80px] h-10">
+                        <img
+                          src="/images/Metodos de pago/Logotipo_Conekta_2023_logotipo_conekta_arquitectura+copia+3.png"
+                          alt="Conekta"
+                          className="h-8 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Second row - Credit cards and additional methods */}
+                    <div className="flex items-center justify-center flex-wrap gap-2">
+                      {/* Visa */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/visa.sxIq5Dot.svg"
+                          alt="Visa"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* MasterCard */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/master.CzeoQWmc.svg"
+                          alt="MasterCard"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* American Express */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/american_express.C3z4WB9r.svg"
+                          alt="American Express"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* BBVA */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/bbvacie.ClnMUhdH.svg"
+                          alt="BBVA"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* SPEI */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/spei.D-9zZLEi.svg"
+                          alt="SPEI"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* 7-Eleven */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/seveneleven.JDz9NISN.svg"
+                          alt="7-Eleven"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+
+                      {/* Circle K */}
+                      <div className="flex items-center justify-center bg-white border border-gray-200 rounded px-2.5 py-1.5 min-w-[55px] h-7">
+                        <img
+                          src="/icons/Metodos de pago/circlek.DCOZEm2y.svg"
+                          alt="Circle K"
+                          className="h-5 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

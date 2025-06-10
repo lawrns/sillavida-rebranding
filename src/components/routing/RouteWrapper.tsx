@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from '../../utils/DynamicImport';
+import PerformanceTracker from '../common/PerformanceTracker';
 import {
   HomePage,
   ProductPage,
@@ -10,7 +11,6 @@ import {
   CheckoutPage,
   OrderConfirmationPage,
   CheckoutDemoPage,
-  HbadaStylesDemo,
   AccountPage,
   OrdersPage,
   LoginPage,
@@ -44,9 +44,10 @@ const RouteWrapper: React.FC = () => {
 
   return (
     <ErrorBoundary fallback={<RouteErrorFallback />}>
-      <Suspense fallback={<RouteLoadingFallback />}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
+      <PerformanceTracker pageName={location.pathname}>
+        <Suspense fallback={<RouteLoadingFallback />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
             {/* Core Routes */}
             <Route path="/" element={<HomePage />} />
             
@@ -62,7 +63,6 @@ const RouteWrapper: React.FC = () => {
             
             {/* Demo Routes */}
             <Route path="/checkout-demo" element={<CheckoutDemoPage />} />
-            <Route path="/design-system" element={<HbadaStylesDemo />} />
             
             {/* Account Routes */}
             <Route path="/account" element={<AccountPage />} />
@@ -91,9 +91,10 @@ const RouteWrapper: React.FC = () => {
             
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </AnimatePresence>
-      </Suspense>
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
+      </PerformanceTracker>
     </ErrorBoundary>
   );
 };

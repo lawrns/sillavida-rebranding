@@ -87,10 +87,10 @@ const MiniCart: React.FC = () => {
   if (!isCartOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 isolate">
+    <div className="fixed inset-0 z-[9999] isolate">
       {/* Background overlay */}
       <motion.div
-        className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/75 backdrop-blur-sm z-[9999]"
         onClick={closeCart}
         variants={backdropVariants}
         initial="hidden"
@@ -99,7 +99,7 @@ const MiniCart: React.FC = () => {
       />
 
       {/* Cart panel */}
-      <div className="fixed inset-y-0 right-0 max-w-md z-[100]">
+      <div className="fixed inset-y-0 right-0 max-w-md z-[9999]">
         <motion.div
           className="w-screen max-w-md h-full flex flex-col"
           variants={cartVariants}
@@ -118,23 +118,29 @@ const MiniCart: React.FC = () => {
             <CartHeader onClose={closeCart} />
 
             {/* Cart content - scrollable */}
-            <div className="flex-1 overflow-auto p-4 bg-white flex items-center justify-center min-h-[300px]">
+            <div className="flex-1 overflow-auto bg-white min-h-[300px]">
               {isLoading ? (
-                <CartLoadingState />
+                <div className="flex items-center justify-center h-full p-4">
+                  <CartLoadingState />
+                </div>
               ) : cartItems.length === 0 ? (
-                <CartEmptyState onContinueShopping={handleContinueShopping} />
+                <div className="flex items-center justify-center h-full p-4">
+                  <CartEmptyState onContinueShopping={handleContinueShopping} />
+                </div>
               ) : (
-                <ul className="divide-y divide-neutral-200">
-                  {cartItems.map((item) => (
-                    <CartItem
-                      key={item.id}
-                      item={item}
-                      isLoading={isLoading}
-                      onQuantityChange={updateItem}
-                      onRemove={removeItem}
-                    />
-                  ))}
-                </ul>
+                <div className="p-4">
+                  <ul>
+                    {cartItems.map((item) => (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        isLoading={isLoading}
+                        onQuantityChange={updateItem}
+                        onRemove={removeItem}
+                      />
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
 

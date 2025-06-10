@@ -179,7 +179,10 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
         >
           {/* Sale Badge */}
           {priceDisplay.isOnSale && (
-            <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
+            <div 
+              className="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 rounded z-10"
+              style={{ backgroundColor: '#D9534F' }}
+            >
               SALE
             </div>
           )}
@@ -243,12 +246,16 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
               <span key={index} className="text-sm">{star}</span>
             ))}
           </div>
-          <span className="text-sm text-gray-600 ml-1">(127)</span>
         </div>
 
         {/* Product Title */}
         <Link to={`/product/${product.handle}`} onClick={handleProductClick}>
-          <h3 className="font-semibold text-lg mb-2 text-gray-900 hover:text-black transition-colors">
+          <h3 
+            className="font-semibold text-lg mb-2 transition-colors font-heading"
+            style={{ color: '#1A2A3A' }}
+            onMouseEnter={(e) => e.target.style.color = '#333333'}
+            onMouseLeave={(e) => e.target.style.color = '#1A2A3A'}
+          >
             {product.title}
           </h3>
         </Link>
@@ -265,7 +272,10 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
 
         {/* Pricing - Matching Screenshot 14 style */}
         <div className="flex items-center gap-2 flex-wrap mb-3">
-          <span className="text-xl font-bold text-black">
+          <span 
+            className="text-xl font-bold"
+            style={{ color: '#D9534F' }}
+          >
             {priceDisplay.price}
           </span>
           {priceDisplay.isOnSale && priceDisplay.originalPrice && (
@@ -274,7 +284,10 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
                 {priceDisplay.originalPrice}
               </span>
               {priceDisplay.discount && (
-                <span className="text-sm font-medium text-white bg-red-500 px-2 py-1 rounded">
+                <span 
+                  className="text-sm font-medium text-white px-2 py-1 rounded"
+                  style={{ backgroundColor: '#D9534F' }}
+                >
                   {priceDisplay.discount}
                 </span>
               )}
@@ -287,18 +300,31 @@ const ShopifyProductCard: React.FC<ShopifyProductCardProps> = ({ product }) => {
           onClick={handleAddToCart}
           disabled={isLoading}
           className={`w-full py-2 px-4 text-white font-medium rounded transition-all text-sm ${
-            isLoading
-              ? 'bg-gray-300 cursor-not-allowed'
-              : success
-              ? 'bg-green-600 hover:bg-green-700'
-              : 'bg-black hover:bg-gray-800'
+            isLoading ? 'cursor-not-allowed' : ''
           }`}
+          style={{
+            backgroundColor: isLoading 
+              ? '#DDDDDD' 
+              : success 
+              ? '#4A994A' 
+              : '#5CB85C'
+          }}
+          onMouseEnter={(e) => {
+            if (!isLoading && !success) {
+              e.target.style.backgroundColor = '#4A994A';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isLoading) {
+              e.target.style.backgroundColor = success ? '#4A994A' : '#5CB85C';
+            }
+          }}
         >
           {isLoading ? 'Agregando...' : success ? '¡Agregado!' : 'Agregar al carrito'}
         </button>
 
         {error && (
-          <div className="text-red-500 text-xs mt-2">{error}</div>
+          <div className="text-xs mt-2" style={{ color: '#D9534F' }}>{error}</div>
         )}
       </div>
     </motion.div>
